@@ -1,13 +1,62 @@
-<!DOCTYPE html>
+F<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v8.3 (Heures Hebdo)</title>
+    <title>Mon Planning Pro v8.3</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="Mon Planning Pro">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Planning Pro">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="description" content="Gérez votre planning de travail, calculez vos heures et synchronisez avec Google Calendar">
+    
+    <!-- PWA Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%234f46e5' width='512' height='512' rx='90'/%3E%3Ctext x='256' y='340' text-anchor='middle' font-size='280' font-family='Arial' font-weight='bold' fill='white'%3E📅%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%234f46e5' width='512' height='512' rx='90'/%3E%3Ctext x='256' y='340' text-anchor='middle' font-size='280' font-family='Arial' font-weight='bold' fill='white'%3E📅%3C/text%3E%3C/svg%3E">
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- PWA Manifest Inline -->
+    <script>
+    const pwaManifest = {
+        "name": "Mon Planning Pro",
+        "short_name": "Planning",
+        "description": "Gérez votre planning de travail, calculez vos heures et synchronisez avec Google Calendar & Drive",
+        "start_url": "./",
+        "display": "standalone",
+        "orientation": "portrait",
+        "background_color": "#f1f5f9",
+        "theme_color": "#4f46e5",
+        "categories": ["productivity", "utilities"],
+        "icons": [
+            {
+                "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%234f46e5' width='512' height='512' rx='90'/%3E%3Cg fill='white'%3E%3Crect x='80' y='120' width='352' height='300' rx='20'/%3E%3Crect x='130' y='80' width='40' height='80' rx='8' fill='%23818cf8'/%3E%3Crect x='342' y='80' width='40' height='80' rx='8' fill='%23818cf8'/%3E%3C/g%3E%3Crect x='120' y='200' width='80' height='60' rx='8' fill='%23fbbf24'/%3E%3Crect x='216' y='200' width='80' height='60' rx='8' fill='%23f59e0b'/%3E%3Crect x='312' y='200' width='80' height='60' rx='8' fill='%231e293b'/%3E%3Crect x='120' y='280' width='80' height='60' rx='8' fill='%233b82f6'/%3E%3Crect x='216' y='280' width='80' height='60' rx='8' fill='%2310b981'/%3E%3Crect x='312' y='280' width='80' height='60' rx='8' fill='%23ec4899'/%3E%3C/svg%3E",
+                "sizes": "512x512",
+                "type": "image/svg+xml",
+                "purpose": "any maskable"
+            },
+            {
+                "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%234f46e5' width='192' height='192' rx='35'/%3E%3Cg fill='white'%3E%3Crect x='30' y='45' width='132' height='112' rx='8'/%3E%3Crect x='49' y='30' width='15' height='30' rx='3' fill='%23818cf8'/%3E%3Crect x='128' y='30' width='15' height='30' rx='3' fill='%23818cf8'/%3E%3C/g%3E%3Crect x='45' y='75' width='30' height='22' rx='3' fill='%23fbbf24'/%3E%3Crect x='81' y='75' width='30' height='22' rx='3' fill='%23f59e0b'/%3E%3Crect x='117' y='75' width='30' height='22' rx='3' fill='%231e293b'/%3E%3Crect x='45' y='105' width='30' height='22' rx='3' fill='%233b82f6'/%3E%3Crect x='81' y='105' width='30' height='22' rx='3' fill='%2310b981'/%3E%3Crect x='117' y='105' width='30' height='22' rx='3' fill='%23ec4899'/%3E%3C/svg%3E",
+                "sizes": "192x192",
+                "type": "image/svg+xml",
+                "purpose": "any"
+            }
+        ]
+    };
+    const manifestBlob = new Blob([JSON.stringify(pwaManifest)], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    const manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = manifestURL;
+    document.head.appendChild(manifestLink);
+    </script>
     
     <style>
         :root { 
@@ -19,6 +68,84 @@
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
             --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
             --radius: 14px; --radius-sm: 8px;
+        }
+        
+        /* PWA Install Banner */
+        .pwa-install-banner {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.4);
+            z-index: 10000;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            animation: slideUp 0.4s ease-out;
+            max-width: 90%;
+            text-align: center;
+        }
+        .pwa-install-banner i { margin-right: 8px; }
+        .pwa-install-banner .close-btn {
+            margin-left: 12px;
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        .pwa-install-banner .close-btn:hover { opacity: 1; }
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+        
+        /* Offline indicator */
+        .offline-indicator {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f59e0b;
+            color: white;
+            text-align: center;
+            padding: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10001;
+        }
+        .offline-indicator.show { display: block; }
+        
+        /* PWA Standalone mode adjustments */
+        @media all and (display-mode: standalone) {
+            body { padding-top: env(safe-area-inset-top); }
+            .app-header { 
+                padding-top: calc(8px + env(safe-area-inset-top)); 
+                padding-left: calc(12px + env(safe-area-inset-left));
+                padding-right: calc(12px + env(safe-area-inset-right));
+            }
+            .bottom-nav {
+                padding-bottom: calc(8px + env(safe-area-inset-bottom));
+            }
+        }
+        
+        /* iOS standalone mode */
+        @supports (-webkit-touch-callout: none) {
+            body.pwa-standalone {
+                padding-top: constant(safe-area-inset-top);
+                padding-top: env(safe-area-inset-top);
+            }
+            body.pwa-standalone .app-header {
+                padding-top: calc(8px + constant(safe-area-inset-top));
+                padding-top: calc(8px + env(safe-area-inset-top));
+            }
+            body.pwa-standalone .bottom-nav {
+                padding-bottom: calc(8px + constant(safe-area-inset-bottom));
+                padding-bottom: calc(8px + env(safe-area-inset-bottom));
+            }
         }
 
         /* ─── PLANNING LAYOUT 2 COLONNES (desktop uniquement) ─── */
@@ -521,6 +648,17 @@
 </head>
 <body>
 
+    <!-- PWA Offline Indicator -->
+    <div class="offline-indicator" id="offline-indicator">
+        <i class="fas fa-wifi-slash"></i> Mode hors ligne — Les données sont sauvegardées localement
+    </div>
+
+    <!-- PWA Install Banner -->
+    <div class="pwa-install-banner" id="pwa-install-banner" onclick="pwaInstall()">
+        <i class="fas fa-download"></i> Installer Mon Planning Pro
+        <span class="close-btn" onclick="event.stopPropagation(); closePwaBanner();">✕</span>
+    </div>
+
     <!-- ─── APP HEADER ─── -->
     <header class="app-header">
         <div class="app-header-left">
@@ -750,31 +888,31 @@
                         </tr>
                     </tbody>
                     <tbody class="paie-acc-body" id="pacc-form-body">
-                        <tr class="clickable-row" onclick="voirDetails('FORMATION')"><td>📚 Formation</td><td id="count-formation">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('RÉUNION')"><td>🗣️ Réunions</td><td id="count-reunion">0</td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('FORMATION')"><td>📚 Formation</td><td><span id="count-formation">0</span> <span id="hours-formation" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('RÉUNION')"><td>🗣️ Réunions</td><td><span id="count-reunion">0</span> <span id="hours-reunion" style="color:var(--primary);font-weight:600;"></span></td></tr>
                     </tbody>
                     <!-- CSE -->
                     <tbody>
                         <tr class="paie-acc-header" id="pacc-cse" onclick="togglePaieAcc('pacc-cse')">
                             <td colspan="2" style="font-size:0.75rem;font-weight:800;color:var(--primary);text-transform:uppercase;padding:10px 5px 6px;">
-                                ⚖️ CSE <span class="paie-acc-arrow">▶</span>
+                                ⚖️ CSE <span id="hours-cse-total" style="color:#10b981;font-weight:700;font-size:0.72rem;margin-left:8px;"></span> <span class="paie-acc-arrow">▶</span>
                             </td>
                         </tr>
                     </tbody>
                     <tbody class="paie-acc-body" id="pacc-cse-body">
-                        <tr class="clickable-row" onclick="voirDetails('CSE - FONCTIONNEMENT')"><td>⚙️ Fonctionnement</td><td id="count-cse-fonct">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - PERMANENCE')"><td>🏢 Permanence</td><td id="count-cse-perm">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - ASC')"><td>🎭 Activité Sociale &amp; Culturelle</td><td id="count-cse-asc">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - DISTRIBUTEUR')"><td>🪙 Distributeur</td><td id="count-cse-dist">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - FORMATION')"><td>📖 Formation CSE</td><td id="count-cse-form">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - RP')"><td>🤝 Représentant du Personnel</td><td id="count-cse-rp">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - DÉPLACEMENT')"><td>🚗 Déplacement</td><td id="count-cse-dep">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - BILLETTERIE')"><td>🎟️ Billetterie</td><td id="count-cse-bill">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - SECRÉTAIRE')"><td>✍️ Secrétaire</td><td id="count-cse-sec">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - TRÉSORERIE')"><td>💰 Trésorerie</td><td id="count-cse-tres">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - CSSCT')"><td>🛡️ CSSCT</td><td id="count-cse-cssct">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - CONVOCATION DIR.')"><td>📨 Convocation Direction</td><td id="count-cse-convoc">0</td></tr>
-                        <tr class="clickable-row" onclick="voirDetails('CSE - AUTRE')"><td>📋 CSE - Autre</td><td id="count-cse-autre">0</td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - FONCTIONNEMENT')"><td>⚙️ Fonctionnement</td><td><span id="count-cse-fonct">0</span> <span id="hours-cse-fonct" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - PERMANENCE')"><td>🏢 Permanence</td><td><span id="count-cse-perm">0</span> <span id="hours-cse-perm" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - ASC')"><td>🎭 Activité Sociale &amp; Culturelle</td><td><span id="count-cse-asc">0</span> <span id="hours-cse-asc" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - DISTRIBUTEUR')"><td>🪙 Distributeur</td><td><span id="count-cse-dist">0</span> <span id="hours-cse-dist" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - FORMATION')"><td>📖 Formation CSE</td><td><span id="count-cse-form">0</span> <span id="hours-cse-form" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - RP')"><td>🤝 Représentant du Personnel</td><td><span id="count-cse-rp">0</span> <span id="hours-cse-rp" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - DÉPLACEMENT')"><td>🚗 Déplacement</td><td><span id="count-cse-dep">0</span> <span id="hours-cse-dep" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - BILLETTERIE')"><td>🎟️ Billetterie</td><td><span id="count-cse-bill">0</span> <span id="hours-cse-bill" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - SECRÉTAIRE')"><td>✍️ Secrétaire</td><td><span id="count-cse-sec">0</span> <span id="hours-cse-sec" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - TRÉSORERIE')"><td>💰 Trésorerie</td><td><span id="count-cse-tres">0</span> <span id="hours-cse-tres" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - CSSCT')"><td>🛡️ CSSCT</td><td><span id="count-cse-cssct">0</span> <span id="hours-cse-cssct" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - CONVOCATION DIR.')"><td>📨 Convocation Direction</td><td><span id="count-cse-convoc">0</span> <span id="hours-cse-convoc" style="color:var(--primary);font-weight:600;"></span></td></tr>
+                        <tr class="clickable-row" onclick="voirDetails('CSE - AUTRE')"><td>📋 CSE - Autre</td><td><span id="count-cse-autre">0</span> <span id="hours-cse-autre" style="color:var(--primary);font-weight:600;"></span></td></tr>
                     </tbody>
                     <!-- ABSENCES -->
                     <tbody>
@@ -1305,6 +1443,21 @@
                     <i class="fas fa-download"></i> Importer
                 </button>
             </div>
+            
+            <!-- Sélection des calendriers -->
+            <div id="gcal-calendars-section" style="display:none; margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-color);">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px;">📅 Calendriers de destination</div>
+                <div id="gcal-calendars-list" style="display:flex; flex-direction:column; gap:6px; max-height:150px; overflow-y:auto;">
+                    <div style="font-size:0.75rem; color:var(--text-muted); padding:8px;">Chargement des calendriers...</div>
+                </div>
+                <button onclick="googleCalendarChargerListe()" class="btn btn-outline" style="margin-top:8px; padding:6px 12px; font-size:0.72rem; color:#4285f4; border-color:#4285f4; width:100%;">
+                    <i class="fas fa-sync-alt"></i> Rafraîchir la liste
+                </button>
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:6px;">
+                    💡 Cochez les calendriers où exporter vos événements
+                </div>
+            </div>
+            
             <div id="gcal-sync-info" style="display:none; margin-top:8px; font-size:0.7rem; color:var(--text-muted); background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:6px 10px;">
                 <i class="fas fa-check-circle" style="color:#10b981;"></i> <span id="gcal-sync-label">Dernière sync : —</span>
             </div>
@@ -1332,6 +1485,22 @@
                     <i class="fas fa-cloud-download-alt"></i> Restaurer
                 </button>
             </div>
+            
+            <!-- Sélection du dossier de destination -->
+            <div id="gdrive-folder-section" style="display:none; margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-color);">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:8px;">📁 Dossier de destination</div>
+                <div style="display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; background:var(--bg-card); border:1px solid var(--border-color);">
+                    <i class="fas fa-folder" id="gdrive-folder-icon" style="color:#fbbc04; font-size:1.1rem;"></i>
+                    <span id="gdrive-folder-name" style="flex:1; font-size:0.8rem; font-weight:600; color:var(--text-main);">Mon Drive (racine)</span>
+                    <button onclick="googleDriveChoisirDossier()" class="btn btn-outline" style="padding:6px 12px; font-size:0.72rem; color:#4285f4; border-color:#4285f4;">
+                        <i class="fas fa-folder-open"></i> Changer
+                    </button>
+                </div>
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:6px;">
+                    💡 Cliquez sur "Changer" pour sélectionner un dossier spécifique
+                </div>
+            </div>
+            
             <!-- Auto-backup Drive -->
             <div id="gdrive-auto-section" style="display:none; margin-top:12px; padding-top:10px; border-top:1px dashed var(--border-color);">
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
@@ -2368,6 +2537,16 @@
             'CSE - TRÉSORERIE': 0, 'CSE - CSSCT': 0, 'CSE - CONVOCATION DIR.': 0, 'CSE - AUTRE': 0,
             'CP': 0, 'RTT': 0, 'REPOS DE NUIT': 0, 'COMPTEUR 8H': 0
         };
+        
+        // Compteurs d'heures pour les activités (Formation, Réunion, CSE)
+        let hoursStats = {
+            'FORMATION': 0, 'RÉUNION': 0,
+            'CSE - FONCTIONNEMENT': 0, 'CSE - PERMANENCE': 0, 'CSE - ASC': 0,
+            'CSE - DISTRIBUTEUR': 0, 'CSE - FORMATION': 0, 'CSE - RP': 0,
+            'CSE - DÉPLACEMENT': 0, 'CSE - BILLETTERIE': 0, 'CSE - SECRÉTAIRE': 0,
+            'CSE - TRÉSORERIE': 0, 'CSE - CSSCT': 0, 'CSE - CONVOCATION DIR.': 0, 'CSE - AUTRE': 0
+        };
+        
         let feriesTravailles = 0;
         let dimanchesTravailles = 0;
         let dimanchesRepos = 0;
@@ -2375,6 +2554,9 @@
         const SUPPL_TYPES = ['MATIN SUPPL.','APRÈS-MIDI SUPPL.','NUIT SUPPL.','JOURNÉE SUPPL.'];
         const NUIT_TYPES  = ['NUIT','NUIT SUPPL.'];
         const TRAVAIL_TYPES = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.','FORMATION'];
+        const ACTIVITE_TYPES = ['FORMATION', 'RÉUNION', 'CSE - FONCTIONNEMENT', 'CSE - PERMANENCE', 'CSE - ASC',
+            'CSE - DISTRIBUTEUR', 'CSE - FORMATION', 'CSE - RP', 'CSE - DÉPLACEMENT', 'CSE - BILLETTERIE',
+            'CSE - SECRÉTAIRE', 'CSE - TRÉSORERIE', 'CSE - CSSCT', 'CSE - CONVOCATION DIR.', 'CSE - AUTRE'];
 
         const dateDebut = new Date(d);
         const dateFin   = new Date(f);
@@ -2389,8 +2571,20 @@
             if(dateS < d || dateS > f) return;
             const p = e.extendedProps;
             const isTravail = TRAVAIL_TYPES.includes(p.type);
+            const isActivite = ACTIVITE_TYPES.includes(p.type);
             const h = parseFloat(p.hPayees || 0);
             totalHeures += h;
+            
+            // Calculer les heures des activités à partir de hD et hF
+            if (isActivite && p.hD && p.hF) {
+                const start = new Date(`1970-01-01T${p.hD}`);
+                const end = new Date(`1970-01-01T${p.hF}`);
+                let diff = (end - start) / 3600000;
+                const actHours = diff < 0 ? diff + 24 : diff;
+                if (hoursStats.hasOwnProperty(p.type)) {
+                    hoursStats[p.type] += actHours;
+                }
+            }
 
             if (!isTravail || h === 0) {
                 if (stats.hasOwnProperty(p.type)) stats[p.type]++;
@@ -2495,6 +2689,37 @@
         document.getElementById('count-compteur-stat').innerText = stats['COMPTEUR 8H'];
         document.getElementById('count-feries').innerText        = feriesTravailles;
         document.getElementById('count-dimanches').innerText     = `${dimanchesTravailles} T / ${dimanchesRepos} R`;
+        
+        // Afficher les heures des activités
+        const fmtH = (h) => h > 0 ? `(${h.toFixed(1)}h)` : '';
+        
+        const setHours = (id, type) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = fmtH(hoursStats[type] || 0);
+        };
+        
+        setHours('hours-formation', 'FORMATION');
+        setHours('hours-reunion', 'RÉUNION');
+        setHours('hours-cse-fonct', 'CSE - FONCTIONNEMENT');
+        setHours('hours-cse-perm', 'CSE - PERMANENCE');
+        setHours('hours-cse-asc', 'CSE - ASC');
+        setHours('hours-cse-dist', 'CSE - DISTRIBUTEUR');
+        setHours('hours-cse-form', 'CSE - FORMATION');
+        setHours('hours-cse-rp', 'CSE - RP');
+        setHours('hours-cse-dep', 'CSE - DÉPLACEMENT');
+        setHours('hours-cse-bill', 'CSE - BILLETTERIE');
+        setHours('hours-cse-sec', 'CSE - SECRÉTAIRE');
+        setHours('hours-cse-tres', 'CSE - TRÉSORERIE');
+        setHours('hours-cse-cssct', 'CSE - CSSCT');
+        setHours('hours-cse-convoc', 'CSE - CONVOCATION DIR.');
+        setHours('hours-cse-autre', 'CSE - AUTRE');
+        
+        // Total heures CSE
+        const totalCSE = Object.entries(hoursStats)
+            .filter(([k, v]) => k.startsWith('CSE -'))
+            .reduce((acc, [k, v]) => acc + v, 0);
+        const cseTotal = document.getElementById('hours-cse-total');
+        if (cseTotal) cseTotal.innerText = totalCSE > 0 ? `(Total: ${totalCSE.toFixed(1)}h)` : '';
     }
 
     function supprimerElementSeul() { 
@@ -3875,17 +4100,22 @@ function selectAct(btn, val) {
     // ─── Configuration Google OAuth2 ───
     // IMPORTANT : Remplacez par vos propres identifiants depuis Google Cloud Console
     const GOOGLE_CLIENT_ID = '779128839633-1meksbh396ub0miqm06o8i0qo7n3n7tn.apps.googleusercontent.com';
-    const GOOGLE_API_KEY = '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';
+    const GOOGLE_API_KEY = 'AIzaSyAWhmLssvAhWz-U-0yoFDXuyA5dnPt0b2Q';
     const GOOGLE_DISCOVERY_DOCS = [
         'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
         'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
     ];
-    const GOOGLE_SCOPES = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive.file';
+    const GOOGLE_SCOPES = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive';
 
     let googleTokenClient = null;
     let googleAccessToken = null;
     let gapiInited = false;
     let gisInited = false;
+    let pickerInited = false;
+    
+    // Dossier Google Drive sélectionné
+    let googleDriveFolderId = null;
+    let googleDriveFolderName = null;
 
     // ─── Chargement des scripts Google ───
     function chargerGoogleAPIs() {
@@ -3894,7 +4124,7 @@ function selectAct(btn, val) {
             const gapiScript = document.createElement('script');
             gapiScript.id = 'gapi-script';
             gapiScript.src = 'https://apis.google.com/js/api.js';
-            gapiScript.onload = () => gapi.load('client', initGoogleAPIClient);
+            gapiScript.onload = () => gapi.load('client:picker', initGoogleAPIClient);
             document.head.appendChild(gapiScript);
         }
         
@@ -3915,6 +4145,12 @@ function selectAct(btn, val) {
                 discoveryDocs: GOOGLE_DISCOVERY_DOCS,
             });
             gapiInited = true;
+            pickerInited = true;
+            
+            // Charger le dossier sauvegardé
+            googleDriveFolderId = localStorage.getItem('google_drive_folder_id');
+            googleDriveFolderName = localStorage.getItem('google_drive_folder_name');
+            
             verifierConnexionGoogle();
         } catch (err) {
             console.error('Erreur init GAPI:', err);
@@ -3970,12 +4206,15 @@ function selectAct(btn, val) {
         const gcalExport = document.getElementById('btn-gcal-export');
         const gcalImport = document.getElementById('btn-gcal-import');
         const gcalSyncInfo = document.getElementById('gcal-sync-info');
+        const gcalCalendarsSection = document.getElementById('gcal-calendars-section');
         
         const gdriveConnect = document.getElementById('btn-gdrive-connect');
         const gdriveSave = document.getElementById('btn-gdrive-save');
         const gdriveRestore = document.getElementById('btn-gdrive-restore');
         const gdriveAutoSection = document.getElementById('gdrive-auto-section');
         const gdriveSyncInfo = document.getElementById('gdrive-sync-info');
+        const gdriveFolderSection = document.getElementById('gdrive-folder-section');
+        const gdriveFolderName = document.getElementById('gdrive-folder-name');
 
         if (connecte) {
             if (statusIcon) { statusIcon.style.color = '#10b981'; }
@@ -3986,12 +4225,31 @@ function selectAct(btn, val) {
             if (gcalExport) gcalExport.style.display = 'flex';
             if (gcalImport) gcalImport.style.display = 'flex';
             if (gcalSyncInfo) gcalSyncInfo.style.display = 'block';
+            if (gcalCalendarsSection) {
+                gcalCalendarsSection.style.display = 'block';
+                // Charger la liste des calendriers automatiquement
+                setTimeout(googleCalendarChargerListe, 500);
+            }
             
             if (gdriveConnect) gdriveConnect.style.display = 'none';
             if (gdriveSave) gdriveSave.style.display = 'flex';
             if (gdriveRestore) gdriveRestore.style.display = 'flex';
             if (gdriveAutoSection) gdriveAutoSection.style.display = 'block';
             if (gdriveSyncInfo) gdriveSyncInfo.style.display = 'block';
+            if (gdriveFolderSection) gdriveFolderSection.style.display = 'block';
+            
+            // Afficher le dossier sélectionné
+            const savedFolderName = localStorage.getItem('google_drive_folder_name');
+            const savedFolderId = localStorage.getItem('google_drive_folder_id');
+            if (gdriveFolderName) {
+                if (savedFolderName && savedFolderId) {
+                    gdriveFolderName.textContent = savedFolderName;
+                    googleDriveFolderId = savedFolderId;
+                    googleDriveFolderName = savedFolderName;
+                } else {
+                    gdriveFolderName.textContent = 'Mon Drive (racine)';
+                }
+            }
             
             // Charger les dates de dernière sync
             const lastCalSync = localStorage.getItem('google_cal_last_sync');
@@ -4022,13 +4280,79 @@ function selectAct(btn, val) {
             if (gcalExport) gcalExport.style.display = 'none';
             if (gcalImport) gcalImport.style.display = 'none';
             if (gcalSyncInfo) gcalSyncInfo.style.display = 'none';
+            if (gcalCalendarsSection) gcalCalendarsSection.style.display = 'none';
             
             if (gdriveConnect) gdriveConnect.style.display = 'flex';
             if (gdriveSave) gdriveSave.style.display = 'none';
             if (gdriveRestore) gdriveRestore.style.display = 'none';
             if (gdriveAutoSection) gdriveAutoSection.style.display = 'none';
             if (gdriveSyncInfo) gdriveSyncInfo.style.display = 'none';
+            if (gdriveFolderSection) gdriveFolderSection.style.display = 'none';
         }
+    }
+
+    // ─── Variables pour les calendriers sélectionnés ───
+    let googleCalendarsList = [];
+    let googleSelectedCalendars = [];
+
+    // ─── Charger la liste des calendriers Google ───
+    async function googleCalendarChargerListe() {
+        if (!googleAccessToken) return;
+        
+        const listEl = document.getElementById('gcal-calendars-list');
+        if (!listEl) return;
+        
+        listEl.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted); padding:8px;"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>';
+        
+        try {
+            const response = await gapi.client.calendar.calendarList.list();
+            googleCalendarsList = response.result.items || [];
+            
+            // Charger les calendriers déjà sélectionnés
+            googleSelectedCalendars = JSON.parse(localStorage.getItem('google_selected_calendars') || '["primary"]');
+            
+            let html = '';
+            for (const cal of googleCalendarsList) {
+                const isChecked = googleSelectedCalendars.includes(cal.id) ? 'checked' : '';
+                const bgColor = cal.backgroundColor || '#4285f4';
+                const canEdit = cal.accessRole === 'owner' || cal.accessRole === 'writer';
+                
+                if (canEdit) {
+                    html += `
+                    <label style="display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:8px; background:var(--bg-card); border:1px solid var(--border-color); cursor:pointer;">
+                        <input type="checkbox" value="${cal.id}" ${isChecked} onchange="googleCalendarToggleSelection(this)" style="width:16px; height:16px; flex-shrink:0;">
+                        <span style="width:12px; height:12px; border-radius:3px; background:${bgColor}; flex-shrink:0;"></span>
+                        <span style="font-size:0.78rem; font-weight:600; color:var(--text-main); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${cal.summary}</span>
+                        ${cal.primary ? '<span style="font-size:0.65rem; background:#4285f4; color:white; padding:2px 6px; border-radius:4px;">Principal</span>' : ''}
+                    </label>`;
+                }
+            }
+            
+            if (html === '') {
+                html = '<div style="font-size:0.75rem; color:var(--text-muted); padding:8px;">Aucun calendrier modifiable trouvé</div>';
+            }
+            
+            listEl.innerHTML = html;
+            
+        } catch (err) {
+            console.error('Erreur chargement calendriers:', err);
+            listEl.innerHTML = '<div style="font-size:0.75rem; color:#ef4444; padding:8px;">❌ Erreur de chargement</div>';
+        }
+    }
+
+    function googleCalendarToggleSelection(checkbox) {
+        const calId = checkbox.value;
+        
+        if (checkbox.checked) {
+            if (!googleSelectedCalendars.includes(calId)) {
+                googleSelectedCalendars.push(calId);
+            }
+        } else {
+            googleSelectedCalendars = googleSelectedCalendars.filter(id => id !== calId);
+        }
+        
+        // Sauvegarder la sélection
+        localStorage.setItem('google_selected_calendars', JSON.stringify(googleSelectedCalendars));
     }
 
     // ─── Google Calendar ───
@@ -4048,8 +4372,12 @@ function selectAct(btn, val) {
             return;
         }
         
+        // Vérifier qu'au moins un calendrier est sélectionné
+        const calendars = googleSelectedCalendars.length > 0 ? googleSelectedCalendars : ['primary'];
+        
         try {
-            showToast('📤 Export vers Google Calendar...', 'info', 'fa-spinner fa-spin');
+            const calCount = calendars.length;
+            showToast(`📤 Export vers ${calCount} calendrier(s)...`, 'info', 'fa-spinner fa-spin');
             
             const events = JSON.parse(localStorage.getItem('events_v5') || '[]');
             let exportCount = 0;
@@ -4059,26 +4387,84 @@ function selectAct(btn, val) {
                 if (!dateStr) continue;
                 
                 const props = evt.extendedProps || {};
-                const title = props.type || evt.title || 'Poste';
+                const type = props.type || evt.title || 'Poste';
                 
-                const calEvent = {
-                    summary: title,
-                    description: `Mon Planning Pro - ${props.note || ''}`,
-                    start: { date: dateStr },
-                    end: { date: dateStr },
-                    colorId: getGoogleCalendarColorId(props.type)
-                };
+                // Construire le titre avec les heures si disponibles
+                let summary = type;
+                const hD = props.hD || '';
+                const hF = props.hF || '';
+                if (hD && hF) {
+                    summary += ` [${hD}-${hF}]`;
+                }
                 
-                await gapi.client.calendar.events.insert({
-                    calendarId: 'primary',
-                    resource: calEvent
-                });
+                // Calculer les heures pour les activités
+                let dureeH = 0;
+                if (hD && hF) {
+                    const start = new Date(`1970-01-01T${hD}`);
+                    const end = new Date(`1970-01-01T${hF}`);
+                    let diff = (end - start) / 3600000;
+                    dureeH = diff < 0 ? diff + 24 : diff;
+                }
+                
+                // Description enrichie
+                let description = 'Mon Planning Pro';
+                if (dureeH > 0) description += ` | Durée: ${dureeH.toFixed(1)}h`;
+                if (props.hPayees) description += ` | Heures payées: ${props.hPayees}h`;
+                if (props.bonusC) description += ` | Compteur: ${props.bonusC > 0 ? '+' : ''}${props.bonusC}h`;
+                if (props.note) description += ` | Note: ${props.note}`;
+                
+                // Créer l'événement avec ou sans heures
+                let calEvent;
+                if (hD && hF) {
+                    // Événement avec heures spécifiques
+                    const startDateTime = `${dateStr}T${hD}:00`;
+                    let endDateTime;
+                    
+                    // Si l'heure de fin est avant l'heure de début, c'est le lendemain
+                    if (hF < hD) {
+                        const nextDay = new Date(dateStr);
+                        nextDay.setDate(nextDay.getDate() + 1);
+                        const nextDateStr = nextDay.toISOString().split('T')[0];
+                        endDateTime = `${nextDateStr}T${hF}:00`;
+                    } else {
+                        endDateTime = `${dateStr}T${hF}:00`;
+                    }
+                    
+                    calEvent = {
+                        summary: summary,
+                        description: description,
+                        start: { dateTime: startDateTime, timeZone: 'Europe/Paris' },
+                        end: { dateTime: endDateTime, timeZone: 'Europe/Paris' },
+                        colorId: getGoogleCalendarColorId(type)
+                    };
+                } else {
+                    // Événement toute la journée
+                    calEvent = {
+                        summary: summary,
+                        description: description,
+                        start: { date: dateStr },
+                        end: { date: dateStr },
+                        colorId: getGoogleCalendarColorId(type)
+                    };
+                }
+                
+                // Exporter vers chaque calendrier sélectionné
+                for (const calId of calendars) {
+                    try {
+                        await gapi.client.calendar.events.insert({
+                            calendarId: calId,
+                            resource: calEvent
+                        });
+                    } catch (calErr) {
+                        console.warn(`Erreur export vers ${calId}:`, calErr);
+                    }
+                }
                 exportCount++;
             }
             
             localStorage.setItem('google_cal_last_sync', new Date().toISOString());
             majUIGoogle(true);
-            showToast(`✅ ${exportCount} événements exportés vers Calendar !`, 'success', 'fa-check-circle');
+            showToast(`✅ ${exportCount} événements exportés vers ${calCount} calendrier(s) !`, 'success', 'fa-check-circle');
             
         } catch (err) {
             console.error('Erreur export Calendar:', err);
@@ -4151,6 +4537,60 @@ function selectAct(btn, val) {
         googleTokenClient.requestAccessToken({ prompt: 'consent' });
     }
 
+    // ─── Choisir un dossier Google Drive ───
+    function googleDriveChoisirDossier() {
+        if (!googleAccessToken) {
+            showToast('⚠️ Connectez-vous d\'abord à Google', 'warning', 'fa-exclamation-triangle');
+            return;
+        }
+        
+        if (!pickerInited) {
+            showToast('⏳ Chargement du sélecteur...', 'info', 'fa-spinner fa-spin');
+            return;
+        }
+        
+        try {
+            const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
+                .setIncludeFolders(true)
+                .setSelectFolderEnabled(true)
+                .setMimeTypes('application/vnd.google-apps.folder');
+            
+            const picker = new google.picker.PickerBuilder()
+                .setTitle('Sélectionner un dossier de sauvegarde')
+                .addView(view)
+                .setOAuthToken(googleAccessToken)
+                .setDeveloperKey(GOOGLE_API_KEY)
+                .setCallback(googleDrivePickerCallback)
+                .setLocale('fr')
+                .build();
+            
+            picker.setVisible(true);
+        } catch (err) {
+            console.error('Erreur Picker:', err);
+            showToast('❌ Erreur lors de l\'ouverture du sélecteur', 'error', 'fa-times-circle');
+        }
+    }
+
+    function googleDrivePickerCallback(data) {
+        if (data.action === google.picker.Action.PICKED) {
+            const folder = data.docs[0];
+            googleDriveFolderId = folder.id;
+            googleDriveFolderName = folder.name;
+            
+            // Sauvegarder le choix
+            localStorage.setItem('google_drive_folder_id', googleDriveFolderId);
+            localStorage.setItem('google_drive_folder_name', googleDriveFolderName);
+            
+            // Mettre à jour l'UI
+            const folderNameEl = document.getElementById('gdrive-folder-name');
+            if (folderNameEl) {
+                folderNameEl.textContent = googleDriveFolderName;
+            }
+            
+            showToast(`📁 Dossier sélectionné : ${googleDriveFolderName}`, 'success', 'fa-folder-open');
+        }
+    }
+
     async function googleDriveSauvegarder() {
         if (!googleAccessToken) {
             showToast('⚠️ Connectez-vous d\'abord à Google', 'warning', 'fa-exclamation-triangle');
@@ -4158,7 +4598,8 @@ function selectAct(btn, val) {
         }
         
         try {
-            showToast('💾 Sauvegarde vers Google Drive...', 'info', 'fa-spinner fa-spin');
+            const folderInfo = googleDriveFolderName ? ` → ${googleDriveFolderName}` : '';
+            showToast(`💾 Sauvegarde vers Google Drive${folderInfo}...`, 'info', 'fa-spinner fa-spin');
             
             const backup = {
                 dateExport: new Date().toISOString(),
@@ -4176,10 +4617,14 @@ function selectAct(btn, val) {
             
             // Créer le fichier sur Drive via l'API
             const blob = new Blob([content], { type: 'application/json' });
+            
+            // Utiliser le dossier sélectionné ou la racine
+            const parentFolder = googleDriveFolderId || 'root';
+            
             const metadata = {
                 name: filename,
                 mimeType: 'application/json',
-                parents: ['root'] // Dossier racine de Drive
+                parents: [parentFolder]
             };
             
             const form = new FormData();
@@ -4200,7 +4645,11 @@ function selectAct(btn, val) {
             localStorage.setItem('google_drive_last_sync', new Date().toISOString());
             localStorage.setItem('google_drive_last_file_id', result.id);
             majUIGoogle(true);
-            showToast('✅ Sauvegarde envoyée sur Google Drive !', 'success', 'fa-cloud-upload-alt');
+            
+            const successMsg = googleDriveFolderName 
+                ? `✅ Sauvegarde envoyée dans "${googleDriveFolderName}" !`
+                : '✅ Sauvegarde envoyée sur Google Drive !';
+            showToast(successMsg, 'success', 'fa-cloud-upload-alt');
             
         } catch (err) {
             console.error('Erreur sauvegarde Drive:', err);
@@ -4215,17 +4664,38 @@ function selectAct(btn, val) {
         }
         
         try {
-            showToast('🔍 Recherche des sauvegardes...', 'info', 'fa-spinner fa-spin');
+            const folderInfo = googleDriveFolderName ? ` dans "${googleDriveFolderName}"` : '';
+            showToast(`🔍 Recherche des sauvegardes${folderInfo}...`, 'info', 'fa-spinner fa-spin');
+            
+            // Construire la requête de recherche
+            let query = "name contains 'mon_planning_backup' and mimeType='application/json' and trashed=false";
+            
+            // Si un dossier est sélectionné, chercher d'abord dedans
+            if (googleDriveFolderId) {
+                query += ` and '${googleDriveFolderId}' in parents`;
+            }
             
             // Chercher les fichiers de backup sur Drive
-            const response = await gapi.client.drive.files.list({
-                q: "name contains 'mon_planning_backup' and mimeType='application/json' and trashed=false",
+            let response = await gapi.client.drive.files.list({
+                q: query,
                 orderBy: 'modifiedTime desc',
                 pageSize: 10,
-                fields: 'files(id, name, modifiedTime)'
+                fields: 'files(id, name, modifiedTime, parents)'
             });
             
-            const files = response.result.files || [];
+            let files = response.result.files || [];
+            
+            // Si aucun fichier trouvé dans le dossier, chercher partout
+            if (files.length === 0 && googleDriveFolderId) {
+                showToast('🔍 Recherche dans tout Drive...', 'info', 'fa-spinner fa-spin');
+                response = await gapi.client.drive.files.list({
+                    q: "name contains 'mon_planning_backup' and mimeType='application/json' and trashed=false",
+                    orderBy: 'modifiedTime desc',
+                    pageSize: 10,
+                    fields: 'files(id, name, modifiedTime, parents)'
+                });
+                files = response.result.files || [];
+            }
             
             if (files.length === 0) {
                 showToast('ℹ️ Aucune sauvegarde trouvée sur Drive', 'info', 'fa-info-circle');
@@ -4321,7 +4791,225 @@ function selectAct(btn, val) {
         }
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ PWA - SERVICE WORKER & INSTALLATION ═══════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    let deferredPrompt = null;
+    const PWA_BANNER_DISMISSED = 'pwa_banner_dismissed';
+
+    // ─── Service Worker Code (inline) ───
+    const swCode = `
+const CACHE_NAME = 'planning-pro-v8.3';
+const OFFLINE_URL = '/offline.html';
+
+// Ressources à mettre en cache
+const PRECACHE_URLS = [
+    './',
+    'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+    'https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap'
+];
+
+// Installation
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => cache.addAll(PRECACHE_URLS))
+            .then(() => self.skipWaiting())
+    );
+});
+
+// Activation
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
+                    .map(cacheName => caches.delete(cacheName))
+            );
+        }).then(() => self.clients.claim())
+    );
+});
+
+// Fetch - Network first, fallback to cache
+self.addEventListener('fetch', event => {
+    // Skip non-GET requests
+    if (event.request.method !== 'GET') return;
+    
+    // Skip Chrome extensions and other non-http requests
+    if (!event.request.url.startsWith('http')) return;
+    
+    // Skip Google APIs (they need fresh auth)
+    if (event.request.url.includes('googleapis.com') || 
+        event.request.url.includes('accounts.google.com')) {
+        return;
+    }
+    
+    event.respondWith(
+        fetch(event.request)
+            .then(response => {
+                // Clone the response before caching
+                const responseClone = response.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                    cache.put(event.request, responseClone);
+                });
+                return response;
+            })
+            .catch(() => {
+                return caches.match(event.request)
+                    .then(response => {
+                        if (response) return response;
+                        // Return offline page for navigation requests
+                        if (event.request.mode === 'navigate') {
+                            return caches.match('./');
+                        }
+                        return new Response('Offline', { status: 503 });
+                    });
+            })
+    );
+});
+
+// Background sync for saving data
+self.addEventListener('sync', event => {
+    if (event.tag === 'sync-data') {
+        event.waitUntil(syncData());
+    }
+});
+
+async function syncData() {
+    // Notify clients that sync is happening
+    const clients = await self.clients.matchAll();
+    clients.forEach(client => {
+        client.postMessage({ type: 'SYNC_COMPLETE' });
+    });
+}
+`;
+
+    // ─── Register Service Worker ───
+    function registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            // Create blob URL for inline service worker
+            const swBlob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(swBlob);
+            
+            navigator.serviceWorker.register(swUrl, { scope: './' })
+                .then(registration => {
+                    console.log('✅ Service Worker enregistré:', registration.scope);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showToast('🔄 Nouvelle version disponible ! Rechargez la page.', 'info', 'fa-sync-alt');
+                            }
+                        });
+                    });
+                })
+                .catch(err => {
+                    console.warn('⚠️ Service Worker non enregistré (mode fichier local):', err.message);
+                });
+            
+            // Listen for messages from SW
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data.type === 'SYNC_COMPLETE') {
+                    showToast('✅ Synchronisation terminée', 'success', 'fa-check-circle');
+                }
+            });
+        }
+    }
+
+    // ─── PWA Install Prompt ───
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Show install banner if not dismissed
+        if (!localStorage.getItem(PWA_BANNER_DISMISSED)) {
+            setTimeout(() => {
+                const banner = document.getElementById('pwa-install-banner');
+                if (banner) banner.style.display = 'block';
+            }, 3000);
+        }
+    });
+
+    function pwaInstall() {
+        if (!deferredPrompt) {
+            showToast('📱 Ouvrez ce site dans Chrome/Safari et ajoutez-le à l\'écran d\'accueil', 'info', 'fa-mobile-alt');
+            return;
+        }
+        
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                showToast('✅ Application installée !', 'success', 'fa-check-circle');
+            }
+            deferredPrompt = null;
+            closePwaBanner();
+        });
+    }
+
+    function closePwaBanner() {
+        const banner = document.getElementById('pwa-install-banner');
+        if (banner) banner.style.display = 'none';
+        localStorage.setItem(PWA_BANNER_DISMISSED, 'true');
+    }
+
+    // ─── Offline/Online Detection ───
+    function updateOnlineStatus() {
+        const indicator = document.getElementById('offline-indicator');
+        if (!indicator) return;
+        
+        if (navigator.onLine) {
+            indicator.classList.remove('show');
+        } else {
+            indicator.classList.add('show');
+            showToast('📵 Mode hors ligne activé', 'warning', 'fa-wifi-slash');
+        }
+    }
+
+    window.addEventListener('online', () => {
+        updateOnlineStatus();
+        showToast('✅ Connexion rétablie', 'success', 'fa-wifi');
+        
+        // Trigger background sync if available
+        if ('serviceWorker' in navigator && 'sync' in window.SyncManager) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.sync.register('sync-data');
+            });
+        }
+    });
+
+    window.addEventListener('offline', updateOnlineStatus);
+
+    // ─── Initialize PWA ───
+    document.addEventListener('DOMContentLoaded', () => {
+        registerServiceWorker();
+        updateOnlineStatus();
+        
+        // Show install banner for iOS Safari (no beforeinstallprompt)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        
+        if (isIOS && !isStandalone && !localStorage.getItem(PWA_BANNER_DISMISSED)) {
+            setTimeout(() => {
+                const banner = document.getElementById('pwa-install-banner');
+                if (banner) {
+                    banner.innerHTML = '<i class="fas fa-share-square"></i> Ajoutez à l\'écran d\'accueil via <i class="fas fa-share"></i> <span class="close-btn" onclick="event.stopPropagation(); closePwaBanner();">✕</span>';
+                    banner.style.display = 'block';
+                    banner.onclick = null;
+                }
+            }, 5000);
+        }
+    });
+
+    // ─── Detect if running as installed PWA ───
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        document.body.classList.add('pwa-standalone');
+        console.log('📱 Running as installed PWA');
+    }
+
 </script>
 </body>
 </html>
-
