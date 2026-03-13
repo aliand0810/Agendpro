@@ -1,4 +1,4 @@
-F<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -559,8 +559,12 @@ F<!DOCTYPE html>
         /* Tableau Mois */
         .tbl-mois { width: 100%; border-collapse: collapse; }
         .tbl-mois th { padding: 7px 4px; text-align: center; background: var(--bg-app); border-bottom: 2px solid var(--border-color); font-size: 0.63rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .tbl-mois td { border: 1px solid var(--border-color); vertical-align: top; padding: 3px; height: 72px; cursor: pointer; }
+        .tbl-mois td { border: 1px solid var(--border-color); vertical-align: top; padding: 3px; height: 72px; cursor: pointer; background: var(--bg-card); }
         .tbl-mois td:hover { background: #f1f5f9; }
+        .tbl-mois td.td-today { background: #eef2ff; border: 2px solid #4f46e5; }
+        .tbl-mois td.td-weekend { background: #f8fafc; }
+        .tbl-mois td.td-ferie { background: #faf5ff; }
+        .tbl-mois td.td-other { opacity: 0.4; background: var(--bg-app); }
         .m-num { font-size: 0.72rem; font-weight: 700; display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; border-radius: 50%; }
         .m-num.is-today { background: #4f46e5; color: white; font-size: 0.62rem; }
         .m-num.other-month { color: #cbd5e1; }
@@ -586,16 +590,46 @@ F<!DOCTYPE html>
         }
         .cal-toggle-btn:hover { border-color: #4f46e5; color: #4f46e5; }
 
-        body.dark-mode .tbl-sem th { background: #0f172a; }
+        body.dark-mode .tbl-sem th { background: #0f172a; color: #94a3b8; }
         body.dark-mode .tbl-sem th.th-today { background: #1e2040; color: #818cf8; }
-        body.dark-mode .tbl-sem td.td-today { background: #12142a; }
-        body.dark-mode .tbl-sem td.td-weekend { background: #0c1020; }
-        body.dark-mode .tbl-sem td:hover { background: #1e293b; }
-        body.dark-mode .tbl-mois th { background: #0f172a; }
-        body.dark-mode .tbl-mois td:hover { background: #1e293b; }
+        body.dark-mode .tbl-sem td { background: #1e293b; color: #e2e8f0; border-color: #334155; }
+        body.dark-mode .tbl-sem td.td-today { background: #1e2040; }
+        body.dark-mode .tbl-sem td.td-weekend { background: #0f172a; }
+        body.dark-mode .tbl-sem td:hover { background: #334155; }
+        body.dark-mode .tbl-mois th { background: #1e293b; color: #94a3b8; border-color: #475569; }
+        body.dark-mode .tbl-mois td { background: #1e293b; color: #e2e8f0; border-color: #475569; }
+        body.dark-mode .tbl-mois td:hover { background: #334155; }
+        body.dark-mode .tbl-mois td.td-today { background: #312e81; border: 2px solid #6366f1; }
+        body.dark-mode .tbl-mois td.td-weekend { background: #0f172a; }
+        body.dark-mode .tbl-mois td.td-ferie { background: #2e1065; }
+        body.dark-mode .tbl-mois td.td-other { opacity: 0.35; background: #0f172a; }
+        body.dark-mode .m-num { color: #f8fafc; }
+        body.dark-mode .m-num.is-today { background: #6366f1; }
+        body.dark-mode .m-num.other-month { color: #64748b; }
+        body.dark-mode .m-dot { opacity: 0.95; }
+        body.dark-mode .m-more { color: #94a3b8; }
+        body.dark-mode .m-ferie { color: #a78bfa; }
+        body.dark-mode .ev-chip { border: 1px solid rgba(255,255,255,0.2); }
+        body.dark-mode .ev-add-btn { border-color: #475569; color: #64748b; }
+        body.dark-mode .ev-add-btn:hover { border-color: #818cf8; color: #818cf8; }
+        body.dark-mode .tbl-mois td span[style*="background:rgba(79,70,229"] { background: rgba(129,140,248,0.2) !important; color: #a5b4fc !important; }
         body.dark-mode .tbl-sem-footer td { background: #0f172a; }
         body.dark-mode .tb-stats-bar { background: #0f172a; }
         body.dark-mode .tbl-ferie { background: #2e1065; color: #c4b5fd; }
+        body.dark-mode .tb-wrap { background: #111827; border-color: #1e293b; }
+        body.dark-mode .tb-header { background: linear-gradient(135deg, #1e293b, #0f172a); }
+        body.dark-mode .tb-title { color: #f8fafc; }
+        body.dark-mode .tb-btn { background: #334155; border-color: #475569; color: #e2e8f0; }
+        body.dark-mode .tb-btn:hover { background: #4f46e5; }
+        body.dark-mode .tb-view-toggle { background: rgba(0,0,0,0.3); }
+        body.dark-mode .tb-view-btn { color: #94a3b8; }
+        body.dark-mode .tb-view-btn.active { background: #4f46e5; color: white; }
+        body.dark-mode .tb-stat small { color: #94a3b8; }
+        body.dark-mode .tb-stat span { color: #e2e8f0; }
+        body.dark-mode #tb-cycle-selector { background: linear-gradient(135deg, #1e1b4b, #312e81); border-color: #4f46e5; }
+        body.dark-mode #tb-cycle-selector label { color: #a5b4fc; }
+        body.dark-mode #tb-cycle-selector input { background: #1e293b; border-color: #4f46e5; color: #e2e8f0; }
+        body.dark-mode #tb-cycle-stats { background: #1e293b; }
 
 
         /* ═══ CONFIG TAUX & IMPRESSION (portés depuis Écran 2) ═══ */
@@ -643,6 +677,72 @@ F<!DOCTYPE html>
         .cfg-print-option input[type="checkbox"] { width: 20px; height: 20px; margin: 0; accent-color: var(--primary); flex-shrink: 0; }
 
         #tab-config-taux { padding-bottom: 90px; }
+
+        /* ─── POPUP INFO SINGLE-CLIC ─── */
+        .singleclick-popup {
+            position: fixed; z-index: 9998;
+            background: var(--bg-card); color: var(--text-main);
+            border: 1.5px solid var(--primary); border-radius: 14px;
+            padding: 14px 16px; max-width: 280px;
+            box-shadow: 0 8px 32px rgba(79,70,229,0.22);
+            animation: popIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+            font-size: 0.82rem; line-height: 1.45;
+        }
+        .singleclick-popup::before {
+            content: ''; position: absolute; top: -7px; left: 24px;
+            width: 12px; height: 12px; background: var(--bg-card);
+            border-left: 1.5px solid var(--primary); border-top: 1.5px solid var(--primary);
+            transform: rotate(45deg);
+        }
+        @keyframes popIn { from { opacity:0; transform:scale(0.9) translateY(6px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        .singleclick-popup .popup-title {
+            font-weight: 800; font-size: 0.85rem; color: var(--primary);
+            display: flex; align-items: center; gap: 7px; margin-bottom: 8px;
+        }
+        .singleclick-popup .popup-body { color: var(--text-muted); font-size: 0.78rem; margin-bottom: 10px; }
+        .singleclick-popup .popup-body b { color: var(--text-main); }
+        .singleclick-popup .popup-footer {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            border-top: 1px solid var(--border-color); padding-top: 10px;
+        }
+        .singleclick-popup .popup-remember {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.72rem; color: var(--text-muted); cursor: pointer; user-select: none;
+        }
+        .singleclick-popup .popup-remember input { width: 15px; height: 15px; margin: 0; accent-color: var(--primary); }
+        .singleclick-popup .popup-close {
+            background: var(--primary); color: white; border: none; border-radius: 7px;
+            padding: 5px 14px; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+            font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+        }
+        .singleclick-popup .popup-close:hover { background: var(--primary-dark); }
+        body.dark-mode .singleclick-popup { background: #1e293b; border-color: #818cf8; }
+        body.dark-mode .singleclick-popup::before { background: #1e293b; border-color: #818cf8; }
+
+        /* ─── ALERTE CHEVAUCHEMENT ─── */
+        .overlap-alert {
+            background: #fef3c7; border: 1.5px solid #f59e0b; border-radius: 12px;
+            padding: 14px 16px; margin-top: 10px; animation: slideDown 0.3s ease;
+        }
+        .overlap-alert-title {
+            font-size: 0.82rem; font-weight: 800; color: #92400e;
+            display: flex; align-items: center; gap: 7px; margin-bottom: 6px;
+        }
+        .overlap-alert-body { font-size: 0.78rem; color: #78350f; line-height: 1.45; }
+        .overlap-alert-body b { color: #92400e; }
+        .overlap-alert-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .overlap-alert-actions button {
+            flex: 1; padding: 8px 10px; border-radius: 8px; border: none;
+            font-weight: 700; font-size: 0.78rem; cursor: pointer;
+            font-family: 'DM Sans', sans-serif; transition: 0.2s;
+        }
+        .overlap-btn-keep { background: #f59e0b; color: white; }
+        .overlap-btn-replace { background: var(--primary); color: white; }
+        .overlap-btn-cancel { background: var(--border-color); color: var(--text-main); }
+        body.dark-mode .overlap-alert { background: #451a03; border-color: #d97706; }
+        body.dark-mode .overlap-alert-title { color: #fcd34d; }
+        body.dark-mode .overlap-alert-body { color: #fde68a; }
+        body.dark-mode .overlap-alert-body b { color: #fbbf24; }
 
     </style>
 </head>
@@ -723,10 +823,15 @@ F<!DOCTYPE html>
                     </div>
                 </div>
 
-                <!-- Légende types de postes -->
-                <div class="sidebar-card">
-                    <div class="sidebar-card-title"><i class="fas fa-palette"></i> Légende</div>
-                    <div class="legend-grid">
+                <!-- Légende types de postes (collapsible) -->
+                <div class="sidebar-card" id="legend-card">
+                    <div class="sidebar-card-title" onclick="toggleLegend()" style="cursor:pointer; user-select:none;">
+                        <i class="fas fa-palette"></i> Légende
+                        <span style="margin-left:auto; font-size:0.65rem; color:var(--primary);" id="legend-toggle-icon">
+                            <i class="fas fa-chevron-up"></i>
+                        </span>
+                    </div>
+                    <div class="legend-grid" id="legend-content">
                         <div class="legend-item"><span class="legend-dot" style="background:#fbbf24;"></span>Matin</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#f97316;"></span>Après-midi</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#1e293b;"></span>Nuit</div>
@@ -736,19 +841,9 @@ F<!DOCTYPE html>
                         <div class="legend-item"><span class="legend-dot" style="background:#64748b;"></span>Repos nuit</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#ec4899;"></span>Compteur</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6;"></span>Formation</div>
+                        <div class="legend-item"><span class="legend-dot" style="background:#06b6d4;"></span>Réunion</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#10b981;border:2px solid #059669;"></span>CSE</div>
                     </div>
-                </div>
-
-                <!-- Bouton cycle -->
-                <button onclick="genererRoulement()" class="btn btn-outline" style="border-style: dashed; color: var(--primary);">
-                    <i class="fas fa-sync-alt"></i> Générer / Réinitialiser Cycle
-                </button>
-
-                <!-- Astuce double-clic -->
-                <div class="sidebar-hint">
-                    <i class="fas fa-hand-pointer"></i>
-                    Double-clic sur un jour ou un événement pour l'éditer
                 </div>
 
             </aside>
@@ -768,8 +863,34 @@ F<!DOCTYPE html>
                         <div class="tb-view-toggle">
                             <button class="tb-view-btn active" id="tb-btn-sem" onclick="tbSetView('semaine')">☰ Semaine</button>
                             <button class="tb-view-btn" id="tb-btn-mois" onclick="tbSetView('mois')">📅 Mois</button>
+                            <button class="tb-view-btn" id="tb-btn-cycle" onclick="tbSetView('cycle')">🔄 Cycle</button>
                         </div>
                     </div>
+                    
+                    <!-- Sélecteur de période pour le cycle -->
+                    <div id="tb-cycle-selector" style="display:none; padding:12px; background:linear-gradient(135deg,#eef2ff,#f5f3ff); border-radius:10px; margin-bottom:10px; border:1px solid #c4b5fd;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                            <i class="fas fa-calendar-week" style="color:#4f46e5;"></i>
+                            <span style="font-weight:700; font-size:0.85rem; color:#4f46e5;">Période du cycle posté</span>
+                        </div>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                            <div style="flex:1; min-width:130px;">
+                                <label style="font-size:0.7rem; font-weight:600; color:#6d28d9; display:block; margin-bottom:3px;">Du</label>
+                                <input type="date" id="tb-cycle-debut" style="width:100%; padding:8px; border-radius:8px; border:1px solid #c4b5fd; font-size:0.85rem; font-family:'DM Sans',sans-serif;">
+                            </div>
+                            <div style="flex:1; min-width:130px;">
+                                <label style="font-size:0.7rem; font-weight:600; color:#6d28d9; display:block; margin-bottom:3px;">Au</label>
+                                <input type="date" id="tb-cycle-fin" style="width:100%; padding:8px; border-radius:8px; border:1px solid #c4b5fd; font-size:0.85rem; font-family:'DM Sans',sans-serif;">
+                            </div>
+                            <button onclick="tbRenderCycle()" style="background:#4f46e5; color:white; border:none; border-radius:8px; padding:10px 16px; font-weight:700; font-size:0.8rem; cursor:pointer; white-space:nowrap; margin-top:18px;">
+                                <i class="fas fa-eye"></i> Afficher
+                            </button>
+                        </div>
+                        <div id="tb-cycle-stats" style="margin-top:10px; padding:8px 10px; background:white; border-radius:8px; font-size:0.75rem; color:#4f46e5; display:none;">
+                            <span id="tb-cycle-stats-content"></span>
+                        </div>
+                    </div>
+                    
                     <div class="tb-body" id="tb-body"></div>
                     <div class="tb-stats-bar">
                         <div class="tb-stat"><small>Heures sem.</small><span id="tb-h-sem" style="color:#4f46e5;">0h</span></div>
@@ -1349,6 +1470,45 @@ F<!DOCTYPE html>
         </button>
     </div>
 
+    <!-- CYCLE / ROULEMENT -->
+    <div class="zone-card" style="margin-bottom:16px;">
+        <span class="zone-title">ℹ️ AFFICHAGE & NOTIFICATIONS</span>
+        <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 12px;">Gérez les messages d'information du planning.</p>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-color);">
+            <div>
+                <label for="cfg-show-click-hint" style="font-size:0.85rem; font-weight:600; cursor:pointer;">💡 Info double-clic au simple clic</label>
+                <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Affiche un rappel « double-clic pour éditer » quand vous cliquez une fois sur un jour</div>
+            </div>
+            <input type="checkbox" id="cfg-show-click-hint" checked onchange="saveClickHintPref()" style="width:20px; height:20px; margin:0 0 0 10px; accent-color:var(--primary); flex-shrink:0;">
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0;">
+            <div>
+                <label for="cfg-show-overlap-warn" style="font-size:0.85rem; font-weight:600; cursor:pointer;">⚠️ Alerte chevauchement horaire</label>
+                <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Prévient si un événement existe déjà sur le même créneau horaire</div>
+            </div>
+            <input type="checkbox" id="cfg-show-overlap-warn" checked onchange="saveOverlapWarnPref()" style="width:20px; height:20px; margin:0 0 0 10px; accent-color:var(--primary); flex-shrink:0;">
+        </div>
+    </div>
+
+    <!-- CYCLE / ROULEMENT -->
+    <div class="zone-card" style="margin-bottom:16px;">
+        <span class="zone-title">🔄 CYCLE / ROULEMENT</span>
+        <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 12px;">Générez automatiquement votre planning basé sur un cycle de travail récurrent.</p>
+        
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button onclick="fermerModales(); genererRoulement()" class="btn btn-outline" style="flex:1; min-width:140px; color: var(--primary); border-color: var(--primary); border-style:dashed;">
+                <i class="fas fa-sync-alt"></i> Générer Cycle
+            </button>
+            <button onclick="fermerModales(); reinitialiserCycle()" class="btn btn-outline" style="flex:1; min-width:140px; color: #ef4444; border-color: #ef4444;">
+                <i class="fas fa-trash-alt"></i> Réinitialiser
+            </button>
+        </div>
+        
+        <div style="margin-top:10px; font-size:0.72rem; color:var(--text-muted); background:var(--bg-app); padding:8px 10px; border-radius:8px; border:1px solid var(--border-color);">
+            <strong>💡 Astuce :</strong> La génération ouvre l'éditeur de cycle où vous pouvez définir vos postes récurrents. La réinitialisation supprime uniquement les événements issus du cycle.
+        </div>
+    </div>
+
     <hr style="margin: 4px 0 20px 0; border: 0; border-top: 1px solid var(--border-color);">
     
     <div class="zone-card">
@@ -1569,6 +1729,343 @@ F<!DOCTYPE html>
     let cycleMaster = JSON.parse(localStorage.getItem('cycle_master')) || [];
     let soldes = JSON.parse(localStorage.getItem('soldes_v5')) || { cp: 25, rtt: 10, repos: 10, taux: 13.80, tauxRepas: '', compteurBase: 0, majDimanche: 22, majFerie: 100, majSuppl: 25, majSupplMatin: 25, majSupplAM: 25, majSupplNuit: 100, majNuit: 0, heuresSemaine: 35 };
 
+    // ─── Variables backup File System Access API ───
+    let backupFolderHandle = null;
+    let backupPlatformMode = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    let mobileBackupDest = 'files';
+
+    // ─── Stubs File System Access API (sauvegarde dans dossier) ───
+    async function demanderPermission(handle) {
+        if (!handle) return false;
+        try {
+            const perm = await handle.requestPermission({ mode: 'readwrite' });
+            return perm === 'granted';
+        } catch(e) { return false; }
+    }
+
+    async function idbLoadHandle() {
+        return new Promise((resolve, reject) => {
+            const req = indexedDB.open('planning_backup_db', 1);
+            req.onupgradeneeded = () => { req.result.createObjectStore('handles'); };
+            req.onsuccess = () => {
+                const tx = req.result.transaction('handles', 'readonly');
+                const store = tx.objectStore('handles');
+                const get = store.get('backupFolder');
+                get.onsuccess = () => {
+                    if (get.result) { backupFolderHandle = get.result; resolve(get.result); }
+                    else reject(new Error('No handle'));
+                };
+                get.onerror = () => reject(get.error);
+            };
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function idbSaveHandle(handle) {
+        return new Promise((resolve, reject) => {
+            const req = indexedDB.open('planning_backup_db', 1);
+            req.onupgradeneeded = () => { req.result.createObjectStore('handles'); };
+            req.onsuccess = () => {
+                const tx = req.result.transaction('handles', 'readwrite');
+                tx.objectStore('handles').put(handle, 'backupFolder');
+                tx.oncomplete = () => resolve();
+                tx.onerror = () => reject(tx.error);
+            };
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function sauvegarderDansDossier(content, filename) {
+        if (!backupFolderHandle) return false;
+        try {
+            const perm = await backupFolderHandle.queryPermission({ mode: 'readwrite' });
+            if (perm !== 'granted') {
+                const req = await backupFolderHandle.requestPermission({ mode: 'readwrite' });
+                if (req !== 'granted') return false;
+            }
+            const fileHandle = await backupFolderHandle.getFileHandle(filename, { create: true });
+            const writable = await fileHandle.createWritable();
+            await writable.write(content);
+            await writable.close();
+            return true;
+        } catch(e) { console.warn('Sauvegarde dossier échouée:', e); return false; }
+    }
+
+    async function choisirDossierSauvegarde() {
+        if (!('showDirectoryPicker' in window)) {
+            showToast('⚠️ Votre navigateur ne supporte pas la sélection de dossier', 'warning', 'fa-exclamation-triangle');
+            return;
+        }
+        try {
+            backupFolderHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+            const folderName = backupFolderHandle.name;
+            localStorage.setItem('backupFolderName', folderName);
+            await idbSaveHandle(backupFolderHandle);
+            updateFolderUI(folderName, true);
+            showToast(`📁 Dossier sélectionné : ${folderName}`, 'success', 'fa-folder-open');
+        } catch(e) {
+            if (e.name !== 'AbortError') console.warn('Sélection dossier annulée:', e);
+        }
+    }
+
+    function updateFolderUI(folderName, isActive) {
+        const el = document.getElementById('cfg-backup-folder-name');
+        if (el) el.textContent = folderName || 'Aucun';
+    }
+
+    async function envoyerMobile(content, filename) {
+        if (navigator.share) {
+            try {
+                const file = new File([content], filename, { type: 'application/json' });
+                await navigator.share({ files: [file], title: 'Sauvegarde Planning' });
+            } catch(e) {
+                telechargerFichier(content, filename);
+            }
+        } else {
+            telechargerFichier(content, filename);
+        }
+    }
+
+    // Charger le handle au démarrage
+    idbLoadHandle().catch(() => {});
+
+    // ─── POPUP INFO SINGLE-CLIC ───
+    let _singleClickPopup = null;
+
+    function isClickHintEnabled() {
+        return localStorage.getItem('planning_click_hint_disabled') !== 'true';
+    }
+    function isOverlapWarnEnabled() {
+        return localStorage.getItem('planning_overlap_warn_disabled') !== 'true';
+    }
+    function saveClickHintPref() {
+        const el = document.getElementById('cfg-show-click-hint');
+        if (el) localStorage.setItem('planning_click_hint_disabled', el.checked ? 'false' : 'true');
+    }
+    function saveOverlapWarnPref() {
+        const el = document.getElementById('cfg-show-overlap-warn');
+        if (el) localStorage.setItem('planning_overlap_warn_disabled', el.checked ? 'false' : 'true');
+    }
+    function loadInfoPrefs() {
+        const h = document.getElementById('cfg-show-click-hint');
+        const o = document.getElementById('cfg-show-overlap-warn');
+        if (h) h.checked = isClickHintEnabled();
+        if (o) o.checked = isOverlapWarnEnabled();
+    }
+
+    function showSingleClickPopup(x, y, dateStr) {
+        if (!isClickHintEnabled()) return;
+        closeSingleClickPopup();
+
+        const popup = document.createElement('div');
+        popup.className = 'singleclick-popup';
+        popup.id = 'singleclick-popup';
+
+        // Formater la date
+        const [annee, mois, jour] = dateStr.split('-').map(Number);
+        const dateObj = new Date(annee, mois - 1, jour);
+        const dateFr = dateObj.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+        popup.innerHTML = `
+            <div class="popup-title"><i class="fas fa-hand-pointer"></i> ${dateFr}</div>
+            <div class="popup-body">
+                <b>Double-cliquez</b> sur un jour pour <b>ajouter</b> un événement,<br>
+                ou sur un événement existant pour l'<b>éditer</b>.
+            </div>
+            <div class="popup-footer">
+                <label class="popup-remember">
+                    <input type="checkbox" id="popup-no-remind" onchange="handleNoRemind(this)">
+                    Ne plus rappeler
+                </label>
+                <button class="popup-close" onclick="closeSingleClickPopup()">OK</button>
+            </div>
+        `;
+
+        document.body.appendChild(popup);
+
+        // Positionner le popup
+        const pw = popup.offsetWidth;
+        const ph = popup.offsetHeight;
+        let posX = Math.min(x, window.innerWidth - pw - 12);
+        let posY = y + 12;
+        if (posY + ph > window.innerHeight - 12) posY = y - ph - 12;
+        if (posX < 8) posX = 8;
+        popup.style.left = posX + 'px';
+        popup.style.top = posY + 'px';
+
+        _singleClickPopup = popup;
+
+        // Fermer en cliquant ailleurs après un court délai
+        setTimeout(() => {
+            document.addEventListener('click', _closeSingleClickOnOutside, { once: true, capture: true });
+        }, 100);
+
+        // Auto-fermer après 5s
+        setTimeout(() => closeSingleClickPopup(), 5000);
+    }
+
+    function _closeSingleClickOnOutside(e) {
+        if (_singleClickPopup && !_singleClickPopup.contains(e.target)) {
+            closeSingleClickPopup();
+        }
+    }
+
+    function closeSingleClickPopup() {
+        if (_singleClickPopup) {
+            _singleClickPopup.remove();
+            _singleClickPopup = null;
+        }
+    }
+
+    function handleNoRemind(checkbox) {
+        if (checkbox.checked) {
+            localStorage.setItem('planning_click_hint_disabled', 'true');
+            const cfgEl = document.getElementById('cfg-show-click-hint');
+            if (cfgEl) cfgEl.checked = false;
+            closeSingleClickPopup();
+            showToast('💡 Info désactivée — réactivable dans Config', 'info', 'fa-info-circle');
+        }
+    }
+
+    // ─── DÉTECTION CHEVAUCHEMENT HORAIRE ───
+    function detectOverlap(dateStr, hD, hF, currentEventToIgnore) {
+        if (!hD || !hF) return null;
+        const events = calendar.getEvents().filter(e => {
+            if (currentEventToIgnore && e === currentEventToIgnore) return false;
+            return e.startStr.split('T')[0] === dateStr;
+        });
+
+        const newStart = parseTimeToMin(hD);
+        let newEnd = parseTimeToMin(hF);
+        if (newEnd <= newStart) newEnd += 1440; // passe minuit
+        const newDuration = newEnd - newStart;
+
+        for (const ev of events) {
+            const p = ev.extendedProps || {};
+            if (!p.hD || !p.hF) continue;
+            const existStart = parseTimeToMin(p.hD);
+            let existEnd = parseTimeToMin(p.hF);
+            if (existEnd <= existStart) existEnd += 1440;
+            const existDuration = existEnd - existStart;
+
+            // Vérifier chevauchement
+            if (newStart < existEnd && newEnd > existStart) {
+                // Calculer la plage fusionnée (début le plus tôt, fin la plus tard)
+                const mergedStartMin = Math.min(newStart, existStart);
+                const mergedEndMin = Math.max(newEnd, existEnd);
+                const mergedDuration = mergedEndMin - mergedStartMin;
+                const mergedHD = formatMinToTime(mergedStartMin % 1440);
+                const mergedHF = formatMinToTime(mergedEndMin % 1440);
+
+                // Chevauchement exact
+                const overlapStart = Math.max(newStart, existStart);
+                const overlapEnd = Math.min(newEnd, existEnd);
+                const overlapMin = overlapEnd - overlapStart;
+
+                return {
+                    existingEvent: ev,
+                    existingType: p.type,
+                    existingHD: p.hD,
+                    existingHF: p.hF,
+                    existingDuration: existDuration,
+                    newHD: hD,
+                    newHF: hF,
+                    newDuration: newDuration,
+                    overlapMinutes: overlapMin,
+                    mergedHD: mergedHD,
+                    mergedHF: mergedHF,
+                    mergedDuration: mergedDuration
+                };
+            }
+        }
+        return null;
+    }
+
+    function parseTimeToMin(t) {
+        const [h, m] = t.split(':').map(Number);
+        return h * 60 + (m || 0);
+    }
+
+    function formatMinToH(min) {
+        const h = Math.floor(min / 60);
+        const m = min % 60;
+        return m > 0 ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
+    }
+
+    function formatMinToTime(min) {
+        const h = Math.floor(min / 60) % 24;
+        const m = min % 60;
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    function showOverlapAlert(overlap, dateStr, onMerge, onForceAdd, onCancel) {
+        // Supprimer une alerte précédente
+        const old = document.getElementById('overlap-alert-container');
+        if (old) old.remove();
+
+        const existLabel = `${overlap.existingType} [${overlap.existingHD} → ${overlap.existingHF}] (${formatMinToH(overlap.existingDuration)})`;
+        const newLabel = `[${overlap.newHD} → ${overlap.newHF}] (${formatMinToH(overlap.newDuration)})`;
+        const mergedLabel = `${overlap.mergedHD} → ${overlap.mergedHF}`;
+        const mergedDurLabel = formatMinToH(overlap.mergedDuration);
+        const overlapLabel = formatMinToH(overlap.overlapMinutes);
+
+        const div = document.createElement('div');
+        div.id = 'overlap-alert-container';
+        div.innerHTML = `
+            <div class="overlap-alert">
+                <div class="overlap-alert-title"><i class="fas fa-exclamation-triangle"></i> Chevauchement détecté</div>
+                <div class="overlap-alert-body">
+                    Un événement existe déjà sur ce créneau :<br>
+                    <b>${existLabel}</b><br><br>
+                    Votre nouvel événement : <b>${newLabel}</b><br><br>
+                    <i class="fas fa-clock" style="color:#f59e0b;"></i> Chevauchement de <b>${overlapLabel}</b>.<br><br>
+                    <i class="fas fa-compress-arrows-alt" style="color:#4f46e5;"></i> <b>Fusion proposée :</b> <span style="color:var(--primary);font-weight:900;font-size:0.92rem;">${mergedLabel}</span> (${mergedDurLabel})
+                </div>
+                <div class="overlap-alert-actions" style="flex-wrap:wrap;">
+                    <button class="overlap-btn-replace" onclick="overlapDoMerge()" style="flex:1; min-width:120px;">
+                        <i class="fas fa-compress-arrows-alt"></i> Fusionner (${mergedLabel})
+                    </button>
+                    <button class="overlap-btn-keep" onclick="overlapDoForceAdd()" style="flex:1; min-width:100px;">
+                        <i class="fas fa-plus"></i> Ajouter quand même
+                    </button>
+                    <button class="overlap-btn-cancel" onclick="overlapDoCancel()" style="flex:1; min-width:80px;">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        `;
+
+        // Stocker les callbacks
+        window._overlapMerge = onMerge;
+        window._overlapForceAdd = onForceAdd;
+        window._overlapCancel = onCancel;
+        window._overlapData = overlap;
+
+        // Insérer dans la modale d'édition
+        const insertBefore = document.getElementById('btn-container-delete');
+        if (insertBefore) {
+            insertBefore.parentNode.insertBefore(div, insertBefore);
+        }
+    }
+
+    function overlapDoMerge() {
+        const alertEl = document.getElementById('overlap-alert-container');
+        if (alertEl) alertEl.remove();
+        if (typeof window._overlapMerge === 'function') window._overlapMerge();
+    }
+
+    function overlapDoForceAdd() {
+        const alertEl = document.getElementById('overlap-alert-container');
+        if (alertEl) alertEl.remove();
+        if (typeof window._overlapForceAdd === 'function') window._overlapForceAdd();
+    }
+
+    function overlapDoCancel() {
+        const alertEl = document.getElementById('overlap-alert-container');
+        if (alertEl) alertEl.remove();
+        if (typeof window._overlapCancel === 'function') window._overlapCancel();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         initApp();
         const year = new Date().getFullYear();
@@ -1590,22 +2087,30 @@ F<!DOCTYPE html>
                 // Double-clic sur une date vide pour ouvrir la modale
                 const key = info.dateStr;
                 if (window._lastDateClick === key && Date.now() - window._lastDateClickTime < 400) {
+                    closeSingleClickPopup();
                     selectedDate = info.dateStr; currentEvent = null; ouvrirModale('modal-edit');
                     window._lastDateClick = null;
                 } else {
                     window._lastDateClick = key;
                     window._lastDateClickTime = Date.now();
+                    // Single-clic → popup info
+                    const rect = info.dayEl.getBoundingClientRect();
+                    showSingleClickPopup(rect.left + rect.width / 2, rect.bottom, info.dateStr);
                 }
             },
             eventClick: (info) => { 
                 // Double-clic sur un événement pour l'ouvrir
                 const key = info.event.startStr + info.event.extendedProps.type;
                 if (window._lastEventClick === key && Date.now() - window._lastEventClickTime < 400) {
+                    closeSingleClickPopup();
                     selectedDate = info.event.startStr.split('T')[0]; currentEvent = info.event; ouvrirModale('modal-edit', info.event);
                     window._lastEventClick = null;
                 } else {
                     window._lastEventClick = key;
                     window._lastEventClickTime = Date.now();
+                    // Single-clic → popup info
+                    const rect = info.el.getBoundingClientRect();
+                    showSingleClickPopup(rect.left, rect.bottom, info.event.startStr.split('T')[0]);
                 }
             },
             datesSet: majAffichage,
@@ -1818,7 +2323,11 @@ F<!DOCTYPE html>
 
     function valider(zone, isCompteur, surHeuresTravail) {
         surHeuresTravail = surHeuresTravail || false;
-        if(currentEvent) { currentEvent.remove(); }
+        
+        // Supprimer une alerte de chevauchement précédente
+        const oldAlert = document.getElementById('overlap-alert-container');
+        if (oldAlert) oldAlert.remove();
+
         const typeTravail = document.getElementById('edit-type-travail').value;
         const typeAbsence = document.getElementById('edit-type-absence').value;
         
@@ -1834,7 +2343,6 @@ F<!DOCTYPE html>
         const type = zone === 'travail' ? typeTravail : typeAbsence;
         let hD = document.getElementById('edit-heure-debut').value;
         let hF = document.getElementById('edit-heure-fin').value;
-        const note = document.getElementById('edit-commentaire').value;
 
         if(!hD && !hF && zone === 'travail') {
             if(type === "MATIN" || type === "MATIN SUPPL.")            { hD = "04:00"; hF = "12:00"; }
@@ -1842,6 +2350,44 @@ F<!DOCTYPE html>
             else if(type === "NUIT" || type === "NUIT SUPPL.")          { hD = "20:00"; hF = "04:00"; }
             else if(type === "POSTE JOURNÉE" || type === "JOURNÉE SUPPL.")  { hD = "08:00"; hF = "16:00"; }
         }
+
+        // ── DÉTECTION CHEVAUCHEMENT ──
+        if (zone === 'travail' && hD && hF && isOverlapWarnEnabled()) {
+            const overlap = detectOverlap(selectedDate, hD, hF, currentEvent);
+            if (overlap) {
+                // Afficher l'alerte — 3 choix pour l'utilisateur
+                showOverlapAlert(overlap, selectedDate,
+                    // onMerge → fusionner les plages horaires (début le plus tôt, fin la plus tard)
+                    function() {
+                        overlap.existingEvent.remove();
+                        showToast(`🔗 Fusionné : ${overlap.mergedHD} → ${overlap.mergedHF} (${formatMinToH(overlap.mergedDuration)})`, 'success', 'fa-compress-arrows-alt');
+                        _doValider(zone, isCompteur, surHeuresTravail, overlap.mergedHD, overlap.mergedHF);
+                    },
+                    // onForceAdd → ajouter le nouvel événement tel quel (sans toucher l'existant)
+                    function() {
+                        showToast('✅ Événement ajouté (chevauchement conservé)', 'info', 'fa-plus');
+                        _doValider(zone, isCompteur, surHeuresTravail, hD, hF);
+                    },
+                    // onCancel → ne rien faire
+                    function() {
+                        showToast('Ajout annulé', 'info', 'fa-times');
+                    }
+                );
+                return; // Stop — attendre le choix de l'utilisateur
+            }
+        }
+
+        // Pas de chevauchement → ajout normal
+        _doValider(zone, isCompteur, surHeuresTravail, hD, hF);
+    }
+
+    // ── Fonction interne qui effectue réellement l'ajout ──
+    function _doValider(zone, isCompteur, surHeuresTravail, hD, hF) {
+        if(currentEvent) { currentEvent.remove(); }
+        const typeTravail = document.getElementById('edit-type-travail').value;
+        const typeAbsence = document.getElementById('edit-type-absence').value;
+        const type = zone === 'travail' ? typeTravail : typeAbsence;
+        const note = document.getElementById('edit-commentaire').value;
 
         let duree = 0;
         if(hD && hF) {
@@ -2789,6 +3335,7 @@ F<!DOCTYPE html>
         }
         
         if (id === 'modal-config') {
+            loadInfoPrefs();
             const cfg = JSON.parse(localStorage.getItem('autoBackupCfg') || '{"freq":"weekly","enabled":true}');
             const sel = document.getElementById('cfg-backup-freq');
             if (sel) sel.value = cfg.enabled ? cfg.freq : 'disabled';
@@ -2799,8 +3346,12 @@ F<!DOCTYPE html>
     }
 
     function fermerModales() { 
+        closeSingleClickPopup();
         document.getElementById('overlay').style.display = 'none'; 
-        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); 
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        // Nettoyer les alertes de chevauchement
+        const alertEl = document.getElementById('overlap-alert-container');
+        if (alertEl) alertEl.remove();
     }
 
     function sauver() { 
@@ -3556,10 +4107,20 @@ function selectAct(btn, val) {
     let tbDate = new Date();     // date de référence
     let tbCalVisible = false;    // état du toggle calendrier
 
-    // Types de travail comptabilisés
+    // Types de travail comptabilisés (heures payées)
     const TB_TRAVAIL = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.',
                         'NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.',
-                        'FORMATION','RÉUNION','CSE'];
+                        'FORMATION'];
+    
+    // Types d'activités (heures calculées depuis hD/hF)
+    const TB_ACTIVITES = ['FORMATION', 'RÉUNION', 
+                          'CSE - FONCTIONNEMENT', 'CSE - PERMANENCE', 'CSE - ASC',
+                          'CSE - DISTRIBUTEUR', 'CSE - FORMATION', 'CSE - RP',
+                          'CSE - DÉPLACEMENT', 'CSE - BILLETTERIE', 'CSE - SECRÉTAIRE',
+                          'CSE - TRÉSORERIE', 'CSE - CSSCT', 'CSE - CONVOCATION DIR.', 'CSE - AUTRE'];
+    
+    // Tous les types comptabilisés
+    const TB_TOUS_TYPES = [...TB_TRAVAIL, ...TB_ACTIVITES];
 
     // Lire les événements depuis localStorage
     function tbGetEvents() {
@@ -3598,6 +4159,22 @@ function selectAct(btn, val) {
     }
 
     function tbNav(dir) {
+        if (tbVue === 'cycle') {
+            // En mode cycle, naviguer par période
+            const debutInput = document.getElementById('tb-cycle-debut');
+            const finInput = document.getElementById('tb-cycle-fin');
+            if (debutInput && finInput && debutInput.value && finInput.value) {
+                const debut = new Date(debutInput.value);
+                const fin = new Date(finInput.value);
+                const diff = Math.ceil((fin - debut) / (1000 * 60 * 60 * 24)) + 1;
+                debut.setDate(debut.getDate() + dir * diff);
+                fin.setDate(fin.getDate() + dir * diff);
+                debutInput.value = debut.toISOString().split('T')[0];
+                finInput.value = fin.toISOString().split('T')[0];
+                tbRenderCycle();
+            }
+            return;
+        }
         if (tbVue === 'semaine') {
             tbDate.setDate(tbDate.getDate() + dir * 7);
         } else {
@@ -3608,14 +4185,185 @@ function selectAct(btn, val) {
 
     function tbToday() {
         tbDate = new Date();
-        tbRender();
+        if (tbVue === 'cycle') {
+            // En mode cycle, centrer sur le mois courant
+            const now = new Date();
+            const debutInput = document.getElementById('tb-cycle-debut');
+            const finInput = document.getElementById('tb-cycle-fin');
+            if (debutInput) debutInput.value = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+            if (finInput) finInput.value = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+            tbRenderCycle();
+        } else {
+            tbRender();
+        }
     }
 
     function tbSetView(vue) {
         tbVue = vue;
         document.getElementById('tb-btn-sem').classList.toggle('active', vue === 'semaine');
         document.getElementById('tb-btn-mois').classList.toggle('active', vue === 'mois');
-        tbRender();
+        const btnCycle = document.getElementById('tb-btn-cycle');
+        if (btnCycle) btnCycle.classList.toggle('active', vue === 'cycle');
+        
+        // Afficher/masquer le sélecteur de période cycle
+        const cycleSelector = document.getElementById('tb-cycle-selector');
+        if (cycleSelector) {
+            cycleSelector.style.display = vue === 'cycle' ? 'block' : 'none';
+        }
+        
+        if (vue === 'cycle') {
+            // Initialiser les dates par défaut (mois en cours)
+            const now = new Date();
+            const debut = document.getElementById('tb-cycle-debut');
+            const fin = document.getElementById('tb-cycle-fin');
+            if (debut && !debut.value) {
+                debut.value = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+            }
+            if (fin && !fin.value) {
+                fin.value = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+            }
+            tbRenderCycle();
+        } else {
+            tbRender();
+        }
+    }
+
+    // Rendu du mode Cycle Posté
+    function tbRenderCycle() {
+        const container = document.getElementById('tb-body');
+        const debutInput = document.getElementById('tb-cycle-debut');
+        const finInput = document.getElementById('tb-cycle-fin');
+        
+        if (!container || !debutInput || !finInput) return;
+        
+        const debut = debutInput.value;
+        const fin = finInput.value;
+        
+        if (!debut || !fin) {
+            container.innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-muted);"><i class="fas fa-calendar-week" style="font-size:3rem; opacity:0.3; margin-bottom:15px; display:block;"></i>Sélectionnez une période pour afficher le cycle</div>';
+            return;
+        }
+        
+        const dateDebut = new Date(debut);
+        const dateFin = new Date(fin);
+        
+        if (dateDebut > dateFin) {
+            container.innerHTML = '<div style="padding:40px; text-align:center; color:#ef4444;"><i class="fas fa-exclamation-triangle"></i> La date de début doit être avant la date de fin</div>';
+            return;
+        }
+        
+        // Calculer le nombre de jours
+        const diffTime = Math.abs(dateFin - dateDebut);
+        const nbJours = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        
+        // Récupérer les événements
+        const events = tbGetEvents();
+        let totalHeures = 0;
+        let nbPostes = 0;
+        let statsParType = {};
+        
+        // Titre de la période
+        const optDate = { day: 'numeric', month: 'long', year: 'numeric' };
+        const titreDebut = dateDebut.toLocaleDateString('fr-FR', optDate);
+        const titreFin = dateFin.toLocaleDateString('fr-FR', optDate);
+        document.getElementById('tb-titre').textContent = `${titreDebut} → ${titreFin}`;
+        
+        // Générer le tableau
+        let html = '<table class="tbl-mois" style="table-layout:fixed;"><thead><tr>';
+        html += '<th style="width:80px;">Date</th><th style="width:70px;">Jour</th><th>Poste</th><th style="width:70px;">Horaires</th><th style="width:60px;">Heures</th>';
+        html += '</tr></thead><tbody>';
+        
+        const joursSemaine = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+        const joursFull = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        
+        let currentDate = new Date(dateDebut);
+        while (currentDate <= dateFin) {
+            const dateStr = tbFmt(currentDate);
+            const dayIndex = currentDate.getDay();
+            const isWeekend = dayIndex === 0 || dayIndex === 6;
+            const isToday = dateStr === tbFmt(new Date());
+            
+            // Chercher les événements de ce jour
+            const dayEvents = events.filter(e => (e.start || '').split('T')[0] === dateStr);
+            
+            let rowClass = '';
+            if (isToday) rowClass = 'td-today';
+            else if (isWeekend) rowClass = 'td-weekend';
+            
+            if (dayEvents.length === 0) {
+                html += `<tr>
+                    <td class="${rowClass}" style="font-weight:600; font-size:0.8rem;">${currentDate.getDate()}/${currentDate.getMonth()+1}</td>
+                    <td class="${rowClass}" style="font-size:0.75rem; ${isWeekend ? 'color:#ef4444;' : ''}">${joursSemaine[dayIndex]}</td>
+                    <td class="${rowClass}" style="color:var(--text-muted); font-style:italic; font-size:0.75rem;">—</td>
+                    <td class="${rowClass}">—</td>
+                    <td class="${rowClass}">—</td>
+                </tr>`;
+            } else {
+                dayEvents.forEach((ev, idx) => {
+                    const p = ev.extendedProps || {};
+                    const type = p.type || ev.title || '?';
+                    const color = tbColor(ev);
+                    const icon = tbIcon(type);
+                    const hD = p.hD || '';
+                    const hF = p.hF || '';
+                    const horaires = hD && hF ? `${hD}-${hF}` : '—';
+                    
+                    // Calculer les heures
+                    let heures = parseFloat(p.hPayees || 0);
+                    if (heures === 0 && hD && hF) {
+                        const start = new Date(`1970-01-01T${hD}`);
+                        const end = new Date(`1970-01-01T${hF}`);
+                        let diff = (end - start) / 3600000;
+                        heures = diff < 0 ? diff + 24 : diff;
+                    }
+                    
+                    if (heures > 0) {
+                        totalHeures += heures;
+                        nbPostes++;
+                        statsParType[type] = (statsParType[type] || 0) + heures;
+                    }
+                    
+                    html += `<tr>
+                        <td class="${rowClass}" style="font-weight:600; font-size:0.8rem;">${idx === 0 ? currentDate.getDate() + '/' + (currentDate.getMonth()+1) : ''}</td>
+                        <td class="${rowClass}" style="font-size:0.75rem; ${isWeekend ? 'color:#ef4444;' : ''}">${idx === 0 ? joursSemaine[dayIndex] : ''}</td>
+                        <td class="${rowClass}">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span style="width:10px; height:10px; border-radius:3px; background:${color}; flex-shrink:0;"></span>
+                                <span style="font-size:0.8rem; font-weight:600;">${icon} ${type}</span>
+                            </div>
+                        </td>
+                        <td class="${rowClass}" style="font-size:0.75rem; font-family:'DM Mono',monospace;">${horaires}</td>
+                        <td class="${rowClass}" style="font-weight:700; color:var(--primary);">${heures > 0 ? heures.toFixed(1) + 'h' : '—'}</td>
+                    </tr>`;
+                });
+            }
+            
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        // Ligne de total
+        html += `<tr style="background:var(--primary); color:white;">
+            <td colspan="3" style="font-weight:800; font-size:0.85rem; padding:12px;">📊 TOTAL PÉRIODE (${nbJours} jours)</td>
+            <td style="font-weight:700;">${nbPostes} postes</td>
+            <td style="font-weight:800; font-size:1rem;">${totalHeures.toFixed(1)}h</td>
+        </tr>`;
+        
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        
+        // Afficher les stats détaillées
+        const statsEl = document.getElementById('tb-cycle-stats');
+        const statsContent = document.getElementById('tb-cycle-stats-content');
+        if (statsEl && statsContent && Object.keys(statsParType).length > 0) {
+            let statsHtml = '<strong>Détail :</strong> ';
+            statsHtml += Object.entries(statsParType)
+                .map(([type, h]) => `${tbIcon(type)} ${type}: ${h.toFixed(1)}h`)
+                .join(' • ');
+            statsContent.innerHTML = statsHtml;
+            statsEl.style.display = 'block';
+        } else if (statsEl) {
+            statsEl.style.display = 'none';
+        }
     }
 
     function tbToggleCal() {
@@ -3628,6 +4376,53 @@ function selectAct(btn, val) {
         if (tbCalVisible && typeof calendar !== 'undefined' && calendar) {
             setTimeout(() => calendar.render(), 80);
         }
+    }
+
+    // ─── Single-clic dans le tableau → popup info ───
+    function tbSingleClick(event, dateStr) {
+        const rect = event.target.getBoundingClientRect();
+        showSingleClickPopup(rect.left + rect.width / 2, rect.bottom, dateStr);
+    }
+
+    // ─── Fonctions d'édition depuis le tableau ───
+    function ouvrirEditionJour(dateStr) {
+        closeSingleClickPopup();
+        selectedDate = dateStr;
+        currentEvent = null;
+        ouvrirModale('modal-edit');
+    }
+
+    function ouvrirEditionEvent(dateStr, type) {
+        closeSingleClickPopup();
+        selectedDate = dateStr;
+        // Trouver l'événement correspondant dans FullCalendar
+        const ev = calendar.getEvents().find(e => 
+            e.startStr.split('T')[0] === dateStr && e.extendedProps.type === type
+        );
+        currentEvent = ev || null;
+        ouvrirModale('modal-edit', ev);
+    }
+
+    // ─── Couleur par type d'activité ───
+    function getColorForType(type) {
+        const colors = {
+            'MATIN':'#fbbf24','MATIN SUPPL.':'#f59e0b',
+            'APRÈS-MIDI':'#f97316','APRÈS-MIDI SUPPL.':'#ea580c',
+            'NUIT':'#1e293b','NUIT SUPPL.':'#0f172a',
+            'POSTE JOURNÉE':'#0ea5e9','JOURNÉE SUPPL.':'#0284c7',
+            'FORMATION':'#8b5cf6','RÉUNION':'#06b6d4',
+            'CP':'#3b82f6','RTT':'#10b981',
+            'REPOS DE NUIT':'#64748b','COMPTEUR 8H':'#ec4899',
+            'CSE - FONCTIONNEMENT':'#10b981','CSE - PERMANENCE':'#059669',
+            'CSE - ASC':'#f43f5e','CSE - DISTRIBUTEUR':'#6366f1',
+            'CSE - FORMATION':'#7c3aed','CSE - RP':'#0891b2',
+            'CSE - DÉPLACEMENT':'#d97706','CSE - BILLETTERIE':'#db2777',
+            'CSE - SECRÉTAIRE':'#16a34a','CSE - TRÉSORERIE':'#b45309',
+            'CSE - CSSCT':'#dc2626','CSE - CONVOCATION DIR.':'#e11d48',
+            'CSE - AUTRE':'#64748b',
+        };
+        if (type && type.startsWith('CSE') && !colors[type]) return '#10b981';
+        return colors[type] || '#4f46e5';
     }
 
     // Couleur d'un événement
@@ -3709,18 +4504,35 @@ function selectAct(btn, val) {
             let hJour = 0;
             events.forEach(ev => {
                 const p = ev.extendedProps || {};
-                if (TB_TRAVAIL.includes(p.type)) hJour += parseFloat(p.hPayees || 0);
+                const type = p.type || '';
+                
+                // Calculer les heures pour tous les types (travail + activités)
+                let heures = parseFloat(p.hPayees || 0);
+                
+                // Si pas de hPayees mais hD/hF disponibles, calculer
+                if (heures === 0 && p.hD && p.hF) {
+                    const start = new Date(`1970-01-01T${p.hD}`);
+                    const end = new Date(`1970-01-01T${p.hF}`);
+                    let diff = (end - start) / 3600000;
+                    heures = diff < 0 ? diff + 24 : diff;
+                }
+                
+                // Ajouter si c'est un type comptabilisé ou une activité avec heures
+                if (TB_TRAVAIL.includes(type) || TB_ACTIVITES.includes(type) || type.startsWith('CSE')) {
+                    hJour += heures;
+                }
             });
             hJours.push(hJour);
             hTotSem += hJour;
 
             html += `<td class="${isToday ? 'td-today' : (isWE ? 'td-weekend' : '')}" 
+                onclick="tbSingleClick(event, '${jStr}')"
                 ondblclick="ouvrirEditionJour('${jStr}')" style="min-height:90px;">
                 ${nomFerie ? `<span class="tbl-ferie">⭐ ${nomFerie.substring(0,14)}${nomFerie.length>14?'…':''}</span>` : ''}
             `;
 
             if (events.length === 0) {
-                html += `<button class="ev-add-btn" onclick="ouvrirEditionJour('${jStr}')">+</button>`;
+                html += `<button class="ev-add-btn" ondblclick="event.stopPropagation(); ouvrirEditionJour('${jStr}')" onclick="event.stopPropagation(); tbSingleClick(event, '${jStr}')">+</button>`;
             } else {
                 events.forEach(ev => {
                     const p = ev.extendedProps || {};
@@ -3728,13 +4540,22 @@ function selectAct(btn, val) {
                     const icon = tbIcon(p.type);
                     const typeStr = (p.type || '').length > 13 ? (p.type || '').substring(0,12)+'…' : (p.type || '');
                     const horaire = p.hD && p.hF ? p.hD + '–' + p.hF : '';
-                    const h = parseFloat(p.hPayees || 0);
+                    
+                    // Calculer les heures pour l'affichage
+                    let h = parseFloat(p.hPayees || 0);
+                    if (h === 0 && p.hD && p.hF) {
+                        const start = new Date(`1970-01-01T${p.hD}`);
+                        const end = new Date(`1970-01-01T${p.hF}`);
+                        let diff = (end - start) / 3600000;
+                        h = diff < 0 ? diff + 24 : diff;
+                    }
+                    
                     html += `<button class="ev-chip" style="background:${color};" 
                         ondblclick="event.stopPropagation(); ouvrirEditionEvent('${jStr}', '${(p.type||'').replace(/'/g,"\'")}')"
-                        onclick="event.stopPropagation();"
-                        title="${(p.type||'')}${horaire?' | '+horaire:''}">
+                        onclick="event.stopPropagation(); tbSingleClick(event, '${jStr}')"
+                        title="${(p.type||'')}${horaire?' | '+horaire:''}${h>0?' | '+h.toFixed(1)+'h':''}">
                         <span>${icon} ${typeStr}</span>
-                        ${horaire ? `<span class="ev-chip-h">${horaire}${h>0?' · '+h+'h':''}</span>` : (h > 0 ? `<span class="ev-chip-h">${h}h</span>` : '')}
+                        ${horaire ? `<span class="ev-chip-h">${horaire}${h>0?' · '+h.toFixed(1)+'h':''}</span>` : (h > 0 ? `<span class="ev-chip-h">${h.toFixed(1)}h</span>` : '')}
                     </button>`;
                 });
             }
@@ -3790,7 +4611,7 @@ function selectAct(btn, val) {
         // Cases avant le 1er
         for (let i = 1; i < startDow; i++) {
             const jj = new Date(an, mois, 1 - (startDow - i));
-            html += `<td style="opacity:0.3;"><div class="m-num other-month">${jj.getDate()}</div></td>`;
+            html += `<td class="td-other"><div class="m-num other-month">${jj.getDate()}</div></td>`;
         }
 
         let col = startDow;
@@ -3804,8 +4625,34 @@ function selectAct(btn, val) {
 
             if (col > 7) { html += '</tr><tr>'; col = 1; }
 
-            html += `<td ondblclick="ouvrirEditionJour('${jStr}')" style="${isWE ? 'background:#fafafa;' : ''}${nomFerie ? 'background:#fbf8ff;' : ''}">
-                <div class="m-num${isToday ? ' is-today' : ''}">${d}</div>
+            // Calculer les heures du jour
+            let hJour = 0;
+            events.forEach(ev => {
+                const p = ev.extendedProps || {};
+                const type = p.type || '';
+                let heures = parseFloat(p.hPayees || 0);
+                if (heures === 0 && p.hD && p.hF) {
+                    const start = new Date(`1970-01-01T${p.hD}`);
+                    const end = new Date(`1970-01-01T${p.hF}`);
+                    let diff = (end - start) / 3600000;
+                    heures = diff < 0 ? diff + 24 : diff;
+                }
+                if (TB_TRAVAIL.includes(type) || TB_ACTIVITES.includes(type) || type.startsWith('CSE')) {
+                    hJour += heures;
+                }
+            });
+
+            // Classes CSS
+            let tdClass = '';
+            if (isToday) tdClass = 'td-today';
+            else if (isWE) tdClass = 'td-weekend';
+            if (nomFerie) tdClass += ' td-ferie';
+
+            html += `<td class="${tdClass}" onclick="tbSingleClick(event, '${jStr}')" ondblclick="ouvrirEditionJour('${jStr}')">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                    <div class="m-num${isToday ? ' is-today' : ''}">${d}</div>
+                    ${hJour > 0 ? `<span style="font-size:0.55rem; font-weight:700; color:var(--primary); background:rgba(79,70,229,0.1); padding:1px 4px; border-radius:3px;">${hJour.toFixed(1)}h</span>` : ''}
+                </div>
                 ${nomFerie ? `<span class="m-ferie">⭐ ${nomFerie.substring(0,10)}${nomFerie.length>10?'…':''}</span>` : ''}`;
 
             events.slice(0, 3).forEach(ev => {
@@ -3824,7 +4671,7 @@ function selectAct(btn, val) {
         // Compléter dernière ligne
         while (col <= 7) {
             const jj = new Date(an, mois+1, col - dernierJour.getDay());
-            html += `<td style="opacity:0.3;"><div class="m-num other-month">${jj.getDate()}</div></td>`;
+            html += `<td class="td-other"><div class="m-num other-month">${jj.getDate()}</div></td>`;
             col++;
         }
 
@@ -3841,8 +4688,25 @@ function selectAct(btn, val) {
             const events = tbEventsForDate(tbFmt(j));
             events.forEach(ev => {
                 const p = ev.extendedProps || {};
-                if (TB_TRAVAIL.includes(p.type)) {
-                    hSem += parseFloat(p.hPayees || 0);
+                const type = p.type || '';
+                
+                // Vérifier si c'est un type comptabilisé
+                const isTravail = TB_TRAVAIL.includes(type);
+                const isActivite = TB_ACTIVITES.includes(type) || type.startsWith('CSE');
+                
+                if (isTravail || isActivite) {
+                    // Utiliser hPayees si disponible, sinon calculer depuis hD/hF
+                    let heures = parseFloat(p.hPayees || 0);
+                    
+                    // Si pas de hPayees mais hD/hF disponibles, calculer
+                    if (heures === 0 && p.hD && p.hF) {
+                        const start = new Date(`1970-01-01T${p.hD}`);
+                        const end = new Date(`1970-01-01T${p.hF}`);
+                        let diff = (end - start) / 3600000;
+                        heures = diff < 0 ? diff + 24 : diff;
+                    }
+                    
+                    hSem += heures;
                     nbPostes++;
                 }
             });
@@ -3852,7 +4716,7 @@ function selectAct(btn, val) {
         const elP = document.getElementById('tb-nb-postes');
         const elCp = document.getElementById('tb-cp');
         const elRtt = document.getElementById('tb-rtt');
-        if (elH) { elH.textContent = hSem + 'h'; elH.style.color = hSem > 35 ? '#ef4444' : '#4f46e5'; }
+        if (elH) { elH.textContent = hSem.toFixed(1) + 'h'; elH.style.color = hSem > 35 ? '#ef4444' : '#4f46e5'; }
         if (elP) elP.textContent = nbPostes;
         if (elCp) { elCp.textContent = s.cp; elCp.style.color = s.cp < 0 ? '#ef4444' : 'inherit'; }
         if (elRtt) { elRtt.textContent = s.rtt; elRtt.style.color = s.rtt < 0 ? '#ef4444' : 'inherit'; }
@@ -4790,6 +5654,89 @@ function selectAct(btn, val) {
             googleDriveSauvegarder();
         }
     }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ LÉGENDE - Toggle visibilité ═══════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function toggleLegend() {
+        const content = document.getElementById('legend-content');
+        const icon = document.getElementById('legend-toggle-icon');
+        const isHidden = localStorage.getItem('legend_hidden') === 'true';
+        
+        if (isHidden) {
+            // Afficher
+            if (content) content.style.display = 'grid';
+            if (icon) icon.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            localStorage.setItem('legend_hidden', 'false');
+        } else {
+            // Masquer
+            if (content) content.style.display = 'none';
+            if (icon) icon.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            localStorage.setItem('legend_hidden', 'true');
+        }
+    }
+
+    // Initialiser l'état de la légende au chargement
+    function initLegendState() {
+        const isHidden = localStorage.getItem('legend_hidden') === 'true';
+        const content = document.getElementById('legend-content');
+        const icon = document.getElementById('legend-toggle-icon');
+        
+        if (isHidden) {
+            if (content) content.style.display = 'none';
+            if (icon) icon.innerHTML = '<i class="fas fa-chevron-down"></i>';
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function reinitialiserCycle() {
+        if (!confirm('⚠️ Voulez-vous vraiment supprimer tous les événements générés par le cycle ?\n\nLes événements ajoutés manuellement seront conservés.')) {
+            return;
+        }
+        
+        try {
+            // Récupérer les événements
+            let events = JSON.parse(localStorage.getItem('events_v5') || '[]');
+            const countBefore = events.length;
+            
+            // Filtrer pour ne garder que les événements non-cycle
+            events = events.filter(e => {
+                const props = e.extendedProps || {};
+                return props.isCycle !== true;
+            });
+            
+            const countRemoved = countBefore - events.length;
+            
+            // Sauvegarder
+            localStorage.setItem('events_v5', JSON.stringify(events));
+            
+            // Supprimer le cycle master
+            localStorage.removeItem('cycle_master');
+            
+            // Rafraîchir l'affichage
+            if (typeof calendar !== 'undefined' && calendar) {
+                calendar.removeAllEvents();
+                events.forEach(e => calendar.addEvent(e));
+                calendar.render();
+            }
+            
+            if (typeof majAffichage === 'function') majAffichage();
+            if (typeof tbRender === 'function') tbRender();
+            
+            showToast(`✅ ${countRemoved} événements du cycle supprimés`, 'success', 'fa-trash-alt');
+            
+        } catch (err) {
+            console.error('Erreur réinitialisation cycle:', err);
+            showToast('❌ Erreur lors de la réinitialisation', 'error', 'fa-times-circle');
+        }
+    }
+
+    // Appeler initLegendState au chargement
+    document.addEventListener('DOMContentLoaded', initLegendState);
 
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ PWA - SERVICE WORKER & INSTALLATION ═══════════════════════════════════
