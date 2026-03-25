@@ -70,6 +70,48 @@
             --radius: 14px; --radius-sm: 8px;
         }
         
+        /* PWA & Appareil Settings */
+        .pwa-card {
+            background: var(--bg-app);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+        .pwa-card .pwa-icon { font-size: 48px; margin-bottom: 8px; }
+        .pwa-card h4 { font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+        .pwa-card .pwa-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px; }
+        .pwa-card .pwa-install-action {
+            width: 100%; padding: 12px; border: none; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+            font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .pwa-card .pwa-install-action:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,0.35); }
+        .pwa-card .pwa-install-action:disabled { opacity: 0.6; cursor: default; transform: none; box-shadow: none; background: #10b981; }
+        .pwa-card .pwa-status-text { font-size: 0.7rem; color: var(--text-muted); margin-top: 10px; }
+        .pwa-device-card {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 10px;
+            background: var(--bg-app); border: 1.5px solid var(--border-color);
+        }
+        .pwa-device-card .dev-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .pwa-device-card .dev-dot.online { background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.5); }
+        .pwa-device-card .dev-dot.offline { background: #ef4444; }
+        .pwa-device-card .dev-info { display: flex; flex-direction: column; }
+        .pwa-device-card .dev-info strong { font-size: 0.8rem; color: var(--text-main); }
+        .pwa-device-card .dev-info span { font-size: 0.7rem; color: var(--text-muted); }
+        .pwa-sw-status {
+            display: flex; gap: 12px; align-items: center;
+            padding: 10px 12px; background: var(--bg-app);
+            border: 1px solid var(--border-color); border-radius: 10px;
+        }
+        .pwa-sw-status .sw-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .pwa-sw-status .sw-text { font-size: 0.78rem; color: var(--text-muted); }
+        .pwa-sw-status .sw-text strong { color: var(--text-main); display: block; margin-bottom: 2px; font-size: 0.8rem; }
+
         /* PWA Install Banner */
         .pwa-install-banner {
             display: none;
@@ -254,6 +296,30 @@
         .save-badge.autosaved { background: #ede9fe; border-color: #c4b5fd; color: #7c3aed; }
         body.dark-mode .save-badge { background: #064e3b; border-color: #065f46; color: #34d399; }
         body.dark-mode .save-badge.saving { background: #451a03; border-color: #92400e; color: #fcd34d; }
+
+        /* PWA Header Install Button */
+        .pwa-header-install {
+            display: none;
+            align-items: center; gap: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; border: none; border-radius: 8px;
+            padding: 6px 12px; font-size: 0.72rem; font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: all 0.25s;
+            white-space: nowrap;
+            animation: pwaHeaderPulse 2.5s ease-in-out infinite;
+        }
+        .pwa-header-install:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,0.4); }
+        .pwa-header-install:active { transform: scale(0.96); }
+        .pwa-header-install.show { display: flex; }
+        @keyframes pwaHeaderPulse {
+            0%, 100% { box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+            50% { box-shadow: 0 2px 16px rgba(79,70,229,0.5); }
+        }
+        /* Masquer en mode standalone (déjà installé) */
+        @media all and (display-mode: standalone) {
+            .pwa-header-install { display: none !important; }
+        }
 
         /* ─── MAIN CONTENT ─── */
         .app-content { padding: 14px 14px 0; max-width: 900px; margin: 0 auto; }
@@ -769,6 +835,9 @@
             </div>
         </div>
         <div class="app-header-right">
+            <button class="pwa-header-install" id="pwa-header-install-btn" onclick="pwaInstallFromSettings()" title="Installer l'application">
+                <i class="fas fa-download"></i> Installer
+            </button>
             <div class="save-badge" id="save-badge" title="Dernière sauvegarde automatique">
                 <i class="fas fa-check-circle"></i>
                 <span id="save-label">Sauvegardé</span>
@@ -1675,6 +1744,42 @@
             </div>
             <div id="gdrive-sync-info" style="display:none; margin-top:8px; font-size:0.7rem; color:var(--text-muted); background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:6px 10px;">
                 <i class="fas fa-check-circle" style="color:#10b981;"></i> <span id="gdrive-sync-label">Dernière sauvegarde : —</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section PWA & Appareil -->
+    <div class="zone-card" style="margin-top: 16px;">
+        <span class="zone-title">📱 PWA & APPAREIL</span>
+        <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 14px;">Installez l'application et vérifiez les infos de votre appareil.</p>
+
+        <!-- Carte installation PWA -->
+        <div class="pwa-card">
+            <div class="pwa-icon">📅</div>
+            <h4>Installer Mon Planning Pro</h4>
+            <p class="pwa-desc">Ajoutez à l'écran d'accueil pour un accès rapide et hors ligne.</p>
+            <button class="pwa-install-action" id="pwa-install-btn" onclick="pwaInstallFromSettings()">📲 Installer</button>
+            <p class="pwa-status-text" id="pwa-status-text"></p>
+        </div>
+
+        <!-- Service Worker -->
+        <div class="pwa-sw-status" style="margin-top: 10px;">
+            <span class="sw-icon">⚡</span>
+            <div class="sw-text">
+                <strong>Service Worker</strong>
+                <span id="sw-status-text">Vérification...</span>
+            </div>
+        </div>
+
+        <!-- Appareil détecté -->
+        <div style="border-top:1px solid var(--border-color); padding-top:10px; margin-top:10px;">
+            <label style="font-size:0.7rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px;">📱 Appareil détecté</label>
+            <div class="pwa-device-card">
+                <div class="dev-dot online" id="pwa-dev-dot"></div>
+                <div class="dev-info">
+                    <strong id="pwa-dev-name">—</strong>
+                    <span id="pwa-dev-detail">—</span>
+                </div>
             </div>
         </div>
     </div>
@@ -4963,8 +5068,8 @@ function selectAct(btn, val) {
 
     // ─── Configuration Google OAuth2 ───
     // IMPORTANT : Remplacez par vos propres identifiants depuis Google Cloud Console
-    const GOOGLE_CLIENT_ID = '779128839633-1meksbh396ub0miqm06o8i0qo7n3n7tn.apps.googleusercontent.com';
-    const GOOGLE_API_KEY = 'AIzaSyAWhmLssvAhWz-U-0yoFDXuyA5dnPt0b2Q';
+    const GOOGLE_CLIENT_ID = 'VOTRE_CLIENT_ID.apps.googleusercontent.com';
+    const GOOGLE_API_KEY = 'VOTRE_API_KEY';
     const GOOGLE_DISCOVERY_DOCS = [
         'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
         'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
@@ -5843,6 +5948,8 @@ async function syncData() {
             navigator.serviceWorker.register(swUrl, { scope: './' })
                 .then(registration => {
                     console.log('✅ Service Worker enregistré:', registration.scope);
+                    const swSt = document.getElementById('sw-status-text');
+                    if (swSt) swSt.textContent = 'Actif ✅';
                     
                     // Check for updates
                     registration.addEventListener('updatefound', () => {
@@ -5856,6 +5963,8 @@ async function syncData() {
                 })
                 .catch(err => {
                     console.warn('⚠️ Service Worker non enregistré (mode fichier local):', err.message);
+                    const swSt = document.getElementById('sw-status-text');
+                    if (swSt) swSt.textContent = 'Cache local ✅';
                 });
             
             // Listen for messages from SW
@@ -5879,6 +5988,15 @@ async function syncData() {
                 if (banner) banner.style.display = 'block';
             }, 3000);
         }
+        updatePWASettingsStatus();
+    });
+
+    window.addEventListener('appinstalled', () => {
+        deferredPrompt = null;
+        closePwaBanner();
+        localStorage.setItem('pwa_installed', 'true');
+        updatePWASettingsStatus();
+        showToast('✅ Application installée !', 'success', 'fa-check-circle');
     });
 
     function pwaInstall() {
@@ -5901,6 +6019,97 @@ async function syncData() {
         const banner = document.getElementById('pwa-install-banner');
         if (banner) banner.style.display = 'none';
         localStorage.setItem(PWA_BANNER_DISMISSED, 'true');
+    }
+
+    // ─── PWA & Appareil (Settings Panel) ───
+    function getDeviceType() {
+        const ua = navigator.userAgent || navigator.vendor || '';
+        if (/iPhone|iPod/i.test(ua)) return 'ios';
+        if (/iPad/i.test(ua)) return 'ios';
+        if (/Macintosh/i.test(ua) && 'ontouchend' in document) return 'ios';
+        if (/Android/i.test(ua)) return 'android';
+        return 'other';
+    }
+
+    function getDeviceInfo() {
+        const type = getDeviceType();
+        if (type === 'ios') return { type, icon: '🍎', label: 'iOS (iPhone/iPad)' };
+        if (type === 'android') return { type, icon: '🤖', label: 'Android' };
+        return { type, icon: '💻', label: 'Ordinateur' };
+    }
+
+    function renderDeviceInfo() {
+        const dev = getDeviceInfo();
+        const dn = document.getElementById('pwa-dev-name');
+        const dd = document.getElementById('pwa-dev-detail');
+        const dot = document.getElementById('pwa-dev-dot');
+        if (dn) dn.textContent = dev.icon + ' ' + dev.label;
+        if (dd) {
+            const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            dd.textContent = standalone ? 'Mode : Application installée' : 'Mode : Navigateur web';
+        }
+        if (dot) dot.className = 'dev-dot ' + (dev.type === 'other' ? 'offline' : 'online');
+    }
+
+    function updatePWASettingsStatus() {
+        const btn = document.getElementById('pwa-install-btn');
+        const st = document.getElementById('pwa-status-text');
+        const headerBtn = document.getElementById('pwa-header-install-btn');
+
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        const isInstalled = isStandalone || localStorage.getItem('pwa_installed') === 'true';
+        const dev = getDeviceType();
+
+        // Header install button visibility
+        if (headerBtn) {
+            if (isInstalled) {
+                headerBtn.classList.remove('show');
+            } else {
+                headerBtn.classList.add('show');
+            }
+        }
+
+        if (!btn || !st) { renderDeviceInfo(); return; }
+
+        if (isInstalled) {
+            btn.textContent = '✅ Installée';
+            btn.disabled = true;
+            st.textContent = 'Mode application — ' + getDeviceInfo().label;
+        } else if (deferredPrompt) {
+            btn.textContent = '📲 Installer';
+            btn.disabled = false;
+            st.textContent = 'Prêt à installer';
+        } else if (dev === 'ios') {
+            btn.textContent = '📲 Ajouter à l\'écran';
+            btn.disabled = false;
+            st.innerHTML = '<strong>iPhone/iPad :</strong> Safari → <i class="fas fa-share-square" style="color:var(--primary);"></i> Partager → Écran d\'accueil';
+        } else {
+            btn.textContent = '📲 Installer';
+            btn.disabled = false;
+            st.textContent = 'Navigateur → Installer l\'application';
+        }
+        renderDeviceInfo();
+    }
+
+    function pwaInstallFromSettings() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    showToast('✅ Application installée !', 'success', 'fa-check-circle');
+                }
+                deferredPrompt = null;
+                closePwaBanner();
+                updatePWASettingsStatus();
+            });
+        } else {
+            const dev = getDeviceType();
+            if (dev === 'ios') {
+                showToast('📱 Safari → Partager → Sur l\'écran d\'accueil', 'info', 'fa-mobile-alt');
+            } else {
+                showToast('📱 Utilisez le menu du navigateur → Installer', 'info', 'fa-mobile-alt');
+            }
+        }
     }
 
     // ─── Offline/Online Detection ───
@@ -5934,6 +6143,8 @@ async function syncData() {
     document.addEventListener('DOMContentLoaded', () => {
         registerServiceWorker();
         updateOnlineStatus();
+        updatePWASettingsStatus();
+        renderDeviceInfo();
         
         // Show install banner for iOS Safari (no beforeinstallprompt)
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
