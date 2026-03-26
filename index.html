@@ -71,7 +71,27 @@
         }
         
         /* PWA & Appareil Settings */
-        
+        /* PWA Header Install Icon */
+        .pwa-header-install {
+            display: none;
+            align-items: center; justify-content: center;
+            background: linear-gradient(135deg, var(--primary), #6366f1);
+            color: white; border: none; border-radius: 8px;
+            width: 34px; height: 34px; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.25s;
+            animation: pwaIconPulse 2.5s ease-in-out infinite;
+        }
+        .pwa-header-install:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,0.4); }
+        .pwa-header-install:active { transform: scale(0.92); }
+        .pwa-header-install.show { display: flex; }
+        @keyframes pwaIconPulse {
+            0%, 100% { box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+            50% { box-shadow: 0 2px 16px rgba(79,70,229,0.55); }
+        }
+        @media all and (display-mode: standalone) {
+            .pwa-header-install { display: none !important; }
+        }
+
         /* Offline indicator */
         .offline-indicator {
             display: none;
@@ -736,6 +756,9 @@
             </div>
         </div>
         <div class="app-header-right">
+            <button class="pwa-header-install" id="pwa-header-install-btn" onclick="installPWA()" title="Installer l'application">
+                <i class="fas fa-download"></i>
+            </button>
             <div class="save-badge" id="save-badge" title="Dernière sauvegarde automatique">
                 <i class="fas fa-check-circle"></i>
                 <span id="save-label">Sauvegardé</span>
@@ -5838,6 +5861,16 @@ self.addEventListener('fetch', event => {
 
     function _updatePwaInstallUI() {
         const isStandalone = window.matchMedia('(display-mode:standalone)').matches || window.navigator.standalone === true;
+
+        // ── Icône header ──
+        const headerBtn = document.getElementById('pwa-header-install-btn');
+        if (headerBtn) {
+            if (!isStandalone && (deferredPrompt || _getDeviceType() === 'ios')) {
+                headerBtn.classList.add('show');
+            } else {
+                headerBtn.classList.remove('show');
+            }
+        }
 
         // ── Mise à jour section Réglages ──
         const statusEl = document.getElementById('pwa-install-status');
