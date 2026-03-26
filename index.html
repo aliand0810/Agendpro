@@ -4976,7 +4976,7 @@ function selectAct(btn, val) {
     // ─── Configuration Google OAuth2 ───
     // IMPORTANT : Remplacez par vos propres identifiants depuis Google Cloud Console
     const GOOGLE_CLIENT_ID = '779128839633-1meksbh396ub0miqm06o8i0qo7n3n7tn.apps.googleusercontent.com';
-    const GOOGLE_API_KEY = 'VOTRE_API_KEY';
+    const GOOGLE_API_KEY = 'AIzaSyAWhmLssvAhWz-U-0yoFDXuyA5dnPt0b2Q';
     const GOOGLE_DISCOVERY_DOCS = [
         'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
         'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
@@ -5545,32 +5545,56 @@ function selectAct(btn, val) {
             
             // Construire la requête de recherche
             let query = "name contains 'mon_planning_backup' and mimeType='application/json' and trashed=false";
-            
-            // Si un dossier est sélectionné, chercher d'abord dedans
             if (googleDriveFolderId) {
                 query += ` and '${googleDriveFolderId}' in parents`;
             }
             
-            // Chercher les fichiers de backup sur Drive
-            let response = await gapi.client.drive.files.list({
-                q: query,
-                orderBy: 'modifiedTime desc',
-                pageSize: 10,
-                fields: 'files(id, name, modifiedTime, parents)'
+            // Chercher les fichiers de backup via fetch
+            let url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(query)}&orderBy=modifiedTime desc&pageSize=10&fields=files(id,name,modifiedTime,size)`;
+            let response = await fetch(url, {
+                headers: { 'Authorization': 'Bearer ' + googleAccessToken }
             });
             
-            let files = response.result.files || [];
+            if (!response.ok) {
+                const errBody = await response.text();
+                console.error('Drive search error:', response.status, errBody);
+                if (response.status === 401 || response.status === 403) {
+                    showToast('🔑 Token expiré — reconnectez Google Drive', 'warning', 'fa-exclamation-triangle');
+                    googleAccessToken = null;
+                    localStorage.removeItem('google_access_token');
+                    majUIGoogle(false);
+                    return;
+                }
+                throw new Error('Recherche Drive échouée (' + response.status + ')');
+            }
+            let result = await response.json();
+            let files = result.files || [];
             
-            // Si aucun fichier trouvé dans le dossier, chercher partout
+            // Si rien trouvé dans le dossier, chercher partout
             if (files.length === 0 && googleDriveFolderId) {
                 showToast('🔍 Recherche dans tout Drive...', 'info', 'fa-spinner fa-spin');
-                response = await gapi.client.drive.files.list({
-                    q: "name contains 'mon_planning_backup' and mimeType='application/json' and trashed=false",
-                    orderBy: 'modifiedTime desc',
-                    pageSize: 10,
-                    fields: 'files(id, name, modifiedTime, parents)'
+                const queryAll = "name contains 'mon_planning_backup' and mimeType='application/json' and trashed=false";
+                url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(queryAll)}&orderBy=modifiedTime desc&pageSize=10&fields=files(id,name,modifiedTime,size)`;
+                response = await fetch(url, {
+                    headers: { 'Authorization': 'Bearer ' + googleAccessToken }
                 });
-                files = response.result.files || [];
+                if (response.ok) {
+                    result = await response.json();
+                    files = result.files || [];
+                }
+            }
+            
+            // Si toujours rien, chercher aussi 'planning_backup' (ancien nom possible)
+            if (files.length === 0) {
+                const queryAlt = "name contains 'planning_backup' and mimeType='application/json' and trashed=false";
+                url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(queryAlt)}&orderBy=modifiedTime desc&pageSize=10&fields=files(id,name,modifiedTime,size)`;
+                response = await fetch(url, {
+                    headers: { 'Authorization': 'Bearer ' + googleAccessToken }
+                });
+                if (response.ok) {
+                    result = await response.json();
+                    files = result.files || [];
+                }
             }
             
             if (files.length === 0) {
@@ -5580,31 +5604,65 @@ function selectAct(btn, val) {
             
             // Prendre le fichier le plus récent
             const latestFile = files[0];
+            const dateStr = new Date(latestFile.modifiedTime).toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
             
-            if (confirm(`Restaurer la sauvegarde du ${new Date(latestFile.modifiedTime).toLocaleDateString('fr-FR')} ?\n\nCela remplacera toutes vos données actuelles.`)) {
-                // Télécharger le contenu du fichier
-                const fileResponse = await gapi.client.drive.files.get({
-                    fileId: latestFile.id,
-                    alt: 'media'
+            if (confirm(`Restaurer la sauvegarde du ${dateStr} ?\n\nFichier: ${latestFile.name}\n\nCela remplacera toutes vos données actuelles.`)) {
+                showToast('📥 Téléchargement de la sauvegarde...', 'info', 'fa-spinner fa-spin');
+                
+                // Télécharger le contenu du fichier via fetch
+                const fileResponse = await fetch(`https://www.googleapis.com/drive/v3/files/${latestFile.id}?alt=media`, {
+                    headers: { 'Authorization': 'Bearer ' + googleAccessToken }
                 });
                 
-                const data = fileResponse.result;
+                if (!fileResponse.ok) {
+                    if (fileResponse.status === 401 || fileResponse.status === 403) {
+                        showToast('🔑 Token expiré — reconnectez Google Drive', 'warning', 'fa-exclamation-triangle');
+                        googleAccessToken = null;
+                        localStorage.removeItem('google_access_token');
+                        majUIGoogle(false);
+                        return;
+                    }
+                    throw new Error('Téléchargement échoué (' + fileResponse.status + ')');
+                }
                 
-                if (data.events) localStorage.setItem('events_v5', data.events);
-                if (data.soldes) localStorage.setItem('soldes_v5', data.soldes);
-                if (data.cycle) localStorage.setItem('cycle_master', data.cycle);
+                const rawText = await fileResponse.text();
+                let data;
+                try {
+                    data = JSON.parse(rawText);
+                } catch(parseErr) {
+                    console.error('Parse error:', parseErr, 'Raw:', rawText.substring(0, 200));
+                    showToast('⚠️ Fichier corrompu ou format invalide', 'warning', 'fa-exclamation-triangle');
+                    return;
+                }
+                
+                if (!data || typeof data !== 'object') {
+                    showToast('⚠️ Fichier de sauvegarde vide', 'warning', 'fa-exclamation-triangle');
+                    return;
+                }
+                
+                // Restaurer les données (accepter même si certains champs manquent)
+                let restored = 0;
+                if (data.events) { localStorage.setItem('events_v5', typeof data.events === 'string' ? data.events : JSON.stringify(data.events)); restored++; }
+                if (data.soldes) { localStorage.setItem('soldes_v5', typeof data.soldes === 'string' ? data.soldes : JSON.stringify(data.soldes)); restored++; }
+                if (data.cycle) { localStorage.setItem('cycle_master', typeof data.cycle === 'string' ? data.cycle : JSON.stringify(data.cycle)); restored++; }
                 if (data.prefs) {
                     if (data.prefs.darkMode) localStorage.setItem('darkMode_v8', data.prefs.darkMode);
                     if (data.prefs.autoBackup) localStorage.setItem('autoBackupCfg', data.prefs.autoBackup);
+                    restored++;
                 }
                 
-                showToast('✅ Restauration réussie ! Rechargement...', 'success', 'fa-check-circle');
+                if (restored === 0) {
+                    showToast('⚠️ Aucune donnée exploitable dans la sauvegarde', 'warning', 'fa-exclamation-triangle');
+                    return;
+                }
+                
+                showToast(`✅ Restauration réussie (${restored} éléments) ! Rechargement...`, 'success', 'fa-check-circle');
                 setTimeout(() => location.reload(), 1500);
             }
             
         } catch (err) {
             console.error('Erreur restauration Drive:', err);
-            showToast('❌ Erreur lors de la restauration', 'error', 'fa-times-circle');
+            showToast('❌ ' + (err.message || 'Erreur lors de la restauration'), 'error', 'fa-times-circle');
         }
     }
 
