@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.1</title>
+    <title>Mon Planning Pro v9.2</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -26,7 +26,7 @@
     <!-- PWA Manifest Inline -->
     <!-- PWA — Système identique LivraPro/COVO (manifest blob, pas de sw.js externe) -->
     <script>var deferredPrompt=null;</script>
-    <script>try{ if(localStorage.getItem('fb_config_v1') || /[?&]fbcfg=/.test(location.search)) document.documentElement.classList.add('fb-pending'); }catch(e){}</script>
+    <script>try{ document.documentElement.classList.add('fb-pending'); }catch(e){}</script>
     <!-- qrcode-generator 1.4.4 (Kazuhiko Arase, licence MIT) — QR codes générés sur l'appareil -->
     <script>// Copyright (c) 2009 Kazuhiko Arase
 // Licensed under the MIT license:
@@ -380,6 +380,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         html.fb-pending .fb-gate { display:flex; }
         html.fb-pending body > *:not(.fb-gate):not(script) { visibility:hidden; }
         body.fb-locked { overflow:hidden; }
+        body.fb-locked > *:not(.fb-gate):not(script):not(.fb-pwd-dialog):not(.toast-container) { visibility:hidden; }
         .fb-gate-card { width:100%; max-width:400px; background:var(--bg-card); color:var(--text-main); border-radius:20px; padding:26px 22px; box-shadow:0 20px 60px rgba(0,0,0,0.35); margin:auto; }
         .fb-gate-logo { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--primary),#7c3aed); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin:0 auto 8px; }
         .fb-gate-title { text-align:center; font-weight:800; font-size:1rem; color:var(--text-muted); margin-bottom:14px; }
@@ -453,6 +454,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .rot-card-actions button.share { color:var(--primary); border-color:var(--primary-light); }
         .fb-admin-only { display:none !important; }
         body.fb-is-admin .fb-admin-only { display:flex !important; }
+        .fb-lock-ic { width:60px; height:60px; border-radius:50%; background:var(--hover-row); color:var(--primary); display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin:0 auto 10px; }
+        .fb-gate-cfg { width:100%; box-sizing:border-box; padding:10px; border:1.5px solid var(--border-color); border-radius:var(--radius-sm); background:var(--bg-card); color:var(--text-main); font-family:'DM Mono',monospace; font-size:0.75rem; resize:vertical; margin:6px 0 4px; }
+        .fb-pwd-dialog { position:fixed; inset:0; z-index:6000; background:rgba(15,23,42,0.6); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:16px; }
+        .fb-pwd-box { width:100%; max-width:380px; background:var(--bg-card); color:var(--text-main); border-radius:16px; padding:20px; box-shadow:0 20px 50px rgba(0,0,0,0.35); }
+        .fb-pwd-box h3 { margin:0 0 6px; font-size:1.05rem; }
+        .fb-pwd-box .btn { margin-top:0; }
         .fb-pwd-wrap { position:relative; }
         .fb-pwd-wrap input { padding-right:44px; }
         .fb-eye { position:absolute; right:4px; top:50%; transform:translateY(-50%); margin-top:2px; width:36px; height:36px; border:none; background:none; color:var(--text-muted); cursor:pointer; }
@@ -6772,10 +6779,17 @@ service cloud.firestore {
     }
     // Encodage léger (base64 URL) — évite que le mot de passe apparaisse en clair, ce n'est PAS un chiffrement
     function fbEnc(t) { return btoa(unescape(encodeURIComponent(t))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+    // Empreinte SHA-256 du mot de passe par défaut de déblocage (jamais stocké en clair)
+    const FB_UNLOCK_HASH = '8f950125a4c32b4dc482695464ab6e9e22771e6997a66d3ccf2b4c861a6f27f3';
+    async function fbSha256(t) {
+        const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
+        return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+    async function fbVerifierDeblocage(pwd) { return (await fbSha256('agendpro-unlock:' + pwd)) === FB_UNLOCK_HASH; }
     function fbDec(t) { t = String(t || '').replace(/-/g, '+').replace(/_/g, '/'); while (t.length % 4) t += '='; return decodeURIComponent(escape(atob(t))); }
     function fbImportDepuisUrl() {
         if (location.hash === '#reset-firebase') {
-            ['fb_config_v1', 'fb_last_compte', 'fb_local_owner'].forEach(k => localStorage.removeItem(k));
+            window._fbResetDemande = true;
             history.replaceState(null, '', location.pathname + location.search);
         }
         const p = new URLSearchParams(location.search);
@@ -7091,6 +7105,32 @@ service cloud.firestore {
                     <input id="fb-setup-pwd2" type="password" autocomplete="new-password" required minlength="6">
                     <button class="btn btn-paye" type="submit" id="fb-setup-btn"><i class="fas fa-user-shield"></i> Créer le compte administrateur</button>
                 </form>`;
+        } else if (mode === 'verrou') {
+            corps.innerHTML = `<div class="fb-lock-ic"><i class="fas fa-lock"></i></div>
+                <h2>Application verrouillée</h2>
+                <p class="fb-sub">Pour accéder à votre planning, ouvrez le <b>lien</b> ou scannez le <b>QR code</b> fourni par votre administrateur.</p>
+                <button class="fb-link" onclick="fbGate('deblocage')"><i class="fas fa-user-shield"></i> Accès administrateur</button>`;
+        } else if (mode === 'deblocage' || mode === 'reset') {
+            const reset = mode === 'reset';
+            corps.innerHTML = `<div class="fb-lock-ic"><i class="fas fa-user-shield"></i></div>
+                <h2>${reset ? 'Réinitialiser cet appareil' : 'Accès administrateur'}</h2>
+                <p class="fb-sub">${reset ? 'Saisissez le mot de passe par défaut pour effacer la configuration Firebase de cet appareil.' : 'Saisissez le mot de passe par défaut pour débloquer cet appareil et le relier à Firebase.'}</p>${err}
+                <form onsubmit="event.preventDefault(); fbDebloquer(${reset});">
+                    <label class="fb-lbl" for="fb-unlock-pwd">Mot de passe par défaut</label>
+                    <div class="fb-pwd-wrap">
+                        <input id="fb-unlock-pwd" type="password" autocomplete="off" required>
+                        <button type="button" class="fb-eye" onclick="fbVoirMdp('fb-unlock-pwd', this)" aria-label="Afficher le mot de passe"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <button class="btn btn-paye" type="submit" id="fb-unlock-btn"><i class="fas fa-unlock"></i> ${reset ? 'Réinitialiser' : 'Débloquer'}</button>
+                </form>
+                <button class="fb-link" onclick="${reset ? 'location.reload()' : "fbGate('verrou')"}">Annuler</button>`;
+            setTimeout(() => { const i = document.getElementById('fb-unlock-pwd'); if (i) i.focus(); }, 50);
+        } else if (mode === 'config') {
+            corps.innerHTML = `<h2>Relier à Firebase</h2>
+                <p class="fb-sub">Collez l'objet <code>firebaseConfig</code> (Console Firebase › Paramètres du projet › onglet <b>Général</b> › Vos applications).</p>${err}
+                <textarea id="fb-gate-cfg" rows="8" spellcheck="false" class="fb-gate-cfg" placeholder="const firebaseConfig = {\n  apiKey: &quot;AIza…&quot;,\n  authDomain: &quot;…&quot;,\n  projectId: &quot;…&quot;,\n  …\n};"></textarea>
+                <button class="btn btn-paye" onclick="fbGateConnecter()"><i class="fas fa-plug"></i> Connecter Firebase</button>
+                <button class="fb-link" onclick="fbGate('verrou')">Annuler</button>`;
         } else if (mode === 'erreur') {
             corps.innerHTML = `<h2>Connexion impossible</h2>${err}
                 <button class="btn btn-paye" onclick="location.reload()"><i class="fas fa-redo"></i> Réessayer</button>`;
@@ -7216,7 +7256,8 @@ service cloud.firestore {
         fbInstallerHookStockage();
         fbInstallerGardes();
         const cfg = fbGetConfig();
-        if (!cfg) { document.documentElement.classList.remove('fb-pending'); return; } // mode local, sans compte
+        if (window._fbResetDemande && cfg) { fbGate('reset'); return; }
+        if (!cfg) { fbGate('verrou'); return; } // appareil non relié : application bloquée
         fbGate('chargement', 'Connexion à Firebase…');
         try {
             await fbChargerSDK();
@@ -7298,11 +7339,69 @@ service cloud.firestore {
             setTimeout(() => location.reload(), 600);
         } catch(e) { err.style.display = 'block'; err.textContent = '⚠️ ' + e.message; }
     }
+
+    // ── Déblocage d'un appareil / réinitialisation (mot de passe par défaut) ──
+    let fbEchecsDeblocage = 0;
+    async function fbDebloquer(reset) {
+        const pwd = document.getElementById('fb-unlock-pwd').value;
+        if (fbEchecsDeblocage >= 5) { fbGate(reset ? 'reset' : 'deblocage', 'Trop de tentatives. Rechargez la page pour réessayer.'); return; }
+        fbBoutonAttente('fb-unlock-btn', true, 'Vérification…');
+        let ok = false;
+        try { ok = await fbVerifierDeblocage(pwd); } catch(e) {}
+        await new Promise(r => setTimeout(r, 400 + fbEchecsDeblocage * 400)); // freine les essais répétés
+        if (!ok) { fbEchecsDeblocage++; fbGate(reset ? 'reset' : 'deblocage', 'Mot de passe incorrect.'); return; }
+        if (reset) {
+            ['fb_config_v1', 'fb_last_compte', 'fb_local_owner', 'fb_saved_login'].forEach(k => localStorage.removeItem(k));
+            location.reload();
+            return;
+        }
+        fbGate('config');
+    }
+    function fbGateConnecter() {
+        try {
+            const cfg = fbParseConfig(document.getElementById('fb-gate-cfg').value);
+            localStorage.setItem(FB_CFG_KEY, JSON.stringify(cfg));
+            location.reload();
+        } catch(e) {
+            const v = document.getElementById('fb-gate-cfg').value;
+            const msg = /serviceAccount|credential|admin\./.test(v)
+                ? 'Ce n\'est pas le bon code (c\'est le code « Admin SDK »). Ouvrez l\'onglet Général › Vos applications.'
+                : e.message;
+            fbGate('config', msg);
+            document.getElementById('fb-gate-cfg').value = v;
+        }
+    }
+    // Petite fenêtre de mot de passe (masqué) — renvoie le texte saisi ou null
+    function fbDemanderMdp(titre, texte) {
+        return new Promise(res => {
+            const o = document.createElement('div');
+            o.className = 'fb-pwd-dialog';
+            o.innerHTML = `<form class="fb-pwd-box">
+                <h3><i class="fas fa-user-shield"></i> ${titre}</h3>
+                <p class="fb-sub" style="text-align:left;">${texte}</p>
+                <div class="fb-pwd-wrap"><input type="password" id="fb-dlg-pwd" autocomplete="current-password" required>
+                <button type="button" class="fb-eye" onclick="fbVoirMdp('fb-dlg-pwd', this)" aria-label="Afficher le mot de passe"><i class="fas fa-eye"></i></button></div>
+                <div class="fb-btn-row" style="margin-top:6px;"><button type="button" class="btn btn-outline" data-a="non">Annuler</button><button type="submit" class="btn btn-danger">Confirmer</button></div>
+            </form>`;
+            document.body.appendChild(o);
+            const fin = (v) => { o.remove(); res(v); };
+            o.querySelector('form').onsubmit = (e) => { e.preventDefault(); fin(o.querySelector('input').value); };
+            o.querySelector('[data-a=non]').onclick = () => fin(null);
+            setTimeout(() => o.querySelector('input').focus(), 50);
+        });
+    }
     async function fbOublierConfig() {
         const msg = fbCompte
             ? 'Déconnecter Firebase de cet appareil ?\n\nVous serez déconnecté et le planning de ce compte sera retiré de cet appareil (il reste en ligne).'
             : 'Effacer la configuration Firebase de cet appareil ?';
+        if (!fbEstAdmin()) { fbRefus(); return; }
         if (!confirm(msg)) return;
+        const pwd = await fbDemanderMdp('Autorisation administrateur', 'Saisissez <b>votre mot de passe administrateur</b> pour déconnecter Firebase de cet appareil. L\'application sera ensuite verrouillée.');
+        if (pwd === null) return;
+        try {
+            const u = fbAuth.currentUser;
+            await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email, pwd));
+        } catch(e) { alert('⚠️ Mot de passe administrateur incorrect.'); return; }
         if (fbCompte) { try { await fbPousser(); } catch(e) {} fbViderLocal(); localStorage.removeItem(FB_OWNER_KEY); }
         localStorage.removeItem('fb_last_compte');
         try { if (fbAuth) await fbAuth.signOut(); } catch(e) {}
@@ -7959,7 +8058,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.1';
+const CACHE_NAME = 'planning-pro-v9.2';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
