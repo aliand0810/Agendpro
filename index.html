@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v8.6</title>
+    <title>Mon Planning Pro v8.7</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -360,7 +360,22 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.perm-no-config [onclick*="'modal-config'"],
         body.perm-no-legende #legend-card,
         body.perm-no-roulements .rot-manage-btn,
-        body.perm-no-roulements .rot-add-btn { display: none !important; }
+        body.perm-no-roulements .rot-add-btn,
+        body.perm-no-google #zone-google-sync,
+        body.perm-no-reunion [data-leg="reunion"],
+        body.perm-no-reunion .act-btn[onclick*="'RÉUNION'"],
+        body.perm-no-reunion tr[onclick*="'RÉUNION'"],
+        body.perm-no-reunion .fb-lbl-reunion,
+        body.perm-no-compteur [data-leg="compteur"],
+        body.perm-no-compteur .btn-compteur,
+        body.perm-no-compteur tr[onclick*="'COMPTEUR 8H'"],
+        body.perm-no-compteur .stat-item:has(#stat-heure8),
+        body.perm-no-cse [data-leg="cse"],
+        body.perm-no-cse #acc-cse,
+        body.perm-no-cse #pacc-cse,
+        body.perm-no-cse #pacc-cse-body { display: none !important; }
+        .fb-perm-grp { flex-basis:100%; grid-column:1 / -1; font-size:0.62rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin:6px 0 2px; }
+        .fb-perm-grp:first-child { margin-top:0; }
         .fb-gate { display:none; position:fixed; inset:0; z-index:5000; align-items:center; justify-content:center; padding:16px; background:linear-gradient(135deg,#312e81,#4f46e5 55%,#7c3aed); overflow-y:auto; }
         html.fb-pending .fb-gate { display:flex; }
         html.fb-pending body > *:not(.fb-gate):not(script) { visibility:hidden; }
@@ -993,10 +1008,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         <div class="legend-item"><span class="legend-dot" style="background:#3b82f6;"></span>CP</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#10b981;"></span>RTT</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#64748b;"></span>Repos nuit</div>
-                        <div class="legend-item"><span class="legend-dot" style="background:#ec4899;"></span>Compteur</div>
+                        <div class="legend-item" data-leg="compteur"><span class="legend-dot" style="background:#ec4899;"></span>Compteur</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6;"></span>Formation</div>
-                        <div class="legend-item"><span class="legend-dot" style="background:#06b6d4;"></span>Réunion</div>
-                        <div class="legend-item"><span class="legend-dot" style="background:#10b981;border:2px solid #059669;"></span>CSE</div>
+                        <div class="legend-item" data-leg="reunion"><span class="legend-dot" style="background:#06b6d4;"></span>Réunion</div>
+                        <div class="legend-item" data-leg="cse"><span class="legend-dot" style="background:#10b981;border:2px solid #059669;"></span>CSE</div>
                     </div>
                 </div>
 
@@ -1519,7 +1534,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <!-- Formation / Réunion -->
             <div class="acc-section" id="acc-form">
                 <div class="acc-header" onclick="toggleAcc('acc-form')">
-                    <span>📚 Formation / Réunion</span><span class="acc-arrow">▶</span>
+                    <span>📚 Formation<span class="fb-lbl-reunion"> / Réunion</span></span><span class="acc-arrow">▶</span>
                 </div>
                 <div class="acc-body">
                     <button class="act-btn" onclick="selectAct(this,'FORMATION')">📚 Formation</button>
@@ -1869,7 +1884,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div>
 
     <!-- Section Google APIs -->
-    <div class="zone-card" style="margin-top: 16px;">
+    <div class="zone-card" id="zone-google-sync" style="margin-top: 16px;">
         <span class="zone-title">📡 SYNCHRONISATION GOOGLE</span>
         <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 14px;">Connectez votre compte Google pour synchroniser votre planning et sauvegarder automatiquement vos données.</p>
         
@@ -6585,7 +6600,11 @@ function selectAct(btn, val) {
         { k:'taux',       lbl:'🎚️ Taux' },
         { k:'config',     lbl:'⚙️ Configuration' },
         { k:'legende',    lbl:'🎨 Légende' },
-        { k:'roulements', lbl:'🔁 Gérer les roulements' }
+        { k:'roulements', lbl:'🔁 Gérer les roulements' },
+        { k:'google',     lbl:'📡 Synchro Google' },
+        { k:'reunion',    lbl:'🗣️ Réunion',  grp:'act' },
+        { k:'compteur',   lbl:'🔄 Compteur', grp:'act' },
+        { k:'cse',        lbl:'⚖️ CSE',      grp:'act' }
     ];
     const FB_GARDES = { 'tab-paie':'paie', 'tab-dirt':'dirt', 'tab-config-taux':'taux', 'modal-print':'impr', 'modal-config':'config', 'modal-rotations':'roulements' };
     const FB_REGLES = `rules_version = '2';
@@ -6727,6 +6746,15 @@ service cloud.firestore {
     function fbRefus() { showToast('🔒 Accès restreint par l\'administrateur', 'error', 'fa-lock'); return false; }
     function fbAppliquerDroits() {
         FB_PERMS.forEach(p => document.body.classList.toggle('perm-no-' + p.k, !fbPeut(p.k)));
+        const o = document.querySelector('#edit-type-absence option[value="COMPTEUR 8H"]');
+        if (o) { o.hidden = o.disabled = !fbPeut('compteur'); }
+    }
+    function fbChipsHTML(c, fn) {
+        const grp = (g, titre) => {
+            const l = FB_PERMS.filter(p => (p.grp || 'sec') === g);
+            return `<div class="fb-perm-grp">${titre}</div>` + l.map(fn).join('');
+        };
+        return grp('sec', 'Sections') + grp('act', 'Activités &amp; légende');
     }
     function fbInstallerGardes() {
         const st = switchTab, stm = switchTabMobile, om = ouvrirModale;
@@ -7268,7 +7296,7 @@ service cloud.firestore {
     function fbRenderFormNouveau() {
         const z = document.getElementById('fb-nouveau-perms');
         if (!z) return;
-        z.innerHTML = FB_PERMS.map(p => `<label class="fb-perm-check"><input type="checkbox" data-perm="${p.k}" ${p.k === 'config' ? '' : 'checked'}> ${p.lbl}</label>`).join('');
+        z.innerHTML = fbChipsHTML(null, p => `<label class="fb-perm-check"><input type="checkbox" data-perm="${p.k}" ${p.k === 'config' ? '' : 'checked'}> ${p.lbl}</label>`);
         ['fb-new-nom', 'fb-new-id', 'fb-new-pwd'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
         const err = document.getElementById('fb-new-err'); if (err) err.style.display = 'none';
     }
@@ -7285,10 +7313,10 @@ service cloud.firestore {
         z.innerHTML = fbComptesCache.map(c => {
             const admin = c.role === 'admin', off = c.actif === false;
             const perms = admin ? '<span class="fb-p" style="margin:0;">Accès complet à toutes les sections</span>'
-                : FB_PERMS.map(p => {
+                : fbChipsHTML(c, p => {
                     const on = !c.perms || c.perms[p.k] !== false;
                     return `<button class="fb-chip ${on ? 'on' : 'off'}" onclick="fbBasculerDroit('${c.id}','${p.k}')" title="${on ? 'Autorisé — cliquer pour restreindre' : 'Restreint — cliquer pour autoriser'}">${on ? '✓' : '✕'} ${p.lbl}</button>`;
-                }).join('');
+                });
             return `<div class="fb-compte ${off ? 'is-off' : ''}">
                 <div class="fb-compte-head">
                     <div class="fb-avatar sm">${fbEsc((c.nom || c.identifiant || '?').charAt(0).toUpperCase())}</div>
@@ -7532,7 +7560,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v8.6';
+const CACHE_NAME = 'planning-pro-v8.7';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
