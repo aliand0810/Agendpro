@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v8.8</title>
+    <title>Mon Planning Pro v9.0</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -594,6 +594,76 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.dark-mode .fc-today-button { background: #0f172a !important; color: #818cf8 !important; border-color: #4f46e5 !important; }
 
         /* ANALYSE DIRT */
+
+        /* ═══ PAIE — tout déployer / replier ═══ */
+        .paie-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:10px; font-size:0.75rem; color:#64748b; }
+        .paie-toolbar > div { display:flex; gap:6px; margin-left:auto; }
+        .paie-toolbar button { border:1px solid var(--border-color); background:var(--bg-card); color:var(--primary); border-radius:8px; padding:6px 10px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .paie-toolbar button:hover { border-color:var(--primary); background:var(--hover-row); }
+        /* ═══ DIRT — tableau de bord ═══ */
+        .dirt-chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+        .dirt-chip-per { border:1.5px solid var(--border-color); background:var(--bg-card); color:var(--text-main); border-radius:20px; padding:6px 12px; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .dirt-chip-per.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+        .dirt-kpis { display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:8px; margin-bottom:12px; }
+        @media (max-width:560px) { .dirt-kpis { grid-template-columns:repeat(3,1fr); } .dirt-kpi.main { grid-column:1 / -1; } .dirt-kpi-val { font-size:1.2rem; } .dirt-kpi-lbl { font-size:0.58rem; } }
+        .dirt-days-in .ds { display:none; } .dirt-days-in b { font-weight:800; }
+        @media (max-width:560px) { .dirt-days-in .dl { display:none; } .dirt-days-in .ds { display:inline; } .dirt-days, .dirt-week { grid-template-columns:50px 1fr 62px; gap:6px; } }
+        .dirt-kpi { background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:10px; text-align:center; position:relative; border-top:3px solid #10b981; }
+        .dirt-kpi.warn { border-top-color:#f59e0b; } .dirt-kpi.ko { border-top-color:#ef4444; }
+        .dirt-kpi-val { font-family:'DM Mono',monospace; font-size:1.5rem; font-weight:900; color:var(--text-main); line-height:1.1; }
+        .dirt-kpi-val small, .dirt-kpi-ring-val small { font-size:0.7rem; color:var(--text-muted); }
+        .dirt-kpi.ko .dirt-kpi-val { color:#ef4444; } .dirt-kpi.warn .dirt-kpi-val { color:#d97706; }
+        .dirt-kpi-lbl { font-size:0.65rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.03em; margin-top:3px; }
+        .dirt-kpi-lbl small { text-transform:none; font-weight:600; letter-spacing:0; }
+        .dirt-kpi.main { display:flex; align-items:center; gap:10px; text-align:left; }
+        .dirt-ring { width:64px; height:64px; transform:rotate(-90deg); flex-shrink:0; }
+        .dirt-ring circle { fill:none; stroke-width:8; }
+        .dirt-ring .bg { stroke:var(--border-color); }
+        .dirt-ring .fg { stroke:#10b981; stroke-linecap:round; transition:stroke-dashoffset 0.6s; }
+        .dirt-ring.warn .fg { stroke:#f59e0b; } .dirt-ring.ko .fg { stroke:#ef4444; }
+        .dirt-kpi-ring-val { position:absolute; left:10px; width:64px; text-align:center; font-family:'DM Mono',monospace; font-weight:900; font-size:1.05rem; color:var(--text-main); }
+        .dirt-kpi.main .dirt-kpi-lbl { font-size:0.75rem; }
+        .dirt-card { background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:12px; margin-bottom:12px; }
+        .dirt-card-title { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-weight:800; font-size:0.85rem; color:var(--text-main); margin-bottom:10px; }
+        .dirt-leg { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:0.65rem; font-weight:600; color:var(--text-muted); flex-wrap:wrap; }
+        .dirt-leg .lg { display:inline-block; width:12px; height:8px; border-radius:2px; }
+        .dirt-leg .lg.work { background:#4f46e5; } .dirt-leg .lg.bad { background:repeating-linear-gradient(45deg,#ef4444 0 3px,#fecaca 3px 6px); } .dirt-leg .lg.best { background:#bbf7d0; border:1px solid #4ade80; }
+        .dirt-days, .dirt-week { display:grid; grid-template-columns:62px 1fr 74px; gap:8px; align-items:center; }
+        .dirt-days { font-size:0.6rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; }
+        .dirt-days-in { display:flex; } .dirt-days-in span { flex:1; text-align:center; }
+        .dirt-week { padding:5px 0; border-top:1px dashed var(--border-color); }
+        .dirt-week-lbl { font-size:0.78rem; font-weight:800; color:var(--text-main); line-height:1.1; }
+        .dirt-week-lbl small { display:block; font-size:0.6rem; font-weight:600; color:var(--text-muted); }
+        .dirt-track { position:relative; height:26px; background:var(--bg-app); border-radius:6px; overflow:hidden; }
+        .dirt-track .tick { position:absolute; top:0; bottom:0; width:1px; background:var(--border-color); }
+        .dirt-seg { position:absolute; top:4px; bottom:4px; border-radius:3px; }
+        .dirt-seg.work { box-shadow:0 0 0 1px rgba(255,255,255,0.6); z-index:2; }
+        .dirt-seg.best { top:0; bottom:0; background:#bbf7d0; border-left:2px solid #4ade80; border-right:2px solid #4ade80; border-radius:0; z-index:0; opacity:0.75; }
+        .dirt-seg.bad { top:1px; bottom:1px; background:repeating-linear-gradient(45deg,#ef4444 0 3px,#fecaca 3px 6px); z-index:1; display:flex; align-items:center; justify-content:center; min-width:16px; }
+        .dirt-seg.bad span { font-size:0.55rem; font-weight:900; color:#fff; background:#b91c1c; border-radius:3px; padding:0 2px; white-space:nowrap; }
+        .dirt-week-badge { font-family:'DM Mono',monospace; font-size:0.75rem; font-weight:900; text-align:center; border-radius:8px; padding:3px 4px; line-height:1.1; }
+        .dirt-week-badge small { display:block; font-family:'DM Sans',sans-serif; font-size:0.55rem; font-weight:600; opacity:0.8; }
+        .dirt-week-badge.ok { background:#dcfce7; color:#166534; } .dirt-week-badge.warn { background:#fef3c7; color:#92400e; }
+        body.dark-mode .dirt-week-badge.ok { background:#064e3b; color:#6ee7b7; } body.dark-mode .dirt-week-badge.warn { background:#451a03; color:#fcd34d; }
+        body.dark-mode .dirt-seg.best { background:#065f46; border-color:#10b981; }
+        .dirt-filters { margin-left:auto; display:flex; gap:4px; flex-wrap:wrap; }
+        .dirt-filters button { border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-muted); border-radius:20px; padding:4px 9px; font-size:0.68rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .dirt-filters button b { margin-left:2px; color:var(--text-main); }
+        .dirt-filters button.on { background:var(--primary); border-color:var(--primary); color:#fff; } .dirt-filters button.on b { color:#fff; }
+        .dirt-item { display:flex; gap:10px; padding:10px; border-radius:10px; margin-bottom:8px; border:1px solid #fecaca; background:#fef2f2; }
+        .dirt-item.warn { border-color:#fde68a; background:#fffbeb; }
+        body.dark-mode .dirt-item { background:#2a1215; border-color:#7f1d1d; } body.dark-mode .dirt-item.warn { background:#2a1d0a; border-color:#92400e; }
+        .dirt-item-ic { font-size:1.2rem; }
+        .dirt-item-body { flex:1; min-width:0; }
+        .dirt-item-t { font-weight:800; font-size:0.82rem; color:var(--text-main); }
+        .dirt-item-s { font-size:0.72rem; color:var(--text-muted); margin-top:2px; }
+        .dirt-item-s b { color:var(--text-main); } .dirt-item-s b.neg { color:#ef4444; }
+        .dirt-gauge { position:relative; height:7px; background:var(--border-color); border-radius:4px; margin:6px 0 3px; }
+        .dirt-gauge i { position:absolute; left:0; top:0; bottom:0; border-radius:4px; background:#ef4444; }
+        .dirt-gauge.warn i { background:#f59e0b; }
+        .dirt-empty { text-align:center; padding:26px 10px; color:var(--text-muted); display:flex; flex-direction:column; gap:6px; align-items:center; font-size:0.8rem; }
+        .dirt-empty i { font-size:2rem; opacity:0.35; } .dirt-empty b { color:var(--text-main); }
+        .dirt-foot { font-size:0.65rem; color:#94a3b8; text-align:center; padding-top:4px; }
         .dirt-section { background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px solid var(--border-color); margin-top: 20px; }
         .dirt-title { font-size: 1rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .dirt-alert { background: #fee2e2; border: 1px solid #fecaca; border-radius: 10px; padding: 12px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px; }
@@ -978,7 +1048,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div>
 
     <div id="tab-planning" class="tab-content active">
-        <div id="auto-backup-banner"></div>
+        <div id="auto-backup-banner" style="display:none !important;"></div>
 
         <!-- ─── LAYOUT PLANNING : mobile = colonne, desktop = 2 colonnes ─── -->
         <div class="planning-layout">
@@ -1160,7 +1230,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             </div>
 
             <div style="margin-top: 20px;">
-                <p style="font-size: 0.8rem; color: #64748b; text-align: center; margin-bottom: 10px;"><i class="fas fa-info-circle"></i> Cliquez sur une ligne pour voir le détail des jours</p>
+                <div class="paie-toolbar">
+                    <span><i class="fas fa-info-circle"></i> Cliquez sur une ligne pour voir le détail des jours</span>
+                    <div>
+                        <button onclick="paieToutesSections(true)"><i class="fas fa-angle-double-down"></i> Tout déployer</button>
+                        <button onclick="paieToutesSections(false)"><i class="fas fa-angle-double-up"></i> Tout replier</button>
+                    </div>
+                </div>
                 <table class="table-paie">
                     <!-- POSTES DE TRAVAIL -->
                     <tbody>
@@ -1266,9 +1342,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             </div>
 
             <!-- Période -->
+            <div class="dirt-chips">
+                <button class="dirt-chip-per" data-p="mois" onclick="dirtPeriode('mois')">Ce mois</button>
+                <button class="dirt-chip-per" data-p="prec" onclick="dirtPeriode('prec')">Mois dernier</button>
+                <button class="dirt-chip-per" data-p="paie" onclick="dirtPeriode('paie')">Période de paie</button>
+                <button class="dirt-chip-per" data-p="3mois" onclick="dirtPeriode('3mois')">3 mois</button>
+            </div>
             <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <div style="flex:1;"><small>Analyser du :</small><input type="date" id="dirt-debut"></div>
-                <div style="flex:1;"><small>Au :</small><input type="date" id="dirt-fin"></div>
+                <div style="flex:1;"><small>Analyser du :</small><input type="date" id="dirt-debut" onchange="document.querySelectorAll('.dirt-chip-per').forEach(c=>c.classList.remove('on'))"></div>
+                <div style="flex:1;"><small>Au :</small><input type="date" id="dirt-fin" onchange="document.querySelectorAll('.dirt-chip-per').forEach(c=>c.classList.remove('on'))"></div>
             </div>
             <button onclick="analyserDIRT()" class="btn btn-paye"><i class="fas fa-search"></i> LANCER L'ANALYSE DIRT</button>
             <div id="dirt-resultats" style="margin-top: 15px;"></div>
@@ -3926,305 +4008,229 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         showToast('Configuration enregistrée', 'success', 'fa-check-circle');
     }
 
-    function analyserDIRT() {
-        const d = document.getElementById('dirt-debut').value;
-        const f = document.getElementById('dirt-fin').value;
-        if (!d || !f) { alert("Veuillez sélectionner une période."); return; }
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ ANALYSE DIRT — tableau de bord visuel (v9.0) ═══════════════════════════
+    // Calcul inchangé pour le repos quotidien (blocs continus, écart ≥ seuil).
+    // Repos hebdomadaire : plus long repos CONSÉCUTIF touchant la semaine (règle L3132-2).
+    // Affichage : KPI + frise semaine par semaine + anomalies filtrables.
+    // ═══════════════════════════════════════════════════════════════════════════
+    const DIRT_TYPES = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.','FORMATION','RÉUNION','CSE - FONCTIONNEMENT','CSE - PERMANENCE','CSE - ASC','CSE - DISTRIBUTEUR','CSE - FORMATION','CSE - RP','CSE - DÉPLACEMENT','CSE - BILLETTERIE','CSE - SECRÉTAIRE','CSE - TRÉSORERIE','CSE - CSSCT','CSE - CONVOCATION DIR.','CSE - AUTRE'];
+    const DIRT_DEFAUT = {
+        'MATIN':{debut:4,duree:8}, 'MATIN SUPPL.':{debut:4,duree:8}, 'APRÈS-MIDI':{debut:12,duree:8}, 'APRÈS-MIDI SUPPL.':{debut:12,duree:8},
+        'NUIT':{debut:20,duree:8}, 'NUIT SUPPL.':{debut:20,duree:8}, 'POSTE JOURNÉE':{debut:8,duree:8}, 'JOURNÉE SUPPL.':{debut:8,duree:8},
+        'FORMATION':{debut:8,duree:8}, 'RÉUNION':{debut:8,duree:2},
+        'CSE - FONCTIONNEMENT':{debut:8,duree:4}, 'CSE - PERMANENCE':{debut:8,duree:4}, 'CSE - ASC':{debut:8,duree:4}, 'CSE - DISTRIBUTEUR':{debut:8,duree:2},
+        'CSE - FORMATION':{debut:8,duree:7}, 'CSE - RP':{debut:8,duree:4}, 'CSE - DÉPLACEMENT':{debut:8,duree:4}, 'CSE - BILLETTERIE':{debut:8,duree:2},
+        'CSE - SECRÉTAIRE':{debut:8,duree:4}, 'CSE - TRÉSORERIE':{debut:8,duree:4}, 'CSE - CSSCT':{debut:8,duree:4}, 'CSE - CONVOCATION DIR.':{debut:8,duree:2}, 'CSE - AUTRE':{debut:8,duree:4}
+    };
+    const DIRT_H = 3600000, DIRT_SEM = 7 * 24 * DIRT_H;
+    let dirtDernier = null, dirtFiltre = 'tout';
 
-        const REPOS_QUOTIDIEN_H = parseFloat(document.getElementById('dirt-seuil-quotidien').value) || 11;
-        const REPOS_HEBDO_H     = parseFloat(document.getElementById('dirt-seuil-hebdo').value)     || 35;
-        const HEURES_SEMAINE    = 7 * 24; // 168h
-
-        const typesPoste = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.','FORMATION','RÉUNION','CSE - FONCTIONNEMENT','CSE - PERMANENCE','CSE - ASC','CSE - DISTRIBUTEUR','CSE - FORMATION','CSE - RP','CSE - DÉPLACEMENT','CSE - BILLETTERIE','CSE - SECRÉTAIRE','CSE - TRÉSORERIE','CSE - CSSCT','CSE - CONVOCATION DIR.','CSE - AUTRE'];
-
-        const horairesDefaut = {
-            'MATIN':                 { debut: 4,  duree: 8 },
-            'MATIN SUPPL.':          { debut: 4,  duree: 8 },
-            'APRÈS-MIDI':            { debut: 12, duree: 8 },
-            'APRÈS-MIDI SUPPL.':     { debut: 12, duree: 8 },
-            'NUIT':                  { debut: 20, duree: 8 },
-            'NUIT SUPPL.':           { debut: 20, duree: 8 },
-            'POSTE JOURNÉE':         { debut: 8,  duree: 8 },
-            'JOURNÉE SUPPL.':        { debut: 8,  duree: 8 },
-            'FORMATION':             { debut: 8,  duree: 8 },
-            'RÉUNION':               { debut: 8,  duree: 2 },
-            'CSE - FONCTIONNEMENT':  { debut: 8,  duree: 4 },
-            'CSE - PERMANENCE':      { debut: 8,  duree: 4 },
-            'CSE - ASC':             { debut: 8,  duree: 4 },
-            'CSE - DISTRIBUTEUR':    { debut: 8,  duree: 2 },
-            'CSE - FORMATION':       { debut: 8,  duree: 7 },
-            'CSE - RP':              { debut: 8,  duree: 4 },
-            'CSE - DÉPLACEMENT':     { debut: 8,  duree: 4 },
-            'CSE - BILLETTERIE':     { debut: 8,  duree: 2 },
-            'CSE - SECRÉTAIRE':      { debut: 8,  duree: 4 },
-            'CSE - TRÉSORERIE':      { debut: 8,  duree: 4 },
-            'CSE - CSSCT':           { debut: 8,  duree: 4 },
-            'CSE - CONVOCATION DIR.':{ debut: 8,  duree: 2 },
-            'CSE - AUTRE':           { debut: 8,  duree: 4 },
-        };
-
-        // Retourne l'heure de début d'un poste en heures décimales (ex: 20.5 = 20h30)
-        function getDebutH(p) {
-            if (p.hD) {
-                const parts = p.hD.split(':');
-                return parseInt(parts[0]) + (parseInt(parts[1] || 0) / 60);
-            }
-            return horairesDefaut[p.type]?.debut ?? 8;
+    function dirtDebutH(p) {
+        if (p.hD) { const t = p.hD.split(':'); return parseInt(t[0]) + (parseInt(t[1] || 0) / 60); }
+        return (DIRT_DEFAUT[p.type] || {}).debut ?? 8;
+    }
+    function dirtDureeH(p) {
+        if (p.hD && p.hF) {
+            const d = dirtDebutH(p), t = p.hF.split(':');
+            let f = parseInt(t[0]) + (parseInt(t[1] || 0) / 60);
+            if (f <= d) f += 24;
+            return f - d;
         }
+        return (DIRT_DEFAUT[p.type] || {}).duree ?? 8;
+    }
+    function dirtTsDebut(ev) {
+        const [y, m, j] = ev.startStr.split('T')[0].split('-').map(Number);
+        return new Date(y, m - 1, j).getTime() + dirtDebutH(ev.extendedProps) * DIRT_H;
+    }
+    function dirtTsFin(ev) { return dirtTsDebut(ev) + dirtDureeH(ev.extendedProps) * DIRT_H; }
+    function dirtFmtH(ms) { const d = new Date(ms); return String(d.getHours()).padStart(2, '0') + 'h' + String(d.getMinutes()).padStart(2, '0'); }
+    function dirtFmtJour(ms) { return new Date(ms).toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: '2-digit' }); }
+    function dirtR1(x) { return Math.round(x * 10) / 10; }
+    function dirtLundi(ds) { const [y, m, j] = ds.split('-').map(Number); const dt = new Date(y, m - 1, j); const dow = dt.getDay() || 7; return new Date(y, m - 1, j - dow + 1); }
 
-        // Retourne la durée d'un poste en heures décimales
-        function getDureeH(p) {
-            if (p.hD && p.hF) {
-                const dH = getDebutH(p);
-                const parts = p.hF.split(':');
-                let fH = parseInt(parts[0]) + (parseInt(parts[1] || 0) / 60);
-                if (fH <= dH) fH += 24; // poste de nuit qui passe minuit
-                return fH - dH;
-            }
-            return horairesDefaut[p.type]?.duree ?? 8;
+    function dirtCalculer(d, f, seuilQ, seuilH) {
+        // Marge de 3 jours de chaque côté pour mesurer correctement les repos aux bords de la période
+        const marge = (ds, n) => { const [y, m, j] = ds.split('-').map(Number); return fmtLocal(new Date(y, m - 1, j + n)); };
+        const dEtendu = marge(d, -3), fEtendu = marge(f, 3);
+        const postes = calendar.getEvents()
+            .filter(e => { const ds = e.startStr.split('T')[0]; return ds >= dEtendu && ds <= fEtendu && DIRT_TYPES.includes(e.extendedProps.type); })
+            .sort((a, b) => dirtTsDebut(a) - dirtTsDebut(b));
+        const [y1, m1, j1] = d.split('-').map(Number), [y2, m2, j2] = f.split('-').map(Number);
+        const debP = new Date(y1, m1 - 1, j1).getTime(), finP = new Date(y2, m2 - 1, j2 + 1).getTime();
+        const dansPeriode = (ev) => { const ds = ev.startStr.split('T')[0]; return ds >= d && ds <= f; };
+
+        // Blocs continus (écart ≤ 30 min = même présence)
+        const blocs = [];
+        postes.forEach(ev => {
+            const deb = dirtTsDebut(ev), fin = dirtTsFin(ev), b = blocs[blocs.length - 1];
+            if (b && (deb - b.fin) / DIRT_H <= 0.5) { b.postes.push(ev); b.fin = Math.max(b.fin, fin); }
+            else blocs.push({ postes: [ev], debut: deb, fin });
+        });
+        blocs.forEach(b => { b.dansPeriode = b.postes.some(dansPeriode); });
+
+        // Repos entre blocs
+        const repos = [];
+        for (let i = 0; i < blocs.length - 1; i++) {
+            const b1 = blocs[i], b2 = blocs[i + 1], h = (b2.debut - b1.fin) / DIRT_H;
+            if (h < 0) continue;
+            repos.push({ b1, b2, debut: b1.fin, fin: b2.debut, h, ko: h < seuilQ, compte: b1.dansPeriode && b2.dansPeriode });
         }
+        const violQ = repos.filter(r => r.compte && r.ko);
+        const okQ = repos.filter(r => r.compte && !r.ko).length;
+        const reposPeriode = repos.filter(r => r.compte);
+        const reposMin = reposPeriode.length ? Math.min(...reposPeriode.map(r => r.h)) : null;
 
-        // Timestamp de début d'un poste (ms depuis epoch, heure locale)
-        function tsDebut(ev) {
-            const [y, mo, dj] = ev.startStr.split('T')[0].split('-').map(Number);
-            const baseMs = new Date(y, mo - 1, dj).getTime();
-            return baseMs + getDebutH(ev.extendedProps) * 3600000;
-        }
-
-        // Timestamp de fin d'un poste
-        function tsFin(ev) {
-            return tsDebut(ev) + getDureeH(ev.extendedProps) * 3600000;
-        }
-
-        // Libellé de date lisible
-        function lblDate(ds) {
-            const [y, mo, dj] = ds.split('-').map(Number);
-            return new Date(y, mo - 1, dj).toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: '2-digit' });
-        }
-
-        // Lundi de la semaine d'une date YYYY-MM-DD
-        function lundiDeSemaine(ds) {
-            const [y, mo, dj] = ds.split('-').map(Number);
-            const date = new Date(y, mo - 1, dj);
-            const dow = date.getDay() || 7; // 0=dim → 7
-            return new Date(y, mo - 1, dj - dow + 1);
-        }
-
-        // ─── Récupération de tous les postes triés chronologiquement ───
-        const tousPostes = calendar.getEvents()
-            .filter(e => {
-                const ds = e.startStr.split('T')[0];
-                return ds >= d && ds <= f && typesPoste.includes(e.extendedProps.type);
-            })
-            .sort((a, b) => tsDebut(a) - tsDebut(b));
-
-        if (tousPostes.length === 0) {
-            document.getElementById('dirt-resultats').innerHTML = `<div class="dirt-ok">ℹ️ Aucun poste trouvé sur cette période.</div>`;
-            return;
-        }
-
-        // ═══════════════════════════════════════════════════════════
-        //  ANALYSE 1 — Repos entre chaque paire de postes consécutifs
-        //              → doit être ≥ REPOS_QUOTIDIEN_H (11h)
-        //
-        //  RÈGLE DE CONTINUITÉ : si deux activités s'enchaînent sans
-        //  interruption réelle (écart ≤ 30 min = même présence continue),
-        //  on les fusionne en un seul bloc et on n'applique PAS la règle
-        //  des 11h entre elles. Ex : Matin 04h-12h suivi CSE 12h-13h
-        //  → pas d'alerte, c'est la même journée de travail continue.
-        // ═══════════════════════════════════════════════════════════
-
-        const SEUIL_CONTINUITE_H = 0.5; // 30 min — en dessous = activités continues
-
-        // Étape 1 : regrouper les postes en "blocs continus"
-        // Un bloc = une séquence d'activités sans vrai repos entre elles
-        const blocsContinus = [];
-        let blocCourant = { postes: [tousPostes[0]], debut: tsDebut(tousPostes[0]), fin: tsFin(tousPostes[0]) };
-
-        for (let i = 1; i < tousPostes.length; i++) {
-            const ev = tousPostes[i];
-            const ecartAvecPrecedent = (tsDebut(ev) - blocCourant.fin) / 3600000;
-
-            if (ecartAvecPrecedent <= SEUIL_CONTINUITE_H) {
-                // Continuation du même bloc — on étend la fin si nécessaire
-                blocCourant.postes.push(ev);
-                blocCourant.fin = Math.max(blocCourant.fin, tsFin(ev));
-            } else {
-                // Vrai écart → clore le bloc courant, en ouvrir un nouveau
-                blocsContinus.push(blocCourant);
-                blocCourant = { postes: [ev], debut: tsDebut(ev), fin: tsFin(ev) };
-            }
-        }
-        blocsContinus.push(blocCourant);
-
-        // Étape 2 : vérifier les 11h entre chaque paire de BLOCS consécutifs
-        let violQ = [], okQ = 0;
-
-        for (let i = 0; i < blocsContinus.length - 1; i++) {
-            const b1 = blocsContinus[i];
-            const b2 = blocsContinus[i + 1];
-            const ecartH = (b2.debut - b1.fin) / 3600000;
-
-            if (ecartH < 0) continue;
-
-            // Représentants des deux blocs pour l'affichage
-            const ev1 = b1.postes[b1.postes.length - 1]; // dernier poste du bloc 1
-            const ev2 = b2.postes[0];                     // premier poste du bloc 2
-            const ds1 = ev1.startStr.split('T')[0];
-            const ds2 = ev2.startStr.split('T')[0];
-
-            // Libellé du bloc : si plusieurs postes, montrer le 1er et le dernier
-            const lblBloc1 = b1.postes.length > 1
-                ? `${lblDate(b1.postes[0].startStr.split('T')[0])} (${b1.postes.length} activités)`
-                : lblDate(ds1);
-            const lblBloc2 = b2.postes.length > 1
-                ? `${lblDate(b2.postes[0].startStr.split('T')[0])} (${b2.postes.length} activités)`
-                : lblDate(ds2);
-
-            if (ecartH < REPOS_QUOTIDIEN_H) {
-                violQ.push({
-                    lbl1:   lblBloc1,
-                    lbl2:   lblBloc2,
-                    type1:  b1.postes.map(p => p.extendedProps.type).join(' + '),
-                    type2:  b2.postes.map(p => p.extendedProps.type).join(' + '),
-                    hFin1:  ev1.extendedProps.hF || '—',
-                    hDeb2:  ev2.extendedProps.hD || '—',
-                    ecartH: Math.round(ecartH * 10) / 10,
-                    manqH:  Math.round((REPOS_QUOTIDIEN_H - ecartH) * 10) / 10
-                });
-            } else {
-                okQ++;
-            }
-        }
-
-        // ═══════════════════════════════════════════════════════════
-        //  ANALYSE 2 — Repos total dans chaque semaine (Lun–Dim)
-        //              → heures travaillées calculées, repos = 168h − travail
-        //              → anomalie si repos total < REPOS_HEBDO_H (35h)
-        // ═══════════════════════════════════════════════════════════
-        let violH = [], okH = 0;
-
-        // Construire la liste de toutes les semaines couvertes par la période
-        const debutPeriode = new Date(d.split('-')[0], d.split('-')[1]-1, d.split('-')[2]);
-        const finPeriode   = new Date(f.split('-')[0], f.split('-')[1]-1, f.split('-')[2]);
-
-        // Trouver le lundi de la 1re semaine
-        let lundiCourant = lundiDeSemaine(d);
-
-        while (lundiCourant <= finPeriode) {
-            const lundiMs  = lundiCourant.getTime();
-            const dimancheMs = lundiMs + 7 * 24 * 3600000; // début du lundi suivant (exclusif)
-
-            // Postes dont une partie tombe dans cette semaine
-            const postesS = tousPostes.filter(ev => {
-                const deb = tsDebut(ev);
-                const fin = tsFin(ev);
-                return fin > lundiMs && deb < dimancheMs;
-            });
-
-            // Calcul des heures de travail dans la fenêtre de la semaine
+        // Semaines
+        const semaines = [];
+        let lundi = dirtLundi(d);
+        while (lundi.getTime() < finP) {
+            const lMs = lundi.getTime(), sMs = lMs + DIRT_SEM;
+            const blocsS = blocs.filter(b => b.fin > lMs && b.debut < sMs);
+            const postesPeriode = blocsS.reduce((n, b) => n + b.postes.filter(dansPeriode).length, 0);
             let hTravail = 0;
-            postesS.forEach(ev => {
-                const deb = Math.max(tsDebut(ev), lundiMs);
-                const fin = Math.min(tsFin(ev), dimancheMs);
-                hTravail += (fin - deb) / 3600000;
-            });
-
-            const hRepos  = Math.round((HEURES_SEMAINE - hTravail) * 10) / 10;
-            const hTravR  = Math.round(hTravail * 10) / 10;
-
-            const lundiLbl   = lundiCourant.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-            const dimancheLbl = new Date(lundiMs + 6 * 24 * 3600000)
-                                    .toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-            const semLbl = `S. du ${lundiLbl} au ${dimancheLbl}`;
-
-            // On n'analyse que les semaines qui ont au moins un poste dans la période saisie
-            if (postesS.length > 0) {
-                if (hRepos < REPOS_HEBDO_H) {
-                    violH.push({
-                        semLbl,
-                        nbPostes: postesS.length,
-                        hTravail: hTravR,
-                        hRepos,
-                        manqH: Math.round((REPOS_HEBDO_H - hRepos) * 10) / 10
-                    });
-                } else {
-                    okH++;
+            blocsS.forEach(b => b.postes.forEach(ev => {
+                const a = Math.max(dirtTsDebut(ev), lMs), z = Math.min(dirtTsFin(ev), sMs);
+                if (z > a) hTravail += (z - a) / DIRT_H;
+            }));
+            // Plus long repos consécutif touchant la semaine (y compris à cheval sur la semaine voisine)
+            let maxRepos = 0, maxRef = null;
+            if (!blocsS.length) maxRepos = 168;
+            else {
+                const avant = blocs.filter(b => b.fin <= lMs).pop(), apres = blocs.find(b => b.debut >= sMs);
+                const seq = (avant ? [avant] : []).concat(blocsS, apres ? [apres] : []);
+                if (!avant) { const h = (blocsS[0].debut - lMs) / DIRT_H; if (h > maxRepos) { maxRepos = h; maxRef = { debut: lMs, fin: blocsS[0].debut }; } }
+                for (let i = 0; i < seq.length - 1; i++) {
+                    const a = seq[i].fin, z = seq[i + 1].debut;
+                    if (z > lMs && a < sMs) { const h = (z - a) / DIRT_H; if (h > maxRepos) { maxRepos = h; maxRef = { debut: a, fin: z }; } }
                 }
+                if (!apres) { const last = blocsS[blocsS.length - 1]; const h = (sMs - last.fin) / DIRT_H; if (h > maxRepos) { maxRepos = h; maxRef = { debut: last.fin, fin: sMs }; } }
             }
-
-            // Passer à la semaine suivante
-            lundiCourant = new Date(lundiMs + 7 * 24 * 3600000);
+            const analysee = postesPeriode > 0;
+            semaines.push({
+                lundi: lMs, fin: sMs, blocs: blocsS, analysee, postes: postesPeriode,
+                hTravail: dirtR1(hTravail), hReposTotal: dirtR1(168 - hTravail),
+                maxRepos: dirtR1(maxRepos), maxRef, ok: maxRepos >= seuilH,
+                violQ: violQ.filter(r => r.fin > lMs && r.debut < sMs)
+            });
+            lundi = new Date(lMs + DIRT_SEM);
         }
-
-        // ═══════════════════════════════════════════════════════════
-        //  AFFICHAGE
-        // ═══════════════════════════════════════════════════════════
-        let html = '';
-        const totalViol = violQ.length + violH.length;
-
-        if (totalViol === 0) {
-            html = `<div class="dirt-ok">
-                ✅ Aucune anomalie détectée sur la période !<br>
-                <span style="font-size:0.8rem; font-weight:600; margin-top:6px; display:block; line-height:1.6;">
-                    ⏰ Repos entre postes ≥ ${REPOS_QUOTIDIEN_H}h : <b>${okQ}</b> bloc(s) ✔<br>
-                    📅 Repos hebdo ≥ ${REPOS_HEBDO_H}h : <b>${okH}</b> semaine(s) ✔
-                </span>
-            </div>`;
-        } else {
-
-            // ── Bloc 1 : repos entre postes ──
-            if (violQ.length > 0) {
-                html += `<div style="font-size:0.85rem;font-weight:800;color:var(--danger);padding:8px 12px;background:#fee2e2;border-radius:8px;margin-bottom:8px;">
-                    ⏰ ${violQ.length} anomalie(s) de repos entre blocs (min. ${REPOS_QUOTIDIEN_H}h requis)
-                </div>`;
-                violQ.forEach(v => {
-                    html += `<div class="dirt-alert">
-                        <div class="dirt-alert-icon">🚫</div>
-                        <div class="dirt-alert-text">
-                            <b>${v.lbl1}</b> fin ${v.hFin1} → <b>${v.lbl2}</b> début ${v.hDeb2}<br>
-                            Types : ${v.type1} → ${v.type2}<br>
-                            Repos réel : <b>${v.ecartH}h</b> — manque <b style="color:#ef4444;">${v.manqH}h</b>
-                        </div>
-                    </div>`;
-                });
-                html += `<div style="font-size:0.75rem;color:#64748b;text-align:right;margin-bottom:12px;">${okQ} bloc(s) conforme(s) ✔</div>`;
-            } else {
-                html += `<div class="dirt-ok" style="margin-bottom:10px;">
-                    ✅ Repos entre blocs (${REPOS_QUOTIDIEN_H}h) : aucune anomalie — ${okQ} bloc(s) ✔
-                </div>`;
-            }
-
-            // ── Bloc 2 : repos hebdomadaire ──
-            if (violH.length > 0) {
-                html += `<div style="font-size:0.85rem;font-weight:800;color:#b45309;padding:8px 12px;background:#fef3c7;border-radius:8px;margin-bottom:8px;margin-top:4px;">
-                    📅 ${violH.length} semaine(s) avec repos total insuffisant (min. ${REPOS_HEBDO_H}h requis)
-                </div>`;
-                violH.forEach(v => {
-                    html += `<div class="dirt-alert" style="background:#fffbeb;border-color:#fcd34d;">
-                        <div class="dirt-alert-icon">⚠️</div>
-                        <div class="dirt-alert-text" style="color:#92400e;">
-                            <b>${v.semLbl}</b> — ${v.nbPostes} poste(s) travaillé(s)<br>
-                            Travail : <b>${v.hTravail}h</b> | Repos total : <b>${v.hRepos}h</b> sur 168h<br>
-                            Manque : <b style="color:#b45309;">${v.manqH}h</b> de repos
-                        </div>
-                    </div>`;
-                });
-                html += `<div style="font-size:0.75rem;color:#64748b;text-align:right;margin-bottom:6px;">${okH} semaine(s) conforme(s) ✔</div>`;
-            } else {
-                html += `<div class="dirt-ok" style="margin-top:4px;">
-                    ✅ Repos hebdomadaire (${REPOS_HEBDO_H}h) : aucune anomalie — ${okH} semaine(s) ✔
-                </div>`;
-            }
-
-            html += `<div style="font-size:0.7rem;color:#94a3b8;margin-top:10px;text-align:center;border-top:1px dashed var(--border-color);padding-top:8px;">
-                <i class="fas fa-balance-scale"></i>&nbsp;Art. L3131-1 CT (repos quotidien 11h) &amp; Art. L3132-2 CT (repos hebdo 35h consécutives)
-            </div>`;
-        }
-
-        document.getElementById('dirt-resultats').innerHTML = html;
+        const semA = semaines.filter(s => s.analysee);
+        const violH = semA.filter(s => !s.ok);
+        const nbControles = reposPeriode.length + semA.length;
+        const conformite = nbControles ? Math.round(100 * (okQ + semA.length - violH.length) / nbControles) : 100;
+        return { d, f, seuilQ, seuilH, postes: postes.filter(dansPeriode).length, blocs, repos, violQ, okQ, reposMin, semaines, semA, violH, conformite };
     }
 
+    function analyserDIRT() {
+        const d = document.getElementById('dirt-debut').value, f = document.getElementById('dirt-fin').value;
+        if (!d || !f) { alert('Veuillez sélectionner une période.'); return; }
+        if (f < d) { alert('La date de fin doit être après la date de début.'); return; }
+        const sQ = parseFloat(document.getElementById('dirt-seuil-quotidien').value) || 11;
+        const sH = parseFloat(document.getElementById('dirt-seuil-hebdo').value) || 35;
+        dirtDernier = dirtCalculer(d, f, sQ, sH);
+        dirtRendre();
+    }
+
+    function dirtPeriode(cle) {
+        const now = new Date(), y = now.getFullYear(), m = now.getMonth();
+        let a, b;
+        if (cle === 'mois') { a = new Date(y, m, 1); b = new Date(y, m + 1, 0); }
+        else if (cle === 'prec') { a = new Date(y, m - 1, 1); b = new Date(y, m, 0); }
+        else if (cle === '3mois') { a = new Date(y, m - 2, 1); b = new Date(y, m + 1, 0); }
+        else if (cle === 'paie') { const p = calculerPeriode20au20(); document.getElementById('dirt-debut').value = p.debut; document.getElementById('dirt-fin').value = p.fin; }
+        if (a) { document.getElementById('dirt-debut').value = fmtLocal(a); document.getElementById('dirt-fin').value = fmtLocal(b); }
+        document.querySelectorAll('.dirt-chip-per').forEach(c => c.classList.toggle('on', c.dataset.p === cle));
+        analyserDIRT();
+    }
+    function dirtAuto() {
+        if (!document.getElementById('dirt-debut').value) { dirtPeriode('mois'); return; }
+        analyserDIRT();
+    }
+    function dirtSetFiltre(f) { dirtFiltre = f; dirtRendre(); }
+
+    function dirtRendre() {
+        const r = dirtDernier, box = document.getElementById('dirt-resultats');
+        if (!r) return;
+        if (!r.postes) { box.innerHTML = `<div class="dirt-empty"><i class="fas fa-calendar-times"></i><b>Aucun poste sur cette période</b><span>Choisissez une autre période ou ajoutez des postes au planning.</span></div>`; return; }
+        const nQ = r.violQ.length, nH = r.violH.length, tot = nQ + nH;
+        const tonC = r.conformite >= 100 ? 'ok' : r.conformite >= 90 ? 'warn' : 'ko';
+        const anneau = (pct, ton) => {
+            const c = 2 * Math.PI * 30, off = c * (1 - pct / 100);
+            return `<svg viewBox="0 0 72 72" class="dirt-ring ${ton}" aria-hidden="true"><circle cx="36" cy="36" r="30" class="bg"/><circle cx="36" cy="36" r="30" class="fg" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}"/></svg>`;
+        };
+        let html = `<div class="dirt-kpis">
+            <div class="dirt-kpi main ${tonC}">${anneau(r.conformite, tonC)}<div class="dirt-kpi-ring-val">${r.conformite}<small>%</small></div>
+                <div class="dirt-kpi-lbl">Conformité<br><small>${r.repos.filter(x => x.compte).length + r.semA.length} contrôles</small></div></div>
+            <div class="dirt-kpi ${nQ ? 'ko' : 'ok'}"><div class="dirt-kpi-val">${nQ}</div><div class="dirt-kpi-lbl">⏰ Repos &lt; ${r.seuilQ}h</div></div>
+            <div class="dirt-kpi ${nH ? 'warn' : 'ok'}"><div class="dirt-kpi-val">${nH}</div><div class="dirt-kpi-lbl">📅 Sem. &lt; ${r.seuilH}h</div></div>
+            <div class="dirt-kpi ${r.reposMin != null && r.reposMin < r.seuilQ ? 'ko' : 'ok'}"><div class="dirt-kpi-val">${r.reposMin != null ? dirtR1(r.reposMin) + '<small>h</small>' : '—'}</div><div class="dirt-kpi-lbl">Repos le plus court</div></div>
+        </div>`;
+
+        // Frise semaine par semaine
+        html += `<div class="dirt-card"><div class="dirt-card-title"><i class="fas fa-stream"></i> Frise des repos
+                <span class="dirt-leg"><i class="lg work"></i>Travail <i class="lg bad"></i>Repos &lt; ${r.seuilQ}h <i class="lg best"></i>Plus long repos</span></div>
+            <div class="dirt-days"><span></span><div class="dirt-days-in">${['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].map(j => `<span><b class="dl">${j}</b><b class="ds">${j.charAt(0)}</b></span>`).join('')}</div><span></span></div>`;
+        r.semaines.forEach(s => {
+            if (!s.analysee) return;
+            const pos = (ms) => Math.max(0, Math.min(100, (ms - s.lundi) / DIRT_SEM * 100));
+            let piste = '';
+            // Repos le plus long (fond vert)
+            if (s.maxRef) piste += `<div class="dirt-seg best" style="left:${pos(s.maxRef.debut)}%;width:${pos(s.maxRef.fin) - pos(s.maxRef.debut)}%" title="Plus long repos : ${s.maxRepos}h"></div>`;
+            // Repos insuffisants (rouge)
+            s.violQ.forEach(v => { piste += `<div class="dirt-seg bad" style="left:${pos(v.debut)}%;width:${Math.max(0.8, pos(v.fin) - pos(v.debut))}%" title="Repos ${dirtR1(v.h)}h (min ${r.seuilQ}h)"><span>${dirtR1(v.h)}h</span></div>`; });
+            // Blocs de travail
+            s.blocs.forEach(b => {
+                const type = b.postes[0].extendedProps.type;
+                const lbl = b.postes.map(p => p.extendedProps.type).join(' + ');
+                piste += `<div class="dirt-seg work" style="left:${pos(b.debut)}%;width:${Math.max(0.6, pos(b.fin) - pos(b.debut))}%;background:${getColorForType(type)}" title="${lbl} · ${dirtFmtJour(b.debut)} ${dirtFmtH(b.debut)} → ${dirtFmtH(b.fin)}"></div>`;
+            });
+            const d1 = new Date(s.lundi), d7 = new Date(s.lundi + 6 * 24 * DIRT_H);
+            const lbl = `S${tbNumSem(d1)}<small>${d1.getDate()}/${d1.getMonth() + 1}–${d7.getDate()}/${d7.getMonth() + 1}</small>`;
+            html += `<div class="dirt-week ${s.ok && !s.violQ.length ? '' : 'has-issue'}">
+                <div class="dirt-week-lbl">${lbl}</div>
+                <div class="dirt-track">${[1,2,3,4,5,6].map(i => `<i class="tick" style="left:${i * 100 / 7}%"></i>`).join('')}${piste}</div>
+                <div class="dirt-week-badge ${s.ok ? 'ok' : 'warn'}" title="Plus long repos consécutif / travail de la semaine">${s.ok ? '✔' : '⚠'} ${s.maxRepos}h<small>${s.hTravail}h trav.</small></div>
+            </div>`;
+        });
+        html += `</div>`;
+
+        // Anomalies
+        html += `<div class="dirt-card"><div class="dirt-card-title"><i class="fas fa-exclamation-triangle"></i> Anomalies
+            <div class="dirt-filters">
+                <button class="${dirtFiltre === 'tout' ? 'on' : ''}" onclick="dirtSetFiltre('tout')">Toutes <b>${tot}</b></button>
+                <button class="${dirtFiltre === 'q' ? 'on' : ''}" onclick="dirtSetFiltre('q')">⏰ Quotidien <b>${nQ}</b></button>
+                <button class="${dirtFiltre === 'h' ? 'on' : ''}" onclick="dirtSetFiltre('h')">📅 Hebdo <b>${nH}</b></button>
+            </div></div>`;
+        const items = [];
+        if (dirtFiltre !== 'h') r.violQ.forEach(v => {
+            const pct = Math.max(4, Math.min(100, v.h / r.seuilQ * 100));
+            items.push(`<div class="dirt-item ko">
+                <div class="dirt-item-ic">⏰</div>
+                <div class="dirt-item-body">
+                    <div class="dirt-item-t">${dirtFmtJour(v.debut)} ${dirtFmtH(v.debut)} → ${dirtFmtJour(v.fin)} ${dirtFmtH(v.fin)}</div>
+                    <div class="dirt-item-s">${v.b1.postes.map(p => p.extendedProps.type).join(' + ')} → ${v.b2.postes.map(p => p.extendedProps.type).join(' + ')}</div>
+                    <div class="dirt-gauge"><i style="width:${pct}%"></i><em style="left:100%"></em></div>
+                    <div class="dirt-item-s">Repos <b>${dirtR1(v.h)}h</b> / ${r.seuilQ}h requis — manque <b class="neg">${dirtR1(r.seuilQ - v.h)}h</b></div>
+                </div></div>`);
+        });
+        if (dirtFiltre !== 'q') r.violH.forEach(s => {
+            const d1 = new Date(s.lundi), d7 = new Date(s.lundi + 6 * 24 * DIRT_H);
+            const pct = Math.max(4, Math.min(100, s.maxRepos / r.seuilH * 100));
+            items.push(`<div class="dirt-item warn">
+                <div class="dirt-item-ic">📅</div>
+                <div class="dirt-item-body">
+                    <div class="dirt-item-t">Semaine ${tbNumSem(d1)} · ${d1.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })} → ${d7.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}</div>
+                    <div class="dirt-item-s">${s.postes} poste(s) · ${s.hTravail}h travaillées</div>
+                    <div class="dirt-gauge warn"><i style="width:${pct}%"></i></div>
+                    <div class="dirt-item-s">Plus long repos consécutif <b>${s.maxRepos}h</b> / ${r.seuilH}h requis — manque <b class="neg">${dirtR1(r.seuilH - s.maxRepos)}h</b></div>
+                </div></div>`);
+        });
+        html += items.length ? items.join('') : `<div class="dirt-ok" style="margin:4px 0 2px;">✅ Aucune anomalie${dirtFiltre === 'q' ? ' de repos quotidien' : dirtFiltre === 'h' ? ' de repos hebdomadaire' : ''} sur la période</div>`;
+        html += `</div>
+            <div class="dirt-foot"><i class="fas fa-balance-scale"></i>&nbsp;Art. L3131-1 CT (repos quotidien ${r.seuilQ}h) · Art. L3132-2 CT (repos hebdo ${r.seuilH}h consécutives) · ${r.postes} poste(s) analysé(s)</div>`;
+        box.innerHTML = html;
+    }
 
     function toggleAcc(id) {
         document.getElementById(id).classList.toggle('open');
@@ -4288,6 +4294,13 @@ function selectAct(btn, val) {
         updateRepasInfo();
     }
 
+    function paieToutesSections(ouvrir) {
+        document.querySelectorAll('.table-paie .paie-acc-header').forEach(h => {
+            const body = document.getElementById(h.id + '-body');
+            h.classList.toggle('paie-acc-open', ouvrir);
+            if (body) body.style.display = ouvrir ? 'table-row-group' : 'none';
+        });
+    }
     function togglePaieAcc(headerId) {
         const header = document.getElementById(headerId);
         const body = document.getElementById(headerId + '-body');
@@ -4309,6 +4322,7 @@ function selectAct(btn, val) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); 
         document.querySelectorAll('.tab-btn:not([onclick^="toggleDarkMode"])').forEach(b => b.classList.remove('active')); 
         if (id === 'tab-config-taux') { setTimeout(cfg2Charger, 50); }
+        if (id === 'tab-dirt') { setTimeout(dirtAuto, 50); }
         if (id === 'tab-paie') { setTimeout(majBandeauPaieTaux, 50); }
         document.getElementById(id).classList.add('active'); 
         if(btnElement) btnElement.classList.add('active');
@@ -6710,6 +6724,10 @@ service cloud.firestore {
     function fbEnc(t) { return btoa(unescape(encodeURIComponent(t))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
     function fbDec(t) { t = String(t || '').replace(/-/g, '+').replace(/_/g, '/'); while (t.length % 4) t += '='; return decodeURIComponent(escape(atob(t))); }
     function fbImportDepuisUrl() {
+        if (location.hash === '#reset-firebase') {
+            ['fb_config_v1', 'fb_last_compte', 'fb_local_owner'].forEach(k => localStorage.removeItem(k));
+            history.replaceState(null, '', location.pathname + location.search);
+        }
         const p = new URLSearchParams(location.search);
         const v = p.get('fbcfg'), u = p.get('u'), pw = p.get('p');
         if (!v && !u) return;
@@ -6998,8 +7016,7 @@ service cloud.firestore {
                     <label class="fb-remember"><input type="checkbox" id="fb-login-remember"> Mémoriser mon identifiant et mon mot de passe sur cet appareil</label>
                     <button class="btn btn-paye" type="submit" id="fb-login-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
                 </form>
-                <p class="fb-hint">Mot de passe oublié ? Demandez à votre administrateur de vous en attribuer un nouveau.</p>
-                <button class="fb-link" onclick="fbOublierConfig()">Changer de projet Firebase</button>`;
+                <p class="fb-hint">Mot de passe oublié ? Demandez à votre administrateur de vous en attribuer un nouveau.</p>`;
             const attente = fbLoginEnAttente(), memo = fbLoginMemorise();
             const pre = attente || memo;
             if (pre) {
@@ -7023,12 +7040,10 @@ service cloud.firestore {
                     <label class="fb-lbl" for="fb-setup-pwd2">Confirmer le mot de passe</label>
                     <input id="fb-setup-pwd2" type="password" autocomplete="new-password" required minlength="6">
                     <button class="btn btn-paye" type="submit" id="fb-setup-btn"><i class="fas fa-user-shield"></i> Créer le compte administrateur</button>
-                </form>
-                <button class="fb-link" onclick="fbOublierConfig()">Changer de projet Firebase</button>`;
+                </form>`;
         } else if (mode === 'erreur') {
             corps.innerHTML = `<h2>Connexion impossible</h2>${err}
-                <button class="btn btn-paye" onclick="location.reload()"><i class="fas fa-redo"></i> Réessayer</button>
-                <button class="fb-link" onclick="fbOublierConfig()">Changer de projet Firebase</button>`;
+                <button class="btn btn-paye" onclick="location.reload()"><i class="fas fa-redo"></i> Réessayer</button>`;
         }
     }
     function fbBoutonAttente(id, on, txt) {
@@ -7151,7 +7166,7 @@ service cloud.firestore {
         fbInstallerHookStockage();
         fbInstallerGardes();
         const cfg = fbGetConfig();
-        if (!cfg) return; // mode local, sans compte
+        if (!cfg) { document.documentElement.classList.remove('fb-pending'); return; } // mode local, sans compte
         fbGate('chargement', 'Connexion à Firebase…');
         try {
             await fbChargerSDK();
@@ -7719,7 +7734,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v8.8';
+const CACHE_NAME = 'planning-pro-v9.0';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
