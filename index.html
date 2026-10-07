@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.0</title>
+    <title>Mon Planning Pro v9.1</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -595,6 +595,29 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         /* ANALYSE DIRT */
 
+        /* ═══ PLAGES HORAIRES ═══ */
+        .plage-row, .plage-axe { display:grid; grid-template-columns:100px 104px 12px 104px 1fr 46px; gap:6px; align-items:center; }
+        .plage-row { padding:5px 0; border-top:1px dashed var(--border-color); }
+        .plage-row:first-child { border-top:none; }
+        .plage-lbl { font-size:0.82rem; font-weight:700; white-space:nowrap; }
+        .plage-row input { margin:0 !important; padding:6px 4px !important; font-size:0.82rem !important; }
+        .plage-sep { color:var(--text-muted); text-align:center; }
+        .plage-bar { position:relative; height:10px; background:var(--bg-app); border-radius:5px; overflow:hidden; border:1px solid var(--border-color); }
+        .plage-bar i { position:absolute; top:0; bottom:0; background:var(--primary); border-radius:4px; }
+        .plage-dur { font-family:'DM Mono',monospace; font-size:0.75rem; font-weight:800; color:var(--primary); text-align:right; }
+        .plage-dur.off { color:var(--text-muted); font-family:'DM Sans',sans-serif; font-weight:600; font-style:italic; }
+        .plage-axe { grid-template-columns:100px 104px 12px 104px 1fr 46px; font-size:0.55rem; color:var(--text-muted); font-weight:700; }
+        .plage-axe > span:first-child { grid-column:1 / 5; }
+        .plage-axe > div { display:flex; justify-content:space-between; }
+        .plage-repas { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin:10px 0 4px; padding:8px 10px; background:var(--bg-app); border:1px solid var(--border-color); border-radius:10px; font-size:0.8rem; font-weight:700; }
+        .plage-repas > span { flex:1; min-width:150px; } .plage-repas small { color:var(--text-muted); font-weight:600; }
+        .plage-repas input { width:70px !important; margin:0 !important; padding:6px !important; }
+        .plage-repas select { width:auto !important; margin:0 !important; padding:6px !important; }
+        @media (max-width:520px) {
+            .plage-row { grid-template-columns:1fr 96px 10px 96px 40px; }
+            .plage-row .plage-bar { grid-column:1 / -1; grid-row:2; }
+            .plage-axe { display:none; }
+        }
         /* ═══ PAIE — tout déployer / replier ═══ */
         .paie-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:10px; font-size:0.75rem; color:#64748b; }
         .paie-toolbar > div { display:flex; gap:6px; margin-left:auto; }
@@ -1660,8 +1683,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             </div>
 
             <div style="display: flex; gap: 8px; margin-top:12px;">
-                <input type="time" id="edit-heure-debut">
-                <input type="time" id="edit-heure-fin">
+                <input type="time" id="edit-heure-debut" oninput="this.dataset.auto='0'">
+                <input type="time" id="edit-heure-fin" oninput="document.getElementById('edit-heure-debut').dataset.auto='0'">
             </div>
 
             <!-- PAUSE REPAS -->
@@ -1885,6 +1908,23 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     <input type="hidden" id="cfg-maj-suppl-am" value="25">
     <input type="hidden" id="cfg-maj-suppl-nuit" value="25">
     <input type="hidden" id="cfg-maj-nuit" value="15">
+
+    <!-- PLAGES HORAIRES -->
+    <div class="zone-card" style="margin-bottom:16px;">
+        <span class="zone-title">🕐 PLAGES HORAIRES PAR DÉFAUT</span>
+        <p style="font-size:0.75rem; color:#64748b; margin-bottom:10px;">Horaires proposés automatiquement quand vous ajoutez un poste ou créez un roulement. Laissez vide pour ne rien pré-remplir.</p>
+        <div class="plage-axe"><span></span><div><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span></div><span></span></div>
+        <div id="plages-liste"></div>
+        <div class="plage-repas">
+            <span>🍽️ Pause repas par défaut <small>(postes)</small></span>
+            <input type="number" id="plages-repas-min" min="0" max="120" step="5" aria-label="Durée de la pause en minutes"><small>min</small>
+            <select id="plages-repas-paye" aria-label="Pause payée ou non"><option value="paye">✅ Payée</option><option value="non_paye">❌ Non payée</option></select>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn btn-paye" style="flex:2; min-width:160px;" onclick="plagesEnregistrer()"><i class="fas fa-save"></i> Enregistrer les plages</button>
+            <button class="btn btn-outline" style="flex:1; min-width:120px;" onclick="plagesReinitialiser()"><i class="fas fa-undo"></i> Par défaut</button>
+        </div>
+    </div>
 
     <!-- Lien vers l'onglet Taux -->
     <div style="background:linear-gradient(135deg,#eef2ff,#f5f3ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
@@ -2801,10 +2841,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         let hF = document.getElementById('edit-heure-fin').value;
 
         if(!hD && !hF && zone === 'travail') {
-            if(type === "MATIN" || type === "MATIN SUPPL.")            { hD = "04:00"; hF = "12:00"; }
-            else if(type === "APRÈS-MIDI" || type === "APRÈS-MIDI SUPPL.") { hD = "12:00"; hF = "20:00"; }
-            else if(type === "NUIT" || type === "NUIT SUPPL.")          { hD = "20:00"; hF = "04:00"; }
-            else if(type === "POSTE JOURNÉE" || type === "JOURNÉE SUPPL.")  { hD = "08:00"; hF = "16:00"; }
+            const pl = getPlage(type);
+            hD = pl.hD; hF = pl.hF;
         }
 
         // ── DÉTECTION CHEVAUCHEMENT ──
@@ -3766,6 +3804,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             if(firstBtn) { firstBtn.classList.add('selected'); document.getElementById('edit-type-travail').value = 'MATIN'; document.getElementById('act-selected-label').textContent = firstBtn.textContent.trim(); }
             document.getElementById('edit-heure-debut').value = '';
             document.getElementById('edit-heure-fin').value = '';
+            document.getElementById('edit-heure-debut').dataset.auto = '1';
             document.getElementById('edit-repas-duree').value = '20'; // Modifié ici
             document.getElementById('edit-repas-paye').value = 'paye'; // Modifié ici
             document.getElementById('edit-repas-taux').value = '';
@@ -3777,6 +3816,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 const eType = p.type || "MATIN";
                 document.getElementById('edit-type-travail').value = eType;
                 document.getElementById('edit-heure-debut').value = p.hD || "";
+                document.getElementById('edit-heure-debut').dataset.auto = '0';
                 document.getElementById('edit-heure-fin').value = p.hF || "";
                 document.getElementById('edit-commentaire').value = p.note || "";
                 // Restore meal break
@@ -3798,6 +3838,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         
         if (id === 'modal-config') {
             loadInfoPrefs();
+            if (typeof plagesRendre === 'function') plagesRendre();
             const cfg = JSON.parse(localStorage.getItem('autoBackupCfg') || '{"freq":"weekly","enabled":true}');
             const sel = document.getElementById('cfg-backup-freq');
             if (sel) sel.value = cfg.enabled ? cfg.freq : 'disabled';
@@ -4025,6 +4066,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     };
     const DIRT_H = 3600000, DIRT_SEM = 7 * 24 * DIRT_H;
     let dirtDernier = null, dirtFiltre = 'tout';
+    function dirtAppliquerPlages() {
+        Object.keys(DIRT_DEFAUT).forEach(t => {
+            const pl = getPlage(t);
+            if (pl.hD && pl.hF) DIRT_DEFAUT[t] = { debut: parseInt(pl.hD) + parseInt(pl.hD.split(':')[1]) / 60, duree: plageDuree(pl.hD, pl.hF) };
+        });
+    }
 
     function dirtDebutH(p) {
         if (p.hD) { const t = p.hD.split(':'); return parseInt(t[0]) + (parseInt(t[1] || 0) / 60); }
@@ -4273,20 +4320,20 @@ function selectAct(btn, val) {
         // Auto-fill horaires par défaut si champs vides
         const hD = document.getElementById('edit-heure-debut');
         const hF = document.getElementById('edit-heure-fin');
-        if (!hD.value && !hF.value) {
-            if(val === 'MATIN' || val === 'MATIN SUPPL.')            { hD.value='04:00'; hF.value='12:00'; }
-            else if(val === 'APRÈS-MIDI' || val === 'APRÈS-MIDI SUPPL.') { hD.value='12:00'; hF.value='20:00'; }
-            else if(val === 'NUIT' || val === 'NUIT SUPPL.')          { hD.value='20:00'; hF.value='04:00'; }
-            else if(val === 'POSTE JOURNÉE' || val === 'JOURNÉE SUPPL.') { hD.value='08:00'; hF.value='16:00'; }
-            else { hD.value=''; hF.value=''; }
+        // Horaires par défaut (Réglages › Plages horaires) — remplacés si on change d'activité
+        if ((!hD.value && !hF.value) || hD.dataset.auto === '1') {
+            const pl = getPlage(val);
+            hD.value = pl.hD; hF.value = pl.hF;
+            hD.dataset.auto = '1';
         }
 
         // Auto-fill pause repas de 20 min payée pour les postes
         const rD = document.getElementById('edit-repas-duree');
         const rP = document.getElementById('edit-repas-paye');
         if (['MATIN', 'MATIN SUPPL.', 'APRÈS-MIDI', 'APRÈS-MIDI SUPPL.', 'NUIT', 'NUIT SUPPL.', 'POSTE JOURNÉE', 'JOURNÉE SUPPL.'].includes(val)) {
-            rD.value = '20';
-            rP.value = 'paye';
+            const rp = getRepasDefaut();
+            rD.value = rp.min ? String(rp.min) : '';
+            rP.value = rp.paye;
         } else {
             rD.value = '';
             rP.value = 'non_paye';
@@ -6178,7 +6225,10 @@ function selectAct(btn, val) {
 
     function rotHorairesDefaut() {
         const h = {};
-        ['MATIN','APRÈS-MIDI','NUIT','POSTE JOURNÉE'].forEach(t => h[t] = { hD: ROT_TYPES[t].hD, hF: ROT_TYPES[t].hF });
+        ['MATIN','APRÈS-MIDI','NUIT','POSTE JOURNÉE'].forEach(t => {
+            const pl = (typeof getPlage === 'function') ? getPlage(t) : {};
+            h[t] = { hD: pl.hD || ROT_TYPES[t].hD, hF: pl.hF || ROT_TYPES[t].hF };
+        });
         return h;
     }
     function rotMotifDepuisCode(code) {
@@ -6485,7 +6535,7 @@ function selectAct(btn, val) {
             couleur: ROT_COULEURS[rotState.list.length % ROT_COULEURS.length],
             debut: today, fin: rotAddMonths(today, 12),
             motif: rotMotifDepuisCode('NNNRRAAARRMMMRR'),
-            horaires: rotHorairesDefaut(), repasMin: 20, repasPaye: 'paye', visible: true
+            horaires: rotHorairesDefaut(), repasMin: getRepasDefaut().min, repasPaye: getRepasDefaut().paye, visible: true
         };
         rotRemplirEditeur();
     }
@@ -7676,6 +7726,181 @@ service cloud.firestore {
     document.addEventListener('DOMContentLoaded', fbBoot);
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ PLAGES HORAIRES PAR DÉFAUT (v9.1) ══════════════════════════════════════
+    // Stockées dans soldes_v5.plages → sauvegardées, synchronisées (Firebase) et restaurées avec la config.
+    // ═══════════════════════════════════════════════════════════════════════════
+    const PLAGES_DEF = [
+        { k:'MATIN',         ic:'☀️', lbl:'Matin',      hD:'04:00', hF:'12:00' },
+        { k:'APRÈS-MIDI',    ic:'⛅', lbl:'Après-midi', hD:'12:00', hF:'20:00' },
+        { k:'NUIT',          ic:'🌙', lbl:'Nuit',       hD:'20:00', hF:'04:00' },
+        { k:'POSTE JOURNÉE', ic:'💼', lbl:'Journée',    hD:'08:00', hF:'16:00' },
+        { k:'FORMATION',     ic:'📚', lbl:'Formation',  hD:'',      hF:'' },
+        { k:'RÉUNION',       ic:'🗣️', lbl:'Réunion',    hD:'',      hF:'' },
+        { k:'CSE',           ic:'⚖️', lbl:'CSE',        hD:'',      hF:'' }
+    ];
+    const PLAGES_ALIAS = { 'MATIN SUPPL.':'MATIN', 'APRÈS-MIDI SUPPL.':'APRÈS-MIDI', 'NUIT SUPPL.':'NUIT', 'JOURNÉE SUPPL.':'POSTE JOURNÉE' };
+    const PLAGES_POSTES = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.'];
+
+    function plageCle(type) { if (!type) return null; if (type.startsWith('CSE')) return 'CSE'; return PLAGES_ALIAS[type] || type; }
+    function plagesConfig() { return (soldes && soldes.plages) || {}; }
+    function getPlage(type) {
+        const k = plageCle(type), def = PLAGES_DEF.find(p => p.k === k);
+        if (!def) return { hD: '', hF: '' };
+        const c = plagesConfig()[k];
+        return c && 'hD' in c ? { hD: c.hD || '', hF: c.hF || '' } : { hD: def.hD, hF: def.hF };
+    }
+    function getRepasDefaut() {
+        const r = plagesConfig()._repas;
+        return r ? { min: r.min, paye: r.paye || 'paye' } : { min: 20, paye: 'paye' };
+    }
+    function plageFmtCourt(h) { return h ? h.replace(':00', 'h').replace(':', 'h') : ''; }
+    function plageDuree(hD, hF) {
+        if (!hD || !hF) return 0;
+        const [a, b] = hD.split(':').map(Number), [c, d] = hF.split(':').map(Number);
+        let x = (c * 60 + d - a * 60 - b) / 60; if (x <= 0) x += 24; return x;
+    }
+
+    // Libellés des boutons d'activité (ex. « ☀️ Matin (06h-14h) »)
+    function majLibellesPlages() {
+        PLAGES_DEF.slice(0, 4).forEach(p => {
+            const pl = getPlage(p.k);
+            const btn = document.querySelector(`.act-btn[onclick="selectAct(this,'${p.k}')"]`);
+            if (btn) btn.textContent = `${p.ic} ${p.lbl}${pl.hD && pl.hF ? ` (${plageFmtCourt(pl.hD)}-${plageFmtCourt(pl.hF)})` : ''}`;
+        });
+        const sel = document.querySelector('.act-btn.selected'), lab = document.getElementById('act-selected-label');
+        if (sel && lab) lab.textContent = sel.textContent.trim();
+        if (typeof dirtAppliquerPlages === 'function') dirtAppliquerPlages();
+    }
+
+    // ── Carte Réglages ──
+    function plagesRendre() {
+        const box = document.getElementById('plages-liste');
+        if (!box) return;
+        box.innerHTML = PLAGES_DEF.map(p => {
+            const pl = getPlage(p.k);
+            return `<div class="plage-row" data-k="${p.k}">
+                <div class="plage-lbl">${p.ic} ${p.lbl}</div>
+                <input type="time" class="plage-d" value="${pl.hD}" oninput="plagesApercu()" aria-label="Début ${p.lbl}">
+                <span class="plage-sep">→</span>
+                <input type="time" class="plage-f" value="${pl.hF}" oninput="plagesApercu()" aria-label="Fin ${p.lbl}">
+                <div class="plage-bar"><i></i><i class="b2"></i></div>
+                <span class="plage-dur"></span>
+            </div>`;
+        }).join('');
+        const r = getRepasDefaut();
+        document.getElementById('plages-repas-min').value = r.min;
+        document.getElementById('plages-repas-paye').value = r.paye;
+        plagesApercu();
+    }
+    function plagesApercu() {
+        document.querySelectorAll('#plages-liste .plage-row').forEach(row => {
+            const d = row.querySelector('.plage-d').value, f = row.querySelector('.plage-f').value;
+            const [i1, i2] = row.querySelectorAll('.plage-bar i');
+            const dur = row.querySelector('.plage-dur');
+            if (!d || !f) { i1.style.width = i2.style.width = '0'; dur.textContent = 'libre'; dur.classList.add('off'); return; }
+            dur.classList.remove('off');
+            const a = (parseInt(d) + parseInt(d.split(':')[1]) / 60) / 24 * 100, h = plageDuree(d, f);
+            dur.textContent = (Math.round(h * 100) / 100).toString().replace('.', ',') + 'h';
+            // Barre 24h : un ou deux segments si la plage passe minuit
+            if (a + h / 24 * 100 <= 100) { i1.style.left = a + '%'; i1.style.width = (h / 24 * 100) + '%'; i2.style.width = '0'; }
+            else { i1.style.left = a + '%'; i1.style.width = (100 - a) + '%'; i2.style.left = '0'; i2.style.width = (a + h / 24 * 100 - 100) + '%'; }
+        });
+    }
+    function plagesLire() {
+        const out = {};
+        document.querySelectorAll('#plages-liste .plage-row').forEach(row => {
+            out[row.dataset.k] = { hD: row.querySelector('.plage-d').value, hF: row.querySelector('.plage-f').value };
+        });
+        out._repas = { min: parseFloat(document.getElementById('plages-repas-min').value) || 0, paye: document.getElementById('plages-repas-paye').value };
+        return out;
+    }
+    function plagesReinitialiser() {
+        if (!confirm('Revenir aux plages d\'origine (Matin 04h-12h, Après-midi 12h-20h, Nuit 20h-04h, Journée 08h-16h, pause 20 min payée) ?')) return;
+        PLAGES_DEF.forEach(p => {
+            const row = document.querySelector(`#plages-liste .plage-row[data-k="${p.k}"]`);
+            row.querySelector('.plage-d').value = p.hD; row.querySelector('.plage-f').value = p.hF;
+        });
+        document.getElementById('plages-repas-min').value = 20;
+        document.getElementById('plages-repas-paye').value = 'paye';
+        plagesApercu();
+    }
+    function plagesEnregistrer() {
+        const nouv = plagesLire();
+        // Validation : début et fin vont ensemble
+        for (const p of PLAGES_DEF) {
+            const v = nouv[p.k];
+            if (!!v.hD !== !!v.hF) { alert(`${p.lbl} : indiquez l'heure de début ET l'heure de fin (ou laissez les deux vides).`); return; }
+        }
+        // Changements sur des plages qui ont des postes existants
+        const changes = PLAGES_DEF.map(p => ({ p, avant: getPlage(p.k), apres: nouv[p.k] }))
+            .filter(c => c.avant.hD && c.avant.hF && c.apres.hD && c.apres.hF && (c.avant.hD !== c.apres.hD || c.avant.hF !== c.apres.hF));
+        soldes.plages = nouv;
+        localStorage.setItem('soldes_v5', JSON.stringify(soldes));
+        majLibellesPlages();
+        let msg = '🕐 Plages horaires enregistrées';
+        if (changes.length) {
+            const nb = changes.reduce((n, c) => n + plagesCompterPostes(c), 0);
+            if (nb > 0) {
+                const liste = changes.map(c => `• ${c.p.lbl} : ${c.avant.hD}-${c.avant.hF} → ${c.apres.hD}-${c.apres.hF}`).join('\n');
+                if (confirm(`Plages enregistrées pour les nouveaux postes.\n\n${liste}\n\nMettre aussi à jour les ${nb} poste(s) déjà planifié(s) qui utilisent l'ancien horaire (roulements compris) ?\n\nLes postes avec un horaire personnalisé ne sont pas touchés.`)) {
+                    const n = plagesAppliquerExistants(changes);
+                    msg += ` — ${n} poste(s) mis à jour`;
+                }
+            }
+        }
+        showToast(msg, 'success', 'fa-clock');
+    }
+    function plagesTypesDe(k) { return k === 'CSE' ? null : [k].concat(Object.keys(PLAGES_ALIAS).filter(a => PLAGES_ALIAS[a] === k)); }
+    function plagesCorrespond(p, c) {
+        const types = plagesTypesDe(c.p.k);
+        const okType = types ? types.includes(p.type) : (p.type || '').startsWith('CSE');
+        return okType && p.hD === c.avant.hD && p.hF === c.avant.hF;
+    }
+    function plagesCompterPostes(c) {
+        let n = calendar.getEvents().filter(e => plagesCorrespond(e.extendedProps || {}, c)).length;
+        if (typeof rotState !== 'undefined') Object.values(rotState.hidden || {}).forEach(l => l.forEach(e => { if (plagesCorrespond(e.extendedProps || {}, c)) n++; }));
+        return n;
+    }
+    function plagesMajProps(p, title, c) {
+        const delta = plageDuree(c.apres.hD, c.apres.hF) - plageDuree(c.avant.hD, c.avant.hF);
+        const np = Object.assign({}, p, { hD: c.apres.hD, hF: c.apres.hF });
+        if (parseFloat(p.hPayees) > 0) np.hPayees = Math.max(0, Math.round((parseFloat(p.hPayees) + delta) * 100) / 100);
+        else if (parseFloat(p.bonusC) > 0) np.bonusC = Math.max(0, Math.round((parseFloat(p.bonusC) + delta) * 100) / 100);
+        const nt = String(title || '').replace(`[${c.avant.hD}-${c.avant.hF}]`, `[${c.apres.hD}-${c.apres.hF}]`);
+        return { props: np, title: nt };
+    }
+    function plagesAppliquerExistants(changes) {
+        let n = 0;
+        calendar.batchRendering(() => {
+            calendar.getEvents().forEach(e => {
+                const c = changes.find(c => plagesCorrespond(e.extendedProps || {}, c));
+                if (!c) return;
+                const r = plagesMajProps(e.extendedProps, e.title, c);
+                Object.entries(r.props).forEach(([k, v]) => { if (e.extendedProps[k] !== v) e.setExtendedProp(k, v); });
+                e.setProp('title', r.title);
+                n++;
+            });
+        });
+        if (typeof rotState !== 'undefined') {
+            Object.values(rotState.hidden || {}).forEach(l => l.forEach(e => {
+                const c = changes.find(c => plagesCorrespond(e.extendedProps || {}, c));
+                if (!c) return;
+                const r = plagesMajProps(e.extendedProps, e.title, c);
+                e.extendedProps = r.props; e.title = r.title; n++;
+            }));
+            // Horaires des roulements qui utilisaient l'ancien horaire
+            rotState.list.forEach(rot => changes.forEach(c => {
+                const h = rot.horaires && rot.horaires[c.p.k];
+                if (h && h.hD === c.avant.hD && h.hF === c.avant.hF) rot.horaires[c.p.k] = { hD: c.apres.hD, hF: c.apres.hF };
+            }));
+            rotSauverState();
+        }
+        sauver(); majAffichage(); calendar.render();
+        return n;
+    }
+    document.addEventListener('DOMContentLoaded', () => { majLibellesPlages(); plagesRendre(); });
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -7734,7 +7959,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.0';
+const CACHE_NAME = 'planning-pro-v9.1';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
