@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v8.7</title>
+    <title>Mon Planning Pro v8.8</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -440,6 +440,19 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .fb-perm-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px 10px; margin-top:4px; }
         .fb-perm-check { display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:600; cursor:pointer; padding:4px 0; }
         .fb-perm-check input { width:16px; height:16px; margin:0; flex-shrink:0; }
+        .fb-part-list { border:1px solid var(--border-color); border-radius:12px; max-height:240px; overflow-y:auto; padding:4px; }
+        .fb-part-item { display:flex; align-items:center; gap:8px; padding:9px 8px; border-radius:8px; cursor:pointer; font-size:0.85rem; }
+        .fb-part-item + .fb-part-item { border-top:1px solid var(--border-color); }
+        .fb-part-item:hover { background:var(--hover-row); }
+        .fb-part-item input { width:18px; height:18px; margin:0; flex-shrink:0; accent-color:var(--primary); }
+        .fb-part-item small { color:var(--text-muted); font-size:0.7rem; margin-left:auto; white-space:nowrap; }
+        .fb-part-item.all { background:var(--bg-app); }
+        .fb-part-item.off { opacity:0.55; }
+        .fb-part-name { font-weight:700; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .rot-badge.shared { background:#e0e7ff; color:#4338ca; }
+        .rot-card-actions button.share { color:var(--primary); border-color:var(--primary-light); }
+        .fb-admin-only { display:none !important; }
+        body.fb-is-admin .fb-admin-only { display:flex !important; }
         .fb-pwd-wrap { position:relative; }
         .fb-pwd-wrap input { padding-right:44px; }
         .fb-eye { position:absolute; right:4px; top:50%; transform:translateY(-50%); margin-top:2px; width:36px; height:36px; border:none; background:none; color:var(--text-muted); cursor:pointer; }
@@ -1626,6 +1639,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     <!-- ═══ MODALE GESTION DES CLIENTS (admin) ═══ -->
     <div id="modal-comptes" class="modal">
         <h3><i class="fas fa-users-cog"></i> Clients &amp; accès <small id="fb-comptes-count" style="font-size:0.7rem; color:var(--text-muted); font-weight:600;"></small></h3>
+        <button class="btn btn-outline" style="margin:0 0 12px;" onclick="fbOuvrirPartage({ tous: true })"><i class="fas fa-paper-plane"></i> Envoyer mes roulements aux clients</button>
         <details class="fb-new" id="fb-nouveau-details">
             <summary><i class="fas fa-user-plus"></i> Nouveau client</summary>
             <label class="fb-lbl" for="fb-new-nom">Nom</label>
@@ -1636,6 +1650,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <input id="fb-new-pwd" type="text" autocomplete="off" spellcheck="false">
             <label class="fb-lbl">Accès autorisés</label>
             <div class="fb-perm-grid" id="fb-nouveau-perms"></div>
+            <label class="fb-remember" id="fb-new-rot-wrap"><input type="checkbox" id="fb-new-rot" checked> <span>Lui envoyer mes roulements <small id="fb-new-rot-info" style="color:var(--text-muted); font-weight:600;"></small></span></label>
             <div id="fb-new-err" class="fb-err" style="display:none;"></div>
             <button class="btn btn-paye" id="fb-new-btn" onclick="fbCreerClient()"><i class="fas fa-user-plus"></i> Créer le client</button>
         </details>
@@ -1645,6 +1660,21 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <strong>Nouveau mot de passe</strong> : remplace immédiatement l'ancien (utile en cas d'oubli). Chaque client peut aussi changer le sien dans « Mon compte ».
         </div>
         <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
+    </div>
+
+    <!-- ═══ MODALE PARTAGE DES ROULEMENTS (admin) ═══ -->
+    <div id="modal-partage" class="modal">
+        <h3><i class="fas fa-paper-plane"></i> Envoyer des roulements</h3>
+        <label class="fb-lbl">Roulements à envoyer</label>
+        <div class="fb-part-list" id="fb-part-rots"></div>
+        <label class="fb-lbl">Destinataires</label>
+        <div class="fb-part-list" id="fb-part-clients"></div>
+        <div class="rot-hint">
+            Les roulements apparaissent chez le client à sa <b>prochaine ouverture</b> de l'application, avec leurs postes générés.<br>
+            Si le client a déjà ce roulement, il est <b>mis à jour</b> (ses jours modifiés à la main sont conservés). Ses autres roulements ne sont pas touchés.
+        </div>
+        <button class="btn btn-paye" id="fb-part-btn" onclick="fbConfirmerPartage()"><i class="fas fa-paper-plane"></i> Envoyer</button>
+        <button class="btn btn-outline" onclick="fermerModales()">Annuler</button>
     </div>
 
     <!-- ═══ MODALE QR CODE CLIENT ═══ -->
@@ -1676,6 +1706,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <div class="rot-toolbar">
                 <button class="btn btn-paye" onclick="rotNouveau()"><i class="fas fa-plus"></i> Nouveau roulement</button>
                 <button class="btn btn-outline" id="rot-btn-all" onclick="rotToutAfficher()" style="display:none;"><i class="fas fa-eye"></i> Tout afficher</button>
+                <button class="btn btn-outline fb-admin-only" onclick="fbOuvrirPartage({})"><i class="fas fa-paper-plane"></i> Envoyer aux clients</button>
             </div>
             <div id="rot-liste"></div>
             <div class="rot-hint">
@@ -6414,6 +6445,7 @@ function selectAct(btn, val) {
                     <span class="rot-dot" style="background:${r.couleur}"></span>
                     <strong class="rot-card-name">${rotEsc(r.nom)}</strong>
                     ${off ? '<span class="rot-badge">Masqué</span>' : ''}
+                    ${r.partage ? `<span class="rot-badge shared" title="Envoyé par ${rotEsc(r.partage.par || 'l\'administrateur')}">📥 Admin</span>` : ''}
                 </div>
                 <div class="rot-card-meta">Cycle de ${r.motif.length} j · ${rotFmtFr(r.debut)} → ${rotFmtFr(r.fin)} · ≈ ${hs.toFixed(1)} h/sem</div>
                 <div class="rot-mini-wrap">${rotMiniMotif(r.motif)}</div>
@@ -6422,6 +6454,7 @@ function selectAct(btn, val) {
                     <button onclick="rotSolo('${r.id}')" title="Afficher uniquement celui-ci"><i class="fas fa-bullseye"></i> Seul</button>
                     <button onclick="rotModifier('${r.id}')"><i class="fas fa-pen"></i> Modifier</button>
                     <button onclick="rotDupliquer('${r.id}')" title="Dupliquer avec décalage"><i class="fas fa-clone"></i> Dupliquer</button>
+                    ${(typeof fbEstAdmin === 'function' && fbEstAdmin()) ? `<button class="share" onclick="fbOuvrirPartage({ rot: '${r.id}' })" title="Envoyer à des clients"><i class="fas fa-paper-plane"></i> Envoyer</button>` : ''}
                     <button class="danger" onclick="rotSupprimer('${r.id}')" aria-label="Supprimer"><i class="fas fa-trash-alt"></i></button>
                 </div>
             </div>`;
@@ -6573,6 +6606,20 @@ function selectAct(btn, val) {
         rotRafraichir();
         rotAfficherVue('liste');
         showToast(`✅ « ${nom} » enregistré — ${n} postes générés`, 'success', 'fa-check-circle');
+    }
+
+    // ── Roulements reçus de l'administrateur : génération des postes sur cet appareil ──
+    function rotTraiterPartages() {
+        const recus = rotState.list.filter(r => r.aGenerer);
+        if (!recus.length) return;
+        recus.forEach(r => {
+            rotRetirerGeneres(r.id);   // mise à jour : on remplace les anciens postes générés
+            rotGenerer(r);             // les jours modifiés à la main sont conservés
+            delete r.aGenerer;
+        });
+        rotRafraichir();
+        const noms = recus.map(r => '« ' + r.nom + ' »').join(', ');
+        showToast(`📥 ${recus.length > 1 ? recus.length + ' roulements reçus' : 'Roulement reçu'} de l'administrateur : ${noms}`, 'success', 'fa-inbox');
     }
 
     // Ancien bouton « Générer Cycle » → ouvre le gestionnaire
@@ -6746,6 +6793,7 @@ service cloud.firestore {
     function fbRefus() { showToast('🔒 Accès restreint par l\'administrateur', 'error', 'fa-lock'); return false; }
     function fbAppliquerDroits() {
         FB_PERMS.forEach(p => document.body.classList.toggle('perm-no-' + p.k, !fbPeut(p.k)));
+        document.body.classList.toggle('fb-is-admin', fbEstAdmin());
         const o = document.querySelector('#edit-type-absence option[value="COMPTEUR 8H"]');
         if (o) { o.hidden = o.disabled = !fbPeut('compteur'); }
     }
@@ -7088,6 +7136,7 @@ service cloud.firestore {
             fbAppliquerDroits();
             if (await fbSyncDemarrage()) return; // la page se recharge
             fbGate(null); fbMajUserBtn(); fbEtat(fbDirtyList().length ? 'attente' : 'ok');
+            rotTraiterPartages();
             showToast(`👋 Bonjour ${c.nom || c.identifiant}`, 'success', 'fa-user-check');
         } catch(e) {
             fbCompte = null;
@@ -7298,6 +7347,10 @@ service cloud.firestore {
         if (!z) return;
         z.innerHTML = fbChipsHTML(null, p => `<label class="fb-perm-check"><input type="checkbox" data-perm="${p.k}" ${p.k === 'config' ? '' : 'checked'}> ${p.lbl}</label>`);
         ['fb-new-nom', 'fb-new-id', 'fb-new-pwd'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+        const nRot = rotState.list.length, w = document.getElementById('fb-new-rot-wrap');
+        if (w) w.style.display = nRot ? 'flex' : 'none';
+        const inf = document.getElementById('fb-new-rot-info'); if (inf) inf.textContent = nRot ? `(${nRot} roulement${nRot > 1 ? 's' : ''})` : '';
+        const cb = document.getElementById('fb-new-rot'); if (cb) cb.checked = true;
         const err = document.getElementById('fb-new-err'); if (err) err.style.display = 'none';
     }
     async function fbRenderComptes() {
@@ -7326,6 +7379,7 @@ service cloud.firestore {
                 <div class="fb-perms">${perms}</div>
                 ${admin ? '' : `<div class="fb-compte-actions">
                     <button onclick="fbOuvrirQR('${c.id}')"><i class="fas fa-qrcode"></i> QR code</button>
+                    <button onclick="fbOuvrirPartage({ cid: '${c.id}' })"><i class="fas fa-paper-plane"></i> Roulements</button>
                     <button onclick="fbNouveauMdpClient('${c.id}')"><i class="fas fa-key"></i> Nouveau mot de passe</button>
                     <button onclick="fbBasculerActif('${c.id}')"><i class="fas ${off ? 'fa-play' : 'fa-pause'}"></i> ${off ? 'Réactiver' : 'Désactiver'}</button>
                     <button class="danger" onclick="fbSupprimerCompte('${c.id}')" aria-label="Supprimer"><i class="fas fa-trash-alt"></i></button>
@@ -7354,6 +7408,7 @@ service cloud.firestore {
         if (pwd.length < 6) return ko('Mot de passe trop court (6 caractères minimum).');
         const perms = {};
         document.querySelectorAll('#fb-nouveau-perms input[data-perm]').forEach(i => perms[i.dataset.perm] = i.checked);
+        const envoyerRot = !!(document.getElementById('fb-new-rot') || {}).checked && rotState.list.length > 0;
         fbBoutonAttente('fb-new-btn', true, 'Création…');
         try {
             if ((await fbDb.doc('logins/' + ident).get()).exists) throw new Error('Cet identifiant est déjà utilisé.');
@@ -7366,6 +7421,10 @@ service cloud.firestore {
             await batch.commit();
             showToast(`✅ Client « ${nom} » créé — identifiant : ${ident}`, 'success', 'fa-user-plus');
             fbMdpSession[cid] = pwd;
+            if (envoyerRot) {
+                try { await fbEnvoyerRoulements(rotState.list.map(r => r.id), [cid]); showToast(`📤 ${rotState.list.length} roulement(s) envoyé(s) à ${nom}`, 'success', 'fa-paper-plane'); }
+                catch(e) { showToast('⚠️ Roulements non envoyés : ' + fbErreur(e), 'error', 'fa-times-circle'); }
+            }
             fbRenderFormNouveau();
             document.getElementById('fb-nouveau-details').open = false;
             await fbRenderComptes();
@@ -7482,6 +7541,106 @@ service cloud.firestore {
         } catch(e) { if (e && e.name === 'AbortError') return; }
         fbQrTelecharger();
     }
+
+    // ── Partage des roulements de l'admin vers les clients ──
+    // L'admin écrit directement dans le planning en ligne du client (autorisé par les règles existantes) :
+    // seules les DÉFINITIONS des roulements sont envoyées, marquées « aGenerer » ; l'app du client génère
+    // les postes à sa prochaine ouverture (en conservant ses jours modifiés à la main).
+    let fbPartageCtx = {};
+    async function fbLireCleClient(cid, cle) {
+        const ref = fbDb.doc('plannings/' + cid);
+        const man = await fbLireManifest(cid);
+        const n = (man && man.keys && man.keys[cle]) || 0;
+        if (!n) return { man, val: null };
+        const docs = await Promise.all(Array.from({ length: n }, (_, i) => ref.collection('chunks').doc(cle + '__' + i).get()));
+        return { man, val: docs.map(d => (d.exists ? d.data().v : '')).join('') };
+    }
+    async function fbEnvoyerRoulements(rotIds, cids) {
+        if (!fbEstAdmin()) throw new Error('Réservé à l\'administrateur.');
+        const choisis = rotState.list.filter(r => rotIds.includes(r.id));
+        if (!choisis.length || !cids.length) return 0;
+        const at = Date.now();
+        for (const cid of cids) {
+            const { man, val } = await fbLireCleClient(cid, 'rotations_v1');
+            let st; try { st = JSON.parse(val); } catch(e) { st = null; }
+            if (!st || !Array.isArray(st.list)) st = { list: [], hidden: {} };
+            st.hidden = st.hidden || {};
+            choisis.forEach(src => {
+                const copie = JSON.parse(JSON.stringify(src));
+                copie.aGenerer = true;
+                copie.partage = { par: fbCompte.nom || fbCompte.identifiant || 'Admin', at };
+                const i = st.list.findIndex(r => r.id === src.id);
+                if (i >= 0) { copie.visible = st.list[i].visible; st.list[i] = copie; }
+                else { copie.visible = true; st.list.push(copie); }
+            });
+            const v = JSON.stringify(st);
+            const ref = fbDb.doc('plannings/' + cid);
+            const keys = Object.assign({}, (man && man.keys) || {});
+            const avant = keys.rotations_v1 || 0;
+            const n = Math.max(1, Math.ceil(v.length / FB_CHUNK));
+            const batch = fbDb.batch();
+            for (let i = 0; i < n; i++) batch.set(ref.collection('chunks').doc('rotations_v1__' + i), { v: v.slice(i * FB_CHUNK, (i + 1) * FB_CHUNK) });
+            for (let i = n; i < avant; i++) batch.delete(ref.collection('chunks').doc('rotations_v1__' + i));
+            keys.rotations_v1 = n;
+            batch.set(ref, Object.assign({}, man || {}, { keys, updatedAt: at, par: fbCompte.identifiant || '' }));
+            await batch.commit();
+        }
+        return choisis.length;
+    }
+    async function fbOuvrirPartage(opts) {
+        if (!fbEstAdmin()) return fbRefus();
+        if (!rotState.list.length) { alert('Créez d\'abord au moins un roulement (carte « Roulements » › Nouveau roulement).'); return; }
+        fbPartageCtx = opts || {};
+        fermerModales();
+        ouvrirModale('modal-partage');
+        document.getElementById('fb-part-rots').innerHTML = rotState.list.map(r => `
+            <label class="fb-part-item"><input type="checkbox" data-rot="${r.id}" ${!fbPartageCtx.rot || fbPartageCtx.rot === r.id ? 'checked' : ''} onchange="fbMajPartage()">
+                <span class="rot-dot" style="background:${r.couleur}"></span>
+                <span class="fb-part-name">${rotEsc(r.nom)}</span><small>${r.motif.length} j · ${rotFmtFr(r.debut)} → ${rotFmtFr(r.fin)}</small></label>`).join('');
+        const box = document.getElementById('fb-part-clients');
+        box.innerHTML = '<div class="fb-spin small"></div>';
+        try {
+            if (!fbComptesCache.length) {
+                const q = await fbDb.collection('comptes').get();
+                fbComptesCache = q.docs.map(d => Object.assign({ id: d.id }, d.data()));
+            }
+        } catch(e) { box.innerHTML = `<div class="fb-err">⚠️ ${fbEsc(fbErreur(e))}</div>`; return; }
+        const clients = fbComptesCache.filter(c => c.role !== 'admin').sort((a, b) => String(a.nom).localeCompare(String(b.nom)));
+        if (!clients.length) { box.innerHTML = '<div class="rot-empty">Aucun client pour l\'instant. Créez-en un dans « Clients & accès ».</div>'; fbMajPartage(); return; }
+        box.innerHTML = `<label class="fb-part-item all"><input type="checkbox" id="fb-part-tous" onchange="document.querySelectorAll('#fb-part-clients input[data-cid]').forEach(i => i.checked = this.checked); fbMajPartage()"> <b>Tous les clients</b> <small>(${clients.length})</small></label>` +
+            clients.map(c => `<label class="fb-part-item ${c.actif === false ? 'off' : ''}"><input type="checkbox" data-cid="${c.id}" ${(fbPartageCtx.tous || fbPartageCtx.cid === c.id) ? 'checked' : ''} onchange="fbMajPartage()">
+                <span class="fb-avatar sm" style="width:26px;height:26px;font-size:0.75rem;">${fbEsc((c.nom || c.identifiant || '?').charAt(0).toUpperCase())}</span>
+                <span class="fb-part-name">${fbEsc(c.nom || '')}</span><small>@${fbEsc(c.identifiant || '')}${c.actif === false ? ' · désactivé' : ''}</small></label>`).join('');
+        fbMajPartage();
+    }
+    function fbPartageSelection() {
+        return {
+            rots: [...document.querySelectorAll('#fb-part-rots input[data-rot]:checked')].map(i => i.dataset.rot),
+            cids: [...document.querySelectorAll('#fb-part-clients input[data-cid]:checked')].map(i => i.dataset.cid)
+        };
+    }
+    function fbMajPartage() {
+        const { rots, cids } = fbPartageSelection();
+        const tous = document.getElementById('fb-part-tous');
+        const nCl = document.querySelectorAll('#fb-part-clients input[data-cid]').length;
+        if (tous) tous.checked = nCl > 0 && cids.length === nCl;
+        const b = document.getElementById('fb-part-btn');
+        b.disabled = !rots.length || !cids.length;
+        b.innerHTML = `<i class="fas fa-paper-plane"></i> Envoyer ${rots.length} roulement${rots.length > 1 ? 's' : ''} à ${cids.length} client${cids.length > 1 ? 's' : ''}`;
+    }
+    async function fbConfirmerPartage() {
+        const { rots, cids } = fbPartageSelection();
+        if (!rots.length || !cids.length) return;
+        fbBoutonAttente('fb-part-btn', true, 'Envoi…');
+        try {
+            await fbEnvoyerRoulements(rots, cids);
+            showToast(`📤 ${rots.length} roulement${rots.length > 1 ? 's' : ''} envoyé${rots.length > 1 ? 's' : ''} à ${cids.length} client${cids.length > 1 ? 's' : ''}`, 'success', 'fa-paper-plane');
+            fermerModales();
+        } catch(e) {
+            fbBoutonAttente('fb-part-btn', false);
+            alert('⚠️ ' + fbErreur(e));
+        }
+    }
     async function fbSupprimerCompte(cid) {
         const c = fbComptesCache.find(x => x.id === cid); if (!c) return;
         if (!confirm(`🗑️ Supprimer définitivement le client « ${c.nom} » et son planning en ligne ?\n\nCette action est irréversible.`)) return;
@@ -7560,7 +7719,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v8.7';
+const CACHE_NAME = 'planning-pro-v8.8';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
