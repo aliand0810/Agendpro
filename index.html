@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v8.3</title>
+    <title>Mon Planning Pro v8.6</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -26,6 +26,11 @@
     <!-- PWA Manifest Inline -->
     <!-- PWA — Système identique LivraPro/COVO (manifest blob, pas de sw.js externe) -->
     <script>var deferredPrompt=null;</script>
+    <script>try{ if(localStorage.getItem('fb_config_v1') || /[?&]fbcfg=/.test(location.search)) document.documentElement.classList.add('fb-pending'); }catch(e){}</script>
+    <!-- qrcode-generator 1.4.4 (Kazuhiko Arase, licence MIT) — QR codes générés sur l'appareil -->
+    <script>// Copyright (c) 2009 Kazuhiko Arase
+// Licensed under the MIT license:
+var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(n*r,o*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("友");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});</script>
     <script>
     const pwaManifest = {
         "name": "Mon Planning Pro",
@@ -338,6 +343,153 @@
         .jour-ferie { background-color: var(--ferie-bg); }
         .fc-weeknumber { background-color: var(--bg-app); border-right: 1px solid var(--border-color) !important; }
 
+
+        .ev-rot-tag { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:0.55rem; font-weight:800; color:#fff; padding:1px 5px; border-radius:4px; margin-bottom:2px; text-align:left; text-shadow:0 0 2px rgba(0,0,0,0.35); box-shadow:0 0 0 1px rgba(255,255,255,0.5); letter-spacing:0.02em; }
+        .fc-event .ev-rot-tag { text-align:center; }
+        .m-rot { font-weight:900; color:#fff; padding:0 3px; border-radius:2px; margin-right:1px; box-shadow:0 0 0 1px rgba(255,255,255,0.5); }
+        .tb-rot-head td { background:var(--bg-app) !important; padding:5px 10px !important; font-size:0.72rem; font-weight:800; color:var(--text-main); text-align:left; min-height:0 !important; cursor:default; }
+        .tb-rot-head-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+        .tb-rot-head-h { float:right; font-family:'DM Mono',monospace; color:var(--primary); font-weight:900; }
+        .tb-rot-repos { display:block; text-align:center; font-size:0.6rem; color:var(--text-muted); opacity:0.6; padding-top:12px; }
+
+        /* ═══ FIREBASE — COMPTES & ACCÈS ═══ */
+        body.perm-no-paie [onclick*="'tab-paie'"],
+        body.perm-no-dirt [onclick*="'tab-dirt'"],
+        body.perm-no-taux [onclick*="'tab-config-taux'"],
+        body.perm-no-impr [onclick*="'modal-print'"],
+        body.perm-no-config [onclick*="'modal-config'"],
+        body.perm-no-legende #legend-card,
+        body.perm-no-roulements .rot-manage-btn,
+        body.perm-no-roulements .rot-add-btn { display: none !important; }
+        .fb-gate { display:none; position:fixed; inset:0; z-index:5000; align-items:center; justify-content:center; padding:16px; background:linear-gradient(135deg,#312e81,#4f46e5 55%,#7c3aed); overflow-y:auto; }
+        html.fb-pending .fb-gate { display:flex; }
+        html.fb-pending body > *:not(.fb-gate):not(script) { visibility:hidden; }
+        body.fb-locked { overflow:hidden; }
+        .fb-gate-card { width:100%; max-width:400px; background:var(--bg-card); color:var(--text-main); border-radius:20px; padding:26px 22px; box-shadow:0 20px 60px rgba(0,0,0,0.35); margin:auto; }
+        .fb-gate-logo { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--primary),#7c3aed); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin:0 auto 8px; }
+        .fb-gate-title { text-align:center; font-weight:800; font-size:1rem; color:var(--text-muted); margin-bottom:14px; }
+        .fb-gate-card h2 { font-size:1.25rem; margin:0 0 4px; text-align:center; }
+        .fb-sub { font-size:0.82rem; color:var(--text-muted); text-align:center; margin:0 0 12px; line-height:1.45; }
+        .fb-lbl { display:block; font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin:12px 0 2px; }
+        .fb-lbl small { text-transform:none; font-weight:600; letter-spacing:0; }
+        .fb-err { background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; border-radius:10px; padding:9px 11px; font-size:0.8rem; margin:10px 0; line-height:1.4; }
+        body.dark-mode .fb-err { background:#450a0a; color:#fca5a5; border-color:#7f1d1d; }
+        .fb-hint { font-size:0.72rem; color:var(--text-muted); margin:10px 0 0; line-height:1.45; }
+        .fb-p { font-size:0.8rem; color:var(--text-muted); margin:0 0 10px; line-height:1.5; }
+        .fb-link { display:block; margin:14px auto 0; background:none; border:none; color:var(--primary); font-size:0.75rem; font-weight:700; cursor:pointer; text-decoration:underline; font-family:'DM Sans',sans-serif; }
+        .fb-link.danger { color:var(--danger); }
+        .fb-spin { width:34px; height:34px; border-radius:50%; border:4px solid var(--border-color); border-top-color:var(--primary); animation:fbSpin 0.8s linear infinite; margin:14px auto; }
+        .fb-spin.small { width:22px; height:22px; border-width:3px; }
+        @keyframes fbSpin { to { transform:rotate(360deg); } }
+        .fb-user-btn { position:relative; width:34px; height:34px; border-radius:50%; border:none; cursor:pointer; background:linear-gradient(135deg,var(--primary),#7c3aed); color:#fff; font-weight:800; font-size:0.9rem; align-items:center; justify-content:center; font-family:'DM Sans',sans-serif; }
+        .fb-user-btn .fb-cloud { position:absolute; right:-4px; bottom:-3px; font-size:0.6rem; background:var(--bg-card); color:#10b981; border-radius:50%; padding:2px; box-shadow:0 0 0 1px var(--border-color); }
+        .fb-user-btn[data-etat="attente"] .fb-cloud, .fb-user-btn[data-etat="sync"] .fb-cloud { color:#f59e0b; }
+        .fb-user-btn[data-etat="erreur"] .fb-cloud { color:var(--danger); }
+        .fb-guide { background:var(--bg-app); border:1px solid var(--border-color); border-radius:10px; padding:8px 12px; margin-bottom:10px; font-size:0.8rem; }
+        .fb-guide summary { cursor:pointer; font-weight:700; color:var(--primary); }
+        .fb-guide ol { margin:8px 0 4px; padding-left:20px; line-height:1.55; color:var(--text-main); }
+        .fb-guide li { margin-bottom:5px; }
+        .fb-guide code { background:var(--bg-card); padding:1px 5px; border-radius:4px; font-size:0.75rem; }
+        #fb-cfg-input { width:100%; box-sizing:border-box; margin-top:5px; padding:10px; border:1.5px solid var(--border-color); border-radius:var(--radius-sm); background:var(--bg-card); color:var(--text-main); font-family:'DM Mono',monospace; font-size:0.75rem; resize:vertical; }
+        .fb-mini-btn { border:1px solid var(--border-color); background:var(--bg-card); color:var(--primary); border-radius:7px; padding:4px 8px; font-size:0.7rem; font-weight:700; cursor:pointer; margin-left:4px; font-family:'DM Sans',sans-serif; }
+        .fb-status { font-size:0.82rem; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+        .fb-dot { width:9px; height:9px; border-radius:50%; background:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,0.2); }
+        .fb-role { font-size:0.6rem; font-weight:800; text-transform:uppercase; padding:2px 6px; border-radius:5px; background:var(--bg-app); color:var(--text-muted); border:1px solid var(--border-color); vertical-align:middle; }
+        .fb-role.admin { background:#ede9fe; color:#6d28d9; border-color:#c4b5fd; }
+        .fb-role.off { background:#fee2e2; color:#b91c1c; border-color:#fecaca; }
+        .fb-btn-row { display:flex; gap:8px; flex-wrap:wrap; }
+        .fb-btn-row .btn { flex:1; min-width:150px; }
+        .fb-me { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+        .fb-avatar { width:46px; height:46px; border-radius:50%; background:linear-gradient(135deg,var(--primary),#7c3aed); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; flex-shrink:0; }
+        .fb-avatar.sm { width:34px; height:34px; font-size:0.9rem; }
+        .fb-me-nom { font-weight:800; font-size:0.95rem; }
+        .fb-me-id { font-size:0.75rem; color:var(--text-muted); }
+        .fb-sync-line { display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:0.75rem; color:#047857; background:#ecfdf5; border:1px solid #a7f3d0; border-radius:10px; padding:8px 10px; }
+        .fb-sync-line.wait { color:#b45309; background:#fffbeb; border-color:#fde68a; }
+        .fb-sync-line .fb-mini-btn { margin-left:auto; }
+        body.dark-mode .fb-sync-line { background:#064e3b; border-color:#065f46; color:#6ee7b7; }
+        body.dark-mode .fb-sync-line.wait { background:#451a03; border-color:#92400e; color:#fcd34d; }
+        .fb-compte { border:1px solid var(--border-color); border-radius:12px; padding:10px 12px; margin-bottom:10px; background:var(--bg-card); }
+        .fb-compte.is-off { opacity:0.6; background:var(--bg-app); }
+        .fb-compte-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+        .fb-perms { display:flex; flex-wrap:wrap; gap:5px; }
+        .fb-chip { border-radius:20px; padding:5px 10px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; border:1.5px solid; }
+        .fb-chip.on { background:#ecfdf5; color:#047857; border-color:#6ee7b7; }
+        .fb-chip.off { background:var(--bg-app); color:var(--text-muted); border-color:var(--border-color); text-decoration:line-through; }
+        body.dark-mode .fb-chip.on { background:#064e3b; color:#6ee7b7; border-color:#047857; }
+        .fb-compte-actions { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; padding-top:8px; border-top:1px solid var(--border-color); }
+        .fb-compte-actions button { border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-main); border-radius:7px; padding:6px 9px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .fb-compte-actions button.danger { color:var(--danger); margin-left:auto; }
+        .fb-new { border:1.5px dashed var(--primary-light); border-radius:12px; padding:10px 12px; margin-bottom:14px; }
+        .fb-new summary { cursor:pointer; font-weight:800; color:var(--primary); font-size:0.88rem; }
+        .fb-perm-grid { display:grid; grid-template-columns:1fr 1fr; gap:4px 10px; margin-top:4px; }
+        .fb-perm-check { display:flex; align-items:center; gap:6px; font-size:0.8rem; font-weight:600; cursor:pointer; padding:4px 0; }
+        .fb-perm-check input { width:16px; height:16px; margin:0; flex-shrink:0; }
+        .fb-pwd-wrap { position:relative; }
+        .fb-pwd-wrap input { padding-right:44px; }
+        .fb-eye { position:absolute; right:4px; top:50%; transform:translateY(-50%); margin-top:2px; width:36px; height:36px; border:none; background:none; color:var(--text-muted); cursor:pointer; }
+        .fb-remember { display:flex; align-items:flex-start; gap:8px; font-size:0.8rem; font-weight:600; margin:12px 0 4px; cursor:pointer; line-height:1.35; }
+        .fb-remember input { width:18px; height:18px; margin:0; flex-shrink:0; accent-color:var(--primary); }
+        .fb-memo-line { display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:0.75rem; color:var(--primary); background:var(--hover-row); border:1px solid var(--primary-light); border-radius:10px; padding:8px 10px; margin-top:8px; }
+        .fb-memo-line.off { color:var(--text-muted); background:var(--bg-app); border-color:var(--border-color); }
+        .fb-memo-line .fb-mini-btn { margin-left:auto; }
+        .fb-qr-box { background:#fff; border:1px solid var(--border-color); border-radius:14px; padding:10px; margin-top:12px; text-align:center; }
+        .fb-qr-box canvas { width:100%; max-width:320px; height:auto; display:block; margin:0 auto; }
+        /* ═══ ROULEMENTS MULTIPLES ═══ */
+        .rot-row { display:flex; align-items:center; gap:8px; padding:6px 4px; border-radius:8px; font-size:0.8rem; }
+        .rot-row + .rot-row { border-top:1px solid var(--border-color); }
+        .rot-row.is-off .rot-name { opacity:0.45; text-decoration:line-through; }
+        .rot-row.is-off .rot-dot { opacity:0.35; }
+        .rot-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; box-shadow:0 0 0 2px var(--bg-card), 0 0 0 3px var(--border-color); }
+        .rot-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600; color:var(--text-main); }
+        .rot-eye { border:none; background:var(--bg-app); color:var(--text-muted); width:30px; height:30px; border-radius:8px; cursor:pointer; flex-shrink:0; }
+        .rot-eye:hover { color:var(--primary); }
+        .rot-empty { font-size:0.75rem; color:var(--text-muted); text-align:center; padding:8px 4px; line-height:1.4; }
+        .rot-manage-btn { margin-left:auto; border:none; background:none; color:var(--primary); font-weight:800; font-size:0.65rem; cursor:pointer; text-transform:uppercase; letter-spacing:0.05em; }
+        .rot-add-btn { width:100%; margin-top:8px; padding:8px; border:1.5px dashed var(--primary-light); background:transparent; color:var(--primary); border-radius:8px; font-weight:700; font-size:0.78rem; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .rot-toolbar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+        .rot-toolbar .btn { flex:1; min-width:150px; margin-top:0; }
+        .rot-card { border:1px solid var(--border-color); border-left:5px solid; border-radius:12px; padding:10px 12px; margin-bottom:10px; background:var(--bg-card); }
+        .rot-card.is-off { opacity:0.6; background:var(--bg-app); }
+        .rot-card-head { display:flex; align-items:center; gap:8px; }
+        .rot-card-name { font-size:0.95rem; color:var(--text-main); }
+        .rot-badge { font-size:0.6rem; font-weight:800; text-transform:uppercase; background:var(--border-color); color:var(--text-muted); padding:2px 6px; border-radius:5px; }
+        .rot-card-meta { font-size:0.72rem; color:var(--text-muted); margin:4px 0 6px; }
+        .rot-mini-wrap { display:flex; flex-wrap:wrap; gap:2px; margin-bottom:8px; }
+        .rot-mini { width:16px; height:16px; border-radius:3px; font-size:0.55rem; font-weight:800; display:flex; align-items:center; justify-content:center; color:#fff; text-shadow:0 0 2px rgba(0,0,0,0.5); }
+        .rot-mini-more { font-size:0.6rem; color:var(--text-muted); align-self:center; margin-left:3px; }
+        .rot-card-actions { display:flex; flex-wrap:wrap; gap:5px; }
+        .rot-card-actions button { border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-main); border-radius:7px; padding:6px 9px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .rot-card-actions button:hover { border-color:var(--primary); color:var(--primary); }
+        .rot-card-actions button.danger { color:var(--danger); margin-left:auto; }
+        .rot-label { display:block; font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin:14px 0 4px; }
+        .rot-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .rot-quick { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; }
+        .rot-quick button, .rot-palette button, .rot-motif-tools button { border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-main); border-radius:7px; padding:6px 10px; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .rot-swatches { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+        .rot-swatch { width:28px; height:28px; border-radius:50%; border:3px solid var(--bg-card); box-shadow:0 0 0 1px var(--border-color); cursor:pointer; padding:0; }
+        .rot-swatch.sel { box-shadow:0 0 0 2px var(--text-main); }
+        .rot-color-input { width:34px !important; height:30px; padding:0 !important; margin:0 !important; border-radius:8px; cursor:pointer; }
+        .rot-motif { display:flex; flex-wrap:wrap; gap:5px; padding:8px; border:1.5px dashed var(--border-color); border-radius:10px; min-height:58px; }
+        .rot-day { position:relative; width:44px; height:52px; border:1px solid var(--border-color); border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; padding:0; font-family:'DM Sans',sans-serif; line-height:1.1; }
+        .rot-day small { font-size:0.55rem; opacity:0.8; font-weight:700; }
+        .rot-day span { font-size:0.95rem; }
+        .rot-day em { font-style:normal; font-size:0.6rem; font-weight:900; }
+        .rot-day-x { position:absolute; top:-7px; right:-7px; width:18px; height:18px; border-radius:50%; background:var(--danger); color:#fff; font-size:0.75rem !important; line-height:18px; text-align:center; display:none; }
+        .rot-day:hover .rot-day-x, .rot-day:focus .rot-day-x { display:block; }
+        @media (hover:none) { .rot-day-x { display:block; } }
+        .rot-motif-info { font-size:0.72rem; color:var(--primary); font-weight:700; margin-top:5px; }
+        .rot-palette { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+        .rot-motif-tools { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+        .rot-motif-tools button { font-size:0.7rem; padding:5px 8px; color:var(--text-muted); }
+        .rot-h-row { display:grid; grid-template-columns:1.2fr 1fr auto 1fr; gap:6px; align-items:center; font-size:0.8rem; margin-bottom:4px; }
+        .rot-h-row input { margin-top:0 !important; padding:7px 6px !important; font-size:0.85rem !important; }
+        .rot-h-sep { color:var(--text-muted); }
+        .rot-apercu { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+        .rot-ap-day { border:1px solid var(--border-color); border-radius:7px; text-align:center; padding:4px 0; font-size:0.85rem; line-height:1.2; }
+        .rot-ap-day small { display:block; font-size:0.55rem; font-weight:700; opacity:0.85; }
+        .rot-ap-day.today { outline:2px solid var(--primary); outline-offset:1px; }
+        .rot-hint { font-size:0.72rem; color:var(--text-muted); background:var(--bg-app); padding:8px 10px; border-radius:8px; border:1px solid var(--border-color); margin-top:10px; line-height:1.45; }
         .zone-card { border: 1px dashed #cbd5e1; padding: 15px; border-radius: 12px; margin-top: 15px; position: relative; }
         .zone-title { position: absolute; top: -10px; left: 15px; background: var(--bg-card); padding: 0 10px; font-size: 0.7rem; font-weight: bold; color: #64748b; transition: 0.3s; }
 
@@ -763,11 +915,23 @@
                 <i class="fas fa-check-circle"></i>
                 <span id="save-label">Sauvegardé</span>
             </div>
+            <button id="fb-user-btn" class="fb-user-btn" onclick="fbOuvrirMonCompte()" style="display:none;" data-etat="ok" aria-label="Mon compte">
+                <span id="fb-user-initiale">?</span><i class="fas fa-cloud fb-cloud"></i>
+            </button>
             <button onclick="toggleDarkMode()" style="background:var(--bg-app);border:1.5px solid var(--border-color);border-radius:8px;width:34px;height:34px;cursor:pointer;color:var(--text-main);font-size:0.9rem;display:flex;align-items:center;justify-content:center;">
                 <i class="fas fa-moon" id="dark-icon"></i>
             </button>
         </div>
     </header>
+
+    <!-- ─── ÉCRAN DE CONNEXION FIREBASE ─── -->
+    <div id="fb-gate" class="fb-gate">
+        <div class="fb-gate-card">
+            <div class="fb-gate-logo"><i class="fas fa-calendar-check"></i></div>
+            <div class="fb-gate-title">Mon Planning Pro</div>
+            <div id="fb-gate-body"><div class="fb-spin"></div></div>
+        </div>
+    </div>
 
     <!-- ─── TOAST CONTAINER ─── -->
     <div class="toast-container" id="toast-container"></div>
@@ -834,6 +998,16 @@
                         <div class="legend-item"><span class="legend-dot" style="background:#06b6d4;"></span>Réunion</div>
                         <div class="legend-item"><span class="legend-dot" style="background:#10b981;border:2px solid #059669;"></span>CSE</div>
                     </div>
+                </div>
+
+                <!-- Roulements (multi-cycles) -->
+                <div class="sidebar-card" id="rot-card">
+                    <div class="sidebar-card-title">
+                        <i class="fas fa-layer-group"></i> Roulements
+                        <button class="rot-manage-btn" onclick="rotOuvrirGestion()">Gérer</button>
+                    </div>
+                    <div id="rot-sidebar-list"></div>
+                    <button class="rot-add-btn" onclick="rotOuvrirGestion(true)"><i class="fas fa-plus"></i> Nouveau roulement</button>
                 </div>
 
             </aside>
@@ -1428,8 +1602,145 @@
 
     </div><!-- /.app-content -->
 
+    <!-- ═══ MODALE MON COMPTE ═══ -->
+    <div id="modal-moncompte" class="modal">
+        <h3><i class="fas fa-user-circle"></i> Mon compte</h3>
+        <div id="fb-moncompte-body"></div>
+    </div>
+
+    <!-- ═══ MODALE GESTION DES CLIENTS (admin) ═══ -->
+    <div id="modal-comptes" class="modal">
+        <h3><i class="fas fa-users-cog"></i> Clients &amp; accès <small id="fb-comptes-count" style="font-size:0.7rem; color:var(--text-muted); font-weight:600;"></small></h3>
+        <details class="fb-new" id="fb-nouveau-details">
+            <summary><i class="fas fa-user-plus"></i> Nouveau client</summary>
+            <label class="fb-lbl" for="fb-new-nom">Nom</label>
+            <input id="fb-new-nom" maxlength="40" placeholder="Ex : Marie Dupont">
+            <label class="fb-lbl" for="fb-new-id">Identifiant <small>(3-30 caractères : lettres, chiffres, . _ -)</small></label>
+            <input id="fb-new-id" autocapitalize="none" spellcheck="false" autocomplete="off" placeholder="ex : marie.d">
+            <label class="fb-lbl" for="fb-new-pwd">Mot de passe <small>(6 caractères min.)</small></label>
+            <input id="fb-new-pwd" type="text" autocomplete="off" spellcheck="false">
+            <label class="fb-lbl">Accès autorisés</label>
+            <div class="fb-perm-grid" id="fb-nouveau-perms"></div>
+            <div id="fb-new-err" class="fb-err" style="display:none;"></div>
+            <button class="btn btn-paye" id="fb-new-btn" onclick="fbCreerClient()"><i class="fas fa-user-plus"></i> Créer le client</button>
+        </details>
+        <div id="fb-comptes-liste"></div>
+        <div class="rot-hint">
+            <strong>Accès</strong> : touchez une pastille pour autoriser ✓ ou restreindre ✕ une section. Le changement s'applique à la prochaine ouverture de l'application par le client.<br>
+            <strong>Nouveau mot de passe</strong> : remplace immédiatement l'ancien (utile en cas d'oubli). Chaque client peut aussi changer le sien dans « Mon compte ».
+        </div>
+        <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
+    </div>
+
+    <!-- ═══ MODALE QR CODE CLIENT ═══ -->
+    <div id="modal-qr" class="modal">
+        <h3><i class="fas fa-qrcode"></i> QR code d'accès</h3>
+        <div class="fb-me" style="margin-bottom:6px;">
+            <div><div class="fb-me-nom" id="fb-qr-nom"></div><div class="fb-me-id" id="fb-qr-id"></div></div>
+        </div>
+        <label class="fb-lbl" for="fb-qr-pwd">Mot de passe du client <small>(inclus dans le QR pour la connexion automatique)</small></label>
+        <div class="fb-pwd-wrap">
+            <input id="fb-qr-pwd" type="password" autocomplete="off" spellcheck="false" oninput="fbMajQR()" placeholder="Mot de passe du client">
+            <button type="button" class="fb-eye" onclick="fbVoirMdp('fb-qr-pwd', this)" aria-label="Afficher le mot de passe"><i class="fas fa-eye"></i></button>
+        </div>
+        <div class="fb-qr-box"><canvas id="fb-qr-canvas"></canvas></div>
+        <div class="rot-hint" id="fb-qr-info" style="margin-top:8px;"></div>
+        <div class="rot-hint" style="border-color:#fde68a; background:#fffbeb; color:#92400e;">🔒 Ce QR code donne accès au compte : ne le partagez qu'avec ce client. En cas de perte, attribuez un nouveau mot de passe — l'ancien QR ne fonctionnera plus.</div>
+        <div class="fb-btn-row">
+            <button class="btn btn-paye" onclick="fbQrPartager()"><i class="fas fa-share-alt"></i> Partager</button>
+            <button class="btn btn-outline" onclick="fbQrTelecharger()"><i class="fas fa-download"></i> Télécharger</button>
+        </div>
+        <button class="btn btn-outline" onclick="fbCopier(fbQrLien(), 'Lien d\'accès copié')"><i class="fas fa-link"></i> Copier le lien</button>
+        <button class="btn btn-outline" onclick="fbOuvrirComptes()"><i class="fas fa-arrow-left"></i> Retour aux clients</button>
+    </div>
+
+    <!-- ═══ MODALE ROULEMENTS ═══ -->
+    <div id="modal-rotations" class="modal">
+        <div id="rot-vue-liste">
+            <h3><i class="fas fa-layer-group"></i> Mes roulements</h3>
+            <div class="rot-toolbar">
+                <button class="btn btn-paye" onclick="rotNouveau()"><i class="fas fa-plus"></i> Nouveau roulement</button>
+                <button class="btn btn-outline" id="rot-btn-all" onclick="rotToutAfficher()" style="display:none;"><i class="fas fa-eye"></i> Tout afficher</button>
+            </div>
+            <div id="rot-liste"></div>
+            <div class="rot-hint">
+                <strong>👁️ Masquer</strong> : le roulement disparaît du planning et n'est plus compté dans la paie, les stats et l'analyse DIRT — mais il est conservé et réutilisable à tout moment.<br>
+                <strong>🎯 Seul</strong> : n'affiche que ce roulement.<br>
+                <strong>⧉ Dupliquer</strong> : copie le cycle avec un décalage de jours (idéal pour plusieurs équipes).
+            </div>
+            <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
+        </div>
+
+        <div id="rot-vue-editeur" style="display:none;">
+            <h3><i class="fas fa-sync-alt"></i> <span id="rot-ed-titre">Nouveau roulement</span></h3>
+
+            <label class="rot-label" for="rot-ed-nom">Nom</label>
+            <input type="text" id="rot-ed-nom" maxlength="40" placeholder="Ex : Équipe A, Roulement été…">
+
+            <label class="rot-label">Couleur</label>
+            <div class="rot-swatches" id="rot-ed-couleurs"></div>
+
+            <div class="rot-grid2">
+                <div><label class="rot-label" for="rot-ed-debut">Début du cycle (J1)</label><input type="date" id="rot-ed-debut" onchange="rotRenderApercu()"></div>
+                <div><label class="rot-label" for="rot-ed-fin">Répéter jusqu'au</label><input type="date" id="rot-ed-fin" onchange="rotRenderApercu()"></div>
+            </div>
+            <div class="rot-quick">
+                <button type="button" onclick="rotDureeRapide(6)">6 mois</button>
+                <button type="button" onclick="rotDureeRapide(12)">1 an</button>
+                <button type="button" onclick="rotDureeRapide(24)">2 ans</button>
+                <button type="button" onclick="rotDureeRapide(36)">3 ans</button>
+            </div>
+
+            <label class="rot-label" for="rot-ed-preset">Modèle prédéfini</label>
+            <select id="rot-ed-preset" onchange="rotAppliquerPreset(this.value)">
+                <option value="">— Choisir un modèle (remplace le motif) —</option>
+            </select>
+
+            <label class="rot-label">Motif répétitif <span style="text-transform:none; font-weight:600;">(cliquer un jour pour changer son type)</span></label>
+            <div class="rot-motif" id="rot-ed-motif"></div>
+            <div class="rot-motif-info" id="rot-ed-motif-info"></div>
+            <div class="rot-palette">
+                <button type="button" onclick="rotAjouterJour('MATIN')">＋ ☀️ Matin</button>
+                <button type="button" onclick="rotAjouterJour('APRÈS-MIDI')">＋ ⛅ Après-midi</button>
+                <button type="button" onclick="rotAjouterJour('NUIT')">＋ 🌙 Nuit</button>
+                <button type="button" onclick="rotAjouterJour('POSTE JOURNÉE')">＋ 💼 Journée</button>
+                <button type="button" onclick="rotAjouterJour('REPOS')">＋ 💤 Repos</button>
+            </div>
+            <div class="rot-motif-tools">
+                <button type="button" onclick="rotDecaler(-1)" title="Décaler le cycle d'un jour vers la gauche">◀ Décaler</button>
+                <button type="button" onclick="rotDecaler(1)" title="Décaler le cycle d'un jour vers la droite">Décaler ▶</button>
+                <button type="button" onclick="rotDoublerMotif()">⧉ Doubler</button>
+                <button type="button" onclick="rotViderMotif()">✕ Vider</button>
+            </div>
+
+            <label class="rot-label">Horaires des postes</label>
+            <div id="rot-ed-horaires"></div>
+
+            <div class="rot-grid2">
+                <div><label class="rot-label" for="rot-ed-repas">Pause repas (min)</label><input type="number" id="rot-ed-repas" min="0" step="5" oninput="rotRenderApercu()"></div>
+                <div><label class="rot-label" for="rot-ed-repas-paye">Statut pause</label>
+                    <select id="rot-ed-repas-paye" onchange="rotRenderApercu()"><option value="paye">✅ Payée</option><option value="non_paye">❌ Non payée</option></select></div>
+            </div>
+
+            <label class="rot-label">Aperçu — 3 semaines</label>
+            <div class="rot-apercu" id="rot-ed-apercu"></div>
+            <div class="rot-motif-info" id="rot-ed-hsem"></div>
+
+            <div class="rot-hint">Les jours que vous avez modifiés à la main dans ce roulement sont conservés lors d'une nouvelle génération.</div>
+
+            <button class="btn btn-paye" onclick="rotEnregistrer()"><i class="fas fa-check"></i> Enregistrer et générer</button>
+            <button class="btn btn-outline" onclick="rotAfficherVue('liste')">Annuler</button>
+        </div>
+    </div>
+
    <div id="modal-config" class="modal">
     <h3><i class="fas fa-cog"></i> Réglages</h3>
+
+    <!-- COMPTES & FIREBASE -->
+    <div class="zone-card" style="margin-bottom:16px;">
+        <span class="zone-title">☁️ COMPTES &amp; FIREBASE</span>
+        <div id="fb-zone-body"></div>
+    </div>
 
     <!-- Champs cachés pour rétro-compatibilité avec sauverConfig() -->
     <input type="hidden" id="cfg-cp">
@@ -1486,8 +1797,8 @@
         <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 12px;">Générez automatiquement votre planning basé sur un cycle de travail récurrent.</p>
         
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button onclick="fermerModales(); genererRoulement()" class="btn btn-outline" style="flex:1; min-width:140px; color: var(--primary); border-color: var(--primary); border-style:dashed;">
-                <i class="fas fa-sync-alt"></i> Générer Cycle
+            <button onclick="fermerModales(); rotOuvrirGestion()" class="btn btn-outline" style="flex:1; min-width:140px; color: var(--primary); border-color: var(--primary); border-style:dashed;">
+                <i class="fas fa-layer-group"></i> Gérer les roulements
             </button>
             <button onclick="fermerModales(); reinitialiserCycle()" class="btn btn-outline" style="flex:1; min-width:140px; color: #ef4444; border-color: #ef4444;">
                 <i class="fas fa-trash-alt"></i> Réinitialiser
@@ -1495,7 +1806,7 @@
         </div>
         
         <div style="margin-top:10px; font-size:0.72rem; color:var(--text-muted); background:var(--bg-app); padding:8px 10px; border-radius:8px; border:1px solid var(--border-color);">
-            <strong>💡 Astuce :</strong> La génération ouvre l'éditeur de cycle où vous pouvez définir vos postes récurrents. La réinitialisation supprime uniquement les événements issus du cycle.
+            <strong>💡 Astuce :</strong> Créez autant de roulements que nécessaire (ex : 5 équipes), chacun avec son motif répétitif. Masquez ceux dont vous n'avez pas besoin sans les perdre. « Réinitialiser » supprime tous les roulements et leurs postes générés (les saisies manuelles sont conservées).
         </div>
     </div>
 
@@ -2084,8 +2395,10 @@
         document.getElementById('print-debut').value = `${year}-01-01`;
         document.getElementById('print-fin').value = `${year}-12-31`;
 
+        rotMigrer();
         calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-            locale: 'fr', 
+            locale: 'fr',
+            eventDidMount: rotEventDidMount,
             initialView: 'dayGridMonth',
             firstDay: 1,
             height: 'auto',
@@ -2189,6 +2502,9 @@
             }
         });
         calendar.render();
+        rotRenderSidebar();
+        const rotSel = document.getElementById('rot-ed-preset');
+        if (rotSel) ROT_PRESETS.forEach(p => rotSel.insertAdjacentHTML('beforeend', `<option value="${p.id}">${p.nom}</option>`));
     });
 
     // ── Utilitaire : formate une date JS en YYYY-MM-DD en heure LOCALE
@@ -2395,6 +2711,7 @@
 
     // ── Fonction interne qui effectue réellement l'ajout ──
     function _doValider(zone, isCompteur, surHeuresTravail, hD, hF) {
+        const rotIdHerite = (currentEvent && currentEvent.extendedProps && currentEvent.extendedProps.rotationId) || null;
         if(currentEvent) { currentEvent.remove(); }
         const typeTravail = document.getElementById('edit-type-travail').value;
         const typeAbsence = document.getElementById('edit-type-absence').value;
@@ -2456,6 +2773,7 @@
             title: titre, start: selectedDate, allDay: true,
             backgroundColor: bgColor,
             extendedProps: { type: type, bonusC: bonusC, hPayees: hPayees, note: note, hD: hD, hF: hF, isCycle: false,
+                rotationId: rotIdHerite,
                 repasDureeMin: (zone === 'travail' ? repasDureeMin : 0),
                 repasPaye: (zone === 'travail' ? repasPaye : 'non_paye'),
                 repasTaux: (zone === 'travail' ? repasTauxSaisi : null)
@@ -3295,8 +3613,12 @@
         calendar.getEvents().forEach(e => { 
             if(e.startStr.split('T')[0] === selectedDate) e.remove(); 
         });
-        let original = cycleMaster.find(c => c.start === selectedDate);
-        if(original) calendar.addEvent({ ...original, extendedProps: {...original.extendedProps, isCycle: true} });
+        if (rotState.list.length) {
+            rotRestaurerJour(selectedDate);
+        } else {
+            let original = cycleMaster.find(c => c.start === selectedDate);
+            if(original) calendar.addEvent({ ...original, extendedProps: {...original.extendedProps, isCycle: true} });
+        }
         sauver(); majAffichage(); fermerModales(); calendar.render();
     }
 
@@ -3473,7 +3795,7 @@
         const backup = { dateExport: new Date().toISOString(), zones };
         if (zones.events) backup.events = localStorage.getItem('events_v5');
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
-        if (zones.cycle)  backup.cycle  = localStorage.getItem('cycle_master');
+        if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
 
         const tag      = [zones.events?'ev':'',zones.soldes?'cfg':'',zones.cycle?'cyc':'',zones.prefs?'prf':''].filter(Boolean).join('-');
@@ -3558,45 +3880,6 @@
         showToast('Configuration enregistrée', 'success', 'fa-check-circle');
     }
 
-    function genererRoulement() {
-        let debutStr = prompt("Date début (AAAA-MM-JJ) :", new Date().toISOString().split('T')[0]);
-        if(!debutStr) return;
-        calendar.removeAllEvents();
-        cycleMaster = [];
-        const pattern = [
-            {t:'NUIT', h:'20:00-04:00', hp:8}, {t:'NUIT', h:'20:00-04:00', hp:8}, {t:'NUIT', h:'20:00-04:00', hp:8}, 
-            {t:'REPOS'}, {t:'REPOS'}, 
-            {t:'APRÈS-MIDI', h:'12:00-20:00', hp:8}, {t:'APRÈS-MIDI', h:'12:00-20:00', hp:8}, {t:'APRÈS-MIDI', h:'12:00-20:00', hp:8}, 
-            {t:'REPOS'}, {t:'REPOS'}, 
-            {t:'MATIN', h:'04:00-12:00', hp:8}, {t:'MATIN', h:'04:00-12:00', hp:8}, {t:'MATIN', h:'04:00-12:00', hp:8}, 
-            {t:'REPOS'}, {t:'REPOS'}
-        ];
-        let d = new Date(debutStr);
-        for(let i=0; i<730; i++) {
-            let p = pattern[i % 15];
-            if(p.t !== 'REPOS') {
-                let currentD = new Date(d); 
-                currentD.setDate(d.getDate() + i);
-                let dateS = fmtLocal(currentD);
-                let evData = { 
-                    title: p.t + "\n[" + p.h + "]\n🍽️ 20min ✅", 
-                    start: dateS, 
-                    allDay: true, 
-                    backgroundColor: (p.t==='NUIT'?'#1e293b':p.t==='MATIN'?'#fbbf24':'#f59e0b'), 
-                    extendedProps: { 
-                        type: p.t, isCycle: true, hPayees: p.hp, hD: p.h.split('-')[0], hF: p.h.split('-')[1],
-                        repasDureeMin: 20, repasPaye: 'paye', repasTaux: null // Intégration de la pause ici
-                    } 
-                };
-                calendar.addEvent(evData);
-                cycleMaster.push(evData);
-            }
-        }
-        localStorage.setItem('cycle_master', JSON.stringify(cycleMaster));
-        sauver(); 
-        majAffichage();
-        calendar.render();
-    }
     function analyserDIRT() {
         const d = document.getElementById('dirt-debut').value;
         const f = document.getElementById('dirt-fin').value;
@@ -4041,7 +4324,7 @@ function selectAct(btn, val) {
         const backup = { dateExport: new Date().toISOString(), zones };
         if (zones.events) backup.events = localStorage.getItem('events_v5');
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
-        if (zones.cycle)  backup.cycle  = localStorage.getItem('cycle_master');
+        if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
 
         const tag = [zones.events?'ev':'',zones.soldes?'cfg':'',zones.cycle?'cyc':'',zones.prefs?'prf':''].filter(Boolean).join('-');
@@ -4074,7 +4357,7 @@ function selectAct(btn, val) {
                 // Déterminer quelles zones sont présentes dans le fichier
                 const hasEvents = !!data.events;
                 const hasSoldes = !!data.soldes;
-                const hasCycle  = !!data.cycle;
+                const hasCycle  = !!(data.cycle || data.rotations);
                 const hasPrefs  = !!(data.prefs);
 
                 const zonesLabel = [
@@ -4091,7 +4374,9 @@ function selectAct(btn, val) {
                 if (confirm(`Zones détectées dans ce fichier :\n${zonesLabel}${exportDate}\n\nAttention : cela va remplacer les données correspondantes. Continuer ?`)) {
                     if (hasEvents) localStorage.setItem('events_v5', data.events);
                     if (hasSoldes) localStorage.setItem('soldes_v5', data.soldes);
-                    if (hasCycle)  localStorage.setItem('cycle_master', data.cycle);
+                    if (data.cycle) localStorage.setItem('cycle_master', data.cycle);
+                    if (data.rotations) localStorage.setItem('rotations_v1', data.rotations);
+                    else if (hasEvents) localStorage.removeItem('rotations_v1'); // ancien fichier → re-migration
                     if (hasPrefs) {
                         if (data.prefs.darkMode !== null && data.prefs.darkMode !== undefined)
                             localStorage.setItem('darkMode_v8', data.prefs.darkMode);
@@ -4404,12 +4689,13 @@ function selectAct(btn, val) {
         ouvrirModale('modal-edit');
     }
 
-    function ouvrirEditionEvent(dateStr, type) {
+    function ouvrirEditionEvent(dateStr, type, rotId) {
         closeSingleClickPopup();
         selectedDate = dateStr;
-        // Trouver l'événement correspondant dans FullCalendar
+        // Trouver l'événement correspondant dans FullCalendar (même roulement si précisé)
         const ev = calendar.getEvents().find(e => 
-            e.startStr.split('T')[0] === dateStr && e.extendedProps.type === type
+            e.startStr.split('T')[0] === dateStr && e.extendedProps.type === type &&
+            (rotId === undefined || (e.extendedProps.rotationId || '') === rotId)
         );
         currentEvent = ev || null;
         ouvrirModale('modal-edit', ev);
@@ -4500,80 +4786,92 @@ function selectAct(btn, val) {
                 ${feriesAn[jStr] ? `<br><span style="font-size:0.5rem;color:#7c3aed;font-weight:700;">⭐ ${feriesAn[jStr].substring(0,12)}${feriesAn[jStr].length>12?'…':''}</span>` : ''}
             </th>`;
         }
-        html += '</tr></thead><tbody><tr>';
+        html += '</tr></thead><tbody>';
 
+        // ── Heure d'un événement ──
+        const tbHeuresEv = (ev) => {
+            const p = ev.extendedProps || {};
+            let h = parseFloat(p.hPayees || 0);
+            if (h === 0 && p.hD && p.hF) {
+                const st = new Date(`1970-01-01T${p.hD}`), en = new Date(`1970-01-01T${p.hF}`);
+                let diff = (en - st) / 3600000; h = diff < 0 ? diff + 24 : diff;
+            }
+            return h;
+        };
+
+        // ── Données des 7 jours ──
+        const jours7 = [];
         let hTotSem = 0;
         const hJours = [];
-
         for (let i = 0; i < 7; i++) {
             const j = new Date(lundi); j.setDate(j.getDate() + i);
             const jStr = tbFmt(j);
-            const isToday = jStr === todayStr;
-            const isWE = i >= 5;
             const events = tbEventsForDate(jStr);
-            const nomFerie = feriesAn[jStr];
-
             let hJour = 0;
             events.forEach(ev => {
-                const p = ev.extendedProps || {};
-                const type = p.type || '';
-                
-                // Calculer les heures pour tous les types (travail + activités)
-                let heures = parseFloat(p.hPayees || 0);
-                
-                // Si pas de hPayees mais hD/hF disponibles, calculer
-                if (heures === 0 && p.hD && p.hF) {
-                    const start = new Date(`1970-01-01T${p.hD}`);
-                    const end = new Date(`1970-01-01T${p.hF}`);
-                    let diff = (end - start) / 3600000;
-                    heures = diff < 0 ? diff + 24 : diff;
-                }
-                
-                // Ajouter si c'est un type comptabilisé ou une activité avec heures
-                if (TB_TRAVAIL.includes(type) || TB_ACTIVITES.includes(type) || type.startsWith('CSE')) {
-                    hJour += heures;
-                }
+                const type = (ev.extendedProps || {}).type || '';
+                if (TB_TRAVAIL.includes(type) || TB_ACTIVITES.includes(type) || type.startsWith('CSE')) hJour += tbHeuresEv(ev);
             });
-            hJours.push(hJour);
-            hTotSem += hJour;
-
-            html += `<td class="${isToday ? 'td-today' : (isWE ? 'td-weekend' : '')}" 
-                onclick="tbSingleClick(event, '${jStr}')"
-                ondblclick="ouvrirEditionJour('${jStr}')" style="min-height:90px;">
-                ${nomFerie ? `<span class="tbl-ferie">⭐ ${nomFerie.substring(0,14)}${nomFerie.length>14?'…':''}</span>` : ''}
-            `;
-
-            if (events.length === 0) {
-                html += `<button class="ev-add-btn" ondblclick="event.stopPropagation(); ouvrirEditionJour('${jStr}')" onclick="event.stopPropagation(); tbSingleClick(event, '${jStr}')">+</button>`;
-            } else {
-                events.forEach(ev => {
-                    const p = ev.extendedProps || {};
-                    const color = tbColor(ev);
-                    const icon = tbIcon(p.type);
-                    const typeStr = (p.type || '').length > 13 ? (p.type || '').substring(0,12)+'…' : (p.type || '');
-                    const horaire = p.hD && p.hF ? p.hD + '–' + p.hF : '';
-                    
-                    // Calculer les heures pour l'affichage
-                    let h = parseFloat(p.hPayees || 0);
-                    if (h === 0 && p.hD && p.hF) {
-                        const start = new Date(`1970-01-01T${p.hD}`);
-                        const end = new Date(`1970-01-01T${p.hF}`);
-                        let diff = (end - start) / 3600000;
-                        h = diff < 0 ? diff + 24 : diff;
-                    }
-                    
-                    html += `<button class="ev-chip" style="background:${color};" 
-                        ondblclick="event.stopPropagation(); ouvrirEditionEvent('${jStr}', '${(p.type||'').replace(/'/g,"\'")}')"
-                        onclick="event.stopPropagation(); tbSingleClick(event, '${jStr}')"
-                        title="${(p.type||'')}${horaire?' | '+horaire:''}${h>0?' | '+h.toFixed(1)+'h':''}">
-                        <span>${icon} ${typeStr}</span>
-                        ${horaire ? `<span class="ev-chip-h">${horaire}${h>0?' · '+h.toFixed(1)+'h':''}</span>` : (h > 0 ? `<span class="ev-chip-h">${h.toFixed(1)}h</span>` : '')}
-                    </button>`;
-                });
-            }
-            html += '</td>';
+            hJours.push(hJour); hTotSem += hJour;
+            jours7.push({ jStr, isToday: jStr === todayStr, isWE: i >= 5, events });
         }
-        html += '</tr></tbody>';
+
+        // ── Une ligne par roulement visible + une ligne « Autres postes » ──
+        const rotVisibles = (typeof rotState !== 'undefined') ? rotState.list.filter(r => r.visible !== false) : [];
+        const rotIds = new Set(rotVisibles.map(r => r.id));
+        const groupes = rotVisibles.map(r => ({ rot: r, filtre: ev => (ev.extendedProps || {}).rotationId === r.id }));
+        groupes.push({ rot: null, filtre: ev => !rotIds.has((ev.extendedProps || {}).rotationId) });
+        const avecLignes = rotVisibles.length > 0;
+
+        groupes.forEach((g, gi) => {
+            const estAutres = !g.rot;
+            const evsGroupe = jours7.map(d => d.events.filter(g.filtre));
+            if (avecLignes) {
+                const hG = evsGroupe.reduce((s, l) => s + l.reduce((s2, ev) => s2 + tbHeuresEv(ev), 0), 0);
+                const nomG = estAutres ? '✏️ Autres postes (saisie manuelle)' : '🔁 ' + rotEsc(g.rot.nom);
+                const coul = estAutres ? 'var(--text-muted)' : g.rot.couleur;
+                html += `<tr class="tb-rot-head"><td colspan="7" style="border-left:4px solid ${coul};">
+                    <span class="tb-rot-head-dot" style="background:${coul}"></span>${nomG}
+                    ${hG > 0 ? `<span class="tb-rot-head-h">${Math.round(hG * 10) / 10}h</span>` : ''}
+                </td></tr>`;
+            }
+            html += '<tr>';
+            jours7.forEach((d, i) => {
+                const evs = evsGroupe[i];
+                const nomFerie = feriesAn[d.jStr];
+                html += `<td class="${d.isToday ? 'td-today' : (d.isWE ? 'td-weekend' : '')}"
+                    onclick="tbSingleClick(event, '${d.jStr}')"
+                    ondblclick="ouvrirEditionJour('${d.jStr}')" style="min-height:${avecLignes ? 54 : 90}px;">
+                    ${(nomFerie && gi === 0) ? `<span class="tbl-ferie">⭐ ${nomFerie.substring(0,14)}${nomFerie.length>14?'…':''}</span>` : ''}`;
+                if (evs.length === 0) {
+                    if (estAutres) {
+                        html += `<button class="ev-add-btn" ondblclick="event.stopPropagation(); ouvrirEditionJour('${d.jStr}')" onclick="event.stopPropagation(); tbSingleClick(event, '${d.jStr}')">+</button>`;
+                    } else {
+                        html += `<span class="tb-rot-repos">💤 Repos</span>`;
+                    }
+                } else {
+                    evs.forEach(ev => {
+                        const p = ev.extendedProps || {};
+                        const color = tbColor(ev);
+                        const icon = tbIcon(p.type);
+                        const typeStr = (p.type || '').length > 13 ? (p.type || '').substring(0,12)+'…' : (p.type || '');
+                        const horaire = p.hD && p.hF ? p.hD + '–' + p.hF : '';
+                        const h = tbHeuresEv(ev);
+                        html += `<button class="ev-chip" style="background:${color};${tbRotStyle(ev)}"
+                            ondblclick="event.stopPropagation(); ouvrirEditionEvent('${d.jStr}', '${(p.type||'').replace(/'/g,"\'")}', '${p.rotationId || ''}')"
+                            onclick="event.stopPropagation(); tbSingleClick(event, '${d.jStr}')"
+                            title="${(p.type||'')}${horaire?' | '+horaire:''}${h>0?' | '+h.toFixed(1)+'h':''}${tbRotNom(ev)}">
+                            ${tbRotTag(ev)}
+                            <span>${icon} ${typeStr}</span>
+                            ${horaire ? `<span class="ev-chip-h">${horaire}${h>0?' · '+h.toFixed(1)+'h':''}</span>` : (h > 0 ? `<span class="ev-chip-h">${h.toFixed(1)}h</span>` : '')}
+                        </button>`;
+                    });
+                }
+                html += '</td>';
+            });
+            html += '</tr>';
+        });
+        html += '</tbody>';
 
         // Ligne totaux journaliers
         const baseH = parseFloat((soldes && soldes.heuresSemaine) ? soldes.heuresSemaine : 35);
@@ -4672,7 +4970,8 @@ function selectAct(btn, val) {
                 const color = tbColor(ev);
                 const icon = tbIcon(p.type);
                 const typeStr = (p.type || '').substring(0, 10);
-                html += `<span class="m-dot" style="background:${color};">${icon} ${typeStr}</span>`;
+                const rM = p.rotationId && typeof rotGet === 'function' ? rotGet(p.rotationId) : null;
+                html += `<span class="m-dot" style="background:${color};${tbRotStyle(ev)}" title="${(p.type||'')}${tbRotNom(ev)}">${rM ? `<b class="m-rot" style="background:${rM.couleur}">${rotEsc(rM.nom)}</b> ` : ''}${icon} ${typeStr}</span>`;
             });
             if (events.length > 3) html += `<span class="m-more">+${events.length-3}</span>`;
 
@@ -5482,6 +5781,7 @@ function selectAct(btn, val) {
                 events: localStorage.getItem('events_v5'),
                 soldes: localStorage.getItem('soldes_v5'),
                 cycle: localStorage.getItem('cycle_master'),
+                rotations: localStorage.getItem('rotations_v1'),
                 prefs: {
                     darkMode: localStorage.getItem('darkMode_v8'),
                     autoBackup: localStorage.getItem('autoBackupCfg')
@@ -5645,6 +5945,8 @@ function selectAct(btn, val) {
                 if (data.events) { localStorage.setItem('events_v5', typeof data.events === 'string' ? data.events : JSON.stringify(data.events)); restored++; }
                 if (data.soldes) { localStorage.setItem('soldes_v5', typeof data.soldes === 'string' ? data.soldes : JSON.stringify(data.soldes)); restored++; }
                 if (data.cycle) { localStorage.setItem('cycle_master', typeof data.cycle === 'string' ? data.cycle : JSON.stringify(data.cycle)); restored++; }
+                if (data.rotations) { localStorage.setItem('rotations_v1', typeof data.rotations === 'string' ? data.rotations : JSON.stringify(data.rotations)); }
+                else if (data.events) { localStorage.removeItem('rotations_v1'); }
                 if (data.prefs) {
                     if (data.prefs.darkMode) localStorage.setItem('darkMode_v8', data.prefs.darkMode);
                     if (data.prefs.autoBackup) localStorage.setItem('autoBackupCfg', data.prefs.autoBackup);
@@ -5760,11 +6062,1423 @@ function selectAct(btn, val) {
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ ROULEMENTS MULTIPLES (v8.4) ═══════════════════════════════════════════
+    // Plusieurs roulements indépendants, motif répétitif personnalisable,
+    // masquage sans suppression (postes masqués = ni affichés ni comptés).
+    // Stockage : localStorage 'rotations_v1' = { list:[...], hidden:{ id:[events] } }
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    const ROT_KEY = 'rotations_v1';
+    const ROT_TYPES = {
+        'MATIN':         { ic:'☀️', lbl:'Matin',      code:'M', hD:'04:00', hF:'12:00' },
+        'APRÈS-MIDI':    { ic:'⛅', lbl:'Après-midi', code:'A', hD:'12:00', hF:'20:00' },
+        'NUIT':          { ic:'🌙', lbl:'Nuit',       code:'N', hD:'20:00', hF:'04:00' },
+        'POSTE JOURNÉE': { ic:'💼', lbl:'Journée',    code:'J', hD:'08:00', hF:'16:00' },
+        'REPOS':         { ic:'💤', lbl:'Repos',      code:'R' }
+    };
+    const ROT_ORDRE = ['MATIN','APRÈS-MIDI','NUIT','POSTE JOURNÉE','REPOS'];
+    const ROT_COULEURS = ['#4f46e5','#e11d48','#059669','#d97706','#0891b2','#7c3aed','#db2777','#65a30d'];
+    const ROT_PRESETS = [
+        { id:'3x8-15',  nom:'3x8 classique — 3N 2R 3A 2R 3M 2R (15 j)', code:'NNNRRAAARRMMMRR' },
+        { id:'5x8-10',  nom:'5x8 — 2M 2A 2N 4R (10 j)',                  code:'MMAANNRRRR' },
+        { id:'4x8-8',   nom:'4x8 — 2M 2A 2N 2R (8 j)',                    code:'MMAANNRR' },
+        { id:'3x8-21',  nom:'3x8 semaine — 5M 2R 5A 2R 5N 2R (21 j)',    code:'MMMMMRRAAAAARRNNNNNRR' },
+        { id:'2x8-14',  nom:'2x8 semaine — 5M 2R 5A 2R (14 j)',          code:'MMMMMRRAAAAARR' },
+        { id:'jour-7',  nom:'Journée lundi → vendredi (7 j)',            code:'JJJJJRR' }
+    ];
+
+    let rotState = rotCharger();
+    let rotDraft = null;       // roulement en cours d'édition
+    let rotDraftEditId = null; // id si modification, null si création
+
+    function rotCharger() {
+        try {
+            const s = JSON.parse(localStorage.getItem(ROT_KEY));
+            if (s && Array.isArray(s.list)) { s.hidden = s.hidden || {}; return s; }
+        } catch(e) {}
+        return { list: [], hidden: {} };
+    }
+    function rotSauverState() { localStorage.setItem(ROT_KEY, JSON.stringify(rotState)); }
+    function rotGet(id) { return rotState.list.find(r => r.id === id) || null; }
+    function rotEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function rotNewId() { return 'rot_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+    // ── Dates locales (pas de décalage UTC) ──
+    function rotParse(s) { const [y, m, d] = (s || '').split('-').map(Number); return new Date(y, (m || 1) - 1, d || 1); }
+    function rotAddDays(s, n) { const d = rotParse(s); d.setDate(d.getDate() + n); return fmtLocal(d); }
+    function rotAddMonths(s, n) { const d = rotParse(s); d.setMonth(d.getMonth() + n); d.setDate(d.getDate() - 1); return fmtLocal(d); }
+    function rotDiffJours(a, b) { return Math.round((rotParse(b) - rotParse(a)) / 86400000); }
+    function rotFmtFr(s) { return s ? rotParse(s).toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' }) : '—'; }
+    function rotDuree(hD, hF) {
+        if (!hD || !hF) return 0;
+        const [h1, m1] = hD.split(':').map(Number), [h2, m2] = hF.split(':').map(Number);
+        let d = (h2 * 60 + m2 - h1 * 60 - m1) / 60;
+        return d <= 0 ? d + 24 : d;
+    }
+
+    function rotHorairesDefaut() {
+        const h = {};
+        ['MATIN','APRÈS-MIDI','NUIT','POSTE JOURNÉE'].forEach(t => h[t] = { hD: ROT_TYPES[t].hD, hF: ROT_TYPES[t].hF });
+        return h;
+    }
+    function rotMotifDepuisCode(code) {
+        const map = {}; Object.keys(ROT_TYPES).forEach(t => map[ROT_TYPES[t].code] = t);
+        return code.split('').map(c => map[c]).filter(Boolean);
+    }
+    function rotHeuresPoste(rot, type) {
+        const h = (rot.horaires && rot.horaires[type]) || ROT_TYPES[type];
+        let hp = rotDuree(h.hD, h.hF);
+        const rm = parseFloat(rot.repasMin) || 0;
+        if (rm > 0 && rot.repasPaye === 'non_paye') hp = Math.max(0, hp - rm / 60);
+        return Math.round(hp * 100) / 100;
+    }
+    function rotHeuresParSemaine(rot) {
+        if (!rot.motif || !rot.motif.length) return 0;
+        const tot = rot.motif.reduce((s, t) => s + (t === 'REPOS' ? 0 : rotHeuresPoste(rot, t)), 0);
+        return tot / rot.motif.length * 7;
+    }
+
+    // ── Type du roulement pour une date (null hors période) ──
+    function rotTypePourDate(rot, dateS) {
+        if (!rot.motif || !rot.motif.length) return null;
+        if (dateS < rot.debut || (rot.fin && dateS > rot.fin)) return null;
+        const n = rotDiffJours(rot.debut, dateS);
+        return rot.motif[((n % rot.motif.length) + rot.motif.length) % rot.motif.length];
+    }
+
+    // ── Construire l'événement FullCalendar d'un poste de roulement ──
+    function rotConstruireEvent(rot, dateS, type) {
+        const h = (rot.horaires && rot.horaires[type]) || ROT_TYPES[type];
+        const rm = parseFloat(rot.repasMin) || 0;
+        let titre = type + `\n[${h.hD}-${h.hF}]`;
+        if (rm > 0) titre += `\n🍽️ ${rm}min ${rot.repasPaye === 'paye' ? '✅' : '❌'}`;
+        return {
+            title: titre, start: dateS, allDay: true,
+            backgroundColor: getColorForType(type),
+            extendedProps: {
+                type: type, isCycle: true, hPayees: rotHeuresPoste(rot, type), hD: h.hD, hF: h.hF,
+                repasDureeMin: rm, repasPaye: rot.repasPaye || 'paye', repasTaux: null,
+                rotationId: rot.id
+            }
+        };
+    }
+    function rotEventPourDate(rot, dateS) {
+        const t = rotTypePourDate(rot, dateS);
+        return (!t || t === 'REPOS') ? null : rotConstruireEvent(rot, dateS, t);
+    }
+    function rotSerialiser(e) {
+        return { title: e.title, start: e.startStr, backgroundColor: e.backgroundColor, extendedProps: { ...e.extendedProps }, allDay: e.allDay };
+    }
+
+    // ── Supprimer les postes générés (garde les jours modifiés à la main) ──
+    function rotRetirerGeneres(id) {
+        calendar.getEvents().forEach(e => {
+            const p = e.extendedProps || {};
+            if (p.rotationId === id && p.isCycle === true) e.remove();
+        });
+        if (rotState.hidden[id]) rotState.hidden[id] = rotState.hidden[id].filter(e => !(e.extendedProps && e.extendedProps.isCycle === true));
+    }
+
+    // ── Générer tous les postes d'un roulement sur sa période ──
+    function rotGenerer(rot) {
+        const visible = rot.visible !== false;
+        const existants = visible
+            ? calendar.getEvents().filter(e => (e.extendedProps || {}).rotationId === rot.id).map(e => e.startStr.split('T')[0])
+            : (rotState.hidden[rot.id] || []).map(e => (e.start || '').split('T')[0]);
+        const dejaPris = new Set(existants);
+        const nouveaux = [];
+        const nbJours = Math.min(rotDiffJours(rot.debut, rot.fin), 3700); // ~10 ans max
+        for (let i = 0; i <= nbJours; i++) {
+            const dateS = rotAddDays(rot.debut, i);
+            if (dejaPris.has(dateS)) continue; // jour modifié manuellement → conservé
+            const ev = rotEventPourDate(rot, dateS);
+            if (ev) nouveaux.push(ev);
+        }
+        if (visible) {
+            calendar.batchRendering(() => nouveaux.forEach(ev => calendar.addEvent(ev)));
+        } else {
+            rotState.hidden[rot.id] = (rotState.hidden[rot.id] || []).concat(nouveaux);
+        }
+        return nouveaux.length;
+    }
+
+    function rotRafraichir() {
+        rotSauverState();
+        sauver();
+        if (typeof majAffichage === 'function') majAffichage();
+        calendar.render();
+        rotRenderSidebar();
+        rotRenderListe();
+    }
+
+    // ── Afficher / masquer ──
+    function rotSetVisible(id, visible, silencieux) {
+        const rot = rotGet(id); if (!rot) return;
+        const estVisible = rot.visible !== false;
+        if (visible === estVisible) return;
+        if (!visible) {
+            const evs = calendar.getEvents().filter(e => (e.extendedProps || {}).rotationId === id);
+            rotState.hidden[id] = (rotState.hidden[id] || []).concat(evs.map(rotSerialiser));
+            calendar.batchRendering(() => evs.forEach(e => e.remove()));
+            rot.visible = false;
+        } else {
+            const evs = rotState.hidden[id] || [];
+            calendar.batchRendering(() => evs.forEach(e => calendar.addEvent(e)));
+            delete rotState.hidden[id];
+            rot.visible = true;
+        }
+        if (!silencieux) {
+            rotRafraichir();
+            showToast(visible ? `👁️ « ${rot.nom} » affiché` : `🙈 « ${rot.nom} » masqué (conservé)`, 'info', visible ? 'fa-eye' : 'fa-eye-slash');
+        }
+    }
+    function rotBasculer(id) { const r = rotGet(id); if (r) rotSetVisible(id, r.visible === false); }
+    function rotSolo(id) {
+        rotState.list.forEach(r => rotSetVisible(r.id, r.id === id, true));
+        rotRafraichir();
+        const r = rotGet(id);
+        showToast(`🎯 Seul « ${r ? r.nom : ''} » est affiché`, 'info', 'fa-eye');
+    }
+    function rotToutAfficher() {
+        rotState.list.forEach(r => rotSetVisible(r.id, true, true));
+        rotRafraichir();
+        showToast('👁️ Tous les roulements sont affichés', 'info', 'fa-eye');
+    }
+
+    // ── Supprimer un roulement ──
+    function rotSupprimer(id) {
+        const rot = rotGet(id); if (!rot) return;
+        if (!confirm(`🗑️ Supprimer le roulement « ${rot.nom} » ?\n\nTous ses postes générés seront retirés du planning.\nLes jours que vous avez modifiés à la main sont conservés comme postes manuels.`)) return;
+        calendar.getEvents().forEach(e => {
+            const p = e.extendedProps || {};
+            if (p.rotationId !== id) return;
+            if (p.isCycle === true) e.remove();
+            else e.setExtendedProp('rotationId', null);
+        });
+        delete rotState.hidden[id];
+        rotState.list = rotState.list.filter(r => r.id !== id);
+        rotRafraichir();
+        showToast(`Roulement « ${rot.nom} » supprimé`, 'success', 'fa-trash-alt');
+    }
+
+    // ── Dupliquer avec décalage (ex : 5 équipes sur le même cycle) ──
+    function rotDupliquer(id) {
+        const src = rotGet(id); if (!src) return;
+        const len = src.motif.length;
+        const def = Math.max(1, Math.round(len / 5));
+        const rep = prompt(`Dupliquer « ${src.nom} » avec un décalage de combien de jours ?\n\n(Cycle de ${len} jours. Ex : 5 équipes → décalage de ${def} j. 0 = copie identique)`, def);
+        if (rep === null) return;
+        const dec = ((parseInt(rep, 10) || 0) % len + len) % len;
+        const copie = JSON.parse(JSON.stringify(src));
+        copie.id = rotNewId();
+        copie.nom = `${src.nom} (+${dec} j)`;
+        copie.couleur = ROT_COULEURS[rotState.list.length % ROT_COULEURS.length];
+        copie.motif = src.motif.map((_, i) => src.motif[((i - dec) % len + len) % len]);
+        copie.visible = true;
+        rotState.list.push(copie);
+        const n = rotGenerer(copie);
+        rotRafraichir();
+        showToast(`✅ « ${copie.nom} » créé — ${n} postes`, 'success', 'fa-clone');
+    }
+
+    // ── Restaurer un jour depuis les roulements visibles ──
+    function rotRestaurerJour(dateS) {
+        let n = 0;
+        rotState.list.filter(r => r.visible !== false).forEach(r => {
+            const ev = rotEventPourDate(r, dateS);
+            if (ev) { calendar.addEvent(ev); n++; }
+        });
+        return n;
+    }
+
+    // ── Migration de l'ancien cycle unique (v8.3) ──
+    function rotMigrer() {
+        if (localStorage.getItem(ROT_KEY)) return;
+        let evs; try { evs = JSON.parse(localStorage.getItem('events_v5')) || []; } catch(e) { evs = []; }
+        const cyc = evs.filter(e => e.extendedProps && e.extendedProps.isCycle === true && !e.extendedProps.rotationId);
+        if (cyc.length) {
+            const dates = cyc.map(e => (e.start || '').split('T')[0]).sort();
+            const rot = {
+                id: rotNewId(), nom: 'Roulement principal', couleur: ROT_COULEURS[0],
+                debut: dates[0], fin: dates[dates.length - 1],
+                motif: rotMotifDepuisCode('NNNRRAAARRMMMRR'), horaires: rotHorairesDefaut(),
+                repasMin: 20, repasPaye: 'paye', visible: true
+            };
+            cyc.forEach(e => e.extendedProps.rotationId = rot.id);
+            rotState.list.push(rot);
+            localStorage.setItem('events_v5', JSON.stringify(evs));
+        }
+        rotSauverState();
+    }
+
+    // ── Marquage visuel (bande couleur du roulement) ──
+    function rotEventDidMount(info) {
+        const rid = (info.event.extendedProps || {}).rotationId;
+        const r = rid ? rotGet(rid) : null;
+        if (!r) return;
+        info.el.style.boxShadow = `inset 4px 0 0 ${r.couleur}, 0 1px 3px rgba(0,0,0,0.12)`;
+        info.el.title = '🔁 ' + r.nom;
+        const cible = info.el.querySelector('.fc-event-main') || info.el;
+        if (!cible.querySelector('.ev-rot-tag')) {
+            const tag = document.createElement('span');
+            tag.className = 'ev-rot-tag';
+            tag.style.background = r.couleur;
+            tag.textContent = r.nom;
+            cible.insertBefore(tag, cible.firstChild);
+        }
+    }
+    function tbRotStyle(ev) {
+        const rid = (ev.extendedProps || {}).rotationId;
+        const r = rid ? rotGet(rid) : null;
+        return r ? `box-shadow: inset 4px 0 0 ${r.couleur};` : '';
+    }
+    function tbRotTag(ev) {
+        const rid = (ev.extendedProps || {}).rotationId;
+        const r = rid ? rotGet(rid) : null;
+        return r ? `<span class="ev-rot-tag" style="background:${r.couleur}">${rotEsc(r.nom)}</span>` : '';
+    }
+    function tbRotNom(ev) {
+        const rid = (ev.extendedProps || {}).rotationId;
+        const r = rid ? rotGet(rid) : null;
+        return r ? ' | 🔁 ' + r.nom : '';
+    }
+
+    // ═══ UI : carte latérale ═══
+    function rotRenderSidebar() {
+        const box = document.getElementById('rot-sidebar-list');
+        if (!box) return;
+        if (!rotState.list.length) {
+            box.innerHTML = `<div class="rot-empty">Aucun roulement. Créez vos cycles pour remplir le planning automatiquement.</div>`;
+            return;
+        }
+        box.innerHTML = rotState.list.map(r => {
+            const off = r.visible === false;
+            return `<div class="rot-row${off ? ' is-off' : ''}">
+                <span class="rot-dot" style="background:${r.couleur}"></span>
+                <span class="rot-name" title="${rotEsc(r.nom)}">${rotEsc(r.nom)}</span>
+                <button class="rot-eye" onclick="rotBasculer('${r.id}')" title="${off ? 'Afficher' : 'Masquer'}" aria-label="${off ? 'Afficher' : 'Masquer'} ${rotEsc(r.nom)}">
+                    <i class="fas ${off ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                </button>
+            </div>`;
+        }).join('');
+    }
+
+    // ═══ UI : modale de gestion ═══
+    function rotOuvrirGestion(nouveau) {
+        if (typeof fermerModales === 'function') fermerModales();
+        ouvrirModale('modal-rotations');
+        if (nouveau) rotNouveau(); else rotAfficherVue('liste');
+    }
+    function rotAfficherVue(v) {
+        document.getElementById('rot-vue-liste').style.display = v === 'liste' ? 'block' : 'none';
+        document.getElementById('rot-vue-editeur').style.display = v === 'editeur' ? 'block' : 'none';
+        if (v === 'liste') rotRenderListe();
+        const m = document.getElementById('modal-rotations'); if (m) m.scrollTop = 0;
+    }
+    function rotMiniMotif(motif) {
+        const max = 28;
+        let html = motif.slice(0, max).map(t => `<span class="rot-mini" style="background:${t === 'REPOS' ? 'var(--border-color)' : getColorForType(t)}" title="${ROT_TYPES[t].lbl}">${ROT_TYPES[t].code}</span>`).join('');
+        if (motif.length > max) html += `<span class="rot-mini-more">+${motif.length - max}</span>`;
+        return html;
+    }
+    function rotRenderListe() {
+        const box = document.getElementById('rot-liste');
+        if (!box) return;
+        const nbOff = rotState.list.filter(r => r.visible === false).length;
+        const btnAll = document.getElementById('rot-btn-all');
+        if (btnAll) btnAll.style.display = nbOff ? 'inline-flex' : 'none';
+        if (!rotState.list.length) {
+            box.innerHTML = `<div class="rot-empty" style="padding:22px 10px;">Aucun roulement pour l'instant.<br>Cliquez sur <b>Nouveau roulement</b> pour en créer un.</div>`;
+            return;
+        }
+        box.innerHTML = rotState.list.map(r => {
+            const off = r.visible === false;
+            const hs = rotHeuresParSemaine(r);
+            return `<div class="rot-card${off ? ' is-off' : ''}" style="border-left-color:${r.couleur}">
+                <div class="rot-card-head">
+                    <span class="rot-dot" style="background:${r.couleur}"></span>
+                    <strong class="rot-card-name">${rotEsc(r.nom)}</strong>
+                    ${off ? '<span class="rot-badge">Masqué</span>' : ''}
+                </div>
+                <div class="rot-card-meta">Cycle de ${r.motif.length} j · ${rotFmtFr(r.debut)} → ${rotFmtFr(r.fin)} · ≈ ${hs.toFixed(1)} h/sem</div>
+                <div class="rot-mini-wrap">${rotMiniMotif(r.motif)}</div>
+                <div class="rot-card-actions">
+                    <button onclick="rotBasculer('${r.id}')"><i class="fas ${off ? 'fa-eye' : 'fa-eye-slash'}"></i> ${off ? 'Afficher' : 'Masquer'}</button>
+                    <button onclick="rotSolo('${r.id}')" title="Afficher uniquement celui-ci"><i class="fas fa-bullseye"></i> Seul</button>
+                    <button onclick="rotModifier('${r.id}')"><i class="fas fa-pen"></i> Modifier</button>
+                    <button onclick="rotDupliquer('${r.id}')" title="Dupliquer avec décalage"><i class="fas fa-clone"></i> Dupliquer</button>
+                    <button class="danger" onclick="rotSupprimer('${r.id}')" aria-label="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // ═══ UI : éditeur ═══
+    function rotNouveau() {
+        const today = fmtLocal(new Date());
+        rotDraftEditId = null;
+        rotDraft = {
+            id: rotNewId(),
+            nom: 'Roulement ' + (rotState.list.length + 1),
+            couleur: ROT_COULEURS[rotState.list.length % ROT_COULEURS.length],
+            debut: today, fin: rotAddMonths(today, 12),
+            motif: rotMotifDepuisCode('NNNRRAAARRMMMRR'),
+            horaires: rotHorairesDefaut(), repasMin: 20, repasPaye: 'paye', visible: true
+        };
+        rotRemplirEditeur();
+    }
+    function rotModifier(id) {
+        const r = rotGet(id); if (!r) return;
+        rotDraftEditId = id;
+        rotDraft = JSON.parse(JSON.stringify(r));
+        rotDraft.horaires = Object.assign(rotHorairesDefaut(), rotDraft.horaires || {});
+        rotRemplirEditeur();
+    }
+    function rotRemplirEditeur() {
+        const d = rotDraft;
+        document.getElementById('rot-ed-titre').textContent = rotDraftEditId ? 'Modifier le roulement' : 'Nouveau roulement';
+        document.getElementById('rot-ed-nom').value = d.nom;
+        document.getElementById('rot-ed-debut').value = d.debut;
+        document.getElementById('rot-ed-fin').value = d.fin;
+        document.getElementById('rot-ed-repas').value = d.repasMin;
+        document.getElementById('rot-ed-repas-paye').value = d.repasPaye;
+        document.getElementById('rot-ed-preset').value = '';
+        // Couleurs
+        document.getElementById('rot-ed-couleurs').innerHTML = ROT_COULEURS.map(c =>
+            `<button type="button" class="rot-swatch${c === d.couleur ? ' sel' : ''}" data-c="${c}" style="background:${c}" onclick="rotChoisirCouleur('${c}')" aria-label="Couleur ${c}"></button>`
+        ).join('') + `<input type="color" class="rot-color-input" value="${d.couleur}" oninput="rotChoisirCouleur(this.value)" title="Autre couleur">`;
+        // Horaires
+        document.getElementById('rot-ed-horaires').innerHTML = ['MATIN','APRÈS-MIDI','NUIT','POSTE JOURNÉE'].map(t =>
+            `<div class="rot-h-row">
+                <span>${ROT_TYPES[t].ic} ${ROT_TYPES[t].lbl}</span>
+                <input type="time" value="${d.horaires[t].hD}" onchange="rotDraft.horaires['${t}'].hD=this.value; rotRenderApercu()">
+                <span class="rot-h-sep">→</span>
+                <input type="time" value="${d.horaires[t].hF}" onchange="rotDraft.horaires['${t}'].hF=this.value; rotRenderApercu()">
+            </div>`
+        ).join('');
+        rotRenderMotif();
+        rotAfficherVue('editeur');
+    }
+    function rotChoisirCouleur(c) {
+        rotDraft.couleur = c;
+        document.querySelectorAll('#rot-ed-couleurs .rot-swatch').forEach(b => b.classList.toggle('sel', (b.dataset.c || '').toLowerCase() === String(c).toLowerCase()));
+    }
+    function rotAjouterJour(type) { rotDraft.motif.push(type); rotRenderMotif(); }
+    function rotChangerJour(i) {
+        const idx = ROT_ORDRE.indexOf(rotDraft.motif[i]);
+        rotDraft.motif[i] = ROT_ORDRE[(idx + 1) % ROT_ORDRE.length];
+        rotRenderMotif();
+    }
+    function rotRetirerJour(i, ev) { if (ev) ev.stopPropagation(); rotDraft.motif.splice(i, 1); rotRenderMotif(); }
+    function rotViderMotif() { if (rotDraft.motif.length && confirm('Vider le motif ?')) { rotDraft.motif = []; rotRenderMotif(); } }
+    function rotDoublerMotif() { rotDraft.motif = rotDraft.motif.concat(rotDraft.motif); rotRenderMotif(); }
+    function rotAppliquerPreset(id) {
+        const p = ROT_PRESETS.find(x => x.id === id); if (!p) return;
+        rotDraft.motif = rotMotifDepuisCode(p.code);
+        rotRenderMotif();
+    }
+    function rotDecaler(sens) {
+        if (rotDraft.motif.length < 2) return;
+        if (sens > 0) rotDraft.motif.unshift(rotDraft.motif.pop()); else rotDraft.motif.push(rotDraft.motif.shift());
+        rotRenderMotif();
+    }
+    function rotRenderMotif() {
+        const box = document.getElementById('rot-ed-motif');
+        const m = rotDraft.motif;
+        box.innerHTML = m.length ? m.map((t, i) => {
+            const bg = t === 'REPOS' ? 'var(--bg-app)' : getColorForType(t);
+            const fg = (t === 'REPOS' || t === 'MATIN') ? 'var(--text-main)' : '#fff';
+            return `<button type="button" class="rot-day" style="background:${bg}; color:${fg}" onclick="rotChangerJour(${i})" title="J${i + 1} : ${ROT_TYPES[t].lbl} — cliquer pour changer">
+                <small>J${i + 1}</small><span>${ROT_TYPES[t].ic}</span><em>${ROT_TYPES[t].code}</em>
+                <span class="rot-day-x" onclick="rotRetirerJour(${i}, event)" aria-label="Retirer">×</span>
+            </button>`;
+        }).join('') : `<div class="rot-empty">Motif vide — ajoutez des jours ci-dessous ou choisissez un modèle.</div>`;
+        const nbPostes = m.filter(t => t !== 'REPOS').length;
+        document.getElementById('rot-ed-motif-info').textContent = m.length
+            ? `Cycle de ${m.length} jour${m.length > 1 ? 's' : ''} · ${nbPostes} poste${nbPostes > 1 ? 's' : ''} · ${m.length - nbPostes} repos — se répète en boucle`
+            : '';
+        rotRenderApercu();
+    }
+    function rotRenderApercu() {
+        const box = document.getElementById('rot-ed-apercu');
+        if (!box) return;
+        const d = rotDraft;
+        d.debut = document.getElementById('rot-ed-debut').value || d.debut;
+        d.fin = document.getElementById('rot-ed-fin').value || d.fin;
+        d.repasMin = parseFloat(document.getElementById('rot-ed-repas').value) || 0;
+        d.repasPaye = document.getElementById('rot-ed-repas-paye').value;
+        if (!d.motif.length || !d.debut) { box.innerHTML = ''; document.getElementById('rot-ed-hsem').textContent = ''; return; }
+        const today = fmtLocal(new Date());
+        const depart = (today > d.debut && (!d.fin || today <= d.fin)) ? today : d.debut;
+        const jours = ['Di','Lu','Ma','Me','Je','Ve','Sa'];
+        let html = '';
+        for (let i = 0; i < 21; i++) {
+            const ds = rotAddDays(depart, i);
+            const t = rotTypePourDate(d, ds);
+            const dt = rotParse(ds);
+            const bg = !t ? 'transparent' : (t === 'REPOS' ? 'var(--bg-app)' : getColorForType(t));
+            const fg = (!t || t === 'REPOS' || t === 'MATIN') ? 'var(--text-main)' : '#fff';
+            html += `<div class="rot-ap-day${ds === today ? ' today' : ''}" style="background:${bg}; color:${fg}">
+                <small>${jours[dt.getDay()]} ${dt.getDate()}</small><span>${t ? ROT_TYPES[t].ic : '·'}</span></div>`;
+        }
+        box.innerHTML = html;
+        document.getElementById('rot-ed-hsem').textContent = `≈ ${rotHeuresParSemaine(d).toFixed(1)} h payées / semaine en moyenne`;
+    }
+    function rotDureeRapide(mois) {
+        const deb = document.getElementById('rot-ed-debut').value;
+        if (!deb) return;
+        document.getElementById('rot-ed-fin').value = rotAddMonths(deb, mois);
+        rotRenderApercu();
+    }
+    function rotEnregistrer() {
+        const d = rotDraft;
+        d.nom = (document.getElementById('rot-ed-nom').value || '').trim();
+        d.debut = document.getElementById('rot-ed-debut').value;
+        d.fin = document.getElementById('rot-ed-fin').value;
+        d.repasMin = parseFloat(document.getElementById('rot-ed-repas').value) || 0;
+        d.repasPaye = document.getElementById('rot-ed-repas-paye').value;
+        if (!d.nom) { alert('Donnez un nom au roulement.'); return; }
+        if (!d.debut || !d.fin) { alert('Indiquez une date de début et de fin.'); return; }
+        if (d.fin < d.debut) { alert('La date de fin doit être après la date de début.'); return; }
+        if (!d.motif.some(t => t !== 'REPOS')) { alert('Le motif doit contenir au moins un poste travaillé.'); return; }
+        if (rotDiffJours(d.debut, d.fin) > 3700) { alert('Période limitée à 10 ans.'); return; }
+
+        let n;
+        if (rotDraftEditId) {
+            const r = rotGet(rotDraftEditId);
+            Object.assign(r, d, { id: r.id, visible: r.visible });
+            rotRetirerGeneres(r.id);
+            n = rotGenerer(r);
+        } else {
+            rotState.list.push(d);
+            n = rotGenerer(d);
+        }
+        const nom = d.nom;
+        rotDraft = null; rotDraftEditId = null;
+        rotRafraichir();
+        rotAfficherVue('liste');
+        showToast(`✅ « ${nom} » enregistré — ${n} postes générés`, 'success', 'fa-check-circle');
+    }
+
+    // Ancien bouton « Générer Cycle » → ouvre le gestionnaire
+    function genererRoulement() { rotOuvrirGestion(rotState.list.length === 0); }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ FIREBASE — COMPTES, DROITS D'ACCÈS & SYNCHRONISATION (v8.5) ════════════
+    // Firebase Auth (identifiant → e-mail technique) + Firestore :
+    //   meta/app            { adminUid }
+    //   logins/{ident}      { email }                 (lecture publique par id)
+    //   comptes/{cid}       { uid, email, identifiant, nom, role, perms, actif }
+    //   plannings/{cid}     { keys:{clé:nbMorceaux}, updatedAt }  + /chunks/{clé__i} { v }
+    // Sans configuration Firebase, l'application fonctionne en local comme avant.
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    const FB_CFG_KEY = 'fb_config_v1', FB_OWNER_KEY = 'fb_local_owner', FB_DIRTY_KEY = 'fb_dirty_keys', FB_SYNCAT_KEY = 'fb_local_sync_at';
+    const FB_SYNC_KEYS = ['events_v5', 'soldes_v5', 'rotations_v1', 'cycle_master'];
+    const FB_DOMAINE = 'agendpro.app';
+    const FB_CHUNK = 300000;
+    const FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
+    const FB_PERMS = [
+        { k:'paie',       lbl:'💰 Paie' },
+        { k:'impr',       lbl:'🖨️ Impression' },
+        { k:'dirt',       lbl:'🛡️ DIRT' },
+        { k:'taux',       lbl:'🎚️ Taux' },
+        { k:'config',     lbl:'⚙️ Configuration' },
+        { k:'legende',    lbl:'🎨 Légende' },
+        { k:'roulements', lbl:'🔁 Gérer les roulements' }
+    ];
+    const FB_GARDES = { 'tab-paie':'paie', 'tab-dirt':'dirt', 'tab-config-taux':'taux', 'modal-print':'impr', 'modal-config':'config', 'modal-rotations':'roulements' };
+    const FB_REGLES = `rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() && exists(/databases/$(db)/documents/meta/app)
+        && get(/databases/$(db)/documents/meta/app).data.adminUid == request.auth.uid;
+    }
+    function owns(cid) {
+      let c = get(/databases/$(db)/documents/comptes/$(cid)).data;
+      return signedIn() && c.uid == request.auth.uid && c.actif == true;
+    }
+    match /meta/app {
+      allow get: if true;
+      allow create: if signedIn() && request.resource.data.adminUid == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+    match /logins/{ident} {
+      allow get: if true;
+      allow write: if isAdmin();
+    }
+    match /comptes/{cid} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if isAdmin();
+    }
+    match /plannings/{cid} {
+      allow read, write: if isAdmin() || owns(cid);
+      match /chunks/{chunk} {
+        allow read, write: if isAdmin() || owns(cid);
+      }
+    }
+  }
+}`;
+
+    let fbAuth = null, fbDb = null, fbCompte = null, fbApplying = false;
+    let fbPushTimer = null, fbPushing = false, fbPushAgain = false, fbDerniereErreur = '', fbComptesCache = [];
+    const fbDejaRecharge = sessionStorage.getItem('fb_reloaded') === '1';
+    sessionStorage.removeItem('fb_reloaded');
+
+    // ── Configuration ──
+    function fbGetConfig() { try { return JSON.parse(localStorage.getItem(FB_CFG_KEY)); } catch(e) { return null; } }
+    function fbParseConfig(txt) {
+        const m = String(txt || '').match(/\{[\s\S]*\}/);
+        if (!m) throw new Error('Objet firebaseConfig introuvable — collez le bloc { apiKey: …, projectId: … }.');
+        const body = m[0].replace(/\/\/[^\n]*/g, '')
+            .replace(/([{,]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":')
+            .replace(/'/g, '"').replace(/,\s*}/g, '}');
+        let c;
+        try { c = JSON.parse(body); } catch(e) { throw new Error('Format non reconnu. Copiez exactement l\'objet firebaseConfig.'); }
+        if (!c.apiKey || !c.projectId || !c.authDomain) throw new Error('apiKey, authDomain et projectId sont obligatoires.');
+        return { apiKey:c.apiKey, authDomain:c.authDomain, projectId:c.projectId, storageBucket:c.storageBucket || '', messagingSenderId:c.messagingSenderId || '', appId:c.appId || '' };
+    }
+    // Encodage léger (base64 URL) — évite que le mot de passe apparaisse en clair, ce n'est PAS un chiffrement
+    function fbEnc(t) { return btoa(unescape(encodeURIComponent(t))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+    function fbDec(t) { t = String(t || '').replace(/-/g, '+').replace(/_/g, '/'); while (t.length % 4) t += '='; return decodeURIComponent(escape(atob(t))); }
+    function fbImportDepuisUrl() {
+        const p = new URLSearchParams(location.search);
+        const v = p.get('fbcfg'), u = p.get('u'), pw = p.get('p');
+        if (!v && !u) return;
+        if (v) {
+            try {
+                const c = JSON.parse(decodeURIComponent(escape(atob(v))));
+                if (c.apiKey && c.projectId) localStorage.setItem(FB_CFG_KEY, JSON.stringify(c));
+            } catch(e) { console.warn('Lien Firebase invalide', e); }
+        }
+        if (u) {
+            let pwd = '';
+            try { pwd = pw ? fbDec(pw) : ''; } catch(e) {}
+            sessionStorage.setItem('fb_pending_login', JSON.stringify({ id: fbNormIdent(u), p: pwd ? fbEnc(pwd) : '' }));
+        }
+        ['fbcfg', 'u', 'p'].forEach(k => p.delete(k));
+        history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p.toString() : '') + location.hash);
+    }
+    // ── Identifiants mémorisés sur l'appareil ──
+    function fbLoginMemorise() { try { const o = JSON.parse(localStorage.getItem('fb_saved_login')); return o && o.id ? { id: o.id, pwd: o.p ? fbDec(o.p) : '' } : null; } catch(e) { return null; } }
+    function fbMemoriserLogin(id, pwd) { localStorage.setItem('fb_saved_login', JSON.stringify({ id, p: pwd ? fbEnc(pwd) : '' })); }
+    function fbOublierLogin() { localStorage.removeItem('fb_saved_login'); }
+    function fbLoginEnAttente() { try { const o = JSON.parse(sessionStorage.getItem('fb_pending_login')); return o && o.id ? { id: o.id, pwd: o.p ? fbDec(o.p) : '' } : null; } catch(e) { return null; } }
+    function fbLienClient(ident, pwd) {
+        let l = fbLienClients() + '&u=' + encodeURIComponent(ident);
+        if (pwd) l += '&p=' + fbEnc(pwd);
+        return l;
+    }
+    function fbLienClients() {
+        const b = btoa(unescape(encodeURIComponent(JSON.stringify(fbGetConfig()))));
+        return location.origin + location.pathname + '?fbcfg=' + encodeURIComponent(b);
+    }
+    function fbEmailPour(ident) { return ident + '@' + FB_DOMAINE; }
+    function fbNormIdent(s) { return String(s || '').trim().toLowerCase(); }
+    function fbIdentValide(s) { return /^[a-z0-9._-]{3,30}$/.test(s); }
+    function fbNewCid() { return 'c_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+    function fbEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    function fbErreur(e) {
+        const code = (e && e.code) || '';
+        const map = {
+            'auth/invalid-credential': 'Identifiant ou mot de passe incorrect.',
+            'auth/invalid-login-credentials': 'Identifiant ou mot de passe incorrect.',
+            'auth/wrong-password': 'Mot de passe incorrect.',
+            'auth/user-not-found': 'Identifiant inconnu.',
+            'auth/weak-password': 'Mot de passe trop court (6 caractères minimum).',
+            'auth/email-already-in-use': 'Cet identifiant est déjà utilisé.',
+            'auth/network-request-failed': 'Pas de connexion internet.',
+            'auth/too-many-requests': 'Trop de tentatives. Réessayez dans quelques minutes.',
+            'auth/operation-not-allowed': 'Activez « E-mail/Mot de passe » dans Firebase › Authentication.',
+            'auth/configuration-not-found': 'Activez Authentication (E-mail/Mot de passe) dans la console Firebase.',
+            'auth/invalid-api-key': 'Clé API invalide : vérifiez la configuration Firebase.',
+            'auth/requires-recent-login': 'Reconnectez-vous puis réessayez.',
+            'permission-denied': 'Accès refusé par Firestore : vérifiez que les règles de sécurité sont publiées.',
+            'unavailable': 'Serveur injoignable (hors ligne ?).',
+            'failed-precondition': 'Firestore n\'est pas encore créé dans la console Firebase.'
+        };
+        return map[code] || (e && e.message) || String(e);
+    }
+
+    // ── Chargement du SDK ──
+    function fbChargerScript(src) {
+        return new Promise((res, rej) => {
+            const s = document.createElement('script');
+            s.src = src; s.onload = res; s.onerror = () => rej(new Error('Impossible de charger Firebase (hors ligne ?)'));
+            document.head.appendChild(s);
+        });
+    }
+    async function fbChargerSDK() {
+        if (window.firebase && firebase.firestore && firebase.auth) return;
+        await fbChargerScript(FB_SDK + 'firebase-app-compat.js');
+        await fbChargerScript(FB_SDK + 'firebase-auth-compat.js');
+        await fbChargerScript(FB_SDK + 'firebase-firestore-compat.js');
+    }
+
+    // ── Droits ──
+    function fbEstAdmin() { return !!(fbCompte && fbCompte.role === 'admin'); }
+    function fbPeut(k) {
+        if (!k || !fbCompte || fbEstAdmin()) return true;
+        return !fbCompte.perms || fbCompte.perms[k] !== false;
+    }
+    function fbRefus() { showToast('🔒 Accès restreint par l\'administrateur', 'error', 'fa-lock'); return false; }
+    function fbAppliquerDroits() {
+        FB_PERMS.forEach(p => document.body.classList.toggle('perm-no-' + p.k, !fbPeut(p.k)));
+    }
+    function fbInstallerGardes() {
+        const st = switchTab, stm = switchTabMobile, om = ouvrirModale;
+        switchTab = function(id) { if (!fbPeut(FB_GARDES[id])) return fbRefus(); return st.apply(this, arguments); };
+        switchTabMobile = function(id) { if (!fbPeut(FB_GARDES[id])) return fbRefus(); return stm.apply(this, arguments); };
+        ouvrirModale = function(id) {
+            if (!fbPeut(FB_GARDES[id])) return fbRefus();
+            const r = om.apply(this, arguments);
+            if (id === 'modal-config') fbMajZoneConfig();
+            return r;
+        };
+    }
+
+    // ── Suivi des modifications locales ──
+    function fbDirtyList() { try { return JSON.parse(localStorage.getItem(FB_DIRTY_KEY)) || []; } catch(e) { return []; } }
+    function fbInstallerHookStockage() {
+        const set = Storage.prototype.setItem, rm = Storage.prototype.removeItem;
+        const marquer = (st, k) => {
+            if (st !== window.localStorage || fbApplying || !fbCompte || !FB_SYNC_KEYS.includes(k)) return;
+            const l = fbDirtyList();
+            if (!l.includes(k)) { l.push(k); set.call(localStorage, FB_DIRTY_KEY, JSON.stringify(l)); }
+            fbPlanifierPush();
+        };
+        Storage.prototype.setItem = function(k, v) { set.call(this, k, v); marquer(this, k); };
+        Storage.prototype.removeItem = function(k) { rm.call(this, k); marquer(this, k); };
+    }
+    function fbPlanifierPush() {
+        clearTimeout(fbPushTimer);
+        if (!fbDb || !fbCompte || !fbAuth || !fbAuth.currentUser) return;
+        fbEtat('attente');
+        fbPushTimer = setTimeout(() => fbPousser(), 2500);
+    }
+
+    // ── Envoi / réception ──
+    async function fbLireManifest(cid) {
+        const d = await fbDb.doc('plannings/' + cid).get();
+        return d.exists ? d.data() : null;
+    }
+    async function fbPousser(toutes) {
+        if (!fbDb || !fbCompte || !fbAuth || !fbAuth.currentUser) return false;
+        if (fbPushing) { fbPushAgain = true; return false; }
+        const cles = toutes ? FB_SYNC_KEYS.slice() : fbDirtyList();
+        if (!cles.length) { fbEtat('ok'); return true; }
+        fbPushing = true; fbEtat('sync');
+        try {
+            const ref = fbDb.doc('plannings/' + fbCompte.id);
+            const ancien = await fbLireManifest(fbCompte.id) || {};
+            const keys = Object.assign({}, ancien.keys || {});
+            const batch = fbDb.batch();
+            cles.forEach(k => {
+                const v = localStorage.getItem(k);
+                const avant = keys[k] || 0;
+                let n = 0;
+                if (v != null) {
+                    n = Math.max(1, Math.ceil(v.length / FB_CHUNK));
+                    for (let i = 0; i < n; i++) batch.set(ref.collection('chunks').doc(k + '__' + i), { v: v.slice(i * FB_CHUNK, (i + 1) * FB_CHUNK) });
+                    keys[k] = n;
+                } else delete keys[k];
+                for (let i = n; i < avant; i++) batch.delete(ref.collection('chunks').doc(k + '__' + i));
+            });
+            const at = Date.now();
+            batch.set(ref, { keys, updatedAt: at, par: fbCompte.identifiant || '' });
+            await batch.commit();
+            // Retirer seulement les clés envoyées (d'autres ont pu changer pendant l'envoi)
+            const reste = fbDirtyList().filter(k => !cles.includes(k));
+            fbApplying = true;
+            if (reste.length) localStorage.setItem(FB_DIRTY_KEY, JSON.stringify(reste)); else localStorage.removeItem(FB_DIRTY_KEY);
+            localStorage.setItem(FB_SYNCAT_KEY, String(at));
+            fbApplying = false;
+            fbEtat(reste.length ? 'attente' : 'ok');
+            return true;
+        } catch(e) {
+            console.error('Firebase push', e);
+            fbEtat('erreur', fbErreur(e));
+            return false;
+        } finally {
+            fbPushing = false;
+            if (fbPushAgain) { fbPushAgain = false; fbPlanifierPush(); }
+        }
+    }
+    async function fbTirer(man) {
+        const ref = fbDb.doc('plannings/' + fbCompte.id);
+        const valeurs = {};
+        for (const [k, n] of Object.entries((man && man.keys) || {})) {
+            if (!FB_SYNC_KEYS.includes(k)) continue;
+            const docs = await Promise.all(Array.from({ length: n }, (_, i) => ref.collection('chunks').doc(k + '__' + i).get()));
+            valeurs[k] = docs.map(d => (d.exists ? d.data().v : '')).join('');
+        }
+        fbApplying = true;
+        try {
+            FB_SYNC_KEYS.forEach(k => { if (k in valeurs) localStorage.setItem(k, valeurs[k]); else localStorage.removeItem(k); });
+            localStorage.removeItem(FB_DIRTY_KEY);
+            localStorage.setItem(FB_SYNCAT_KEY, String((man && man.updatedAt) || Date.now()));
+        } finally { fbApplying = false; }
+    }
+    function fbViderLocal() {
+        fbApplying = true;
+        try { FB_SYNC_KEYS.concat([FB_DIRTY_KEY, FB_SYNCAT_KEY]).forEach(k => localStorage.removeItem(k)); }
+        finally { fbApplying = false; }
+    }
+    function fbRecharger() {
+        if (fbDejaRecharge) return false;
+        sessionStorage.setItem('fb_reloaded', '1');
+        location.reload();
+        return true;
+    }
+    // Au démarrage : décider qui gagne entre cet appareil et le cloud
+    async function fbSyncDemarrage() {
+        const cid = fbCompte.id, owner = localStorage.getItem(FB_OWNER_KEY);
+        const man = await fbLireManifest(cid);
+        const cloudVide = !man || !man.keys || !Object.keys(man.keys).length;
+        if (owner === cid) {
+            if (fbDirtyList().length) { await fbPousser(); return false; }
+            const localAt = +localStorage.getItem(FB_SYNCAT_KEY) || 0;
+            if (!cloudVide && (man.updatedAt || 0) > localAt) { await fbTirer(man); return fbRecharger(); }
+            return false;
+        }
+        if (!owner) {
+            const localADonnees = FB_SYNC_KEYS.some(k => localStorage.getItem(k));
+            if (cloudVide) {
+                localStorage.setItem(FB_OWNER_KEY, cid);
+                if (localADonnees) await fbPousser(true);
+                return false;
+            }
+            if (localADonnees && !confirm('☁️ Ce compte a déjà un planning en ligne.\n\nOK = charger le planning en ligne (remplace celui de cet appareil)\nAnnuler = envoyer le planning de cet appareil en ligne (remplace celui en ligne)')) {
+                localStorage.setItem(FB_OWNER_KEY, cid);
+                await fbPousser(true);
+                return false;
+            }
+        }
+        // Autre utilisateur sur cet appareil, ou chargement du cloud demandé
+        fbViderLocal();
+        localStorage.setItem(FB_OWNER_KEY, cid);
+        if (!cloudVide) await fbTirer(man);
+        return fbRecharger();
+    }
+    async function fbVerifierCloud() {
+        if (!fbDb || !fbCompte || fbDirtyList().length || document.querySelector('.modal[style*="block"]')) return;
+        try {
+            const man = await fbLireManifest(fbCompte.id);
+            const localAt = +localStorage.getItem(FB_SYNCAT_KEY) || 0;
+            if (man && (man.updatedAt || 0) > localAt) {
+                showToast('☁️ Planning mis à jour depuis un autre appareil…', 'info', 'fa-cloud-download-alt');
+                await fbTirer(man);
+                setTimeout(() => location.reload(), 900);
+            }
+        } catch(e) {}
+    }
+    async function fbSynchroniserMaintenant() {
+        if (fbDirtyList().length) { const ok = await fbPousser(); showToast(ok ? '☁️ Planning envoyé' : '⚠️ Envoi impossible', ok ? 'success' : 'error', 'fa-cloud-upload-alt'); }
+        else { await fbVerifierCloud(); showToast('☁️ Planning à jour', 'success', 'fa-cloud'); }
+        fbRenderMonCompte();
+    }
+
+    // ── Indicateur d'état (bouton compte de l'en-tête) ──
+    function fbEtat(etat, msg) {
+        const b = document.getElementById('fb-user-btn');
+        if (!b) return;
+        b.dataset.etat = etat;
+        const t = { ok:'Synchronisé', sync:'Synchronisation…', attente:'Modifications en attente d\'envoi', erreur:'Erreur de synchronisation' + (msg ? ' : ' + msg : '') }[etat] || '';
+        b.title = (fbCompte ? (fbCompte.nom || fbCompte.identifiant) + ' — ' : '') + t;
+    }
+    function fbMajUserBtn() {
+        const b = document.getElementById('fb-user-btn');
+        if (!b) return;
+        b.style.display = fbCompte ? 'flex' : 'none';
+        const l = document.getElementById('fb-user-initiale');
+        if (l && fbCompte) l.textContent = (fbCompte.nom || fbCompte.identifiant || '?').trim().charAt(0).toUpperCase();
+    }
+
+    // ── Écran de connexion ──
+    function fbGate(mode, msg) {
+        const g = document.getElementById('fb-gate');
+        if (!g) return;
+        document.documentElement.classList.remove('fb-pending');
+        if (!mode) { g.style.display = 'none'; document.body.classList.remove('fb-locked'); return; }
+        g.style.display = 'flex';
+        document.body.classList.add('fb-locked');
+        const corps = document.getElementById('fb-gate-body');
+        const err = msg ? `<div class="fb-err">⚠️ ${fbEsc(msg)}</div>` : '';
+        if (mode === 'chargement') {
+            corps.innerHTML = `<div class="fb-spin"></div><p class="fb-sub">${fbEsc(msg || 'Connexion…')}</p>`;
+        } else if (mode === 'login') {
+            corps.innerHTML = `<h2>Connexion</h2><p class="fb-sub">Identifiez-vous pour accéder à votre planning.</p>${err}
+                <form onsubmit="event.preventDefault(); fbConnexion();" autocomplete="on">
+                    <label class="fb-lbl" for="fb-login-id">Identifiant</label>
+                    <input id="fb-login-id" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+                    <label class="fb-lbl" for="fb-login-pwd">Mot de passe</label>
+                    <div class="fb-pwd-wrap">
+                        <input id="fb-login-pwd" type="password" autocomplete="current-password" required>
+                        <button type="button" class="fb-eye" onclick="fbVoirMdp('fb-login-pwd', this)" aria-label="Afficher le mot de passe"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <label class="fb-remember"><input type="checkbox" id="fb-login-remember"> Mémoriser mon identifiant et mon mot de passe sur cet appareil</label>
+                    <button class="btn btn-paye" type="submit" id="fb-login-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+                </form>
+                <p class="fb-hint">Mot de passe oublié ? Demandez à votre administrateur de vous en attribuer un nouveau.</p>
+                <button class="fb-link" onclick="fbOublierConfig()">Changer de projet Firebase</button>`;
+            const attente = fbLoginEnAttente(), memo = fbLoginMemorise();
+            const pre = attente || memo;
+            if (pre) {
+                document.getElementById('fb-login-id').value = pre.id;
+                document.getElementById('fb-login-pwd').value = pre.pwd || '';
+            }
+            document.getElementById('fb-login-remember').checked = !!(memo || attente || fbSouvenirCoche);
+            if (attente) {
+                sessionStorage.removeItem('fb_pending_login');
+                if (attente.pwd && !msg) { setTimeout(() => fbConnexion(), 150); return; } // QR code : connexion automatique
+            }
+            setTimeout(() => { const i = document.getElementById(pre && pre.id ? 'fb-login-pwd' : 'fb-login-id'); if (i && !(pre && pre.pwd)) i.focus(); }, 50);
+        } else if (mode === 'setup') {
+            corps.innerHTML = `<h2>Créer le compte administrateur</h2><p class="fb-sub">Premier lancement : ce compte gérera les clients et leurs accès. Votre planning actuel sera envoyé en ligne.</p>${err}
+                <form onsubmit="event.preventDefault(); fbCreerAdmin();">
+                    <label class="fb-lbl" for="fb-setup-nom">Nom affiché</label><input id="fb-setup-nom" required maxlength="40">
+                    <label class="fb-lbl" for="fb-setup-id">Identifiant <small>(3-30 caractères : lettres, chiffres, . _ -)</small></label>
+                    <input id="fb-setup-id" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+                    <label class="fb-lbl" for="fb-setup-pwd">Mot de passe <small>(6 caractères min.)</small></label>
+                    <input id="fb-setup-pwd" type="password" autocomplete="new-password" required minlength="6">
+                    <label class="fb-lbl" for="fb-setup-pwd2">Confirmer le mot de passe</label>
+                    <input id="fb-setup-pwd2" type="password" autocomplete="new-password" required minlength="6">
+                    <button class="btn btn-paye" type="submit" id="fb-setup-btn"><i class="fas fa-user-shield"></i> Créer le compte administrateur</button>
+                </form>
+                <button class="fb-link" onclick="fbOublierConfig()">Changer de projet Firebase</button>`;
+        } else if (mode === 'erreur') {
+            corps.innerHTML = `<h2>Connexion impossible</h2>${err}
+                <button class="btn btn-paye" onclick="location.reload()"><i class="fas fa-redo"></i> Réessayer</button>
+                <button class="fb-link" onclick="fbOublierConfig()">Changer de projet Firebase</button>`;
+        }
+    }
+    function fbBoutonAttente(id, on, txt) {
+        const b = document.getElementById(id);
+        if (!b) return;
+        if (on) { b.dataset.txt = b.innerHTML; b.disabled = true; b.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${txt || 'Patientez…'}`; }
+        else { b.disabled = false; if (b.dataset.txt) b.innerHTML = b.dataset.txt; }
+    }
+    let fbSouvenirCoche = false;
+    function fbVoirMdp(id, btn) {
+        const i = document.getElementById(id); if (!i) return;
+        const voir = i.type === 'password';
+        i.type = voir ? 'text' : 'password';
+        btn.innerHTML = `<i class="fas ${voir ? 'fa-eye-slash' : 'fa-eye'}"></i>`;
+    }
+    async function fbConnexion() {
+        const ident = fbNormIdent(document.getElementById('fb-login-id').value);
+        const pwd = document.getElementById('fb-login-pwd').value;
+        const rem = document.getElementById('fb-login-remember');
+        fbSouvenirCoche = !!(rem && rem.checked);
+        // Mémorisé avant la connexion (la page peut se recharger juste après)
+        if (fbSouvenirCoche) fbMemoriserLogin(ident, pwd); else fbOublierLogin();
+        fbBoutonAttente('fb-login-btn', true, 'Connexion…');
+        try {
+            let email = ident;
+            if (!ident.includes('@')) {
+                const d = await fbDb.doc('logins/' + ident).get();
+                if (!d.exists) throw new Error('Identifiant inconnu.');
+                email = d.data().email;
+            }
+            await fbAuth.signInWithEmailAndPassword(email, pwd);
+        } catch(e) {
+            const memo = fbLoginMemorise();
+            if (memo && memo.id === ident && memo.pwd === pwd) fbMemoriserLogin(ident, ''); // garde l'identifiant, oublie le mot de passe erroné
+            fbGate('login', fbErreur(e));
+            const i = document.getElementById('fb-login-id'); if (i) i.value = ident;
+        }
+    }
+    async function fbCreerAdmin() {
+        const nom = document.getElementById('fb-setup-nom').value.trim();
+        const ident = fbNormIdent(document.getElementById('fb-setup-id').value);
+        const pwd = document.getElementById('fb-setup-pwd').value, pwd2 = document.getElementById('fb-setup-pwd2').value;
+        const echec = (m) => { fbGate('setup', m); document.getElementById('fb-setup-nom').value = nom; document.getElementById('fb-setup-id').value = ident; };
+        if (!fbIdentValide(ident)) return echec('Identifiant invalide (3-30 caractères : lettres minuscules, chiffres, . _ -).');
+        if (pwd.length < 6) return echec('Mot de passe trop court (6 caractères minimum).');
+        if (pwd !== pwd2) return echec('Les deux mots de passe ne correspondent pas.');
+        fbBoutonAttente('fb-setup-btn', true, 'Création…');
+        window._fbBootstrap = true;
+        try {
+            const email = fbEmailPour(ident);
+            const cred = await fbAuth.createUserWithEmailAndPassword(email, pwd);
+            const uid = cred.user.uid;
+            await fbDb.doc('meta/app').set({ adminUid: uid, createdAt: Date.now() });
+            const cid = fbNewCid(), perms = {};
+            FB_PERMS.forEach(p => perms[p.k] = true);
+            const batch = fbDb.batch();
+            batch.set(fbDb.doc('comptes/' + cid), { uid, email, identifiant: ident, nom: nom || ident, role: 'admin', perms, actif: true, createdAt: Date.now() });
+            batch.set(fbDb.doc('logins/' + ident), { email });
+            await batch.commit();
+        } catch(e) {
+            const m = fbErreur(e);
+            window._fbBootstrap = false;
+            if (fbAuth.currentUser) {
+                fbDerniereErreur = m; // affiché par fbSurAuth(null) après suppression
+                try { await fbAuth.currentUser.delete(); } catch(_) { await fbAuth.signOut(); }
+            } else echec(m);
+            return;
+        }
+        window._fbBootstrap = false;
+        fbSurAuth(fbAuth.currentUser);
+    }
+    async function fbSurAuth(u) {
+        if (window._fbBootstrap) return;
+        if (!u) {
+            fbCompte = null; fbMajUserBtn(); fbAppliquerDroits();
+            let meta = null;
+            try { const d = await fbDb.doc('meta/app').get(); meta = d.exists ? d.data() : null; }
+            catch(e) { if (!fbDerniereErreur) fbDerniereErreur = fbErreur(e); }
+            const m = fbDerniereErreur; fbDerniereErreur = '';
+            fbGate(meta && meta.adminUid ? 'login' : 'setup', m);
+            return;
+        }
+        fbGate('chargement', 'Chargement de votre planning…');
+        try {
+            const q = await fbDb.collection('comptes').where('uid', '==', u.uid).limit(1).get();
+            if (q.empty) throw new Error('Aucun compte n\'est associé à cet identifiant.');
+            const c = Object.assign({ id: q.docs[0].id }, q.docs[0].data());
+            if (c.actif === false) throw new Error('Ce compte est désactivé. Contactez votre administrateur.');
+            const attente = fbLoginEnAttente();
+            if (attente) {
+                if (attente.id !== c.identifiant) {
+                    // Lien/QR d'un autre client : on déconnecte proprement le compte actuel
+                    fbCompte = c;
+                    if (fbDirtyList().length) await fbPousser();
+                    fbViderLocal(); localStorage.removeItem(FB_OWNER_KEY); localStorage.removeItem('fb_last_compte');
+                    fbCompte = null;
+                    await fbAuth.signOut();
+                    return;
+                }
+                sessionStorage.removeItem('fb_pending_login');
+                if (attente.pwd) fbMemoriserLogin(attente.id, attente.pwd);
+            }
+            fbCompte = c;
+            localStorage.setItem('fb_last_compte', JSON.stringify(c));
+            fbAppliquerDroits();
+            if (await fbSyncDemarrage()) return; // la page se recharge
+            fbGate(null); fbMajUserBtn(); fbEtat(fbDirtyList().length ? 'attente' : 'ok');
+            showToast(`👋 Bonjour ${c.nom || c.identifiant}`, 'success', 'fa-user-check');
+        } catch(e) {
+            fbCompte = null;
+            fbDerniereErreur = fbErreur(e);
+            await fbAuth.signOut();
+        }
+    }
+
+    // ── Démarrage ──
+    async function fbBoot() {
+        fbImportDepuisUrl();
+        fbInstallerHookStockage();
+        fbInstallerGardes();
+        const cfg = fbGetConfig();
+        if (!cfg) return; // mode local, sans compte
+        fbGate('chargement', 'Connexion à Firebase…');
+        try {
+            await fbChargerSDK();
+            if (!firebase.apps.length) firebase.initializeApp(cfg);
+            fbAuth = firebase.auth();
+            fbDb = firebase.firestore();
+            try { await fbDb.enablePersistence({ synchronizeTabs: true }); } catch(e) {}
+            fbAuth.onAuthStateChanged(u => fbSurAuth(u));
+            window.addEventListener('online', () => { if (fbDirtyList().length) fbPlanifierPush(); });
+            document.addEventListener('visibilitychange', () => {
+                if (!fbCompte) return;
+                if (document.visibilityState === 'hidden') { if (fbDirtyList().length) { clearTimeout(fbPushTimer); fbPousser(); } }
+                else fbVerifierCloud();
+            });
+        } catch(e) {
+            // Hors ligne : on garde le dernier compte connu de cet appareil
+            let c = null; try { c = JSON.parse(localStorage.getItem('fb_last_compte')); } catch(_) {}
+            if (c && localStorage.getItem(FB_OWNER_KEY) === c.id) {
+                fbCompte = c; fbAppliquerDroits(); fbGate(null); fbMajUserBtn(); fbEtat('attente');
+                showToast('📴 Hors ligne — vos modifications seront envoyées à la reconnexion', 'info', 'fa-wifi');
+            } else fbGate('erreur', fbErreur(e));
+        }
+    }
+
+    // ── Zone « Comptes & Firebase » dans Réglages ──
+    function fbMajZoneConfig() {
+        const z = document.getElementById('fb-zone-body');
+        if (!z) return;
+        const cfg = fbGetConfig();
+        if (!cfg) {
+            z.innerHTML = `<p class="fb-p">Connectez l'application à <b>Firebase</b> pour créer des comptes clients (identifiant + mot de passe), régler leurs accès et synchroniser chaque planning en ligne.</p>
+                <details class="fb-guide"><summary>📘 Guide : créer le projet Firebase (gratuit, ~10 min)</summary>
+                    <ol>
+                        <li>Ouvrez <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a> → <b>Ajouter un projet</b> (Google Analytics inutile).</li>
+                        <li><b>Authentication</b> → Commencer → <b>E-mail/Mot de passe</b> → Activer → Enregistrer.</li>
+                        <li><b>Authentication › Paramètres › Domaines autorisés</b> → ajoutez <code>${fbEsc(location.hostname || 'aliand0810.github.io')}</code>.</li>
+                        <li><b>Firestore Database</b> → Créer une base → <b>mode production</b> → région <b>eur3 (Europe)</b>.</li>
+                        <li><b>Firestore › Règles</b> → remplacez tout par les règles ci-dessous → <b>Publier</b>.
+                            <button type="button" class="fb-mini-btn" onclick="fbCopier(FB_REGLES, 'Règles copiées')"><i class="fas fa-copy"></i> Copier les règles</button></li>
+                        <li><b>Paramètres du projet ⚙️ › Vos applications</b> → icône <b>&lt;/&gt;</b> (Web) → donnez un nom → copiez l'objet <code>firebaseConfig</code>.</li>
+                        <li>Collez-le ci-dessous puis <b>Connecter</b>. Vous créerez ensuite le compte administrateur.</li>
+                    </ol>
+                </details>
+                <label class="fb-lbl" for="fb-cfg-input">Configuration Firebase (firebaseConfig)</label>
+                <textarea id="fb-cfg-input" rows="6" spellcheck="false" placeholder="const firebaseConfig = {\n  apiKey: &quot;…&quot;,\n  authDomain: &quot;…&quot;,\n  projectId: &quot;…&quot;,\n  …\n};"></textarea>
+                <div id="fb-cfg-err" class="fb-err" style="display:none;"></div>
+                <button class="btn btn-paye" onclick="fbConnecterProjet()"><i class="fas fa-plug"></i> Connecter Firebase</button>`;
+            return;
+        }
+        if (!fbCompte) {
+            z.innerHTML = `<p class="fb-p">Projet <b>${fbEsc(cfg.projectId)}</b> — non connecté.</p>`;
+            return;
+        }
+        const synchro = +localStorage.getItem(FB_SYNCAT_KEY) || 0;
+        let html = `<div class="fb-status"><span class="fb-dot"></span> Projet <b>${fbEsc(cfg.projectId)}</b> · connecté en tant que <b>${fbEsc(fbCompte.nom || fbCompte.identifiant)}</b> ${fbEstAdmin() ? '<span class="fb-role admin">Admin</span>' : '<span class="fb-role">Client</span>'}</div>
+            <p class="fb-p" style="margin-top:4px;">Dernière synchronisation : ${synchro ? new Date(synchro).toLocaleString('fr-FR') : '—'}</p>
+            <div class="fb-btn-row">
+                <button class="btn btn-outline" onclick="fbOuvrirMonCompte()"><i class="fas fa-user"></i> Mon compte</button>`;
+        if (fbEstAdmin()) {
+            html += `<button class="btn btn-paye" onclick="fbOuvrirComptes()"><i class="fas fa-users-cog"></i> Gérer les clients</button>
+                </div>
+                <div class="fb-btn-row">
+                    <button class="btn btn-outline" onclick="fbCopier(fbLienClients(), 'Lien copié — envoyez-le à vos clients')"><i class="fas fa-link"></i> Lien pour vos clients</button>
+                    <button class="btn btn-outline" onclick="fbCopier(FB_REGLES, 'Règles Firestore copiées')"><i class="fas fa-shield-alt"></i> Copier les règles</button>
+                </div>
+                <p class="fb-hint">Le <b>lien pour vos clients</b> contient la configuration du projet : en l'ouvrant, l'application leur demande directement leur identifiant et mot de passe.</p>
+                <button class="fb-link danger" onclick="fbOublierConfig()">Déconnecter Firebase de cet appareil</button>`;
+        } else {
+            html += `</div>`;
+        }
+        z.innerHTML = html;
+    }
+    function fbConnecterProjet() {
+        const err = document.getElementById('fb-cfg-err');
+        try {
+            const cfg = fbParseConfig(document.getElementById('fb-cfg-input').value);
+            localStorage.setItem(FB_CFG_KEY, JSON.stringify(cfg));
+            showToast('Configuration enregistrée — connexion…', 'success', 'fa-plug');
+            setTimeout(() => location.reload(), 600);
+        } catch(e) { err.style.display = 'block'; err.textContent = '⚠️ ' + e.message; }
+    }
+    async function fbOublierConfig() {
+        const msg = fbCompte
+            ? 'Déconnecter Firebase de cet appareil ?\n\nVous serez déconnecté et le planning de ce compte sera retiré de cet appareil (il reste en ligne).'
+            : 'Effacer la configuration Firebase de cet appareil ?';
+        if (!confirm(msg)) return;
+        if (fbCompte) { try { await fbPousser(); } catch(e) {} fbViderLocal(); localStorage.removeItem(FB_OWNER_KEY); }
+        localStorage.removeItem('fb_last_compte');
+        try { if (fbAuth) await fbAuth.signOut(); } catch(e) {}
+        localStorage.removeItem(FB_CFG_KEY);
+        location.reload();
+    }
+    function fbCopier(txt, ok) {
+        const fin = () => showToast('📋 ' + (ok || 'Copié'), 'success', 'fa-copy');
+        if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(fin, () => prompt('Copiez :', txt));
+        else prompt('Copiez :', txt);
+    }
+
+    // ── Mon compte (tous les utilisateurs) ──
+    function fbOuvrirMonCompte() {
+        if (!fbCompte) return;
+        fermerModales();
+        ouvrirModale('modal-moncompte');
+        fbRenderMonCompte();
+    }
+    function fbRenderMonCompte() {
+        const z = document.getElementById('fb-moncompte-body');
+        if (!z || !fbCompte) return;
+        const synchro = +localStorage.getItem(FB_SYNCAT_KEY) || 0;
+        const attente = fbDirtyList().length;
+        z.innerHTML = `<div class="fb-me">
+                <div class="fb-avatar">${fbEsc((fbCompte.nom || fbCompte.identifiant || '?').charAt(0).toUpperCase())}</div>
+                <div><div class="fb-me-nom">${fbEsc(fbCompte.nom || '')}</div>
+                <div class="fb-me-id">@${fbEsc(fbCompte.identifiant || '')} · ${fbEstAdmin() ? 'Administrateur' : 'Client'}</div></div>
+            </div>
+            <div class="fb-sync-line ${attente ? 'wait' : ''}">
+                <i class="fas ${attente ? 'fa-cloud-upload-alt' : 'fa-cloud'}"></i>
+                ${attente ? 'Modifications en attente d\'envoi' : 'Planning synchronisé'} · ${synchro ? new Date(synchro).toLocaleString('fr-FR') : '—'}
+                <button class="fb-mini-btn" onclick="fbSynchroniserMaintenant()"><i class="fas fa-sync-alt"></i> Synchroniser</button>
+            </div>
+            ${fbEstAdmin() ? `<button class="btn btn-paye" onclick="fbOuvrirComptes()"><i class="fas fa-users-cog"></i> Gérer les clients et leurs accès</button>` : ''}
+            ${(() => { const m = fbLoginMemorise(); return m && m.id === fbCompte.identifiant
+                ? `<div class="fb-memo-line"><i class="fas fa-user-lock"></i> Identifiant${m.pwd ? ' et mot de passe mémorisés' : ' mémorisé'} sur cet appareil <button class="fb-mini-btn" onclick="fbOublierLogin(); fbRenderMonCompte(); showToast('Identifiants oubliés sur cet appareil','info','fa-user-lock')">Oublier</button></div>`
+                : `<div class="fb-memo-line off"><i class="fas fa-user-lock"></i> Identifiants non mémorisés <button class="fb-mini-btn" onclick="fbMemoriserDepuisCompte()">Mémoriser…</button></div>`; })()}
+            <div class="zone-card" style="margin-top:20px;">
+                <span class="zone-title">🔑 CHANGER MON MOT DE PASSE</span>
+                <form onsubmit="event.preventDefault(); fbChangerMonMdp();">
+                    <input type="text" autocomplete="username" value="${fbEsc(fbCompte.identifiant || '')}" style="display:none;">
+                    <label class="fb-lbl" for="fb-mdp-actuel">Mot de passe actuel</label><input id="fb-mdp-actuel" type="password" autocomplete="current-password" required>
+                    <label class="fb-lbl" for="fb-mdp-new">Nouveau mot de passe</label><input id="fb-mdp-new" type="password" autocomplete="new-password" minlength="6" required>
+                    <label class="fb-lbl" for="fb-mdp-new2">Confirmer</label><input id="fb-mdp-new2" type="password" autocomplete="new-password" minlength="6" required>
+                    <div id="fb-mdp-err" class="fb-err" style="display:none;"></div>
+                    <button class="btn btn-paye" type="submit" id="fb-mdp-btn"><i class="fas fa-key"></i> Modifier le mot de passe</button>
+                </form>
+            </div>
+            <button class="btn btn-absent" onclick="fbDeconnexion()"><i class="fas fa-sign-out-alt"></i> Se déconnecter</button>
+            <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>`;
+    }
+    async function fbMemoriserDepuisCompte() {
+        const pwd = prompt('Saisissez votre mot de passe pour le mémoriser sur cet appareil :');
+        if (!pwd) return;
+        try {
+            const u = fbAuth.currentUser;
+            await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email, pwd));
+            fbMemoriserLogin(fbCompte.identifiant, pwd);
+            showToast('🔐 Identifiants mémorisés sur cet appareil', 'success', 'fa-user-lock');
+            fbRenderMonCompte();
+        } catch(e) { alert('⚠️ Mot de passe incorrect.'); }
+    }
+    async function fbChangerMonMdp() {
+        const a = document.getElementById('fb-mdp-actuel').value, n = document.getElementById('fb-mdp-new').value, n2 = document.getElementById('fb-mdp-new2').value;
+        const err = document.getElementById('fb-mdp-err');
+        const ko = (m) => { err.style.display = 'block'; err.textContent = '⚠️ ' + m; };
+        err.style.display = 'none';
+        if (n.length < 6) return ko('Nouveau mot de passe trop court (6 caractères minimum).');
+        if (n !== n2) return ko('Les deux nouveaux mots de passe ne correspondent pas.');
+        fbBoutonAttente('fb-mdp-btn', true, 'Modification…');
+        try {
+            const u = fbAuth.currentUser;
+            await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email, a));
+            await u.updatePassword(n);
+            const m = fbLoginMemorise();
+            if (m && m.id === fbCompte.identifiant) fbMemoriserLogin(m.id, n);
+            showToast('🔑 Mot de passe modifié', 'success', 'fa-key');
+            fbRenderMonCompte();
+        } catch(e) {
+            fbBoutonAttente('fb-mdp-btn', false);
+            ko(['auth/invalid-credential','auth/invalid-login-credentials','auth/wrong-password'].includes(e && e.code) ? 'Mot de passe actuel incorrect.' : fbErreur(e));
+        }
+    }
+    async function fbDeconnexion() {
+        const memo = fbLoginMemorise();
+        if (!confirm('Se déconnecter ?\n\nLe planning sera retiré de cet appareil (il reste sauvegardé en ligne).' + (memo ? '\nVos identifiants restent mémorisés pour vous reconnecter d\'un geste.' : ''))) return;
+        if (fbDirtyList().length) await fbPousser();
+        if (fbDirtyList().length && !confirm('⚠️ Certaines modifications n\'ont pas pu être envoyées (hors ligne ?).\n\nSe déconnecter quand même et les perdre ?')) return;
+        fbViderLocal();
+        localStorage.removeItem(FB_OWNER_KEY);
+        localStorage.removeItem('fb_last_compte');
+        try { await fbAuth.signOut(); } catch(e) {}
+        location.reload();
+    }
+
+    // ── Gestion des clients (administrateur) ──
+    async function fbOuvrirComptes() {
+        if (!fbEstAdmin()) return fbRefus();
+        fermerModales();
+        ouvrirModale('modal-comptes');
+        fbRenderFormNouveau();
+        await fbRenderComptes();
+    }
+    function fbRenderFormNouveau() {
+        const z = document.getElementById('fb-nouveau-perms');
+        if (!z) return;
+        z.innerHTML = FB_PERMS.map(p => `<label class="fb-perm-check"><input type="checkbox" data-perm="${p.k}" ${p.k === 'config' ? '' : 'checked'}> ${p.lbl}</label>`).join('');
+        ['fb-new-nom', 'fb-new-id', 'fb-new-pwd'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+        const err = document.getElementById('fb-new-err'); if (err) err.style.display = 'none';
+    }
+    async function fbRenderComptes() {
+        const z = document.getElementById('fb-comptes-liste');
+        z.innerHTML = '<div class="fb-spin small"></div>';
+        try {
+            const q = await fbDb.collection('comptes').get();
+            fbComptesCache = q.docs.map(d => Object.assign({ id: d.id }, d.data()))
+                .sort((a, b) => (a.role === 'admin' ? -1 : 0) - (b.role === 'admin' ? -1 : 0) || String(a.nom).localeCompare(String(b.nom)));
+        } catch(e) { z.innerHTML = `<div class="fb-err">⚠️ ${fbEsc(fbErreur(e))}</div>`; return; }
+        const nbClients = fbComptesCache.filter(c => c.role !== 'admin').length;
+        document.getElementById('fb-comptes-count').textContent = nbClients ? `${nbClients} client${nbClients > 1 ? 's' : ''}` : '';
+        z.innerHTML = fbComptesCache.map(c => {
+            const admin = c.role === 'admin', off = c.actif === false;
+            const perms = admin ? '<span class="fb-p" style="margin:0;">Accès complet à toutes les sections</span>'
+                : FB_PERMS.map(p => {
+                    const on = !c.perms || c.perms[p.k] !== false;
+                    return `<button class="fb-chip ${on ? 'on' : 'off'}" onclick="fbBasculerDroit('${c.id}','${p.k}')" title="${on ? 'Autorisé — cliquer pour restreindre' : 'Restreint — cliquer pour autoriser'}">${on ? '✓' : '✕'} ${p.lbl}</button>`;
+                }).join('');
+            return `<div class="fb-compte ${off ? 'is-off' : ''}">
+                <div class="fb-compte-head">
+                    <div class="fb-avatar sm">${fbEsc((c.nom || c.identifiant || '?').charAt(0).toUpperCase())}</div>
+                    <div style="flex:1; min-width:0;"><div class="fb-me-nom">${fbEsc(c.nom || '')} ${admin ? '<span class="fb-role admin">Admin</span>' : ''} ${off ? '<span class="fb-role off">Désactivé</span>' : ''}</div>
+                    <div class="fb-me-id">@${fbEsc(c.identifiant || '')}</div></div>
+                </div>
+                <div class="fb-perms">${perms}</div>
+                ${admin ? '' : `<div class="fb-compte-actions">
+                    <button onclick="fbOuvrirQR('${c.id}')"><i class="fas fa-qrcode"></i> QR code</button>
+                    <button onclick="fbNouveauMdpClient('${c.id}')"><i class="fas fa-key"></i> Nouveau mot de passe</button>
+                    <button onclick="fbBasculerActif('${c.id}')"><i class="fas ${off ? 'fa-play' : 'fa-pause'}"></i> ${off ? 'Réactiver' : 'Désactiver'}</button>
+                    <button class="danger" onclick="fbSupprimerCompte('${c.id}')" aria-label="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                </div>`}
+            </div>`;
+        }).join('');
+    }
+    async function fbCreerUtilisateurAuth(email, pwd) {
+        const sec = firebase.apps.find(a => a.name === 'fb-secondaire') || firebase.initializeApp(fbGetConfig(), 'fb-secondaire');
+        const auth2 = sec.auth();
+        await auth2.setPersistence(firebase.auth.Auth.Persistence.NONE);
+        const cred = await auth2.createUserWithEmailAndPassword(email, pwd);
+        const uid = cred.user.uid;
+        await auth2.signOut();
+        return uid;
+    }
+    async function fbCreerClient() {
+        const nom = document.getElementById('fb-new-nom').value.trim();
+        const ident = fbNormIdent(document.getElementById('fb-new-id').value);
+        const pwd = document.getElementById('fb-new-pwd').value;
+        const err = document.getElementById('fb-new-err');
+        const ko = (m) => { err.style.display = 'block'; err.textContent = '⚠️ ' + m; };
+        err.style.display = 'none';
+        if (!nom) return ko('Indiquez le nom du client.');
+        if (!fbIdentValide(ident)) return ko('Identifiant invalide (3-30 caractères : lettres minuscules, chiffres, . _ -).');
+        if (pwd.length < 6) return ko('Mot de passe trop court (6 caractères minimum).');
+        const perms = {};
+        document.querySelectorAll('#fb-nouveau-perms input[data-perm]').forEach(i => perms[i.dataset.perm] = i.checked);
+        fbBoutonAttente('fb-new-btn', true, 'Création…');
+        try {
+            if ((await fbDb.doc('logins/' + ident).get()).exists) throw new Error('Cet identifiant est déjà utilisé.');
+            const email = fbEmailPour(ident);
+            const uid = await fbCreerUtilisateurAuth(email, pwd);
+            const cid = fbNewCid();
+            const batch = fbDb.batch();
+            batch.set(fbDb.doc('comptes/' + cid), { uid, email, identifiant: ident, nom, role: 'client', perms, actif: true, createdAt: Date.now() });
+            batch.set(fbDb.doc('logins/' + ident), { email });
+            await batch.commit();
+            showToast(`✅ Client « ${nom} » créé — identifiant : ${ident}`, 'success', 'fa-user-plus');
+            fbMdpSession[cid] = pwd;
+            fbRenderFormNouveau();
+            document.getElementById('fb-nouveau-details').open = false;
+            await fbRenderComptes();
+            fbBoutonAttente('fb-new-btn', false);
+            fbOuvrirQR(cid);
+            return;
+        } catch(e) { ko(fbErreur(e)); }
+        fbBoutonAttente('fb-new-btn', false);
+    }
+    async function fbBasculerDroit(cid, k) {
+        const c = fbComptesCache.find(x => x.id === cid); if (!c) return;
+        const on = !c.perms || c.perms[k] !== false;
+        try {
+            await fbDb.doc('comptes/' + cid).update({ ['perms.' + k]: !on });
+            c.perms = Object.assign({}, c.perms || {}, { [k]: !on });
+            await fbRenderComptes();
+        } catch(e) { showToast('⚠️ ' + fbErreur(e), 'error', 'fa-times-circle'); }
+    }
+    async function fbBasculerActif(cid) {
+        const c = fbComptesCache.find(x => x.id === cid); if (!c) return;
+        const off = c.actif === false;
+        if (!off && !confirm(`Désactiver le compte de « ${c.nom} » ?\n\nIl ne pourra plus se connecter ni synchroniser (ses données sont conservées).`)) return;
+        try { await fbDb.doc('comptes/' + cid).update({ actif: off }); await fbRenderComptes(); }
+        catch(e) { showToast('⚠️ ' + fbErreur(e), 'error', 'fa-times-circle'); }
+    }
+    async function fbNouveauMdpClient(cid) {
+        const c = fbComptesCache.find(x => x.id === cid); if (!c) return;
+        const pwd = prompt(`Nouveau mot de passe pour « ${c.nom} » (@${c.identifiant}) — 6 caractères minimum :`);
+        if (pwd === null) return;
+        if (pwd.length < 6) { alert('Mot de passe trop court (6 caractères minimum).'); return; }
+        try {
+            // Firebase n'autorise pas l'admin à changer le mot de passe d'un autre compte côté navigateur :
+            // on crée un nouvel accès technique et on y rattache le client (l'ancien mot de passe ne fonctionne plus).
+            const email = `${c.identifiant}.${Date.now().toString(36)}@${FB_DOMAINE}`;
+            const uid = await fbCreerUtilisateurAuth(email, pwd);
+            const batch = fbDb.batch();
+            batch.update(fbDb.doc('comptes/' + cid), { uid, email });
+            batch.set(fbDb.doc('logins/' + c.identifiant), { email });
+            await batch.commit();
+            showToast(`🔑 Nouveau mot de passe actif pour ${c.nom}`, 'success', 'fa-key');
+            fbMdpSession[cid] = pwd;
+            await fbRenderComptes();
+            fbOuvrirQR(cid);
+        } catch(e) { alert('⚠️ ' + fbErreur(e)); }
+    }
+
+    // ── QR code d'accès client (généré localement, aucun service en ligne) ──
+    const fbMdpSession = {}; // mots de passe saisis pendant cette session admin (jamais enregistrés)
+    let fbQrCid = null;
+    function fbOuvrirQR(cid) {
+        const c = fbComptesCache.find(x => x.id === cid); if (!c) return;
+        fbQrCid = cid;
+        fermerModales();
+        ouvrirModale('modal-qr');
+        document.getElementById('fb-qr-nom').textContent = c.nom || c.identifiant;
+        document.getElementById('fb-qr-id').textContent = '@' + c.identifiant;
+        const inp = document.getElementById('fb-qr-pwd');
+        inp.value = fbMdpSession[cid] || '';
+        inp.type = 'password';
+        fbMajQR();
+    }
+    function fbQrLien() {
+        const c = fbComptesCache.find(x => x.id === fbQrCid); if (!c) return '';
+        return fbLienClient(c.identifiant, document.getElementById('fb-qr-pwd').value);
+    }
+    function fbMajQR() {
+        const c = fbComptesCache.find(x => x.id === fbQrCid); if (!c) return;
+        const pwd = document.getElementById('fb-qr-pwd').value;
+        if (pwd) fbMdpSession[fbQrCid] = pwd;
+        document.getElementById('fb-qr-info').innerHTML = pwd
+            ? '✅ Le client scanne ce QR code : l\'application s\'ouvre et se connecte <b>automatiquement</b> (identifiant et mot de passe mémorisés sur son appareil).'
+            : 'ℹ️ Sans mot de passe, le QR ouvre l\'application avec l\'identifiant pré-rempli : le client saisit son mot de passe. Saisissez-le ci-dessus pour une connexion automatique.';
+        fbDessinerQR(document.getElementById('fb-qr-canvas'), fbQrLien(), c.nom || c.identifiant, '@' + c.identifiant + (pwd ? '  ·  connexion automatique' : ''));
+    }
+    function fbDessinerQR(cv, texte, titre, sous) {
+        const qr = qrcode(0, 'M');
+        qr.addData(texte);
+        qr.make();
+        const n = qr.getModuleCount(), marge = 4, cell = Math.max(4, Math.floor(560 / (n + marge * 2)));
+        const tq = cell * (n + marge * 2), W = tq + 40, H = tq + 150;
+        cv.width = W; cv.height = H;
+        const x = cv.getContext('2d');
+        x.fillStyle = '#ffffff'; x.fillRect(0, 0, W, H);
+        // En-tête
+        x.fillStyle = '#4f46e5'; x.fillRect(0, 0, W, 64);
+        x.fillStyle = '#ffffff'; x.font = 'bold 26px "DM Sans", Arial, sans-serif'; x.textAlign = 'center';
+        x.fillText('📅 Mon Planning Pro', W / 2, 42);
+        // QR
+        x.fillStyle = '#111827';
+        for (let r = 0; r < n; r++) for (let col = 0; col < n; col++)
+            if (qr.isDark(r, col)) x.fillRect(20 + (col + marge) * cell, 64 + (r + marge) * cell, cell, cell);
+        // Pied
+        x.fillStyle = '#111827'; x.font = 'bold 24px "DM Sans", Arial, sans-serif';
+        x.fillText(titre, W / 2, 64 + tq + 36);
+        x.fillStyle = '#64748b'; x.font = '18px "DM Sans", Arial, sans-serif';
+        x.fillText(sous, W / 2, 64 + tq + 66);
+    }
+    function fbQrTelecharger() {
+        const c = fbComptesCache.find(x => x.id === fbQrCid);
+        const a = document.createElement('a');
+        a.href = document.getElementById('fb-qr-canvas').toDataURL('image/png');
+        a.download = `acces_planning_${c ? c.identifiant : 'client'}.png`;
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+    async function fbQrPartager() {
+        const c = fbComptesCache.find(x => x.id === fbQrCid);
+        const cv = document.getElementById('fb-qr-canvas');
+        try {
+            const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+            const fichier = new File([blob], `acces_planning_${c ? c.identifiant : 'client'}.png`, { type: 'image/png' });
+            const data = { title: 'Accès Mon Planning Pro', text: `Votre accès à Mon Planning Pro (${c ? '@' + c.identifiant : ''})`, files: [fichier] };
+            if (navigator.canShare && navigator.canShare(data)) return await navigator.share(data);
+            if (navigator.share) return await navigator.share({ title: data.title, text: data.text, url: fbQrLien() });
+        } catch(e) { if (e && e.name === 'AbortError') return; }
+        fbQrTelecharger();
+    }
+    async function fbSupprimerCompte(cid) {
+        const c = fbComptesCache.find(x => x.id === cid); if (!c) return;
+        if (!confirm(`🗑️ Supprimer définitivement le client « ${c.nom} » et son planning en ligne ?\n\nCette action est irréversible.`)) return;
+        try {
+            const ref = fbDb.doc('plannings/' + cid);
+            const chunks = await ref.collection('chunks').get();
+            const batch = fbDb.batch();
+            chunks.docs.forEach(d => batch.delete(d.ref));
+            batch.delete(ref);
+            batch.delete(fbDb.doc('comptes/' + cid));
+            batch.delete(fbDb.doc('logins/' + c.identifiant));
+            await batch.commit();
+            showToast(`Client « ${c.nom} » supprimé`, 'success', 'fa-trash-alt');
+            await fbRenderComptes();
+        } catch(e) { alert('⚠️ ' + fbErreur(e)); }
+    }
+
+    document.addEventListener('DOMContentLoaded', fbBoot);
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
 
     function reinitialiserCycle() {
-        if (!confirm('⚠️ Voulez-vous vraiment supprimer tous les événements générés par le cycle ?\n\nLes événements ajoutés manuellement seront conservés.')) {
+        if (!confirm('⚠️ Supprimer TOUS les roulements et leurs postes générés ?\n\nLes événements ajoutés manuellement seront conservés.\n(Pour un seul roulement, utilisez « Gérer les roulements ».)')) {
             return;
         }
         
@@ -5784,8 +7498,13 @@ function selectAct(btn, val) {
             // Sauvegarder
             localStorage.setItem('events_v5', JSON.stringify(events));
             
-            // Supprimer le cycle master
+            // Supprimer le cycle master + tous les roulements
             localStorage.removeItem('cycle_master');
+            events.forEach(e => { if (e.extendedProps && e.extendedProps.rotationId) e.extendedProps.rotationId = null; });
+            localStorage.setItem('events_v5', JSON.stringify(events));
+            rotState = { list: [], hidden: {} };
+            rotSauverState();
+            rotRenderSidebar();
             
             // Rafraîchir l'affichage
             if (typeof calendar !== 'undefined' && calendar) {
@@ -5813,7 +7532,7 @@ function selectAct(btn, val) {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v8.3';
+const CACHE_NAME = 'planning-pro-v8.6';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
@@ -5839,6 +7558,8 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
     if (event.request.method !== 'GET') return;
+    const host = new URL(event.request.url).hostname;
+    if (host.includes('googleapis.com') || host.includes('firebaseapp.com') || host.includes('firebaseio.com')) return;
     
     event.respondWith(
         fetch(event.request)
