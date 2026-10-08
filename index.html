@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.2</title>
+    <title>Mon Planning Pro v9.3</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -4147,19 +4147,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 const a = Math.max(dirtTsDebut(ev), lMs), z = Math.min(dirtTsFin(ev), sMs);
                 if (z > a) hTravail += (z - a) / DIRT_H;
             }));
-            // Plus long repos consécutif touchant la semaine (y compris à cheval sur la semaine voisine)
-            let maxRepos = 0, maxRef = null;
-            if (!blocsS.length) maxRepos = 168;
-            else {
-                const avant = blocs.filter(b => b.fin <= lMs).pop(), apres = blocs.find(b => b.debut >= sMs);
-                const seq = (avant ? [avant] : []).concat(blocsS, apres ? [apres] : []);
-                if (!avant) { const h = (blocsS[0].debut - lMs) / DIRT_H; if (h > maxRepos) { maxRepos = h; maxRef = { debut: lMs, fin: blocsS[0].debut }; } }
-                for (let i = 0; i < seq.length - 1; i++) {
-                    const a = seq[i].fin, z = seq[i + 1].debut;
-                    if (z > lMs && a < sMs) { const h = (z - a) / DIRT_H; if (h > maxRepos) { maxRepos = h; maxRef = { debut: a, fin: z }; } }
-                }
-                if (!apres) { const last = blocsS[blocsS.length - 1]; const h = (sMs - last.fin) / DIRT_H; if (h > maxRepos) { maxRepos = h; maxRef = { debut: last.fin, fin: sMs }; } }
-            }
+            // Plus long repos consécutif DANS la semaine civile (lundi 0h → dimanche 24h).
+            // Un repos à cheval sur la semaine voisine n'est compté que pour sa partie dans la semaine.
+            let maxRepos = 0, maxRef = null, curseur = lMs;
+            const travail = blocsS.map(b => ({ debut: Math.max(b.debut, lMs), fin: Math.min(b.fin, sMs) })).sort((x, y) => x.debut - y.debut);
+            const libre = (a, z) => { const h = (z - a) / DIRT_H; if (h > maxRepos) { maxRepos = h; maxRef = { debut: a, fin: z }; } };
+            travail.forEach(t => { if (t.debut > curseur) libre(curseur, t.debut); curseur = Math.max(curseur, t.fin); });
+            if (sMs > curseur) libre(curseur, sMs);
             const analysee = postesPeriode > 0;
             semaines.push({
                 lundi: lMs, fin: sMs, blocs: blocsS, analysee, postes: postesPeriode,
@@ -4282,7 +4276,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         });
         html += items.length ? items.join('') : `<div class="dirt-ok" style="margin:4px 0 2px;">✅ Aucune anomalie${dirtFiltre === 'q' ? ' de repos quotidien' : dirtFiltre === 'h' ? ' de repos hebdomadaire' : ''} sur la période</div>`;
         html += `</div>
-            <div class="dirt-foot"><i class="fas fa-balance-scale"></i>&nbsp;Art. L3131-1 CT (repos quotidien ${r.seuilQ}h) · Art. L3132-2 CT (repos hebdo ${r.seuilH}h consécutives) · ${r.postes} poste(s) analysé(s)</div>`;
+            <div class="dirt-foot"><i class="fas fa-balance-scale"></i>&nbsp;Art. L3131-1 CT (repos quotidien ${r.seuilQ}h) · Art. L3132-2 CT (repos hebdo ${r.seuilH}h consécutives, du lundi 0h au dimanche 24h) · ${r.postes} poste(s) analysé(s)</div>`;
         box.innerHTML = html;
     }
 
@@ -8058,7 +8052,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.2';
+const CACHE_NAME = 'planning-pro-v9.3';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
