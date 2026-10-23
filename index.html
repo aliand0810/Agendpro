@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.6</title>
+    <title>Mon Planning Pro v9.7</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -637,6 +637,52 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         /* ANALYSE DIRT */
 
 
+
+        /* ═══ ALARMES ═══ */
+        .al-row { display:flex; align-items:center; gap:10px; padding:7px 4px; border-top:1px solid var(--border-color); }
+        #al-side .al-row:first-child, .al-day + .al-row { border-top:none; }
+        .al-row.off { opacity:0.45; }
+        .al-row > div { flex:1; min-width:0; }
+        .al-row b { display:block; font-size:0.8rem; color:var(--text-main); }
+        .al-row small { display:block; font-size:0.68rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .al-h { font-family:'DM Mono',monospace; font-weight:900; font-size:0.95rem; color:var(--primary); min-width:46px; }
+        .al-row.al-reveil .al-h { color:#d97706; } .al-row.al-veille .al-h { color:#64748b; }
+        .al-day { font-size:0.65rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin:10px 0 2px; }
+        .al-day:first-child { margin-top:0; }
+        .al-main { display:flex; align-items:center; gap:12px; padding:12px; border-radius:12px; background:var(--hover-row); border:1px solid var(--primary-light); cursor:pointer; }
+        .al-main > span:first-child { flex:1; } .al-main b { display:block; font-size:0.92rem; } .al-main small { display:block; font-size:0.72rem; color:var(--text-muted); }
+        .al-sw { position:relative; width:40px; height:22px; flex-shrink:0; cursor:pointer; }
+        .al-sw input { opacity:0; width:0; height:0; position:absolute; }
+        .al-sw span { position:absolute; inset:0; border-radius:20px; background:#cbd5e1; transition:0.2s; }
+        .al-sw span::after { content:''; position:absolute; left:3px; top:3px; width:16px; height:16px; border-radius:50%; background:#fff; transition:0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.25); }
+        .al-sw input:checked + span { background:var(--primary); }
+        .al-sw input:checked + span::after { transform:translateX(18px); }
+        .al-sw.big { width:48px; height:26px; } .al-sw.big span::after { width:20px; height:20px; } .al-sw.big input:checked + span::after { transform:translateX(22px); }
+        .al-trow { display:grid; grid-template-columns:1fr 1fr; gap:6px 10px; padding:8px 0; border-top:1px dashed var(--border-color); }
+        .al-trow:first-child { border-top:none; }
+        .al-tl { grid-column:1 / -1; font-weight:800; font-size:0.85rem; }
+        .al-trow label { font-size:0.72rem; font-weight:700; color:var(--text-muted); }
+        .al-trow select { margin-top:3px !important; padding:7px !important; font-size:0.82rem !important; }
+        .al-veille { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:0.82rem; font-weight:700; margin-top:10px; padding-top:10px; border-top:1px dashed var(--border-color); }
+        .al-veille input[type=checkbox] { width:18px; height:18px; margin:0; accent-color:var(--primary); }
+        .al-veille input[type=time] { width:auto !important; margin:0 !important; padding:6px !important; }
+        .al-son-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+        .al-son-row select { flex:1; min-width:130px; margin:0 !important; padding:8px !important; font-size:0.85rem !important; }
+        .al-notif { margin-top:10px; font-size:0.78rem; font-weight:600; color:var(--text-muted); }
+        .al-p { font-size:0.78rem; color:var(--text-muted); margin:0 0 10px; line-height:1.45; }
+        .al-google { margin-top:8px !important; font-size:0.82rem !important; }
+        .al-ring { position:fixed; inset:0; z-index:8000; background:radial-gradient(circle at 50% 30%, #4f46e5, #1e1b4b); display:flex; align-items:center; justify-content:center; padding:20px; color:#fff; animation:alPulse 1.6s ease-in-out infinite; }
+        .al-ring.al-rappel { background:radial-gradient(circle at 50% 30%, #0891b2, #083344); }
+        .al-ring.al-veille { background:radial-gradient(circle at 50% 30%, #475569, #0f172a); animation:none; }
+        @keyframes alPulse { 50% { filter:brightness(1.18); } }
+        .al-ring-box { text-align:center; max-width:360px; width:100%; }
+        .al-ring-h { font-family:'DM Mono',monospace; font-size:4.2rem; font-weight:900; letter-spacing:-0.02em; line-height:1; }
+        .al-ring-l { font-size:1.4rem; font-weight:800; margin-top:10px; }
+        .al-ring-p { font-size:1.1rem; margin-top:6px; opacity:0.95; }
+        .al-ring-s { font-size:0.85rem; opacity:0.75; margin-top:4px; }
+        .al-ring-snz, .al-ring-stop { display:block; width:100%; border:none; border-radius:16px; padding:16px; font-size:1.05rem; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif; margin-top:14px; }
+        .al-ring-snz { margin-top:34px; background:rgba(255,255,255,0.18); color:#fff; border:1.5px solid rgba(255,255,255,0.4); }
+        .al-ring-stop { background:#fff; color:#1e1b4b; }
         /* ═══ CARTES REPLIABLES ═══ */
         .sidebar-card.sb-col > .sidebar-card-title { cursor:pointer; user-select:none; margin-bottom:10px; }
         .sidebar-card.sb-col.collapsed > .sidebar-card-title { margin-bottom:0; }
@@ -1264,6 +1310,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
                 <!-- Aujourd'hui / prochain poste -->
                 <div class="sidebar-card today-card" id="today-card"></div>
+
+                <!-- Alarmes & réveils -->
+                <div class="sidebar-card sb-col" id="al-card">
+                    <div class="sidebar-card-title"><i class="fas fa-bell"></i> Alarmes
+                        <button class="rot-manage-btn" onclick="alOuvrir()">Régler</button>
+                    </div>
+                    <div id="al-side"></div>
+                </div>
 
                 <!-- Stats soldes -->
                 <div class="sidebar-card sb-col" id="soldes-card">
@@ -1960,6 +2014,42 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <strong>Accès</strong> : touchez une pastille pour autoriser ✓ ou restreindre ✕ une section. Le changement s'applique à la prochaine ouverture de l'application par le client.<br>
             <strong>Nouveau mot de passe</strong> : remplace immédiatement l'ancien (utile en cas d'oubli). Chaque client peut aussi changer le sien dans « Mon compte ».
         </div>
+        <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
+    </div>
+
+    <!-- ═══ MODALE ALARMES & RÉVEILS ═══ -->
+    <div id="modal-alarmes" class="modal">
+        <h3><i class="fas fa-bell"></i> Alarmes &amp; réveils</h3>
+        <label class="al-main"><span><b>Alarmes selon mon planning</b><small>Calculées automatiquement à partir de vos postes à venir</small></span>
+            <span class="al-sw big"><input type="checkbox" id="al-actif" onchange="alChange()"><span></span></span></label>
+        <div class="zone-card" style="margin-top:14px;">
+            <span class="zone-title">⏰ PAR TYPE DE POSTE</span>
+            <div id="al-types"></div>
+            <label class="al-veille"><input type="checkbox" id="al-veille" onchange="alChange()"> 🔔 Rappel la veille à <input type="time" id="al-veille-h" onchange="alChange()"></label>
+        </div>
+        <div class="zone-card" style="margin-top:14px;">
+            <span class="zone-title">🔊 SONNERIE</span>
+            <div class="al-son-row">
+                <select id="al-son" onchange="alChange()"><option value="reveil">⏰ Réveil classique</option><option value="bip">📟 Bip</option><option value="doux">🎵 Doux</option></select>
+                <select id="al-snooze" onchange="alChange()"><option value="5">Répéter : 5 min</option><option value="9">Répéter : 9 min</option><option value="10">Répéter : 10 min</option><option value="15">Répéter : 15 min</option></select>
+                <button class="fb-mini-btn" onclick="alTester()"><i class="fas fa-play"></i> Tester</button>
+            </div>
+            <div id="al-notif" class="al-notif"></div>
+        </div>
+        <div class="zone-card" style="margin-top:14px;">
+            <span class="zone-title">📲 ALARMES MÊME APPLICATION FERMÉE</span>
+            <p class="al-p">Ajoutez vos postes au <b>calendrier de votre téléphone</b> avec les alertes réveil et départ : le téléphone vous prévient même si l'application est fermée.</p>
+            <div class="al-son-row">
+                <select id="al-ics-jours"><option value="7">7 prochains jours</option><option value="14" selected>14 prochains jours</option><option value="31">1 mois</option><option value="62">2 mois</option></select>
+                <button class="btn btn-paye" style="margin:0; flex:1;" onclick="alExporterIcs()"><i class="fas fa-calendar-plus"></i> Ajouter au calendrier</button>
+            </div>
+            <button class="btn btn-outline al-google" onclick="fermerModales(); ouvrirModale('modal-config'); setTimeout(()=>{const z=document.getElementById('zone-google-sync'); if(z) z.scrollIntoView({behavior:'smooth'});},300)"><i class="fab fa-google"></i> Ou exporter vers Google Agenda (alertes incluses)</button>
+        </div>
+        <div class="zone-card" style="margin-top:14px;">
+            <span class="zone-title">📋 PROCHAINES ALARMES (14 JOURS)</span>
+            <div id="al-liste"></div>
+        </div>
+        <div class="rot-hint">Quand l'application est ouverte (même en arrière-plan), l'alarme sonne à l'écran avec « Répéter » et « Arrêter », et une notification s'affiche. Une application web ne peut pas programmer le réveil natif du téléphone : pour être sûr d'être réveillé application fermée, utilisez « Ajouter au calendrier ».</div>
         <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
     </div>
 
@@ -4244,7 +4334,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         const zones = cfg.zones || { events: true, soldes: true, cycle: true, prefs: true };
 
         const backup = { dateExport: new Date().toISOString(), zones };
-        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); backup.forms = localStorage.getItem('nk_forms_v1'); }
+        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); backup.forms = localStorage.getItem('nk_forms_v1'); backup.alarmes = localStorage.getItem('alarmes_v1'); }
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
         if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
@@ -4705,7 +4795,7 @@ function selectAct(btn, val) {
         if (warning) warning.style.display = 'none';
 
         const backup = { dateExport: new Date().toISOString(), zones };
-        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); backup.forms = localStorage.getItem('nk_forms_v1'); }
+        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); backup.forms = localStorage.getItem('nk_forms_v1'); backup.alarmes = localStorage.getItem('alarmes_v1'); }
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
         if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
@@ -4758,6 +4848,7 @@ function selectAct(btn, val) {
                     if (hasEvents) localStorage.setItem('events_v5', data.events);
                     if (data.notes) localStorage.setItem('notes_v1', data.notes);
                     if (data.forms) localStorage.setItem('nk_forms_v1', data.forms);
+                    if (data.alarmes) localStorage.setItem('alarmes_v1', data.alarmes);
                     if (hasSoldes) localStorage.setItem('soldes_v5', data.soldes);
                     if (data.cycle) localStorage.setItem('cycle_master', data.cycle);
                     if (data.rotations) localStorage.setItem('rotations_v1', data.rotations);
@@ -5997,6 +6088,8 @@ function selectAct(btn, val) {
                         end: { dateTime: endDateTime, timeZone: 'Europe/Paris' },
                         colorId: getGoogleCalendarColorId(type)
                     };
+                    const rappels = (typeof alRappelsGoogle === 'function') ? alRappelsGoogle(type) : null;
+                    if (rappels) calEvent.reminders = rappels;
                 } else {
                     // Événement toute la journée
                     calEvent = {
@@ -6166,6 +6259,7 @@ function selectAct(btn, val) {
                 events: localStorage.getItem('events_v5'),
                 notes: localStorage.getItem('notes_v1'),
                 forms: localStorage.getItem('nk_forms_v1'),
+                alarmes: localStorage.getItem('alarmes_v1'),
                 soldes: localStorage.getItem('soldes_v5'),
                 cycle: localStorage.getItem('cycle_master'),
                 rotations: localStorage.getItem('rotations_v1'),
@@ -6332,6 +6426,7 @@ function selectAct(btn, val) {
                 if (data.events) { localStorage.setItem('events_v5', typeof data.events === 'string' ? data.events : JSON.stringify(data.events)); restored++; }
                 if (data.notes) { localStorage.setItem('notes_v1', typeof data.notes === 'string' ? data.notes : JSON.stringify(data.notes)); }
                 if (data.forms) { localStorage.setItem('nk_forms_v1', typeof data.forms === 'string' ? data.forms : JSON.stringify(data.forms)); }
+                if (data.alarmes) { localStorage.setItem('alarmes_v1', typeof data.alarmes === 'string' ? data.alarmes : JSON.stringify(data.alarmes)); }
                 if (data.soldes) { localStorage.setItem('soldes_v5', typeof data.soldes === 'string' ? data.soldes : JSON.stringify(data.soldes)); restored++; }
                 if (data.cycle) { localStorage.setItem('cycle_master', typeof data.cycle === 'string' ? data.cycle : JSON.stringify(data.cycle)); restored++; }
                 if (data.rotations) { localStorage.setItem('rotations_v1', typeof data.rotations === 'string' ? data.rotations : JSON.stringify(data.rotations)); }
@@ -6984,7 +7079,7 @@ function selectAct(btn, val) {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const FB_CFG_KEY = 'fb_config_v1', FB_OWNER_KEY = 'fb_local_owner', FB_DIRTY_KEY = 'fb_dirty_keys', FB_SYNCAT_KEY = 'fb_local_sync_at';
-    const FB_SYNC_KEYS = ['events_v5', 'soldes_v5', 'rotations_v1', 'cycle_master', 'notes_v1', 'nk_forms_v1'];
+    const FB_SYNC_KEYS = ['events_v5', 'soldes_v5', 'rotations_v1', 'cycle_master', 'notes_v1', 'nk_forms_v1', 'alarmes_v1'];
     const FB_DOMAINE = 'agendpro.app';
     const FB_CHUNK = 300000;
     const FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
@@ -9003,12 +9098,13 @@ service cloud.firestore {
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CARTES REPLIABLES + CARTE « AUJOURD'HUI » (v9.6) ════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
-    const SB_DEFAUT = { 'soldes-card': true, 'legend-card': true, 'rot-card': false, 'nk-card': false }; // true = replié
+    const SB_DEFAUT = { 'soldes-card': true, 'legend-card': true, 'rot-card': false, 'nk-card': false, 'al-card': false }; // true = replié
     function sbEtat() { try { return Object.assign({}, SB_DEFAUT, JSON.parse(localStorage.getItem('sb_etat_v1')) || {}); } catch(e) { return Object.assign({}, SB_DEFAUT); } }
     function sbResume(id) {
         try {
             if (id === 'soldes-card') return `CP ${document.getElementById('stat-cp').textContent} · RTT ${document.getElementById('stat-rtt').textContent} · ${document.getElementById('stat-heure8').textContent}`;
             if (id === 'rot-card' && typeof rotState !== 'undefined') { const n = rotState.list.length, v = rotState.list.filter(r => r.visible !== false).length; return n ? `${n} · ${v} visible${v > 1 ? 's' : ''}` : 'aucun'; }
+            if (id === 'al-card' && typeof alAlarmes === 'function') { const a = alAlarmes(7).filter(x => !x.ignore)[0]; return a ? `${alJour(a.at) === "Aujourd'hui" ? '' : alJour(a.at).split(' ')[0] + ' '}${alFmtH(a.at)}` : ''; }
             if (id === 'legend-card') return `${document.querySelectorAll('#legend-content .legend-item').length} types`;
             if (id === 'nk-card' && typeof notesCharger === 'function') { const n = notesCharger().filter(x => !x.archive).length; return n ? `${n} note${n > 1 ? 's' : ''}` : ''; }
         } catch(e) {}
@@ -9082,6 +9178,288 @@ service cloud.firestore {
         } catch(e) {}
     });
     // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ ALARMES & RÉVEILS selon le planning (v9.7) ═════════════════════════════
+    // Réglages : localStorage 'alarmes_v1' (synchronisé Firebase). Déjà sonnées / ignorées : local à l'appareil.
+    // ═══════════════════════════════════════════════════════════════════════════
+    const AL_KEY = 'alarmes_v1', AL_FIRED = 'alarmes_fired', AL_SKIP = 'alarmes_skip';
+    const AL_TYPES = [
+        { k:'MATIN',         ic:'☀️', lbl:'Matin' },
+        { k:'APRÈS-MIDI',    ic:'⛅', lbl:'Après-midi' },
+        { k:'NUIT',          ic:'🌙', lbl:'Nuit' },
+        { k:'POSTE JOURNÉE', ic:'💼', lbl:'Journée' },
+        { k:'AUTRE',         ic:'📚', lbl:'Formation / Réunion / CSE' }
+    ];
+    const AL_DEFAUT = {
+        actif: true, son: 'reveil', snooze: 9,
+        types: { 'MATIN': { reveil: 60, rappel: 30 }, 'APRÈS-MIDI': { reveil: 0, rappel: 45 }, 'NUIT': { reveil: 0, rappel: 60 }, 'POSTE JOURNÉE': { reveil: 75, rappel: 30 }, 'AUTRE': { reveil: 0, rappel: 30 } },
+        veille: { actif: true, heure: '20:00' }
+    };
+    function alCfg() {
+        try { const c = JSON.parse(localStorage.getItem(AL_KEY)); if (c && c.types) return Object.assign({}, AL_DEFAUT, c, { types: Object.assign({}, AL_DEFAUT.types, c.types), veille: Object.assign({}, AL_DEFAUT.veille, c.veille || {}) }); } catch(e) {}
+        return JSON.parse(JSON.stringify(AL_DEFAUT));
+    }
+    function alSauverCfg(c) { localStorage.setItem(AL_KEY, JSON.stringify(c)); }
+    function alGroupe(type) {
+        if (/^MATIN/.test(type)) return 'MATIN';
+        if (/^APRÈS-MIDI/.test(type)) return 'APRÈS-MIDI';
+        if (/^NUIT/.test(type)) return 'NUIT';
+        if (type === 'POSTE JOURNÉE' || type === 'JOURNÉE SUPPL.') return 'POSTE JOURNÉE';
+        if (['FORMATION', 'RÉUNION'].includes(type) || (type || '').startsWith('CSE')) return 'AUTRE';
+        return null;
+    }
+    function alLire(k) { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch(e) { return {}; } }
+    function alFmtH(ms) { const d = new Date(ms); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+    function alJour(ms) {
+        const d = new Date(ms), a = new Date(); a.setHours(0, 0, 0, 0);
+        const diff = Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - a) / 86400000);
+        return diff === 0 ? "Aujourd'hui" : diff === 1 ? 'Demain' : d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'short' });
+    }
+
+    // Postes à venir (jours de travail uniquement) avec heures de début/fin
+    function alPostes(jours) {
+        if (typeof calendar === 'undefined' || !calendar) return [];
+        const now = Date.now(), lim = now + (jours || 14) * 86400000;
+        return calendar.getEvents().map(e => {
+            const p = e.extendedProps || {}, g = alGroupe(p.type);
+            if (!g) return null;
+            const debut = todayDebut(e);
+            const pl = (!p.hD && typeof getPlage === 'function') ? getPlage(p.type) : {};
+            const hD = p.hD || pl.hD, hF = p.hF || pl.hF;
+            if (!hD) return null;
+            const mn = h => { const [a, b] = h.split(':').map(Number); return a * 60 + (b || 0); };
+            const duree = hF ? (((mn(hF) - mn(hD)) % 1440) + 1440) % 1440 || 1440 : 480;
+            const fin = debut + duree * 60000;
+            const r = p.rotationId && typeof rotGet === 'function' ? rotGet(p.rotationId) : null;
+            return { ev: e, type: p.type, groupe: g, debut, fin, hD, hF: hF || '', date: e.startStr.split('T')[0], rot: r ? r.nom : '' };
+        }).filter(x => x && x.fin > now - 3600000 && x.debut < lim).sort((a, b) => a.debut - b.debut);
+    }
+    // Liste des alarmes calculées
+    function alAlarmes(jours, retard) {
+        const c = alCfg(), skip = alLire(AL_SKIP), out = [];
+        if (!c.actif) return out;
+        const postes = alPostes(jours);
+        const joursDejaVeille = new Set();
+        postes.forEach(po => {
+            const t = c.types[po.groupe] || {};
+            const base = { poste: po, titre: `${tbIcon(po.type)} ${po.type} ${po.hD}${po.hF ? '–' + po.hF : ''}` };
+            if (t.reveil > 0) out.push(Object.assign({ id: `${po.date}|${po.type}|reveil`, kind: 'reveil', at: po.debut - t.reveil * 60000, lbl: '⏰ Réveil' }, base));
+            if (t.rappel > 0) out.push(Object.assign({ id: `${po.date}|${po.type}|rappel`, kind: 'rappel', at: po.debut - t.rappel * 60000, lbl: '🚗 Départ' }, base));
+            if (c.veille.actif && c.veille.heure && !joursDejaVeille.has(po.date)) {
+                joursDejaVeille.add(po.date);
+                const [y, m, d] = po.date.split('-').map(Number), [h, mi] = c.veille.heure.split(':').map(Number);
+                const at = new Date(y, m - 1, d - 1, h, mi).getTime();
+                if (at < po.debut) out.push(Object.assign({ id: `${po.date}|veille`, kind: 'veille', at, lbl: '🔔 Veille' }, base));
+            }
+        });
+        return out.filter(a => a.at > Date.now() - (retard || 60000)).map(a => Object.assign(a, { ignore: !!skip[a.id] })).sort((a, b) => a.at - b.at);
+    }
+
+    // ── Carte de la colonne gauche ──
+    function alRendreCarte() {
+        const box = document.getElementById('al-side'); if (!box) return;
+        const c = alCfg();
+        if (!c.actif) { box.innerHTML = `<div class="rot-empty">Alarmes désactivées.</div>`; return; }
+        const l = alAlarmes(7).filter(a => !a.ignore).slice(0, 3);
+        box.innerHTML = l.length ? l.map(a => `<div class="al-row al-${a.kind}"><span class="al-h">${alFmtH(a.at)}</span><div><b>${a.lbl}</b><small>${alJour(a.at)} · ${noteEsc(a.titre)}</small></div></div>`).join('')
+            : `<div class="rot-empty">Aucune alarme dans les 7 prochains jours.</div>`;
+        if (typeof sbAppliquer === 'function') sbAppliquer();
+    }
+
+    // ── Fenêtre de réglages ──
+    function alOuvrir() { fermerModales(); ouvrirModale('modal-alarmes'); alRendreModale(); }
+    function alRendreModale() {
+        const c = alCfg();
+        document.getElementById('al-actif').checked = !!c.actif;
+        document.getElementById('al-types').innerHTML = AL_TYPES.map(t => {
+            const v = c.types[t.k] || {};
+            const sel = (champ, val, opts) => `<select data-k="${t.k}" data-f="${champ}" onchange="alChange()">${opts.map(o => `<option value="${o}" ${+val === o ? 'selected' : ''}>${o ? (o >= 60 ? Math.floor(o / 60) + 'h' + (o % 60 ? String(o % 60).padStart(2, '0') : '') : o + ' min') + ' avant' : '— aucun —'}</option>`).join('')}</select>`;
+            return `<div class="al-trow"><div class="al-tl">${t.ic} ${t.lbl}</div>
+                <label>⏰ Réveil ${sel('reveil', v.reveil, [0, 30, 45, 60, 75, 90, 105, 120, 150, 180])}</label>
+                <label>🚗 Départ ${sel('rappel', v.rappel, [0, 10, 15, 20, 30, 45, 60, 90])}</label></div>`;
+        }).join('');
+        document.getElementById('al-veille').checked = !!c.veille.actif;
+        document.getElementById('al-veille-h').value = c.veille.heure;
+        document.getElementById('al-son').value = c.son;
+        document.getElementById('al-snooze').value = c.snooze;
+        alMajNotifEtat();
+        alRendreListe();
+    }
+    function alChange() {
+        const c = alCfg();
+        c.actif = document.getElementById('al-actif').checked;
+        document.querySelectorAll('#al-types select').forEach(s => { c.types[s.dataset.k] = c.types[s.dataset.k] || {}; c.types[s.dataset.k][s.dataset.f] = +s.value; });
+        c.veille = { actif: document.getElementById('al-veille').checked, heure: document.getElementById('al-veille-h').value || '20:00' };
+        c.son = document.getElementById('al-son').value;
+        c.snooze = +document.getElementById('al-snooze').value || 9;
+        alSauverCfg(c);
+        alRendreListe(); alRendreCarte();
+    }
+    function alRendreListe() {
+        const box = document.getElementById('al-liste'); if (!box) return;
+        const l = alAlarmes(14);
+        if (!l.length) { box.innerHTML = `<div class="rot-empty">Aucune alarme prévue sur les 14 prochains jours.</div>`; return; }
+        let jour = '', html = '';
+        l.forEach(a => {
+            const j = alJour(a.at);
+            if (j !== jour) { html += `<div class="al-day">${j}</div>`; jour = j; }
+            html += `<div class="al-row al-${a.kind} ${a.ignore ? 'off' : ''}">
+                <span class="al-h">${alFmtH(a.at)}</span>
+                <div><b>${a.lbl}</b><small>${noteEsc(a.titre)}${a.poste.rot ? ' · 🔁 ' + noteEsc(a.poste.rot) : ''}</small></div>
+                <label class="al-sw" title="${a.ignore ? 'Réactiver' : 'Ignorer cette alarme'}"><input type="checkbox" ${a.ignore ? '' : 'checked'} onchange="alIgnorer('${a.id.replace(/'/g, "\\'")}', !this.checked)"><span></span></label>
+            </div>`;
+        });
+        box.innerHTML = html;
+    }
+    function alIgnorer(id, ign) {
+        const s = alLire(AL_SKIP); if (ign) s[id] = Date.now(); else delete s[id];
+        localStorage.setItem(AL_SKIP, JSON.stringify(s));
+        alRendreListe(); alRendreCarte();
+    }
+
+    // ── Notifications système ──
+    function alMajNotifEtat() {
+        const el = document.getElementById('al-notif'); if (!el) return;
+        if (!('Notification' in window)) { el.innerHTML = '⚠️ Notifications non prises en charge par ce navigateur.'; return; }
+        const p = Notification.permission;
+        el.innerHTML = p === 'granted' ? '✅ Notifications autorisées sur cet appareil'
+            : p === 'denied' ? '🚫 Notifications bloquées — autorisez-les dans les réglages du navigateur'
+            : `<button class="fb-mini-btn" onclick="alDemanderNotif()"><i class="fas fa-bell"></i> Autoriser les notifications</button>`;
+    }
+    async function alDemanderNotif() { try { await Notification.requestPermission(); } catch(e) {} alMajNotifEtat(); }
+    async function alNotifier(titre, corps) {
+        if (!('Notification' in window) || Notification.permission !== 'granted') return;
+        const opt = { body: corps, tag: 'mpp-alarme', renotify: true, requireInteraction: true, vibrate: [400, 200, 400, 200, 800], icon: (typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || undefined };
+        try { const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration(); if (reg) return reg.showNotification(titre, opt); } catch(e) {}
+        try { new Notification(titre, opt); } catch(e) {}
+    }
+
+    // ── Son d'alarme (généré, aucun fichier) ──
+    let alAudio = null, alSonT = null;
+    function alSonJouer(type, boucle) {
+        alSonStop();
+        try {
+            alAudio = alAudio || new (window.AudioContext || window.webkitAudioContext)();
+            if (alAudio.state === 'suspended') alAudio.resume();
+            const motif = type === 'doux' ? [[523, .35], [659, .35], [784, .6]] : type === 'bip' ? [[880, .12], [0, .08], [880, .12], [0, .08], [880, .12]] : [[988, .15], [0, .07], [988, .15], [0, .07], [988, .15], [0, .07], [988, .15]];
+            const jouer = () => {
+                let t = alAudio.currentTime + 0.02;
+                motif.forEach(([f, d]) => {
+                    if (f) {
+                        const o = alAudio.createOscillator(), g = alAudio.createGain();
+                        o.type = type === 'doux' ? 'sine' : 'square'; o.frequency.value = f;
+                        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(type === 'doux' ? 0.4 : 0.25, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+                        o.connect(g).connect(alAudio.destination); o.start(t); o.stop(t + d + 0.02);
+                    }
+                    t += d;
+                });
+            };
+            jouer();
+            if (boucle) alSonT = setInterval(jouer, 1500);
+        } catch(e) {}
+        if (navigator.vibrate) navigator.vibrate(boucle ? [500, 300, 500, 300, 500] : 200);
+    }
+    function alSonStop() { clearInterval(alSonT); alSonT = null; }
+    function alTester() { alSonJouer(document.getElementById('al-son').value, false); }
+
+    // ── Écran d'alarme (quand l'application est ouverte) ──
+    function alSonner(a) {
+        const c = alCfg();
+        alNotifier(`${a.lbl} — ${a.poste.type}`, `${alJour(a.poste.debut)} · début ${a.poste.hD}${a.poste.rot ? ' · ' + a.poste.rot : ''}`);
+        if (document.getElementById('al-ring')) return;
+        const o = document.createElement('div');
+        o.id = 'al-ring'; o.className = 'al-ring al-' + a.kind;
+        o.innerHTML = `<div class="al-ring-box">
+            <div class="al-ring-h">${alFmtH(Date.now())}</div>
+            <div class="al-ring-l">${a.lbl}</div>
+            <div class="al-ring-p">${noteEsc(a.titre)}</div>
+            <div class="al-ring-s">${alJour(a.poste.debut)} · début à ${a.poste.hD}${a.poste.rot ? ' · 🔁 ' + noteEsc(a.poste.rot) : ''}</div>
+            <button class="al-ring-snz" onclick="alSnooze()">💤 Répéter dans ${c.snooze} min</button>
+            <button class="al-ring-stop" onclick="alArreter()">Arrêter</button></div>`;
+        o.dataset.a = JSON.stringify({ id: a.id, lbl: a.lbl, titre: a.titre, kind: a.kind });
+        document.body.appendChild(o);
+        alSonJouer(c.son, a.kind !== 'veille');
+    }
+    function alArreter() { alSonStop(); const o = document.getElementById('al-ring'); if (o) o.remove(); }
+    function alSnooze() {
+        const o = document.getElementById('al-ring'); if (!o) return;
+        const a = JSON.parse(o.dataset.a), c = alCfg();
+        const f = alLire(AL_FIRED); f['snz|' + a.id + '|' + Date.now()] = { at: Date.now() + c.snooze * 60000, a };
+        localStorage.setItem(AL_FIRED, JSON.stringify(f));
+        alArreter();
+        showToast(`💤 Nouvelle alarme à ${alFmtH(Date.now() + c.snooze * 60000)}`, 'info', 'fa-bed');
+    }
+    // Vérification toutes les 20 s
+    function alVerifier() {
+        const c = alCfg(); if (!c.actif) return;
+        const now = Date.now(), f = alLire(AL_FIRED);
+        let modif = false;
+        alAlarmes(2, 15 * 60000).forEach(a => {
+            if (a.ignore || f[a.id]) return;
+            if (a.at <= now && now - a.at < 15 * 60000) { f[a.id] = now; modif = true; alSonner(a); }
+        });
+        Object.keys(f).filter(k => k.startsWith('snz|')).forEach(k => {
+            if (f[k].at <= now) {
+                const p = alPostes(2).find(po => f[k].a.id.startsWith(po.date + '|'));
+                delete f[k]; modif = true;
+                if (p) alSonner(Object.assign({}, { id: 'snz', kind: 'reveil', lbl: '⏰ Réveil (répétition)', titre: `${tbIcon(p.type)} ${p.type} ${p.hD}${p.hF ? '–' + p.hF : ''}`, poste: p }));
+            }
+        });
+        // Nettoyage des entrées de plus de 3 jours
+        Object.keys(f).forEach(k => { if (!k.startsWith('snz|') && now - f[k] > 3 * 86400000) { delete f[k]; modif = true; } });
+        if (modif) localStorage.setItem(AL_FIRED, JSON.stringify(f));
+    }
+
+    // ── Export calendrier du téléphone (.ics avec alertes) ──
+    function alIcsDate(ms) { return new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+    function alIcsTxt(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n'); }
+    function alGenererIcs(jours) {
+        const c = alCfg(), skip = alLire(AL_SKIP);
+        const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Mon Planning Pro//FR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:Mon Planning Pro'];
+        const postes = alPostes(jours);
+        postes.forEach(po => {
+            const t = c.types[po.groupe] || {};
+            L.push('BEGIN:VEVENT', `UID:mpp-${po.date}-${po.type.replace(/[^A-Za-z0-9]/g, '')}@agendpro`, `DTSTAMP:${alIcsDate(Date.now())}`,
+                `DTSTART:${alIcsDate(po.debut)}`, `DTEND:${alIcsDate(po.fin)}`,
+                `SUMMARY:${alIcsTxt(po.type + ' ' + po.hD + (po.hF ? '-' + po.hF : ''))}`,
+                `DESCRIPTION:${alIcsTxt('Mon Planning Pro' + (po.rot ? ' · ' + po.rot : ''))}`);
+            [['reveil', 'Réveil'], ['rappel', 'Départ']].forEach(([k, lbl]) => {
+                if (c.actif && t[k] > 0 && !skip[`${po.date}|${po.type}|${k}`])
+                    L.push('BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${alIcsTxt(lbl + ' — ' + po.type + ' à ' + po.hD)}`, `TRIGGER:-PT${t[k]}M`, 'END:VALARM');
+            });
+            L.push('END:VEVENT');
+        });
+        L.push('END:VCALENDAR');
+        return { ics: L.join('\r\n') + '\r\n', nb: postes.length };
+    }
+    async function alExporterIcs() {
+        const jours = +document.getElementById('al-ics-jours').value || 14;
+        const { ics, nb } = alGenererIcs(jours);
+        if (!nb) { showToast('Aucun poste sur cette période', 'info', 'fa-info-circle'); return; }
+        const nom = `planning_alarmes_${fmtLocal(new Date())}.ics`;
+        const f = new File([ics], nom, { type: 'text/calendar' });
+        try { if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: 'Mon Planning Pro — alarmes' }); return; } } catch(e) { if (e && e.name === 'AbortError') return; }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = nom;
+        document.body.appendChild(a); a.click(); a.remove();
+        showToast(`📅 ${nb} poste(s) avec alertes — ouvrez le fichier pour l'ajouter à votre calendrier`, 'success', 'fa-calendar-plus');
+    }
+    // Rappels pour l'export Google Agenda
+    function alRappelsGoogle(type) {
+        const c = alCfg(), g = alGroupe(type), t = g && c.types[g];
+        if (!c.actif || !t) return null;
+        const ov = [t.reveil, t.rappel].filter(m => m > 0).map(m => ({ method: 'popup', minutes: m }));
+        return ov.length ? { useDefault: false, overrides: ov } : null;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => { alRendreCarte(); alVerifier(); }, 600);
+        setInterval(alVerifier, 20000);
+        setInterval(alRendreCarte, 5 * 60000);
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { alVerifier(); alRendreCarte(); } });
+        const sOrig = sauver;
+        sauver = function() { const r = sOrig.apply(this, arguments); setTimeout(alRendreCarte, 200); return r; };
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -9140,7 +9518,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.6';
+const CACHE_NAME = 'planning-pro-v9.7';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
@@ -9162,6 +9540,11 @@ self.addEventListener('activate', event => {
         })
     );
     self.clients.claim();
+});
+
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+    event.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(l => l.length ? l[0].focus() : clients.openWindow('./')));
 });
 
 self.addEventListener('fetch', event => {
