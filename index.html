@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.3</title>
+    <title>Mon Planning Pro v9.4</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -362,6 +362,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.perm-no-roulements .rot-manage-btn,
         body.perm-no-roulements .rot-add-btn,
         body.perm-no-google #zone-google-sync,
+        body.perm-no-notes #nk-card,
+        body.perm-no-notes .nk-day-btn,
+        body.perm-no-notes .nk-day,
         body.perm-no-reunion [data-leg="reunion"],
         body.perm-no-reunion .act-btn[onclick*="'RÉUNION'"],
         body.perm-no-reunion tr[onclick*="'RÉUNION'"],
@@ -602,6 +605,57 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         /* ANALYSE DIRT */
 
+        /* ═══ NOTES (façon Keep) ═══ */
+        .nk-side { display:flex; flex-direction:column; gap:6px; margin-bottom:2px; }
+        .nk-side .nk-card { padding:8px 10px; }
+        .nk-card { position:relative; border:1px solid var(--border-color); border-radius:10px; padding:10px 12px; cursor:pointer; color:#1e293b; transition:box-shadow 0.15s; break-inside:avoid; margin-bottom:8px; }
+        .nk-side .nk-card { margin-bottom:0; }
+        .nk-card:hover { box-shadow:0 2px 10px rgba(0,0,0,0.12); }
+        body.dark-mode .nk-card[style*="var(--bg-card)"] { color:var(--text-main); }
+        .nk-pin { position:absolute; top:6px; right:8px; font-size:0.75rem; }
+        .nk-titre { font-weight:800; font-size:0.88rem; margin-bottom:4px; padding-right:16px; word-break:break-word; }
+        .nk-txt { font-size:0.8rem; white-space:pre-wrap; word-break:break-word; line-height:1.4; }
+        .nk-li { display:flex; gap:4px; align-items:flex-start; font-size:0.8rem; line-height:1.35; }
+        .nk-li.ok span { text-decoration:line-through; opacity:0.55; }
+        .nk-cb { border:none; background:none; padding:0; cursor:pointer; font-size:0.9rem; line-height:1.1; color:inherit; }
+        .nk-more { font-size:0.7rem; opacity:0.7; margin-top:2px; }
+        .nk-date { display:inline-block; margin-top:6px; font-size:0.65rem; font-weight:700; background:rgba(0,0,0,0.07); border-radius:10px; padding:2px 7px; }
+        .nk-modal { max-width:720px !important; }
+        .nk-search { position:relative; margin-bottom:8px; }
+        .nk-search i { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.8rem; margin-top:2px; }
+        .nk-search input { padding-left:34px !important; border-radius:20px !important; }
+        .nk-tabs { display:flex; gap:6px; margin-bottom:10px; }
+        .nk-tab { border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-muted); border-radius:20px; padding:6px 12px; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .nk-tab.on { background:#fef08a; border-color:#facc15; color:#713f12; }
+        .nk-new { display:flex; border:1px solid var(--border-color); border-radius:10px; overflow:hidden; box-shadow:var(--shadow-sm); margin-bottom:12px; }
+        .nk-new button { border:none; background:var(--bg-card); color:var(--text-muted); padding:12px 14px; font-size:0.9rem; cursor:pointer; font-family:'DM Sans',sans-serif; text-align:left; }
+        .nk-new button:first-child { flex:1; font-weight:600; }
+        .nk-new button:last-child { border-left:1px solid var(--border-color); font-size:1rem; }
+        .nk-sec { font-size:0.65rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin:6px 0 6px 2px; }
+        .nk-grid { column-count:2; column-gap:8px; }
+        @media (min-width:700px) { .nk-grid { column-count:3; } }
+        .nk-edit { border-radius:14px; padding:10px 12px; margin:-6px -4px 0; border:1px solid var(--border-color); color:#1e293b; }
+        .nk-edit-top { display:flex; align-items:center; margin-bottom:4px; }
+        .nk-ic { width:36px; height:36px; border-radius:50%; border:none; background:rgba(0,0,0,0.05); color:#334155; cursor:pointer; }
+        .nk-ic.on { background:#facc15; color:#713f12; }
+        .nk-in-titre { border:none !important; background:transparent !important; font-size:1.1rem !important; font-weight:800 !important; padding:6px 2px !important; box-shadow:none !important; color:inherit !important; }
+        .nk-in-texte { width:100%; box-sizing:border-box; border:none; background:transparent; resize:vertical; font-family:'DM Sans',sans-serif; font-size:0.92rem; line-height:1.5; padding:6px 2px; color:inherit; outline:none; min-height:120px; }
+        .nk-item { display:flex; align-items:center; gap:6px; border-bottom:1px solid rgba(0,0,0,0.06); }
+        .nk-item input { border:none !important; background:transparent !important; margin:0 !important; padding:8px 2px !important; box-shadow:none !important; color:inherit !important; }
+        .nk-item.ok input { text-decoration:line-through; opacity:0.55; }
+        .nk-item .nk-cb { font-size:1.05rem; }
+        .nk-x { border:none; background:none; font-size:1.2rem; color:#94a3b8; cursor:pointer; }
+        .nk-add-item { border:none; background:none; color:#475569; padding:8px 2px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .nk-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:8px 0; font-size:0.75rem; font-weight:700; color:#475569; }
+        .nk-meta input { width:auto !important; margin:0 !important; padding:6px !important; background:rgba(255,255,255,0.6) !important; }
+        .nk-couleurs { display:flex; gap:6px; flex-wrap:wrap; margin:8px 0; }
+        .nk-sw { width:26px; height:26px; border-radius:50%; border:2px solid rgba(0,0,0,0.08); cursor:pointer; padding:0; }
+        .nk-sw.sel { border-color:#334155; box-shadow:0 0 0 2px rgba(255,255,255,0.8) inset; }
+        .nk-actions { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+        .nk-actions button { border:1px solid rgba(0,0,0,0.12); background:rgba(255,255,255,0.65); color:#334155; border-radius:8px; padding:7px 10px; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .nk-actions button.danger { color:#dc2626; margin-left:auto; }
+        .nk-day { position:absolute; top:2px; left:2px; border:none; background:#fef08a; border-radius:5px; font-size:0.6rem; padding:1px 3px; cursor:pointer; z-index:3; line-height:1.2; }
+        .tbl-sem td { position:relative; }
         /* ═══ PLAGES HORAIRES ═══ */
         .plage-row, .plage-axe { display:grid; grid-template-columns:100px 104px 12px 104px 1fr 46px; gap:6px; align-items:center; }
         .plage-row { padding:5px 0; border-top:1px dashed var(--border-color); }
@@ -1129,6 +1183,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
 
                 <!-- Roulements (multi-cycles) -->
+                <div class="sidebar-card" id="nk-card">
+                    <div class="sidebar-card-title">
+                        <i class="far fa-sticky-note"></i> Notes <span id="nk-side-count" style="font-weight:600;"></span>
+                        <button class="rot-manage-btn" onclick="notesOuvrir()">Tout voir</button>
+                    </div>
+                    <div id="nk-side" class="nk-side"></div>
+                    <div style="display:flex; gap:6px;">
+                        <button class="rot-add-btn" onclick="notesOuvrir(); noteNouvelle(false)"><i class="fas fa-plus"></i> Note</button>
+                        <button class="rot-add-btn" onclick="notesOuvrir(); noteNouvelle(true)"><i class="far fa-check-square"></i> Liste</button>
+                    </div>
+                </div>
+
                 <div class="sidebar-card" id="rot-card">
                     <div class="sidebar-card-title">
                         <i class="fas fa-layer-group"></i> Roulements
@@ -1735,6 +1801,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             </select>
             <button onclick="valider('absence', true)" class="btn btn-absent">VALIDER ABSENCE</button>
         </div>
+        <button onclick="noteDuJourDepuisPoste()" class="btn btn-outline nk-day-btn" style="margin-top:12px;"><i class="far fa-sticky-note"></i> Ajouter une note à ce jour</button>
         <div id="btn-container-delete" style="margin-top: 15px;"></div>
         <button onclick="supprimerEtRestaurer()" class="btn btn-outline" style="color:var(--danger); margin-top:10px; border-color: var(--danger);"><i class="fas fa-undo"></i> Remettre Cycle Original</button>
         <button onclick="fermerModales()" class="btn btn-outline">Fermer</button>
@@ -1772,6 +1839,46 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <strong>Nouveau mot de passe</strong> : remplace immédiatement l'ancien (utile en cas d'oubli). Chaque client peut aussi changer le sien dans « Mon compte ».
         </div>
         <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
+    </div>
+
+    <!-- ═══ MODALE NOTES (façon Google Keep) ═══ -->
+    <div id="modal-notes" class="modal nk-modal">
+        <div id="nk-vue-liste">
+            <h3><i class="far fa-sticky-note"></i> Mes notes</h3>
+            <div class="nk-search"><i class="fas fa-search"></i><input id="nk-q" placeholder="Rechercher dans les notes" oninput="notesRecherche=this.value; notesRendre()"></div>
+            <div class="nk-tabs">
+                <button class="nk-tab on" data-v="actives" onclick="notesSetVue('actives')"><i class="far fa-lightbulb"></i> Notes</button>
+                <button class="nk-tab" data-v="archives" onclick="notesSetVue('archives')"><i class="fas fa-archive"></i> Archives</button>
+            </div>
+            <div class="nk-new">
+                <button onclick="noteNouvelle(false)"><i class="fas fa-plus"></i> Créer une note…</button>
+                <button onclick="noteNouvelle(true)" title="Nouvelle liste" aria-label="Nouvelle liste"><i class="far fa-check-square"></i></button>
+            </div>
+            <div id="nk-liste"></div>
+            <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
+        </div>
+        <div id="nk-vue-edit" class="nk-edit" style="display:none;">
+            <div class="nk-edit-top">
+                <button class="nk-ic" onclick="noteFermer()" aria-label="Retour"><i class="fas fa-arrow-left"></i></button>
+                <span style="flex:1"></span>
+                <button class="nk-ic" id="nk-btn-pin" onclick="noteBasculerEpingle()" title="Épingler" aria-label="Épingler"><i class="fas fa-thumbtack"></i></button>
+            </div>
+            <input id="nk-titre" class="nk-in-titre" placeholder="Titre" maxlength="120">
+            <textarea id="nk-texte" class="nk-in-texte" placeholder="Créer une note…" rows="7"></textarea>
+            <div id="nk-items"></div>
+            <div class="nk-meta">
+                <label for="nk-date"><i class="far fa-calendar"></i> Lier à un jour du planning</label>
+                <input type="date" id="nk-date">
+            </div>
+            <div class="nk-couleurs" id="nk-couleurs"></div>
+            <div class="nk-actions">
+                <button onclick="noteBasculerListe()" id="nk-btn-liste"></button>
+                <button onclick="noteBasculerArchive()" id="nk-btn-archive"></button>
+                <button onclick="noteVersKeep()"><i class="fas fa-share-alt"></i> Envoyer vers Keep</button>
+                <button onclick="noteSupprimer()" id="nk-btn-suppr" class="danger"><i class="fas fa-trash-alt"></i></button>
+            </div>
+            <button class="btn btn-paye" onclick="noteFermer()"><i class="fas fa-check"></i> Terminé</button>
+        </div>
     </div>
 
     <!-- ═══ MODALE PARTAGE DES ROULEMENTS (admin) ═══ -->
@@ -3969,7 +4076,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         const zones = cfg.zones || { events: true, soldes: true, cycle: true, prefs: true };
 
         const backup = { dateExport: new Date().toISOString(), zones };
-        if (zones.events) backup.events = localStorage.getItem('events_v5');
+        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); }
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
         if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
@@ -4430,7 +4537,7 @@ function selectAct(btn, val) {
         if (warning) warning.style.display = 'none';
 
         const backup = { dateExport: new Date().toISOString(), zones };
-        if (zones.events) backup.events = localStorage.getItem('events_v5');
+        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); }
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
         if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
@@ -4469,7 +4576,7 @@ function selectAct(btn, val) {
                 const hasPrefs  = !!(data.prefs);
 
                 const zonesLabel = [
-                    hasEvents ? '📅 Événements' : '',
+                    hasEvents ? '📅 Événements' + (data.notes ? ' + 📝 Notes' : '') : '',
                     hasSoldes ? '💰 Soldes & Config' : '',
                     hasCycle  ? '🔄 Cycle / Roulement' : '',
                     hasPrefs  ? '⚙️ Préférences' : '',
@@ -4481,6 +4588,7 @@ function selectAct(btn, val) {
 
                 if (confirm(`Zones détectées dans ce fichier :\n${zonesLabel}${exportDate}\n\nAttention : cela va remplacer les données correspondantes. Continuer ?`)) {
                     if (hasEvents) localStorage.setItem('events_v5', data.events);
+                    if (data.notes) localStorage.setItem('notes_v1', data.notes);
                     if (hasSoldes) localStorage.setItem('soldes_v5', data.soldes);
                     if (data.cycle) localStorage.setItem('cycle_master', data.cycle);
                     if (data.rotations) localStorage.setItem('rotations_v1', data.rotations);
@@ -5887,6 +5995,7 @@ function selectAct(btn, val) {
             const backup = {
                 dateExport: new Date().toISOString(),
                 events: localStorage.getItem('events_v5'),
+                notes: localStorage.getItem('notes_v1'),
                 soldes: localStorage.getItem('soldes_v5'),
                 cycle: localStorage.getItem('cycle_master'),
                 rotations: localStorage.getItem('rotations_v1'),
@@ -6051,6 +6160,7 @@ function selectAct(btn, val) {
                 // Restaurer les données (accepter même si certains champs manquent)
                 let restored = 0;
                 if (data.events) { localStorage.setItem('events_v5', typeof data.events === 'string' ? data.events : JSON.stringify(data.events)); restored++; }
+                if (data.notes) { localStorage.setItem('notes_v1', typeof data.notes === 'string' ? data.notes : JSON.stringify(data.notes)); }
                 if (data.soldes) { localStorage.setItem('soldes_v5', typeof data.soldes === 'string' ? data.soldes : JSON.stringify(data.soldes)); restored++; }
                 if (data.cycle) { localStorage.setItem('cycle_master', typeof data.cycle === 'string' ? data.cycle : JSON.stringify(data.cycle)); restored++; }
                 if (data.rotations) { localStorage.setItem('rotations_v1', typeof data.rotations === 'string' ? data.rotations : JSON.stringify(data.rotations)); }
@@ -6701,7 +6811,7 @@ function selectAct(btn, val) {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const FB_CFG_KEY = 'fb_config_v1', FB_OWNER_KEY = 'fb_local_owner', FB_DIRTY_KEY = 'fb_dirty_keys', FB_SYNCAT_KEY = 'fb_local_sync_at';
-    const FB_SYNC_KEYS = ['events_v5', 'soldes_v5', 'rotations_v1', 'cycle_master'];
+    const FB_SYNC_KEYS = ['events_v5', 'soldes_v5', 'rotations_v1', 'cycle_master', 'notes_v1'];
     const FB_DOMAINE = 'agendpro.app';
     const FB_CHUNK = 300000;
     const FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
@@ -6714,11 +6824,12 @@ function selectAct(btn, val) {
         { k:'legende',    lbl:'🎨 Légende' },
         { k:'roulements', lbl:'🔁 Gérer les roulements' },
         { k:'google',     lbl:'📡 Synchro Google' },
+        { k:'notes',      lbl:'📝 Notes' },
         { k:'reunion',    lbl:'🗣️ Réunion',  grp:'act' },
         { k:'compteur',   lbl:'🔄 Compteur', grp:'act' },
         { k:'cse',        lbl:'⚖️ CSE',      grp:'act' }
     ];
-    const FB_GARDES = { 'tab-paie':'paie', 'tab-dirt':'dirt', 'tab-config-taux':'taux', 'modal-print':'impr', 'modal-config':'config', 'modal-rotations':'roulements' };
+    const FB_GARDES = { 'modal-notes':'notes', 'tab-paie':'paie', 'tab-dirt':'dirt', 'tab-config-taux':'taux', 'modal-print':'impr', 'modal-config':'config', 'modal-rotations':'roulements' };
     const FB_REGLES = `rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
@@ -7994,6 +8105,226 @@ service cloud.firestore {
     document.addEventListener('DOMContentLoaded', () => { majLibellesPlages(); plagesRendre(); });
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ NOTES façon Google Keep (v9.4) ═════════════════════════════════════════
+    // Stockage : localStorage 'notes_v1' = [ { id, titre, texte, liste:[{t,ok}], estListe, couleur,
+    //            epingle, archive, date (YYYY-MM-DD liée au planning, optionnelle), cree, maj } ]
+    // Synchronisé avec Firebase (FB_SYNC_KEYS) et inclus dans les sauvegardes.
+    // ═══════════════════════════════════════════════════════════════════════════
+    const NOTES_KEY = 'notes_v1';
+    const NOTES_COULEURS = [
+        { k:'',       lbl:'Par défaut', bg:'var(--bg-card)' },
+        { k:'rouge',  lbl:'Rouge',  bg:'#fecaca' }, { k:'orange', lbl:'Orange', bg:'#fed7aa' },
+        { k:'jaune',  lbl:'Jaune',  bg:'#fef08a' }, { k:'vert',   lbl:'Vert',   bg:'#bbf7d0' },
+        { k:'bleu',   lbl:'Bleu',   bg:'#bfdbfe' }, { k:'violet', lbl:'Violet', bg:'#ddd6fe' },
+        { k:'rose',   lbl:'Rose',   bg:'#fbcfe8' }, { k:'gris',   lbl:'Gris',   bg:'#e2e8f0' }
+    ];
+    let notesVue = 'actives', notesRecherche = '', noteEditId = null, noteBrouillon = null;
+
+    function notesCharger() { try { const l = JSON.parse(localStorage.getItem(NOTES_KEY)); return Array.isArray(l) ? l : []; } catch(e) { return []; } }
+    function notesSauver(l) { localStorage.setItem(NOTES_KEY, JSON.stringify(l)); notesRendreCarte(); }
+    function noteCouleur(k) { return (NOTES_COULEURS.find(c => c.k === k) || NOTES_COULEURS[0]).bg; }
+    function noteEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function noteTexteBrut(n) {
+        const corps = n.estListe ? (n.liste || []).map(i => (i.ok ? '☑ ' : '☐ ') + i.t).join('\n') : (n.texte || '');
+        return (n.titre ? n.titre + '\n\n' : '') + corps;
+    }
+    function noteDateFr(ds) { if (!ds) return ''; const [y, m, d] = ds.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' }); }
+
+    function noteCarteHTML(n, compact) {
+        const liste = (n.liste || []);
+        let corps = '';
+        if (n.estListe) {
+            const max = compact ? 4 : 8;
+            corps = liste.slice(0, max).map((i, idx) => `<div class="nk-li ${i.ok ? 'ok' : ''}"><button class="nk-cb" onclick="event.stopPropagation(); noteCocher('${n.id}', ${idx})" aria-label="Cocher">${i.ok ? '☑' : '☐'}</button><span>${noteEsc(i.t)}</span></div>`).join('');
+            if (liste.length > max) corps += `<div class="nk-more">+ ${liste.length - max} élément(s)</div>`;
+        } else {
+            const t = n.texte || '';
+            corps = `<div class="nk-txt">${noteEsc(compact && t.length > 160 ? t.slice(0, 160) + '…' : t)}</div>`;
+        }
+        return `<div class="nk-card" style="background:${noteCouleur(n.couleur)}" onclick="noteOuvrir('${n.id}')">
+            ${n.epingle ? '<span class="nk-pin" title="Épinglée">📌</span>' : ''}
+            ${n.titre ? `<div class="nk-titre">${noteEsc(n.titre)}</div>` : ''}
+            ${corps}
+            ${n.date ? `<div class="nk-date">📅 ${noteDateFr(n.date)}</div>` : ''}
+        </div>`;
+    }
+
+    // ── Carte de la colonne gauche (aperçu) ──
+    function notesRendreCarte() {
+        const box = document.getElementById('nk-side');
+        if (!box) return;
+        const l = notesCharger().filter(n => !n.archive).sort((a, b) => (b.epingle - a.epingle) || (b.maj - a.maj)).slice(0, 3);
+        box.innerHTML = l.length ? l.map(n => noteCarteHTML(n, true)).join('') : `<div class="rot-empty">Aucune note. Notez une consigne, une liste, un rappel…</div>`;
+        const nb = notesCharger().filter(n => !n.archive).length, c = document.getElementById('nk-side-count');
+        if (c) c.textContent = nb ? `(${nb})` : '';
+        notesMarquerJours();
+    }
+
+    // ── Fenêtre principale ──
+    function notesOuvrir(vue) {
+        if (typeof fbPeut === 'function' && !fbPeut('notes')) return fbRefus();
+        fermerModales();
+        ouvrirModale('modal-notes');
+        notesVue = vue || 'actives';
+        notesRendre();
+    }
+    function notesSetVue(v) { notesVue = v; notesRendre(); }
+    function notesRendre() {
+        document.querySelectorAll('.nk-tab').forEach(b => b.classList.toggle('on', b.dataset.v === notesVue));
+        const q = notesRecherche.trim().toLowerCase();
+        let l = notesCharger().filter(n => notesVue === 'archives' ? n.archive : !n.archive);
+        if (q) l = l.filter(n => noteTexteBrut(n).toLowerCase().includes(q));
+        l.sort((a, b) => b.maj - a.maj);
+        const ep = l.filter(n => n.epingle && notesVue !== 'archives'), autres = l.filter(n => !(n.epingle && notesVue !== 'archives'));
+        const grille = (arr) => `<div class="nk-grid">${arr.map(n => noteCarteHTML(n, false)).join('')}</div>`;
+        let html = '';
+        if (ep.length) html += `<div class="nk-sec">📌 Épinglées</div>` + grille(ep) + (autres.length ? `<div class="nk-sec">Autres</div>` : '');
+        html += autres.length ? grille(autres) : (ep.length ? '' : `<div class="dirt-empty"><i class="far fa-lightbulb"></i><b>${q ? 'Aucune note trouvée' : notesVue === 'archives' ? 'Aucune note archivée' : 'Vos notes apparaîtront ici'}</b><span>${notesVue === 'archives' || q ? '' : 'Touchez « Créer une note » pour commencer.'}</span></div>`);
+        document.getElementById('nk-liste').innerHTML = html;
+    }
+
+    // ── Éditeur ──
+    function noteNouvelle(estListe, date) {
+        noteEditId = null;
+        noteBrouillon = { id: 'n_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), titre: '', texte: '', liste: estListe ? [{ t: '', ok: false }] : [], estListe: !!estListe, couleur: '', epingle: false, archive: false, date: date || '', cree: Date.now(), maj: Date.now() };
+        noteEditeur();
+    }
+    function noteOuvrir(id) {
+        const n = notesCharger().find(x => x.id === id); if (!n) return;
+        if (!document.getElementById('modal-notes').style.display || document.getElementById('modal-notes').style.display === 'none') { fermerModales(); ouvrirModale('modal-notes'); notesRendre(); }
+        noteEditId = id;
+        noteBrouillon = JSON.parse(JSON.stringify(n));
+        noteBrouillon.liste = noteBrouillon.liste || [];
+        noteEditeur();
+    }
+    function noteEditeur() {
+        const n = noteBrouillon;
+        document.getElementById('nk-vue-liste').style.display = 'none';
+        const ed = document.getElementById('nk-vue-edit');
+        ed.style.display = 'block';
+        ed.style.background = noteCouleur(n.couleur);
+        document.getElementById('nk-titre').value = n.titre;
+        document.getElementById('nk-texte').value = n.texte;
+        document.getElementById('nk-date').value = n.date || '';
+        document.getElementById('nk-texte').style.display = n.estListe ? 'none' : 'block';
+        document.getElementById('nk-items').style.display = n.estListe ? 'block' : 'none';
+        document.getElementById('nk-btn-pin').classList.toggle('on', !!n.epingle);
+        document.getElementById('nk-btn-liste').innerHTML = n.estListe ? '<i class="fas fa-align-left"></i> Texte' : '<i class="far fa-check-square"></i> Liste';
+        document.getElementById('nk-btn-archive').innerHTML = n.archive ? '<i class="fas fa-box-open"></i> Désarchiver' : '<i class="fas fa-archive"></i> Archiver';
+        document.getElementById('nk-btn-suppr').style.display = noteEditId ? '' : 'none';
+        document.getElementById('nk-couleurs').innerHTML = NOTES_COULEURS.map(c => `<button type="button" class="nk-sw ${c.k === n.couleur ? 'sel' : ''}" style="background:${c.bg}" onclick="noteSetCouleur('${c.k}')" title="${c.lbl}" aria-label="${c.lbl}"></button>`).join('');
+        noteRendreItems();
+        document.getElementById('modal-notes').scrollTop = 0;
+        setTimeout(() => { const t = document.getElementById(n.titre || n.texte ? 'nk-texte' : 'nk-titre'); if (t && t.style.display !== 'none') t.focus(); }, 50);
+    }
+    function noteRendreItems() {
+        const n = noteBrouillon;
+        document.getElementById('nk-items').innerHTML = n.liste.map((i, idx) => `<div class="nk-item ${i.ok ? 'ok' : ''}">
+                <button type="button" class="nk-cb" onclick="noteBrouillon.liste[${idx}].ok=!noteBrouillon.liste[${idx}].ok; noteRendreItems()">${i.ok ? '☑' : '☐'}</button>
+                <input value="${noteEsc(i.t)}" placeholder="Élément" oninput="noteBrouillon.liste[${idx}].t=this.value" onkeydown="if(event.key==='Enter'){event.preventDefault(); noteAjouterItem(${idx}+1);}">
+                <button type="button" class="nk-x" onclick="noteBrouillon.liste.splice(${idx},1); noteRendreItems()" aria-label="Retirer">×</button>
+            </div>`).join('') + `<button type="button" class="nk-add-item" onclick="noteAjouterItem()">＋ Élément</button>`;
+    }
+    function noteAjouterItem(pos) {
+        const p = pos == null ? noteBrouillon.liste.length : pos;
+        noteBrouillon.liste.splice(p, 0, { t: '', ok: false });
+        noteRendreItems();
+        setTimeout(() => { const ins = document.querySelectorAll('#nk-items .nk-item input'); if (ins[p]) ins[p].focus(); }, 30);
+    }
+    function noteLireChamps() {
+        noteBrouillon.titre = document.getElementById('nk-titre').value.trim();
+        noteBrouillon.texte = document.getElementById('nk-texte').value;
+        noteBrouillon.date = document.getElementById('nk-date').value;
+    }
+    function noteBasculerListe() {
+        noteLireChamps();
+        const n = noteBrouillon;
+        if (n.estListe) { n.texte = n.liste.filter(i => i.t.trim()).map(i => i.t).join('\n'); n.liste = []; }
+        else { n.liste = (n.texte || '').split('\n').filter(l => l.trim()).map(t => ({ t, ok: false })); if (!n.liste.length) n.liste = [{ t: '', ok: false }]; n.texte = ''; }
+        n.estListe = !n.estListe;
+        noteEditeur();
+    }
+    function noteSetCouleur(k) { noteLireChamps(); noteBrouillon.couleur = k; noteEditeur(); }
+    function noteBasculerEpingle() { noteBrouillon.epingle = !noteBrouillon.epingle; document.getElementById('nk-btn-pin').classList.toggle('on', noteBrouillon.epingle); }
+    function noteFermer(enregistrer) {
+        if (enregistrer !== false) {
+            noteLireChamps();
+            const n = noteBrouillon;
+            n.liste = (n.liste || []).filter(i => i.t.trim());
+            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length;
+            const l = notesCharger(), i = l.findIndex(x => x.id === n.id);
+            if (vide) { if (i >= 0) { l.splice(i, 1); notesSauver(l); } }
+            else {
+                const avant = i >= 0 ? JSON.stringify(l[i]) : '';
+                n.maj = Date.now();
+                const comparable = JSON.stringify(Object.assign({}, n, { maj: i >= 0 ? l[i].maj : n.maj }));
+                if (comparable !== avant) { if (i >= 0) l[i] = n; else l.unshift(n); notesSauver(l); }
+            }
+        }
+        noteBrouillon = null; noteEditId = null;
+        document.getElementById('nk-vue-edit').style.display = 'none';
+        document.getElementById('nk-vue-liste').style.display = 'block';
+        notesRendre();
+    }
+    function noteBasculerArchive() {
+        const arch = !noteBrouillon.archive;
+        noteBrouillon.archive = arch;
+        if (arch) noteBrouillon.epingle = false;
+        noteFermer();
+        showToast(arch ? '🗄️ Note archivée' : '📤 Note désarchivée', 'info', 'fa-archive');
+    }
+    function noteDuJourDepuisPoste() {
+        const ds = selectedDate;
+        fermerModales(); ouvrirModale('modal-notes'); notesVue = 'actives'; notesRendre();
+        noteNouvelle(false, ds);
+    }
+    function noteSupprimer() {
+        if (!noteEditId || !confirm('Supprimer définitivement cette note ?')) return;
+        notesSauver(notesCharger().filter(n => n.id !== noteEditId));
+        noteFermer(false);
+        showToast('🗑️ Note supprimée', 'success', 'fa-trash-alt');
+    }
+    function noteCocher(id, idx) {
+        const l = notesCharger(), n = l.find(x => x.id === id);
+        if (!n || !n.liste || !n.liste[idx]) return;
+        n.liste[idx].ok = !n.liste[idx].ok; n.maj = Date.now();
+        notesSauver(l);
+        if (document.getElementById('modal-notes').style.display === 'block') notesRendre();
+    }
+    // Envoyer vers Google Keep : partage du téléphone (Keep apparaît dans la liste sur Android/iPhone)
+    async function noteVersKeep() {
+        noteLireChamps();
+        const txt = noteTexteBrut(Object.assign({}, noteBrouillon, { liste: (noteBrouillon.liste || []).filter(i => i.t.trim()) }));
+        if (!txt.trim()) { showToast('Note vide', 'info', 'fa-info-circle'); return; }
+        try {
+            if (navigator.share) { await navigator.share({ title: noteBrouillon.titre || 'Note', text: txt }); return; }
+        } catch(e) { if (e && e.name === 'AbortError') return; }
+        try { await navigator.clipboard.writeText(txt); } catch(e) {}
+        showToast('📋 Note copiée — collez-la dans Google Keep', 'success', 'fa-copy');
+        window.open('https://keep.google.com/', '_blank', 'noopener');
+    }
+
+    // ── Jours du planning qui ont une note (petit 📝 dans la vue semaine) ──
+    function notesMarquerJours() {
+        const jours = new Set(notesCharger().filter(n => n.date && !n.archive).map(n => n.date));
+        document.querySelectorAll('.tbl-sem td[ondblclick^="ouvrirEditionJour"]').forEach(td => {
+            const m = (td.getAttribute('ondblclick') || '').match(/'(\d{4}-\d{2}-\d{2})'/);
+            const old = td.querySelector('.nk-day'); if (old) old.remove();
+            if (m && jours.has(m[1])) td.insertAdjacentHTML('afterbegin', `<button class="nk-day" title="Note liée à ce jour" onclick="event.stopPropagation(); notesDuJour('${m[1]}')">📝</button>`);
+        });
+    }
+    function notesDuJour(ds) {
+        const l = notesCharger().filter(n => n.date === ds && !n.archive);
+        if (l.length === 1) return noteOuvrir(l[0].id);
+        notesOuvrir(); notesRecherche = ''; notesRendre();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const tbOrig = tbRender;
+        tbRender = function() { const r = tbOrig.apply(this, arguments); try { notesMarquerJours(); } catch(e) {} return r; };
+        setTimeout(notesRendreCarte, 300);
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -8052,7 +8383,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.3';
+const CACHE_NAME = 'planning-pro-v9.4';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
