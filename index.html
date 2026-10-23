@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.4</title>
+    <title>Mon Planning Pro v9.5</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -656,6 +656,71 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .nk-actions button.danger { color:#dc2626; margin-left:auto; }
         .nk-day { position:absolute; top:2px; left:2px; border:none; background:#fef08a; border-radius:5px; font-size:0.6rem; padding:1px 3px; cursor:pointer; z-index:3; line-height:1.2; }
         .tbl-sem td { position:relative; }
+        /* ═══ NOTES : photos, formulaires, PDF ═══ */
+        .nk-thumb { position:relative; margin:4px -2px 6px; border-radius:8px; overflow:hidden; max-height:140px; }
+        .nk-thumb img { width:100%; max-height:140px; object-fit:cover; display:block; background:rgba(0,0,0,0.06); min-height:40px; }
+        .nk-thumb span { position:absolute; right:6px; bottom:6px; background:rgba(15,23,42,0.75); color:#fff; font-size:0.65rem; font-weight:800; border-radius:6px; padding:1px 6px; }
+        .nk-fiche-tag { display:inline-block; font-size:0.6rem; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; background:rgba(0,0,0,0.08); border-radius:6px; padding:2px 6px; margin-bottom:4px; }
+        .nk-qr { font-size:0.75rem; line-height:1.35; margin-top:2px; word-break:break-word; } .nk-qr b { font-weight:700; opacity:0.75; }
+        .nk-ph-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); gap:6px; margin:8px 0; }
+        .nk-ph-grid.sm { grid-template-columns:repeat(auto-fill, minmax(56px, 1fr)); }
+        .nk-ph-grid:empty { display:none; }
+        .nk-ph { position:relative; aspect-ratio:1; border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.06); }
+        .nk-ph img { width:100%; height:100%; object-fit:cover; cursor:zoom-in; display:block; }
+        .nk-ph.manque::after { content:'Photo indisponible'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#64748b; text-align:center; }
+        .nk-ph button { position:absolute; top:3px; right:3px; width:22px; height:22px; border-radius:50%; border:none; background:rgba(15,23,42,0.75); color:#fff; font-size:0.9rem; line-height:1; cursor:pointer; }
+        .nk-ph-btns { display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 8px; }
+        .nk-ph-btn { display:inline-flex; align-items:center; gap:6px; border:1.5px dashed rgba(0,0,0,0.25); border-radius:10px; padding:9px 12px; font-size:0.8rem; font-weight:700; cursor:pointer; color:#334155; background:rgba(255,255,255,0.5); }
+        body.dark-mode .nk-ph-btn { color:var(--text-main); border-color:var(--border-color); background:transparent; }
+        .nk-zoom { position:fixed; inset:0; z-index:7000; background:rgba(0,0,0,0.9); display:flex; align-items:center; justify-content:center; padding:12px; }
+        .nk-zoom img { max-width:100%; max-height:100%; border-radius:6px; }
+        .nk-zoom button { position:absolute; top:12px; right:14px; width:40px; height:40px; border-radius:50%; border:none; background:rgba(255,255,255,0.15); color:#fff; font-size:1.5rem; cursor:pointer; }
+        .nk-forms { display:flex; flex-direction:column; gap:8px; }
+        .nk-form-new { border:1.5px dashed var(--primary-light); background:transparent; color:var(--primary); border-radius:10px; padding:12px; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .nk-form { border:1px solid var(--border-color); border-left:5px solid; border-radius:10px; padding:10px 12px; background:var(--bg-card); }
+        .nk-form-t { font-weight:800; font-size:0.92rem; }
+        .nk-form-q { font-size:0.75rem; color:var(--text-muted); margin:3px 0 8px; }
+        .nk-form-a { display:flex; gap:6px; flex-wrap:wrap; }
+        .nk-form-a button { border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-main); border-radius:8px; padding:7px 10px; font-size:0.75rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .nk-form-a button.go { background:var(--primary); border-color:var(--primary); color:#fff; }
+        .nk-form-a button.danger { color:var(--danger); margin-left:auto; }
+        .nk-fq { border:1px solid var(--border-color); border-radius:10px; padding:8px 10px; margin-bottom:8px; background:var(--bg-app); }
+        .nk-fq-h { display:flex; align-items:center; gap:4px; font-size:0.75rem; color:var(--primary); }
+        .nk-fq-h button { border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-main); border-radius:6px; width:28px; height:26px; cursor:pointer; }
+        .nk-fq-h button:disabled { opacity:0.35; } .nk-fq-h button.danger { color:var(--danger); }
+        .nk-fq input:not([type=checkbox]), .nk-fq select { margin-top:6px !important; padding:8px !important; font-size:0.85rem !important; }
+        .nk-fq-o { display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:0.78rem; font-weight:600; }
+        .nk-fq-o select { width:auto !important; }
+        .nk-fq-o label { display:flex; align-items:center; gap:4px; margin-top:6px; }
+        .nk-fq-o input[type=checkbox] { width:16px; height:16px; margin:0; }
+        .nk-fi-titre { font-weight:800; font-size:0.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .nk-fi-etape { font-size:0.72rem; color:var(--text-muted); font-weight:700; }
+        .nk-fi-bar { height:6px; background:var(--border-color); border-radius:3px; overflow:hidden; margin:8px 0 14px; }
+        .nk-fi-bar i { display:block; height:100%; background:linear-gradient(90deg,var(--primary),#7c3aed); transition:width 0.3s; }
+        .nk-fi-q { font-size:1.15rem; font-weight:800; margin-bottom:10px; line-height:1.3; }
+        .nk-req { color:var(--danger); }
+        #nk-fi-corps textarea { width:100%; box-sizing:border-box; padding:11px 12px; border:1.5px solid var(--border-color); border-radius:var(--radius-sm); font-family:'DM Sans',sans-serif; font-size:0.95rem; background:var(--bg-card); color:var(--text-main); resize:vertical; }
+        .nk-choix { display:flex; flex-wrap:wrap; gap:8px; }
+        .nk-choix button { border:1.5px solid var(--border-color); background:var(--bg-card); color:var(--text-main); border-radius:20px; padding:9px 16px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .nk-choix button.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+        .nk-fi-nav { display:flex; gap:8px; margin-top:12px; }
+        .nk-fi-nav .btn { flex:1; margin-top:0; }
+        .nk-recap-i { border:1px solid var(--border-color); border-radius:10px; padding:10px 12px; margin-bottom:8px; cursor:pointer; background:var(--bg-card); }
+        #nk-vue-voir .nk-recap-i { cursor:default; }
+        .nk-recap-q { font-size:0.78rem; font-weight:800; color:var(--primary); }
+        .nk-recap-r { font-size:0.92rem; white-space:pre-wrap; word-break:break-word; margin-top:3px; }
+        .nk-recap-r.vide { color:var(--text-muted); font-style:italic; font-size:0.8rem; }
+        .nk-voir-h { border-radius:12px; padding:12px 14px; margin-bottom:10px; color:#1e293b; border:1px solid var(--border-color); }
+        .nk-voir-t { font-weight:800; font-size:1.05rem; }
+        .nk-voir-m { font-size:0.75rem; opacity:0.75; margin-top:2px; }
+        .nk-pdf { position:fixed; inset:0; z-index:6500; background:rgba(15,23,42,0.7); display:flex; align-items:center; justify-content:center; padding:12px; }
+        .nk-pdf-box { width:100%; max-width:820px; height:92vh; background:var(--bg-card); border-radius:14px; display:flex; flex-direction:column; overflow:hidden; }
+        .nk-pdf-bar { display:flex; align-items:center; gap:8px; padding:10px 12px; border-bottom:1px solid var(--border-color); font-size:0.85rem; color:var(--text-main); }
+        .nk-pdf-bar b { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .nk-pdf-bar button { border:none; background:var(--bg-app); width:32px; height:32px; border-radius:50%; font-size:1.2rem; cursor:pointer; color:var(--text-main); }
+        .nk-pdf iframe { flex:1; border:none; width:100%; background:#525659; }
+        .nk-pdf-act { display:flex; gap:8px; padding:10px 12px; flex-wrap:wrap; border-top:1px solid var(--border-color); }
+        .nk-pdf-act .btn { flex:1; min-width:110px; margin-top:0; }
         /* ═══ PLAGES HORAIRES ═══ */
         .plage-row, .plage-axe { display:grid; grid-template-columns:100px 104px 12px 104px 1fr 46px; gap:6px; align-items:center; }
         .plage-row { padding:5px 0; border-top:1px dashed var(--border-color); }
@@ -1848,11 +1913,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <div class="nk-search"><i class="fas fa-search"></i><input id="nk-q" placeholder="Rechercher dans les notes" oninput="notesRecherche=this.value; notesRendre()"></div>
             <div class="nk-tabs">
                 <button class="nk-tab on" data-v="actives" onclick="notesSetVue('actives')"><i class="far fa-lightbulb"></i> Notes</button>
+                <button class="nk-tab" data-v="forms" onclick="notesSetVue('forms')"><i class="fas fa-clipboard-list"></i> Formulaires</button>
                 <button class="nk-tab" data-v="archives" onclick="notesSetVue('archives')"><i class="fas fa-archive"></i> Archives</button>
             </div>
             <div class="nk-new">
                 <button onclick="noteNouvelle(false)"><i class="fas fa-plus"></i> Créer une note…</button>
                 <button onclick="noteNouvelle(true)" title="Nouvelle liste" aria-label="Nouvelle liste"><i class="far fa-check-square"></i></button>
+                <button onclick="notesSetVue('forms')" title="Remplir un formulaire" aria-label="Remplir un formulaire"><i class="fas fa-clipboard-list"></i></button>
             </div>
             <div id="nk-liste"></div>
             <button class="btn btn-outline" onclick="fermerModales()">Fermer</button>
@@ -1870,14 +1937,58 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <label for="nk-date"><i class="far fa-calendar"></i> Lier à un jour du planning</label>
                 <input type="date" id="nk-date">
             </div>
+            <div id="nk-photos"></div>
             <div class="nk-couleurs" id="nk-couleurs"></div>
             <div class="nk-actions">
                 <button onclick="noteBasculerListe()" id="nk-btn-liste"></button>
                 <button onclick="noteBasculerArchive()" id="nk-btn-archive"></button>
                 <button onclick="noteVersKeep()"><i class="fas fa-share-alt"></i> Envoyer vers Keep</button>
+                <button onclick="noteFermer(); setTimeout(() => nkApercuPDF(noteDernierId), 50)" id="nk-btn-pdf"><i class="fas fa-file-pdf"></i> PDF</button>
                 <button onclick="noteSupprimer()" id="nk-btn-suppr" class="danger"><i class="fas fa-trash-alt"></i></button>
             </div>
             <button class="btn btn-paye" onclick="noteFermer()"><i class="fas fa-check"></i> Terminé</button>
+        </div>
+
+        <!-- Éditeur de formulaire -->
+        <div id="nk-vue-form" style="display:none;">
+            <div class="nk-edit-top"><button class="nk-ic" onclick="notesVue='forms'; nkRetourListe()" aria-label="Retour"><i class="fas fa-arrow-left"></i></button>
+                <h3 style="margin:0 0 0 8px;" id="nk-form-titre">Nouveau formulaire</h3></div>
+            <label class="fb-lbl" for="nk-form-nom">Nom du formulaire</label>
+            <input id="nk-form-nom" maxlength="80" placeholder="Ex : Remontée de situation dangereuse">
+            <label class="fb-lbl">Couleur</label>
+            <div class="nk-couleurs" id="nk-form-couleurs"></div>
+            <label class="fb-lbl">Questions (une par étape)</label>
+            <div id="nk-form-qs"></div>
+            <button class="nk-add-item" onclick="formAjouterQuestion()">＋ Ajouter une question</button>
+            <button class="btn btn-paye" onclick="formEnregistrer()"><i class="fas fa-save"></i> Enregistrer le formulaire</button>
+        </div>
+
+        <!-- Remplissage pas à pas -->
+        <div id="nk-vue-fiche" style="display:none;">
+            <div class="nk-edit-top"><button class="nk-ic" onclick="ficheAnnuler()" aria-label="Abandonner"><i class="fas fa-times"></i></button>
+                <div style="flex:1; margin-left:8px; min-width:0;"><div class="nk-fi-titre" id="nk-fi-titre"></div><div class="nk-fi-etape" id="nk-fi-etape"></div></div></div>
+            <div class="nk-fi-bar"><i id="nk-fi-prog"></i></div>
+            <div id="nk-fi-corps"></div>
+            <div class="nk-fi-nav">
+                <button class="btn btn-outline" id="nk-fi-prec" onclick="fichePrecedent()"><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button class="btn btn-paye" id="nk-fi-suiv" onclick="ficheSuivant()">Suivant</button>
+                <button class="btn btn-paye" id="nk-fi-fin" onclick="ficheEnregistrer()"><i class="fas fa-check"></i> Enregistrer la fiche</button>
+            </div>
+        </div>
+
+        <!-- Lecture d'une fiche -->
+        <div id="nk-vue-voir" style="display:none;">
+            <div class="nk-edit-top"><button class="nk-ic" onclick="nkRetourListe()" aria-label="Retour"><i class="fas fa-arrow-left"></i></button><span style="flex:1"></span></div>
+            <div id="nk-voir-corps"></div>
+            <div class="fb-btn-row" style="margin-top:10px;">
+                <button class="btn btn-paye" onclick="nkApercuPDF()"><i class="fas fa-file-pdf"></i> Aperçu PDF</button>
+                <button class="btn btn-outline" onclick="nkPartagerPDF(ficheVueId)"><i class="fas fa-share-alt"></i> Partager</button>
+            </div>
+            <div class="nk-actions" style="margin-top:8px;">
+                <button onclick="ficheDemarrer(null, ficheVueId)"><i class="fas fa-pen"></i> Modifier</button>
+                <button onclick="ficheVoirArchiver()" id="nk-voir-arch"></button>
+                <button class="danger" onclick="ficheVoirSupprimer()"><i class="fas fa-trash-alt"></i> Supprimer</button>
+            </div>
         </div>
     </div>
 
@@ -4076,7 +4187,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         const zones = cfg.zones || { events: true, soldes: true, cycle: true, prefs: true };
 
         const backup = { dateExport: new Date().toISOString(), zones };
-        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); }
+        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); backup.forms = localStorage.getItem('nk_forms_v1'); }
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
         if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
@@ -4537,7 +4648,7 @@ function selectAct(btn, val) {
         if (warning) warning.style.display = 'none';
 
         const backup = { dateExport: new Date().toISOString(), zones };
-        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); }
+        if (zones.events) { backup.events = localStorage.getItem('events_v5'); backup.notes = localStorage.getItem('notes_v1'); backup.forms = localStorage.getItem('nk_forms_v1'); }
         if (zones.soldes) backup.soldes = localStorage.getItem('soldes_v5');
         if (zones.cycle)  { backup.cycle = localStorage.getItem('cycle_master'); backup.rotations = localStorage.getItem('rotations_v1'); }
         if (zones.prefs)  backup.prefs  = { darkMode: localStorage.getItem('darkMode_v8'), autoBackup: localStorage.getItem('autoBackupCfg') };
@@ -4589,6 +4700,7 @@ function selectAct(btn, val) {
                 if (confirm(`Zones détectées dans ce fichier :\n${zonesLabel}${exportDate}\n\nAttention : cela va remplacer les données correspondantes. Continuer ?`)) {
                     if (hasEvents) localStorage.setItem('events_v5', data.events);
                     if (data.notes) localStorage.setItem('notes_v1', data.notes);
+                    if (data.forms) localStorage.setItem('nk_forms_v1', data.forms);
                     if (hasSoldes) localStorage.setItem('soldes_v5', data.soldes);
                     if (data.cycle) localStorage.setItem('cycle_master', data.cycle);
                     if (data.rotations) localStorage.setItem('rotations_v1', data.rotations);
@@ -5996,6 +6108,7 @@ function selectAct(btn, val) {
                 dateExport: new Date().toISOString(),
                 events: localStorage.getItem('events_v5'),
                 notes: localStorage.getItem('notes_v1'),
+                forms: localStorage.getItem('nk_forms_v1'),
                 soldes: localStorage.getItem('soldes_v5'),
                 cycle: localStorage.getItem('cycle_master'),
                 rotations: localStorage.getItem('rotations_v1'),
@@ -6161,6 +6274,7 @@ function selectAct(btn, val) {
                 let restored = 0;
                 if (data.events) { localStorage.setItem('events_v5', typeof data.events === 'string' ? data.events : JSON.stringify(data.events)); restored++; }
                 if (data.notes) { localStorage.setItem('notes_v1', typeof data.notes === 'string' ? data.notes : JSON.stringify(data.notes)); }
+                if (data.forms) { localStorage.setItem('nk_forms_v1', typeof data.forms === 'string' ? data.forms : JSON.stringify(data.forms)); }
                 if (data.soldes) { localStorage.setItem('soldes_v5', typeof data.soldes === 'string' ? data.soldes : JSON.stringify(data.soldes)); restored++; }
                 if (data.cycle) { localStorage.setItem('cycle_master', typeof data.cycle === 'string' ? data.cycle : JSON.stringify(data.cycle)); restored++; }
                 if (data.rotations) { localStorage.setItem('rotations_v1', typeof data.rotations === 'string' ? data.rotations : JSON.stringify(data.rotations)); }
@@ -6811,7 +6925,7 @@ function selectAct(btn, val) {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const FB_CFG_KEY = 'fb_config_v1', FB_OWNER_KEY = 'fb_local_owner', FB_DIRTY_KEY = 'fb_dirty_keys', FB_SYNCAT_KEY = 'fb_local_sync_at';
-    const FB_SYNC_KEYS = ['events_v5', 'soldes_v5', 'rotations_v1', 'cycle_master', 'notes_v1'];
+    const FB_SYNC_KEYS = ['events_v5', 'soldes_v5', 'rotations_v1', 'cycle_master', 'notes_v1', 'nk_forms_v1'];
     const FB_DOMAINE = 'agendpro.app';
     const FB_CHUNK = 300000;
     const FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
@@ -7089,6 +7203,7 @@ service cloud.firestore {
         fbApplying = true;
         try { FB_SYNC_KEYS.concat([FB_DIRTY_KEY, FB_SYNCAT_KEY]).forEach(k => localStorage.removeItem(k)); }
         finally { fbApplying = false; }
+        if (typeof photosViderLocal === 'function') photosViderLocal();
     }
     function fbRecharger() {
         if (fbDejaRecharge) return false;
@@ -7347,6 +7462,7 @@ service cloud.firestore {
             if (await fbSyncDemarrage()) return; // la page se recharge
             fbGate(null); fbMajUserBtn(); fbEtat(fbDirtyList().length ? 'attente' : 'ok');
             rotTraiterPartages();
+            setTimeout(() => { if (typeof photosEnvoyer === 'function') photosEnvoyer(); }, 2000);
             showToast(`👋 Bonjour ${c.nom || c.identifiant}`, 'success', 'fa-user-check');
         } catch(e) {
             fbCompte = null;
@@ -8125,12 +8241,26 @@ service cloud.firestore {
     function noteCouleur(k) { return (NOTES_COULEURS.find(c => c.k === k) || NOTES_COULEURS[0]).bg; }
     function noteEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     function noteTexteBrut(n) {
+        if (n.type === 'fiche') return (n.titre || '') + '\n\n' + (n.reponses || []).map(r => r.q + '\n' + (r.r || '')).join('\n\n');
         const corps = n.estListe ? (n.liste || []).map(i => (i.ok ? '☑ ' : '☐ ') + i.t).join('\n') : (n.texte || '');
         return (n.titre ? n.titre + '\n\n' : '') + corps;
     }
     function noteDateFr(ds) { if (!ds) return ''; const [y, m, d] = ds.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' }); }
 
     function noteCarteHTML(n, compact) {
+        const phs = notePhotosDe(n);
+        const vignette = phs.length ? `<div class="nk-thumb"><img data-ph="${phs[0]}" alt="">${phs.length > 1 ? `<span>+${phs.length - 1}</span>` : ''}</div>` : '';
+        if (n.type === 'fiche') {
+            const rep = (n.reponses || []).filter(r => r.r).slice(0, compact ? 2 : 3);
+            return `<div class="nk-card fiche" style="background:${noteCouleur(n.couleur)}" onclick="ficheVoir('${n.id}')">
+                ${n.epingle ? '<span class="nk-pin">📌</span>' : ''}
+                <div class="nk-fiche-tag"><i class="fas fa-clipboard-list"></i> Fiche</div>
+                <div class="nk-titre">${noteEsc(n.titre)}</div>
+                ${vignette}
+                ${rep.map(r => `<div class="nk-qr"><b>${noteEsc(r.q)}</b> ${noteEsc(String(r.r).slice(0, 60))}</div>`).join('')}
+                ${n.date ? `<div class="nk-date">📅 ${noteDateFr(n.date)}</div>` : ''}
+            </div>`;
+        }
         const liste = (n.liste || []);
         let corps = '';
         if (n.estListe) {
@@ -8144,6 +8274,7 @@ service cloud.firestore {
         return `<div class="nk-card" style="background:${noteCouleur(n.couleur)}" onclick="noteOuvrir('${n.id}')">
             ${n.epingle ? '<span class="nk-pin" title="Épinglée">📌</span>' : ''}
             ${n.titre ? `<div class="nk-titre">${noteEsc(n.titre)}</div>` : ''}
+            ${vignette}
             ${corps}
             ${n.date ? `<div class="nk-date">📅 ${noteDateFr(n.date)}</div>` : ''}
         </div>`;
@@ -8155,6 +8286,7 @@ service cloud.firestore {
         if (!box) return;
         const l = notesCharger().filter(n => !n.archive).sort((a, b) => (b.epingle - a.epingle) || (b.maj - a.maj)).slice(0, 3);
         box.innerHTML = l.length ? l.map(n => noteCarteHTML(n, true)).join('') : `<div class="rot-empty">Aucune note. Notez une consigne, une liste, un rappel…</div>`;
+        photosHydrater(box);
         const nb = notesCharger().filter(n => !n.archive).length, c = document.getElementById('nk-side-count');
         if (c) c.textContent = nb ? `(${nb})` : '';
         notesMarquerJours();
@@ -8171,6 +8303,10 @@ service cloud.firestore {
     function notesSetVue(v) { notesVue = v; notesRendre(); }
     function notesRendre() {
         document.querySelectorAll('.nk-tab').forEach(b => b.classList.toggle('on', b.dataset.v === notesVue));
+        const nouv = document.querySelector('.nk-new'), rech = document.querySelector('.nk-search');
+        if (nouv) nouv.style.display = notesVue === 'forms' ? 'none' : 'flex';
+        if (rech) rech.style.display = notesVue === 'forms' ? 'none' : 'block';
+        if (notesVue === 'forms') { document.getElementById('nk-liste').innerHTML = formsRendre(); return; }
         const q = notesRecherche.trim().toLowerCase();
         let l = notesCharger().filter(n => notesVue === 'archives' ? n.archive : !n.archive);
         if (q) l = l.filter(n => noteTexteBrut(n).toLowerCase().includes(q));
@@ -8181,16 +8317,18 @@ service cloud.firestore {
         if (ep.length) html += `<div class="nk-sec">📌 Épinglées</div>` + grille(ep) + (autres.length ? `<div class="nk-sec">Autres</div>` : '');
         html += autres.length ? grille(autres) : (ep.length ? '' : `<div class="dirt-empty"><i class="far fa-lightbulb"></i><b>${q ? 'Aucune note trouvée' : notesVue === 'archives' ? 'Aucune note archivée' : 'Vos notes apparaîtront ici'}</b><span>${notesVue === 'archives' || q ? '' : 'Touchez « Créer une note » pour commencer.'}</span></div>`);
         document.getElementById('nk-liste').innerHTML = html;
+        photosHydrater(document.getElementById('nk-liste'));
     }
 
     // ── Éditeur ──
     function noteNouvelle(estListe, date) {
         noteEditId = null;
-        noteBrouillon = { id: 'n_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), titre: '', texte: '', liste: estListe ? [{ t: '', ok: false }] : [], estListe: !!estListe, couleur: '', epingle: false, archive: false, date: date || '', cree: Date.now(), maj: Date.now() };
+        noteBrouillon = { id: 'n_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), titre: '', texte: '', liste: estListe ? [{ t: '', ok: false }] : [], photos: [], estListe: !!estListe, couleur: '', epingle: false, archive: false, date: date || '', cree: Date.now(), maj: Date.now() };
         noteEditeur();
     }
     function noteOuvrir(id) {
         const n = notesCharger().find(x => x.id === id); if (!n) return;
+        if (n.type === 'fiche') return ficheVoir(id);
         if (!document.getElementById('modal-notes').style.display || document.getElementById('modal-notes').style.display === 'none') { fermerModales(); ouvrirModale('modal-notes'); notesRendre(); }
         noteEditId = id;
         noteBrouillon = JSON.parse(JSON.stringify(n));
@@ -8199,9 +8337,9 @@ service cloud.firestore {
     }
     function noteEditeur() {
         const n = noteBrouillon;
-        document.getElementById('nk-vue-liste').style.display = 'none';
+        nkVue('nk-vue-edit');
         const ed = document.getElementById('nk-vue-edit');
-        ed.style.display = 'block';
+        noteBrouillon.photos = noteBrouillon.photos || [];
         ed.style.background = noteCouleur(n.couleur);
         document.getElementById('nk-titre').value = n.titre;
         document.getElementById('nk-texte').value = n.texte;
@@ -8214,6 +8352,7 @@ service cloud.firestore {
         document.getElementById('nk-btn-suppr').style.display = noteEditId ? '' : 'none';
         document.getElementById('nk-couleurs').innerHTML = NOTES_COULEURS.map(c => `<button type="button" class="nk-sw ${c.k === n.couleur ? 'sel' : ''}" style="background:${c.bg}" onclick="noteSetCouleur('${c.k}')" title="${c.lbl}" aria-label="${c.lbl}"></button>`).join('');
         noteRendreItems();
+        noteRendrePhotos();
         document.getElementById('modal-notes').scrollTop = 0;
         setTimeout(() => { const t = document.getElementById(n.titre || n.texte ? 'nk-texte' : 'nk-titre'); if (t && t.style.display !== 'none') t.focus(); }, 50);
     }
@@ -8246,12 +8385,14 @@ service cloud.firestore {
     }
     function noteSetCouleur(k) { noteLireChamps(); noteBrouillon.couleur = k; noteEditeur(); }
     function noteBasculerEpingle() { noteBrouillon.epingle = !noteBrouillon.epingle; document.getElementById('nk-btn-pin').classList.toggle('on', noteBrouillon.epingle); }
+    let noteDernierId = null;
     function noteFermer(enregistrer) {
+        if (noteBrouillon) noteDernierId = noteBrouillon.id;
         if (enregistrer !== false) {
             noteLireChamps();
             const n = noteBrouillon;
             n.liste = (n.liste || []).filter(i => i.t.trim());
-            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length;
+            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length && !(n.photos || []).length;
             const l = notesCharger(), i = l.findIndex(x => x.id === n.id);
             if (vide) { if (i >= 0) { l.splice(i, 1); notesSauver(l); } }
             else {
@@ -8262,9 +8403,7 @@ service cloud.firestore {
             }
         }
         noteBrouillon = null; noteEditId = null;
-        document.getElementById('nk-vue-edit').style.display = 'none';
-        document.getElementById('nk-vue-liste').style.display = 'block';
-        notesRendre();
+        nkRetourListe();
     }
     function noteBasculerArchive() {
         const arch = !noteBrouillon.archive;
@@ -8280,6 +8419,8 @@ service cloud.firestore {
     }
     function noteSupprimer() {
         if (!noteEditId || !confirm('Supprimer définitivement cette note ?')) return;
+        const ancienne = notesCharger().find(n => n.id === noteEditId);
+        if (ancienne) notePhotosDe(ancienne).forEach(photoSupprimer);
         notesSauver(notesCharger().filter(n => n.id !== noteEditId));
         noteFermer(false);
         showToast('🗑️ Note supprimée', 'success', 'fa-trash-alt');
@@ -8323,6 +8464,460 @@ service cloud.firestore {
         tbRender = function() { const r = tbOrig.apply(this, arguments); try { notesMarquerJours(); } catch(e) {} return r; };
         setTimeout(notesRendreCarte, 300);
     });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ PHOTOS DES NOTES + FORMULAIRES (FICHES) + PDF (v9.5) ═══════════════════
+    // Photos : compressées (JPEG ≤ 1280 px), stockées dans IndexedDB sur l'appareil et envoyées
+    //          dans Firebase (plannings/{compte}/chunks/photo__{id}) — aucune règle à modifier.
+    // Formulaires : localStorage 'nk_forms_v1' (synchronisé). Une fiche remplie = une note type 'fiche'.
+    // ═══════════════════════════════════════════════════════════════════════════
+    const NK_FORMS_KEY = 'nk_forms_v1', NK_PH_UP = 'nk_photos_upload';
+    const NK_TYPES_Q = { texte: 'Texte libre', choix: 'Liste de choix', ouinon: 'Oui / Non', date: 'Date', nombre: 'Nombre' };
+    const nkPhCache = {};
+
+    // ── IndexedDB photos ──
+    function nkIdb() {
+        return new Promise((res, rej) => {
+            const r = indexedDB.open('agendpro_photos', 1);
+            r.onupgradeneeded = () => r.result.createObjectStore('photos');
+            r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+        });
+    }
+    async function nkIdbOp(mode, fn) {
+        const db = await nkIdb();
+        return new Promise((res, rej) => {
+            const tx = db.transaction('photos', mode), st = tx.objectStore('photos');
+            const rq = fn(st);
+            tx.oncomplete = () => res(rq && rq.result); tx.onerror = () => rej(tx.error);
+        });
+    }
+    function nkUpList() { try { return JSON.parse(localStorage.getItem(NK_PH_UP)) || []; } catch(e) { return []; } }
+    function nkUpSet(l) { localStorage.setItem(NK_PH_UP, JSON.stringify(l)); }
+
+    async function photoSauver(id, data) {
+        nkPhCache[id] = data;
+        await nkIdbOp('readwrite', st => st.put(data, id));
+        const l = nkUpList(); if (!l.includes(id)) { l.push(id); nkUpSet(l); }
+        photosEnvoyer();
+    }
+    async function photoCharger(id) {
+        if (nkPhCache[id]) return nkPhCache[id];
+        let d = null;
+        try { d = await nkIdbOp('readonly', st => st.get(id)); } catch(e) {}
+        if (!d && typeof fbDb !== 'undefined' && fbDb && fbCompte) {
+            try {
+                const doc = await fbDb.doc(`plannings/${fbCompte.id}/chunks/photo__${id}`).get();
+                if (doc.exists) { d = doc.data().v; nkIdbOp('readwrite', st => st.put(d, id)).catch(() => {}); }
+            } catch(e) {}
+        }
+        if (d) nkPhCache[id] = d;
+        return d;
+    }
+    async function photoSupprimer(id) {
+        delete nkPhCache[id];
+        try { await nkIdbOp('readwrite', st => st.delete(id)); } catch(e) {}
+        nkUpSet(nkUpList().filter(x => x !== id));
+        if (typeof fbDb !== 'undefined' && fbDb && fbCompte) { try { await fbDb.doc(`plannings/${fbCompte.id}/chunks/photo__${id}`).delete(); } catch(e) {} }
+    }
+    let nkEnvoiEnCours = false;
+    async function photosEnvoyer() {
+        if (nkEnvoiEnCours || typeof fbDb === 'undefined' || !fbDb || !fbCompte || !fbAuth || !fbAuth.currentUser) return;
+        nkEnvoiEnCours = true;
+        try {
+            for (const id of nkUpList()) {
+                const d = await photoCharger(id);
+                if (d) await fbDb.doc(`plannings/${fbCompte.id}/chunks/photo__${id}`).set({ v: d });
+                nkUpSet(nkUpList().filter(x => x !== id));
+            }
+        } catch(e) { console.warn('Envoi photos', e); }
+        nkEnvoiEnCours = false;
+    }
+    async function photosViderLocal() {
+        Object.keys(nkPhCache).forEach(k => delete nkPhCache[k]);
+        try { await nkIdbOp('readwrite', st => st.clear()); } catch(e) {}
+        localStorage.removeItem(NK_PH_UP);
+    }
+    window.addEventListener('online', () => setTimeout(photosEnvoyer, 1500));
+    setInterval(() => { if (nkUpList().length) photosEnvoyer(); }, 60000);
+
+    // Compression d'une image choisie / prise en photo
+    function photoCompresser(file) {
+        return new Promise((res, rej) => {
+            const url = URL.createObjectURL(file), img = new Image();
+            img.onload = () => {
+                const max = 1280, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+                const c = document.createElement('canvas');
+                c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+                c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                URL.revokeObjectURL(url);
+                res(c.toDataURL('image/jpeg', 0.72));
+            };
+            img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('Image illisible')); };
+            img.src = url;
+        });
+    }
+    async function photosDepuisInput(input) {
+        const ids = [];
+        for (const f of [...(input.files || [])]) {
+            if (!f.type.startsWith('image/')) continue;
+            try {
+                const d = await photoCompresser(f), id = 'ph_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+                await photoSauver(id, d); ids.push(id);
+            } catch(e) { showToast('⚠️ Photo non ajoutée : ' + e.message, 'error', 'fa-image'); }
+        }
+        input.value = '';
+        return ids;
+    }
+    // Remplit les <img data-ph="id"> d'un conteneur
+    function photosHydrater(root) {
+        (root || document).querySelectorAll('img[data-ph]').forEach(async im => {
+            if (im.dataset.ok) return;
+            im.dataset.ok = '1';
+            const d = await photoCharger(im.dataset.ph);
+            if (d) im.src = d; else im.closest('.nk-ph') && im.closest('.nk-ph').classList.add('manque');
+        });
+    }
+    function photosMiniHTML(ids, suppr) {
+        return (ids || []).map((id, i) => `<div class="nk-ph"><img data-ph="${id}" alt="Photo ${i + 1}" onclick="event.stopPropagation(); photoZoom('${id}')">${suppr ? `<button type="button" onclick="event.stopPropagation(); ${suppr}(${i})" aria-label="Retirer la photo">×</button>` : ''}</div>`).join('');
+    }
+    async function photoZoom(id) {
+        const d = await photoCharger(id); if (!d) return;
+        const o = document.createElement('div');
+        o.className = 'nk-zoom'; o.innerHTML = `<img src="${d}" alt="Photo"><button aria-label="Fermer">×</button>`;
+        o.onclick = () => o.remove();
+        document.body.appendChild(o);
+    }
+    function photosBoutonsHTML(cible) {
+        return `<div class="nk-ph-btns">
+            <label class="nk-ph-btn"><i class="fas fa-camera"></i> Prendre une photo<input type="file" accept="image/*" capture="environment" hidden onchange="${cible}(this)"></label>
+            <label class="nk-ph-btn"><i class="far fa-images"></i> Galerie<input type="file" accept="image/*" multiple hidden onchange="${cible}(this)"></label>
+        </div>`;
+    }
+
+    // ── Photos d'une note simple ──
+    async function notePhotoAjout(input) {
+        const ids = await photosDepuisInput(input);
+        noteBrouillon.photos = (noteBrouillon.photos || []).concat(ids);
+        noteRendrePhotos();
+    }
+    function notePhotoRetirer(i) { noteBrouillon.photos.splice(i, 1); noteRendrePhotos(); }
+    function noteRendrePhotos() {
+        const box = document.getElementById('nk-photos'); if (!box || !noteBrouillon) return;
+        box.innerHTML = `<div class="nk-ph-grid">${photosMiniHTML(noteBrouillon.photos, 'notePhotoRetirer')}</div>` + photosBoutonsHTML('notePhotoAjout');
+        photosHydrater(box);
+    }
+
+    // ── Modèles de formulaires ──
+    function formsCharger() {
+        try { const l = JSON.parse(localStorage.getItem(NK_FORMS_KEY)); if (Array.isArray(l)) return l; } catch(e) {}
+        return [{
+            id: 'f_danger', nom: 'Remontée de situation dangereuse', couleur: 'orange',
+            questions: [
+                { id: 'q1', q: 'Quel poste de travail ?', type: 'texte', options: [], obligatoire: true, photo: true },
+                { id: 'q2', q: 'Quel danger ?', type: 'texte', options: [], obligatoire: true, photo: true },
+                { id: 'q3', q: 'Quel salarié ?', type: 'texte', options: [], obligatoire: false, photo: false },
+                { id: 'q4', q: 'Niveau de gravité ?', type: 'choix', options: ['Faible', 'Moyen', 'Élevé', 'Critique'], obligatoire: false, photo: false },
+                { id: 'q5', q: 'Action immédiate / proposition ?', type: 'texte', options: [], obligatoire: false, photo: true }
+            ]
+        }];
+    }
+    function formsSauver(l) { localStorage.setItem(NK_FORMS_KEY, JSON.stringify(l)); }
+    function formsRendre() {
+        const l = formsCharger();
+        return `<div class="nk-forms">
+            <button class="nk-form-new" onclick="formEditer()"><i class="fas fa-plus"></i> Nouveau formulaire</button>
+            ${l.map(f => `<div class="nk-form" style="border-left-color:${noteCouleur(f.couleur) === 'var(--bg-card)' ? 'var(--primary)' : noteCouleur(f.couleur)}">
+                <div class="nk-form-t"><i class="fas fa-clipboard-list"></i> ${noteEsc(f.nom)}</div>
+                <div class="nk-form-q">${f.questions.length} question${f.questions.length > 1 ? 's' : ''} : ${f.questions.slice(0, 3).map(q => noteEsc(q.q)).join(' · ')}${f.questions.length > 3 ? '…' : ''}</div>
+                <div class="nk-form-a">
+                    <button class="go" onclick="ficheDemarrer('${f.id}')"><i class="fas fa-pen"></i> Remplir</button>
+                    <button onclick="formEditer('${f.id}')"><i class="fas fa-cog"></i> Modifier</button>
+                    <button onclick="formDupliquer('${f.id}')"><i class="far fa-copy"></i></button>
+                    <button class="danger" onclick="formSupprimer('${f.id}')" aria-label="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>`).join('')}
+        </div>`;
+    }
+    let formBrouillon = null;
+    function nkVue(v) {
+        ['nk-vue-liste', 'nk-vue-edit', 'nk-vue-form', 'nk-vue-fiche', 'nk-vue-voir'].forEach(id => { const e = document.getElementById(id); if (e) e.style.display = id === v ? 'block' : 'none'; });
+        const m = document.getElementById('modal-notes'); if (m) m.scrollTop = 0;
+    }
+    function nkRetourListe() { nkVue('nk-vue-liste'); notesRendre(); }
+    function formEditer(id) {
+        const f = id ? formsCharger().find(x => x.id === id) : null;
+        formBrouillon = f ? JSON.parse(JSON.stringify(f)) : { id: 'f_' + Date.now().toString(36), nom: '', couleur: '', questions: [{ id: 'q' + Date.now().toString(36), q: '', type: 'texte', options: [], obligatoire: false, photo: true }] };
+        nkVue('nk-vue-form');
+        document.getElementById('nk-form-titre').textContent = f ? 'Modifier le formulaire' : 'Nouveau formulaire';
+        document.getElementById('nk-form-nom').value = formBrouillon.nom;
+        formRendreQuestions();
+    }
+    function formRendreQuestions() {
+        const fb = formBrouillon;
+        document.getElementById('nk-form-couleurs').innerHTML = NOTES_COULEURS.map(c => `<button type="button" class="nk-sw ${c.k === fb.couleur ? 'sel' : ''}" style="background:${c.bg}" onclick="formBrouillon.couleur='${c.k}'; formRendreQuestions()" aria-label="${c.lbl}"></button>`).join('');
+        document.getElementById('nk-form-qs').innerHTML = fb.questions.map((q, i) => `<div class="nk-fq">
+            <div class="nk-fq-h"><b>Étape ${i + 1}</b>
+                <span style="flex:1"></span>
+                <button type="button" onclick="formBouger(${i},-1)" ${i === 0 ? 'disabled' : ''} aria-label="Monter">▲</button>
+                <button type="button" onclick="formBouger(${i},1)" ${i === fb.questions.length - 1 ? 'disabled' : ''} aria-label="Descendre">▼</button>
+                <button type="button" class="danger" onclick="formBrouillon.questions.splice(${i},1); formRendreQuestions()" aria-label="Supprimer la question">×</button>
+            </div>
+            <input value="${noteEsc(q.q)}" placeholder="Ex : Quel poste de travail ?" oninput="formBrouillon.questions[${i}].q=this.value">
+            <div class="nk-fq-o">
+                <select onchange="formBrouillon.questions[${i}].type=this.value; formRendreQuestions()">${Object.entries(NK_TYPES_Q).map(([k, v]) => `<option value="${k}" ${q.type === k ? 'selected' : ''}>${v}</option>`).join('')}</select>
+                <label><input type="checkbox" ${q.obligatoire ? 'checked' : ''} onchange="formBrouillon.questions[${i}].obligatoire=this.checked"> Obligatoire</label>
+                <label><input type="checkbox" ${q.photo ? 'checked' : ''} onchange="formBrouillon.questions[${i}].photo=this.checked"> 📷 Photo</label>
+            </div>
+            ${q.type === 'choix' ? `<input value="${noteEsc((q.options || []).join(', '))}" placeholder="Choix séparés par des virgules : Faible, Moyen, Élevé" oninput="formBrouillon.questions[${i}].options=this.value.split(',').map(s=>s.trim()).filter(Boolean)">` : ''}
+        </div>`).join('');
+    }
+    function formBouger(i, d) { const q = formBrouillon.questions; [q[i], q[i + d]] = [q[i + d], q[i]]; formRendreQuestions(); }
+    function formAjouterQuestion() { formBrouillon.questions.push({ id: 'q' + Date.now().toString(36), q: '', type: 'texte', options: [], obligatoire: false, photo: true }); formRendreQuestions(); }
+    function formEnregistrer() {
+        const fb = formBrouillon;
+        fb.nom = document.getElementById('nk-form-nom').value.trim();
+        fb.questions = fb.questions.filter(q => q.q.trim());
+        if (!fb.nom) { alert('Donnez un nom au formulaire.'); return; }
+        if (!fb.questions.length) { alert('Ajoutez au moins une question.'); return; }
+        if (fb.questions.some(q => q.type === 'choix' && !(q.options || []).length)) { alert('Indiquez les choix possibles pour chaque « Liste de choix ».'); return; }
+        const l = formsCharger(), i = l.findIndex(x => x.id === fb.id);
+        if (i >= 0) l[i] = fb; else l.push(fb);
+        formsSauver(l);
+        showToast('📋 Formulaire enregistré', 'success', 'fa-clipboard-list');
+        notesVue = 'forms'; nkRetourListe();
+    }
+    function formDupliquer(id) {
+        const f = formsCharger().find(x => x.id === id); if (!f) return;
+        const c = JSON.parse(JSON.stringify(f)); c.id = 'f_' + Date.now().toString(36); c.nom = f.nom + ' (copie)';
+        formsSauver(formsCharger().concat([c])); notesRendre();
+    }
+    function formSupprimer(id) {
+        const f = formsCharger().find(x => x.id === id); if (!f) return;
+        if (!confirm(`Supprimer le formulaire « ${f.nom} » ?\n\nLes fiches déjà remplies sont conservées.`)) return;
+        formsSauver(formsCharger().filter(x => x.id !== id)); notesRendre();
+    }
+
+    // ── Remplissage pas à pas ──
+    let fiche = null, ficheEtape = 0, ficheEditId = null;
+    function ficheDemarrer(formId, noteId) {
+        if (noteId) {
+            const n = notesCharger().find(x => x.id === noteId); if (!n) return;
+            fiche = JSON.parse(JSON.stringify(n)); ficheEditId = noteId;
+        } else {
+            const f = formsCharger().find(x => x.id === formId); if (!f) return;
+            ficheEditId = null;
+            fiche = {
+                id: 'n_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), type: 'fiche', formId: f.id, titre: f.nom, couleur: f.couleur || '',
+                reponses: f.questions.map(q => ({ qid: q.id, q: q.q, type: q.type, options: q.options || [], obligatoire: !!q.obligatoire, photo: !!q.photo, r: q.type === 'date' ? fmtLocal(new Date()) : '', photos: [] })),
+                epingle: false, archive: false, date: fmtLocal(new Date()), cree: Date.now(), maj: Date.now(),
+                auteur: (typeof fbCompte !== 'undefined' && fbCompte) ? (fbCompte.nom || fbCompte.identifiant) : ''
+            };
+        }
+        ficheEtape = 0;
+        nkVue('nk-vue-fiche');
+        ficheRendre();
+    }
+    function ficheRendre() {
+        const n = fiche.reponses.length, recap = ficheEtape >= n;
+        document.getElementById('nk-fi-titre').textContent = fiche.titre;
+        document.getElementById('nk-fi-etape').textContent = recap ? 'Récapitulatif' : `Étape ${ficheEtape + 1} / ${n}`;
+        document.getElementById('nk-fi-prog').style.width = (Math.min(ficheEtape, n) / n * 100) + '%';
+        const box = document.getElementById('nk-fi-corps');
+        if (recap) {
+            box.innerHTML = `<div class="nk-recap">${fiche.reponses.map((r, i) => `<div class="nk-recap-i" onclick="ficheEtape=${i}; ficheRendre()">
+                    <div class="nk-recap-q">${i + 1}. ${noteEsc(r.q)}</div>
+                    <div class="nk-recap-r ${r.r ? '' : 'vide'}">${r.r ? noteEsc(r.r) : '— sans réponse —'}</div>
+                    ${r.photos.length ? `<div class="nk-ph-grid sm">${photosMiniHTML(r.photos)}</div>` : ''}
+                </div>`).join('')}
+                <div class="nk-meta"><label for="nk-fi-date"><i class="far fa-calendar"></i> Date de la fiche</label><input type="date" id="nk-fi-date" value="${fiche.date || ''}" onchange="fiche.date=this.value"></div>
+                <p class="rot-hint" style="margin:6px 0 0;">Touchez une réponse pour la modifier.</p></div>`;
+        } else {
+            const r = fiche.reponses[ficheEtape];
+            let champ;
+            if (r.type === 'choix') champ = `<div class="nk-choix">${r.options.map(o => `<button type="button" class="${r.r === o ? 'on' : ''}" onclick="fiche.reponses[${ficheEtape}].r=${JSON.stringify(o).replace(/"/g, '&quot;')}; ficheRendre()">${noteEsc(o)}</button>`).join('')}</div>`;
+            else if (r.type === 'ouinon') champ = `<div class="nk-choix">${['Oui', 'Non'].map(o => `<button type="button" class="${r.r === o ? 'on' : ''}" onclick="fiche.reponses[${ficheEtape}].r='${o}'; ficheRendre()">${o}</button>`).join('')}</div>`;
+            else if (r.type === 'date') champ = `<input type="date" id="nk-fi-rep" value="${noteEsc(r.r)}" oninput="fiche.reponses[${ficheEtape}].r=this.value">`;
+            else if (r.type === 'nombre') champ = `<input type="number" inputmode="decimal" id="nk-fi-rep" value="${noteEsc(r.r)}" oninput="fiche.reponses[${ficheEtape}].r=this.value">`;
+            else champ = `<textarea id="nk-fi-rep" rows="4" placeholder="Votre réponse…" oninput="fiche.reponses[${ficheEtape}].r=this.value">${noteEsc(r.r)}</textarea>`;
+            box.innerHTML = `<div class="nk-fi-q">${noteEsc(r.q)}${r.obligatoire ? ' <span class="nk-req">*</span>' : ''}</div>
+                ${champ}
+                ${r.photo ? `<div class="nk-ph-grid">${photosMiniHTML(r.photos, 'fichePhotoRetirer')}</div>${photosBoutonsHTML('fichePhotoAjout')}` : ''}`;
+            photosHydrater(box);
+            setTimeout(() => { const i = document.getElementById('nk-fi-rep'); if (i && i.tagName === 'TEXTAREA' && !r.r) i.focus(); }, 60);
+        }
+        photosHydrater(box);
+        document.getElementById('nk-fi-prec').style.visibility = ficheEtape > 0 ? 'visible' : 'hidden';
+        document.getElementById('nk-fi-suiv').style.display = recap ? 'none' : '';
+        document.getElementById('nk-fi-suiv').innerHTML = ficheEtape === n - 1 ? 'Récapitulatif <i class="fas fa-arrow-right"></i>' : 'Suivant <i class="fas fa-arrow-right"></i>';
+        document.getElementById('nk-fi-fin').style.display = recap ? '' : 'none';
+    }
+    async function fichePhotoAjout(input) {
+        const ids = await photosDepuisInput(input);
+        fiche.reponses[ficheEtape].photos.push(...ids);
+        ficheRendre();
+    }
+    function fichePhotoRetirer(i) { fiche.reponses[ficheEtape].photos.splice(i, 1); ficheRendre(); }
+    function ficheSuivant() {
+        const r = fiche.reponses[ficheEtape];
+        if (r.obligatoire && !String(r.r || '').trim()) { showToast('Cette question est obligatoire', 'error', 'fa-exclamation-circle'); return; }
+        ficheEtape++; ficheRendre();
+    }
+    function fichePrecedent() { if (ficheEtape > 0) { ficheEtape--; ficheRendre(); } }
+    function ficheAnnuler() {
+        if (!confirm('Abandonner cette fiche ? Les réponses non enregistrées seront perdues.')) return;
+        nkRetourListe();
+    }
+    function ficheEnregistrer() {
+        const manque = fiche.reponses.findIndex(r => r.obligatoire && !String(r.r || '').trim());
+        if (manque >= 0) { ficheEtape = manque; ficheRendre(); showToast('Une question obligatoire est sans réponse', 'error', 'fa-exclamation-circle'); return; }
+        fiche.maj = Date.now();
+        const l = notesCharger(), i = l.findIndex(x => x.id === fiche.id);
+        if (i >= 0) l[i] = fiche; else l.unshift(fiche);
+        notesSauver(l);
+        const id = fiche.id;
+        showToast('✅ Fiche enregistrée', 'success', 'fa-check-circle');
+        ficheVoir(id);
+    }
+
+    // ── Lecture d'une fiche ──
+    let ficheVueId = null;
+    function ficheVoir(id) {
+        const n = notesCharger().find(x => x.id === id); if (!n) return;
+        ficheVueId = id;
+        if (document.getElementById('modal-notes').style.display !== 'block') { fermerModales(); ouvrirModale('modal-notes'); }
+        nkVue('nk-vue-voir');
+        const box = document.getElementById('nk-voir-corps');
+        box.innerHTML = `<div class="nk-voir-h" style="background:${noteCouleur(n.couleur)}">
+                <div class="nk-voir-t"><i class="fas fa-clipboard-list"></i> ${noteEsc(n.titre)}</div>
+                <div class="nk-voir-m">${n.date ? noteDateFr(n.date) : ''}${n.auteur ? ' · ' + noteEsc(n.auteur) : ''}</div>
+            </div>
+            ${n.reponses.map((r, i) => `<div class="nk-recap-i">
+                <div class="nk-recap-q">${i + 1}. ${noteEsc(r.q)}</div>
+                <div class="nk-recap-r ${r.r ? '' : 'vide'}">${r.r ? noteEsc(r.r) : '— sans réponse —'}</div>
+                ${r.photos.length ? `<div class="nk-ph-grid">${photosMiniHTML(r.photos)}</div>` : ''}
+            </div>`).join('')}`;
+        photosHydrater(box);
+        document.getElementById('nk-voir-arch').innerHTML = n.archive ? '<i class="fas fa-box-open"></i> Désarchiver' : '<i class="fas fa-archive"></i> Archiver';
+    }
+    function ficheVoirArchiver() {
+        const l = notesCharger(), n = l.find(x => x.id === ficheVueId); if (!n) return;
+        n.archive = !n.archive; n.maj = Date.now(); notesSauver(l);
+        showToast(n.archive ? '🗄️ Fiche archivée' : '📤 Fiche désarchivée', 'info', 'fa-archive');
+        nkRetourListe();
+    }
+    function ficheVoirSupprimer() {
+        const n = notesCharger().find(x => x.id === ficheVueId); if (!n) return;
+        if (!confirm('Supprimer définitivement cette fiche et ses photos ?')) return;
+        notePhotosDe(n).forEach(photoSupprimer);
+        notesSauver(notesCharger().filter(x => x.id !== ficheVueId));
+        nkRetourListe();
+        showToast('🗑️ Fiche supprimée', 'success', 'fa-trash-alt');
+    }
+    function notePhotosDe(n) { return n.type === 'fiche' ? n.reponses.flatMap(r => r.photos || []) : (n.photos || []); }
+
+    // ── PDF ──
+    async function nkChargerJsPDF() {
+        if (window.jspdf) return window.jspdf.jsPDF;
+        await new Promise((res, rej) => {
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+            s.onload = res; s.onerror = () => rej(new Error('Impossible de charger le générateur PDF (connexion internet requise la première fois).'));
+            document.head.appendChild(s);
+        });
+        return window.jspdf.jsPDF;
+    }
+    function pdfTxt(s) {
+        return String(s == null ? '' : s).replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/…/g, '...').replace(/[–—]/g, '-')
+            .replace(/ /g, ' ').replace(/[^\x00-\xFF€]/g, '');
+    }
+    function nkDimImage(d) { return new Promise(r => { const i = new Image(); i.onload = () => r({ w: i.naturalWidth, h: i.naturalHeight }); i.onerror = () => r({ w: 4, h: 3 }); i.src = d; }); }
+    async function notePDF(n) {
+        const jsPDF = await nkChargerJsPDF();
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        const W = 210, H = 297, M = 15, LW = W - 2 * M;
+        let y = 0;
+        const saut = (h) => { if (y + h > H - 18) { doc.addPage(); y = M; } };
+        // En-tête
+        doc.setFillColor(79, 70, 229); doc.rect(0, 0, W, 30, 'F');
+        doc.setTextColor(255); doc.setFont('helvetica', 'bold'); doc.setFontSize(17);
+        doc.text(doc.splitTextToSize(pdfTxt(n.titre || 'Note'), LW)[0], M, 14);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+        const meta = [n.date ? 'Date : ' + new Date(n.date + 'T12:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '', n.auteur ? 'Rempli par : ' + n.auteur : ''].filter(Boolean).join('   |   ');
+        doc.text(pdfTxt(meta || 'Mon Planning Pro'), M, 23);
+        y = 40; doc.setTextColor(30, 41, 59);
+        const blocs = n.type === 'fiche'
+            ? n.reponses.map((r, i) => ({ q: `${i + 1}. ${r.q}`, r: r.r || '- sans réponse -', vide: !r.r, photos: r.photos || [] }))
+            : [{ q: '', r: n.estListe ? (n.liste || []).map(i => (i.ok ? '[x] ' : '[ ] ') + i.t).join('\n') : (n.texte || ''), photos: n.photos || [] }];
+        for (const b of blocs) {
+            if (b.q) {
+                const lq = doc.splitTextToSize(pdfTxt(b.q), LW - 6);
+                saut(lq.length * 6 + 10);
+                doc.setFillColor(238, 242, 255); doc.roundedRect(M, y - 5, LW, lq.length * 5.6 + 4, 2, 2, 'F');
+                doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.setTextColor(67, 56, 202);
+                doc.text(lq, M + 3, y); y += lq.length * 5.6 + 4;
+            }
+            doc.setFont('helvetica', b.vide ? 'italic' : 'normal'); doc.setFontSize(11); doc.setTextColor(b.vide ? 148 : 30, b.vide ? 163 : 41, b.vide ? 184 : 59);
+            for (const ligne of doc.splitTextToSize(pdfTxt(b.r), LW - 4)) { saut(6); doc.text(ligne, M + 2, y); y += 5.6; }
+            y += 2;
+            // Photos : 2 par ligne
+            const pw = (LW - 6) / 2;
+            for (let i = 0; i < b.photos.length; i += 2) {
+                const paire = [];
+                for (const id of b.photos.slice(i, i + 2)) { const d = await photoCharger(id); if (d) { const dim = await nkDimImage(d); paire.push({ d, h: Math.min(95, pw * dim.h / dim.w), w: Math.min(pw, 95 * dim.w / dim.h) }); } }
+                if (!paire.length) continue;
+                const hMax = Math.max(...paire.map(p => p.h));
+                saut(hMax + 4);
+                paire.forEach((p, k) => { doc.addImage(p.d, 'JPEG', M + k * (pw + 6) + (pw - p.w) / 2, y, p.w, p.h); });
+                y += hMax + 4;
+            }
+            y += 5;
+        }
+        const nb = doc.getNumberOfPages();
+        for (let p = 1; p <= nb; p++) {
+            doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(148, 163, 184);
+            doc.text(pdfTxt(`Mon Planning Pro - généré le ${new Date().toLocaleString('fr-FR')}`), M, H - 8);
+            doc.text(`Page ${p} / ${nb}`, W - M, H - 8, { align: 'right' });
+        }
+        const nom = (pdfTxt(n.titre || 'note').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') || 'note') + '_' + (n.date || fmtLocal(new Date())) + '.pdf';
+        return { blob: doc.output('blob'), nom };
+    }
+    let nkPdfCourant = null;
+    async function nkApercuPDF(id) {
+        const n = notesCharger().find(x => x.id === (id || ficheVueId)); if (!n) return;
+        showToast('📄 Création du PDF…', 'info', 'fa-file-pdf');
+        try {
+            const r = await notePDF(n);
+            if (nkPdfCourant && nkPdfCourant.url) URL.revokeObjectURL(nkPdfCourant.url);
+            nkPdfCourant = Object.assign(r, { url: URL.createObjectURL(r.blob) });
+            const o = document.createElement('div');
+            o.className = 'nk-pdf';
+            o.innerHTML = `<div class="nk-pdf-box">
+                <div class="nk-pdf-bar"><b><i class="fas fa-file-pdf"></i> ${noteEsc(r.nom)}</b><button onclick="this.closest('.nk-pdf').remove()" aria-label="Fermer">×</button></div>
+                <iframe src="${nkPdfCourant.url}" title="Aperçu PDF"></iframe>
+                <div class="nk-pdf-act">
+                    <button class="btn btn-paye" onclick="nkPartagerPDF()"><i class="fas fa-share-alt"></i> Partager</button>
+                    <button class="btn btn-outline" onclick="nkTelechargerPDF()"><i class="fas fa-download"></i> Télécharger</button>
+                    <button class="btn btn-outline" onclick="window.open(nkPdfCourant.url,'_blank')"><i class="fas fa-external-link-alt"></i> Ouvrir</button>
+                </div></div>`;
+            document.body.appendChild(o);
+        } catch(e) { alert('⚠️ ' + e.message); }
+    }
+    function nkTelechargerPDF() {
+        const a = document.createElement('a'); a.href = nkPdfCourant.url; a.download = nkPdfCourant.nom;
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+    async function nkPartagerPDF(id) {
+        if (id || !nkPdfCourant) {
+            const n = notesCharger().find(x => x.id === (id || ficheVueId)); if (!n) return;
+            try { const r = await notePDF(n); nkPdfCourant = Object.assign(r, { url: URL.createObjectURL(r.blob) }); } catch(e) { alert('⚠️ ' + e.message); return; }
+        }
+        const f = new File([nkPdfCourant.blob], nkPdfCourant.nom, { type: 'application/pdf' });
+        try {
+            if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: nkPdfCourant.nom }); return; }
+        } catch(e) { if (e && e.name === 'AbortError') return; }
+        nkTelechargerPDF();
+        showToast('📥 PDF téléchargé (partage non disponible sur cet appareil)', 'info', 'fa-download');
+    }
 
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
@@ -8383,7 +8978,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.4';
+const CACHE_NAME = 'planning-pro-v9.5';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
