@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.5</title>
+    <title>Mon Planning Pro v9.6</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -32,28 +32,53 @@
 // Licensed under the MIT license:
 var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(n*r,o*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("友");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});</script>
     <script>
+    // ── Icône de l'application (dessinée sur l'appareil, PNG pour Android / iPhone) ──
+    function mppIcone(size, maskable) {
+        const c = document.createElement('canvas'); c.width = c.height = size;
+        const x = c.getContext('2d'), k = size / 512;
+        const rr = (X, Y, W, H, R) => { x.beginPath(); x.moveTo(X + R, Y); x.arcTo(X + W, Y, X + W, Y + H, R); x.arcTo(X + W, Y + H, X, Y + H, R); x.arcTo(X, Y + H, X, Y, R); x.arcTo(X, Y, X + W, Y, R); x.closePath(); };
+        x.scale(k, k);
+        // Fond dégradé
+        const g = x.createLinearGradient(0, 0, 512, 512); g.addColorStop(0, '#4f46e5'); g.addColorStop(1, '#7c3aed');
+        x.fillStyle = g; if (maskable) x.fillRect(0, 0, 512, 512); else { rr(0, 0, 512, 512, 112); x.fill(); }
+        const h = x.createLinearGradient(0, 0, 0, 256); h.addColorStop(0, 'rgba(255,255,255,0.18)'); h.addColorStop(1, 'rgba(255,255,255,0)');
+        x.fillStyle = h; if (maskable) x.fillRect(0, 0, 512, 256); else { rr(0, 0, 512, 512, 112); x.save(); x.clip(); x.fillRect(0, 0, 512, 256); x.restore(); }
+        // Contenu (réduit dans la zone sûre pour l'icône adaptative)
+        x.save();
+        if (maskable) { x.translate(256, 256); x.scale(0.78, 0.78); x.translate(-256, -256); }
+        // Ombre + calendrier
+        x.shadowColor = 'rgba(30,27,75,0.35)'; x.shadowBlur = 28; x.shadowOffsetY = 12;
+        x.fillStyle = '#ffffff'; rr(92, 118, 328, 300, 42); x.fill();
+        x.shadowColor = 'transparent';
+        x.fillStyle = '#e0e7ff'; rr(92, 118, 328, 78, 42); x.fill(); x.fillRect(92, 160, 328, 36);
+        x.fillStyle = '#4f46e5'; rr(154, 86, 30, 70, 15); x.fill(); rr(328, 86, 30, 70, 15); x.fill();
+        // Pastilles de postes
+        const cols = [['#fbbf24', '#f97316', '#1e293b'], ['#0ea5e9', '#10b981', '#e2e8f0']];
+        cols.forEach((ligne, r) => ligne.forEach((col, i) => { x.fillStyle = col; rr(122 + i * 92, 218 + r * 84, 76, 64, 14); x.fill(); }));
+        // Badge validé
+        x.fillStyle = '#10b981'; x.beginPath(); x.arc(394, 392, 74, 0, Math.PI * 2); x.fill();
+        x.lineWidth = 14; x.strokeStyle = '#ffffff'; x.stroke();
+        x.lineWidth = 20; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(358, 394); x.lineTo(384, 420); x.lineTo(432, 368); x.stroke();
+        x.restore();
+        return c.toDataURL('image/png');
+    }
+    let MPP_ICON_512 = '', MPP_ICON_192 = '', MPP_ICON_MASK = '';
+    try { MPP_ICON_512 = mppIcone(512, false); MPP_ICON_192 = mppIcone(192, false); MPP_ICON_MASK = mppIcone(512, true); } catch(e) {}
     const pwaManifest = {
         "name": "Mon Planning Pro",
         "short_name": "Planning Pro",
-        "description": "Gérez votre planning de travail, calculez vos heures et synchronisez avec Google Calendar & Drive",
-        "start_url": location.href,
+        "description": "Planning de travail, roulements, paie, repos légaux et notes",
+        "start_url": location.origin + location.pathname,
+        "scope": location.origin + location.pathname,
         "display": "standalone",
-        "background_color": "#f1f5f9",
+        "orientation": "portrait",
+        "background_color": "#4f46e5",
         "theme_color": "#4f46e5",
-        "icons": [
-            {
-                "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%234f46e5' width='512' height='512' rx='90'/%3E%3Cg fill='white'%3E%3Crect x='80' y='120' width='352' height='300' rx='20'/%3E%3Crect x='130' y='80' width='40' height='80' rx='8' fill='%23818cf8'/%3E%3Crect x='342' y='80' width='40' height='80' rx='8' fill='%23818cf8'/%3E%3C/g%3E%3Crect x='120' y='200' width='80' height='60' rx='8' fill='%23fbbf24'/%3E%3Crect x='216' y='200' width='80' height='60' rx='8' fill='%23f59e0b'/%3E%3Crect x='312' y='200' width='80' height='60' rx='8' fill='%231e293b'/%3E%3Crect x='120' y='280' width='80' height='60' rx='8' fill='%233b82f6'/%3E%3Crect x='216' y='280' width='80' height='60' rx='8' fill='%2310b981'/%3E%3Crect x='312' y='280' width='80' height='60' rx='8' fill='%23ec4899'/%3E%3C/svg%3E",
-                "sizes": "512x512",
-                "type": "image/svg+xml",
-                "purpose": "any"
-            },
-            {
-                "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%234f46e5' width='192' height='192' rx='35'/%3E%3Cg fill='white'%3E%3Crect x='30' y='45' width='132' height='112' rx='8'/%3E%3Crect x='49' y='30' width='15' height='30' rx='3' fill='%23818cf8'/%3E%3Crect x='128' y='30' width='15' height='30' rx='3' fill='%23818cf8'/%3E%3C/g%3E%3Crect x='45' y='75' width='30' height='22' rx='3' fill='%23fbbf24'/%3E%3Crect x='81' y='75' width='30' height='22' rx='3' fill='%23f59e0b'/%3E%3Crect x='117' y='75' width='30' height='22' rx='3' fill='%231e293b'/%3E%3Crect x='45' y='105' width='30' height='22' rx='3' fill='%233b82f6'/%3E%3Crect x='81' y='105' width='30' height='22' rx='3' fill='%2310b981'/%3E%3Crect x='117' y='105' width='30' height='22' rx='3' fill='%23ec4899'/%3E%3C/svg%3E",
-                "sizes": "192x192",
-                "type": "image/svg+xml",
-                "purpose": "any maskable"
-            }
-        ]
+        "icons": MPP_ICON_512 ? [
+            { "src": MPP_ICON_192, "sizes": "192x192", "type": "image/png", "purpose": "any" },
+            { "src": MPP_ICON_512, "sizes": "512x512", "type": "image/png", "purpose": "any" },
+            { "src": MPP_ICON_MASK, "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+        ] : []
     };
     const manifestBlob = new Blob([JSON.stringify(pwaManifest)], {type: 'application/json'});
     const manifestURL = URL.createObjectURL(manifestBlob);
@@ -61,6 +86,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     manifestLink.rel = 'manifest';
     manifestLink.href = manifestURL;
     document.head.appendChild(manifestLink);
+    if (MPP_ICON_512) {
+        document.querySelectorAll('link[rel="apple-touch-icon"], link[rel="icon"]').forEach(l => l.remove());
+        [['apple-touch-icon', MPP_ICON_512, ''], ['icon', MPP_ICON_192, 'image/png']].forEach(([rel, href, type]) => {
+            const l = document.createElement('link'); l.rel = rel; l.href = href; if (type) l.type = type; document.head.appendChild(l);
+        });
+    }
     </script>
     
     <style>
@@ -605,6 +636,32 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         /* ANALYSE DIRT */
 
+
+        /* ═══ CARTES REPLIABLES ═══ */
+        .sidebar-card.sb-col > .sidebar-card-title { cursor:pointer; user-select:none; margin-bottom:10px; }
+        .sidebar-card.sb-col.collapsed > .sidebar-card-title { margin-bottom:0; }
+        .sidebar-card.sb-col.collapsed > :not(.sidebar-card-title) { display:none !important; }
+        .sb-sum { margin-left:auto; font-size:0.65rem; font-weight:700; color:var(--text-muted); text-transform:none; letter-spacing:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:55%; }
+        .sb-chev { border:none; background:var(--bg-app); color:var(--text-muted); width:24px; height:24px; border-radius:6px; cursor:pointer; flex-shrink:0; margin-left:6px; transition:transform 0.2s; font-size:0.7rem; }
+        .sidebar-card-title .sb-sum:empty + .sb-chev { margin-left:auto; }
+        .sidebar-card-title .rot-manage-btn ~ .sb-sum:empty + .sb-chev { margin-left:6px; }
+        .sidebar-card-title .rot-manage-btn ~ .sb-sum { margin-left:6px; max-width:35%; }
+        .sidebar-card.collapsed .sb-chev { transform:rotate(-90deg); }
+        /* ═══ CARTE AUJOURD'HUI ═══ */
+        .today-card { background:linear-gradient(135deg,#eef2ff,#faf5ff); border-color:#c7d2fe; }
+        body.dark-mode .today-card { background:linear-gradient(135deg,#1e1b4b,#2e1065); border-color:#3730a3; }
+        .today-date { margin-left:auto; text-transform:none; letter-spacing:0; font-weight:700; color:var(--primary); font-size:0.68rem; }
+        .today-ev { display:flex; align-items:center; gap:10px; background:var(--bg-card); border:1px solid var(--border-color); border-left:4px solid; border-radius:10px; padding:8px 10px; margin-bottom:6px; }
+        .today-ev b { display:block; font-size:0.85rem; color:var(--text-main); }
+        .today-ev small { display:block; font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-muted); font-weight:700; }
+        .today-ev em { display:block; font-style:normal; font-size:0.65rem; color:var(--text-muted); }
+        .today-ic { width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:0.95rem; flex-shrink:0; }
+        .today-repos { font-size:0.8rem; font-weight:700; color:var(--text-muted); padding:8px 2px; }
+        .today-next { margin-top:8px; padding-top:8px; border-top:1px dashed #c7d2fe; }
+        .today-next > span { display:block; font-size:0.65rem; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:5px; }
+        .today-next > span i { font-style:normal; color:var(--primary); text-transform:none; }
+        .today-next .today-ev { margin-bottom:0; opacity:0.9; }
+        .app-logo img { object-fit:cover; }
         /* ═══ NOTES (façon Keep) ═══ */
         .nk-side { display:flex; flex-direction:column; gap:6px; margin-bottom:2px; }
         .nk-side .nk-card { padding:8px 10px; }
@@ -1148,7 +1205,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     <!-- ─── APP HEADER ─── -->
     <header class="app-header">
         <div class="app-header-left">
-            <div class="app-logo"><i class="fas fa-calendar-check"></i></div>
+            <div class="app-logo"><img id="app-logo-img" alt="" style="width:100%;height:100%;border-radius:inherit;display:none;"><i class="fas fa-calendar-check" id="app-logo-fa"></i></div>
             <div>
                 <div class="app-title">Mon Planning Pro</div>
                 <div class="app-subtitle" id="header-date">Chargement...</div>
@@ -1174,7 +1231,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     <!-- ─── ÉCRAN DE CONNEXION FIREBASE ─── -->
     <div id="fb-gate" class="fb-gate">
         <div class="fb-gate-card">
-            <div class="fb-gate-logo"><i class="fas fa-calendar-check"></i></div>
+            <div class="fb-gate-logo"><img id="gate-logo-img" alt="" style="width:100%;height:100%;border-radius:inherit;display:none;"><i class="fas fa-calendar-check" id="gate-logo-fa"></i></div>
             <div class="fb-gate-title">Mon Planning Pro</div>
             <div id="fb-gate-body"><div class="fb-spin"></div></div>
         </div>
@@ -1205,8 +1262,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <!-- COLONNE GAUCHE : stats + soldes + légende + bouton cycle -->
             <aside class="planning-sidebar">
 
+                <!-- Aujourd'hui / prochain poste -->
+                <div class="sidebar-card today-card" id="today-card"></div>
+
                 <!-- Stats soldes -->
-                <div class="sidebar-card">
+                <div class="sidebar-card sb-col" id="soldes-card">
                     <div class="sidebar-card-title"><i class="fas fa-chart-pie"></i> Soldes</div>
                     <div class="stat-grid">
                         <div class="stat-item" style="border-color: var(--conge);">
@@ -1225,12 +1285,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
 
                 <!-- Légende types de postes (collapsible) -->
-                <div class="sidebar-card" id="legend-card">
-                    <div class="sidebar-card-title" onclick="toggleLegend()" style="cursor:pointer; user-select:none;">
+                <div class="sidebar-card sb-col" id="legend-card">
+                    <div class="sidebar-card-title">
                         <i class="fas fa-palette"></i> Légende
-                        <span style="margin-left:auto; font-size:0.65rem; color:var(--primary);" id="legend-toggle-icon">
-                            <i class="fas fa-chevron-up"></i>
-                        </span>
                     </div>
                     <div class="legend-grid" id="legend-content">
                         <div class="legend-item"><span class="legend-dot" style="background:#fbbf24;"></span>Matin</div>
@@ -1248,7 +1305,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
 
                 <!-- Roulements (multi-cycles) -->
-                <div class="sidebar-card" id="nk-card">
+                <div class="sidebar-card sb-col" id="nk-card">
                     <div class="sidebar-card-title">
                         <i class="far fa-sticky-note"></i> Notes <span id="nk-side-count" style="font-weight:600;"></span>
                         <button class="rot-manage-btn" onclick="notesOuvrir()">Tout voir</button>
@@ -1260,7 +1317,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     </div>
                 </div>
 
-                <div class="sidebar-card" id="rot-card">
+                <div class="sidebar-card sb-col" id="rot-card">
                     <div class="sidebar-card-title">
                         <i class="fas fa-layer-group"></i> Roulements
                         <button class="rot-manage-btn" onclick="rotOuvrirGestion()">Gérer</button>
@@ -6382,7 +6439,8 @@ function selectAct(btn, val) {
     }
 
     // Initialiser l'état de la légende au chargement
-    function initLegendState() {
+    function initLegendState() { const c = document.getElementById('legend-content'); if (c) c.style.display = ''; }
+    function initLegendStateAncien() {
         const isHidden = localStorage.getItem('legend_hidden') === 'true';
         const content = document.getElementById('legend-content');
         const icon = document.getElementById('legend-toggle-icon');
@@ -6538,6 +6596,7 @@ function selectAct(btn, val) {
     }
 
     function rotRafraichir() {
+        setTimeout(() => { if (typeof sbAppliquer === 'function') sbAppliquer(); if (typeof todayRendre === 'function') todayRendre(); }, 200);
         rotSauverState();
         sauver();
         if (typeof majAffichage === 'function') majAffichage();
@@ -7328,7 +7387,8 @@ service cloud.firestore {
         } else if (mode === 'verrou') {
             corps.innerHTML = `<div class="fb-lock-ic"><i class="fas fa-lock"></i></div>
                 <h2>Application verrouillée</h2>
-                <p class="fb-sub">Pour accéder à votre planning, ouvrez le <b>lien</b> ou scannez le <b>QR code</b> fourni par votre administrateur.</p>
+                <p class="fb-sub">Pour accéder à votre planning, activez votre <b>licence</b>, ou ouvrez le <b>lien</b> / scannez le <b>QR code</b> fourni par votre administrateur.</p>
+                <button class="btn btn-paye" onclick="location.reload()"><i class="fas fa-redo"></i> Réessayer</button>
                 <button class="fb-link" onclick="fbGate('deblocage')"><i class="fas fa-user-shield"></i> Accès administrateur</button>`;
         } else if (mode === 'deblocage' || mode === 'reset') {
             const reset = mode === 'reset';
@@ -7472,13 +7532,32 @@ service cloud.firestore {
     }
 
     // ── Démarrage ──
+    const LIC_SRC = 'https://raw.githubusercontent.com/aliand0810/licences/main/licences.json', LIC_PRODUIT = 'Mon Planning Pro';
+    async function fbConfigLicence() {
+        try {
+            const r = await Promise.race([fetch(LIC_SRC + '?t=' + Date.now(), { cache: 'no-store' }), new Promise((_, j) => setTimeout(() => j(new Error('délai')), 6000))]);
+            if (!r.ok) return null;
+            const c = ((await r.json()).configs || {})[LIC_PRODUIT];
+            return c && c.apiKey && c.projectId && c.authDomain ? { apiKey: c.apiKey, authDomain: c.authDomain, projectId: c.projectId, storageBucket: c.storageBucket || '', messagingSenderId: c.messagingSenderId || '', appId: c.appId || '' } : null;
+        } catch(e) { return null; }
+    }
     async function fbBoot() {
         fbImportDepuisUrl();
         fbInstallerHookStockage();
         fbInstallerGardes();
         const cfg = fbGetConfig();
         if (window._fbResetDemande && cfg) { fbGate('reset'); return; }
-        if (!cfg) { fbGate('verrou'); return; } // appareil non relié : application bloquée
+        if (!cfg) {
+            // Configuration fournie par Licence Pro ?
+            fbGate('chargement', 'Recherche de la configuration Licence Pro…');
+            const lic = await fbConfigLicence();
+            if (lic) { localStorage.setItem(FB_CFG_KEY, JSON.stringify(lic)); localStorage.setItem('fb_cfg_source', 'licence'); location.reload(); return; }
+            fbGate('verrou'); return; // appareil non relié : application bloquée
+        }
+        if (localStorage.getItem('fb_cfg_source') === 'licence') {
+            // Mise à jour silencieuse si l'admin a changé la configuration dans Licence Pro (prise en compte au prochain lancement)
+            fbConfigLicence().then(lic => { if (lic && lic.projectId && JSON.stringify(lic) !== JSON.stringify(cfg)) localStorage.setItem(FB_CFG_KEY, JSON.stringify(lic)); });
+        }
         fbGate('chargement', 'Connexion à Firebase…');
         try {
             await fbChargerSDK();
@@ -7533,7 +7612,7 @@ service cloud.firestore {
             return;
         }
         const synchro = +localStorage.getItem(FB_SYNCAT_KEY) || 0;
-        let html = `<div class="fb-status"><span class="fb-dot"></span> Projet <b>${fbEsc(cfg.projectId)}</b> · connecté en tant que <b>${fbEsc(fbCompte.nom || fbCompte.identifiant)}</b> ${fbEstAdmin() ? '<span class="fb-role admin">Admin</span>' : '<span class="fb-role">Client</span>'}</div>
+        let html = `<div class="fb-status"><span class="fb-dot"></span> Projet <b>${fbEsc(cfg.projectId)}</b>${localStorage.getItem('fb_cfg_source') === 'licence' ? ' <span class="fb-role">via Licence Pro</span>' : ''} · connecté en tant que <b>${fbEsc(fbCompte.nom || fbCompte.identifiant)}</b> ${fbEstAdmin() ? '<span class="fb-role admin">Admin</span>' : '<span class="fb-role">Client</span>'}</div>
             <p class="fb-p" style="margin-top:4px;">Dernière synchronisation : ${synchro ? new Date(synchro).toLocaleString('fr-FR') : '—'}</p>
             <div class="fb-btn-row">
                 <button class="btn btn-outline" onclick="fbOuvrirMonCompte()"><i class="fas fa-user"></i> Mon compte</button>`;
@@ -7572,7 +7651,7 @@ service cloud.firestore {
         await new Promise(r => setTimeout(r, 400 + fbEchecsDeblocage * 400)); // freine les essais répétés
         if (!ok) { fbEchecsDeblocage++; fbGate(reset ? 'reset' : 'deblocage', 'Mot de passe incorrect.'); return; }
         if (reset) {
-            ['fb_config_v1', 'fb_last_compte', 'fb_local_owner', 'fb_saved_login'].forEach(k => localStorage.removeItem(k));
+            ['fb_config_v1', 'fb_last_compte', 'fb_local_owner', 'fb_saved_login', 'fb_cfg_source'].forEach(k => localStorage.removeItem(k));
             location.reload();
             return;
         }
@@ -7627,6 +7706,7 @@ service cloud.firestore {
         localStorage.removeItem('fb_last_compte');
         try { if (fbAuth) await fbAuth.signOut(); } catch(e) {}
         localStorage.removeItem(FB_CFG_KEY);
+        localStorage.removeItem('fb_cfg_source');
         location.reload();
     }
     function fbCopier(txt, ok) {
@@ -8919,6 +8999,88 @@ service cloud.firestore {
         showToast('📥 PDF téléchargé (partage non disponible sur cet appareil)', 'info', 'fa-download');
     }
 
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ CARTES REPLIABLES + CARTE « AUJOURD'HUI » (v9.6) ════════════════════════
+    // ═══════════════════════════════════════════════════════════════════════════
+    const SB_DEFAUT = { 'soldes-card': true, 'legend-card': true, 'rot-card': false, 'nk-card': false }; // true = replié
+    function sbEtat() { try { return Object.assign({}, SB_DEFAUT, JSON.parse(localStorage.getItem('sb_etat_v1')) || {}); } catch(e) { return Object.assign({}, SB_DEFAUT); } }
+    function sbResume(id) {
+        try {
+            if (id === 'soldes-card') return `CP ${document.getElementById('stat-cp').textContent} · RTT ${document.getElementById('stat-rtt').textContent} · ${document.getElementById('stat-heure8').textContent}`;
+            if (id === 'rot-card' && typeof rotState !== 'undefined') { const n = rotState.list.length, v = rotState.list.filter(r => r.visible !== false).length; return n ? `${n} · ${v} visible${v > 1 ? 's' : ''}` : 'aucun'; }
+            if (id === 'legend-card') return `${document.querySelectorAll('#legend-content .legend-item').length} types`;
+            if (id === 'nk-card' && typeof notesCharger === 'function') { const n = notesCharger().filter(x => !x.archive).length; return n ? `${n} note${n > 1 ? 's' : ''}` : ''; }
+        } catch(e) {}
+        return '';
+    }
+    function sbAppliquer() {
+        const etat = sbEtat();
+        document.querySelectorAll('.sidebar-card.sb-col').forEach(card => {
+            const t = card.querySelector('.sidebar-card-title'); if (!t) return;
+            if (!t.querySelector('.sb-chev')) {
+                t.insertAdjacentHTML('beforeend', `<span class="sb-sum"></span><button class="sb-chev" aria-label="Replier ou déplier"><i class="fas fa-chevron-down"></i></button>`);
+                t.addEventListener('click', e => { if (e.target.closest('button:not(.sb-chev), a, input')) return; sbBasculer(card.id); });
+            }
+            const replie = !!etat[card.id];
+            card.classList.toggle('collapsed', replie);
+            t.querySelector('.sb-sum').textContent = replie ? sbResume(card.id) : '';
+            t.querySelector('.sb-chev').setAttribute('aria-expanded', String(!replie));
+        });
+    }
+    function sbBasculer(id) {
+        const e = sbEtat(); e[id] = !e[id];
+        localStorage.setItem('sb_etat_v1', JSON.stringify(e));
+        sbAppliquer();
+    }
+
+    // Carte « Aujourd'hui » : poste du jour + prochain poste
+    const TODAY_TRAVAIL = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.','FORMATION','RÉUNION'];
+    function todayEstPoste(t) { return TODAY_TRAVAIL.includes(t) || (t || '').startsWith('CSE'); }
+    function todayDebut(ev) {
+        const p = ev.extendedProps || {}, [y, m, d] = ev.startStr.split('T')[0].split('-').map(Number);
+        const pl = (!p.hD && typeof getPlage === 'function') ? getPlage(p.type) : {};
+        const hD = p.hD || pl.hD || '00:00', [h, mi] = hD.split(':').map(Number);
+        return new Date(y, m - 1, d, h, mi || 0).getTime();
+    }
+    function todayLigne(ev) {
+        const p = ev.extendedProps || {}, r = p.rotationId && typeof rotGet === 'function' ? rotGet(p.rotationId) : null;
+        const h = p.hD && p.hF ? `${p.hD}–${p.hF}` : '';
+        return `<div class="today-ev" style="border-left-color:${(r && r.couleur) || tbColor(ev)}">
+            <span class="today-ic" style="background:${tbColor(ev)}">${tbIcon(p.type)}</span>
+            <div><b>${noteEsc ? noteEsc(p.type) : p.type}</b>${h ? `<small>${h}</small>` : ''}${r ? `<em>🔁 ${rotEsc(r.nom)}</em>` : ''}</div></div>`;
+    }
+    function todayRendre() {
+        const box = document.getElementById('today-card');
+        if (!box || typeof calendar === 'undefined' || !calendar) return;
+        const now = Date.now(), aujourdHui = fmtLocal(new Date());
+        const evs = calendar.getEvents();
+        const duJour = evs.filter(e => e.startStr.split('T')[0] === aujourdHui).sort((a, b) => todayDebut(a) - todayDebut(b));
+        const prochain = evs.filter(e => todayEstPoste((e.extendedProps || {}).type) && todayDebut(e) > now && e.startStr.split('T')[0] !== aujourdHui)
+            .sort((a, b) => todayDebut(a) - todayDebut(b))[0];
+        const dateLbl = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+        let html = `<div class="sidebar-card-title"><i class="far fa-calendar-check"></i> Aujourd'hui <span class="today-date">${dateLbl}</span></div>`;
+        html += duJour.length ? duJour.map(todayLigne).join('') : `<div class="today-repos">💤 Repos — aucun poste aujourd'hui</div>`;
+        if (prochain) {
+            const diffH = (todayDebut(prochain) - now) / 3600000;
+            const dans = diffH < 24 ? `dans ${Math.max(1, Math.round(diffH))} h` : `dans ${Math.round(diffH / 24)} j`;
+            const jour = new Date(todayDebut(prochain)).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'short' });
+            html += `<div class="today-next"><span>Prochain poste · ${jour} <i>${dans}</i></span>${todayLigne(prochain)}</div>`;
+        }
+        box.innerHTML = html;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => { sbAppliquer(); todayRendre(); }, 400);
+        const sOrig = sauver;
+        sauver = function() { const r = sOrig.apply(this, arguments); setTimeout(() => { todayRendre(); sbAppliquer(); }, 150); return r; };
+        setInterval(todayRendre, 5 * 60000);
+        try {
+            if (MPP_ICON_192) [['app-logo-img', 'app-logo-fa'], ['gate-logo-img', 'gate-logo-fa']].forEach(([i, f]) => {
+                const im = document.getElementById(i), fa = document.getElementById(f);
+                if (im) { im.src = MPP_ICON_192; im.style.display = 'block'; } if (fa) fa.style.display = 'none';
+            });
+        } catch(e) {}
+    });
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -8978,7 +9140,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.5';
+const CACHE_NAME = 'planning-pro-v9.6';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
