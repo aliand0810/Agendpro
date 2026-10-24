@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.8</title>
+    <title>Mon Planning Pro v9.9</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -638,6 +638,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
 
 
+
+        .app-logo { position:relative; overflow:visible !important; }
+        .app-badge { position:absolute; top:-6px; right:-8px; min-width:18px; height:18px; padding:0 5px; box-sizing:border-box; border-radius:9px; background:#ef4444; color:#fff; font-size:0.65rem; font-weight:900; line-height:18px; text-align:center; box-shadow:0 0 0 2px var(--bg-card); font-family:'DM Sans',sans-serif; animation:appBadgePop 0.3s ease; }
+        @keyframes appBadgePop { from { transform:scale(0.4); } to { transform:scale(1); } }
+        .al-badge-row { display:flex; flex-direction:column; gap:4px; margin-top:12px; font-size:0.78rem; font-weight:700; color:var(--text-main); }
+        .al-badge-row select { margin:0 !important; padding:8px !important; font-size:0.85rem !important; }
         /* ═══ ALARMES ═══ */
         .al-row { display:flex; align-items:center; gap:10px; padding:7px 4px; border-top:1px solid var(--border-color); }
         #al-side .al-row:first-child, .al-day + .al-row { border-top:none; }
@@ -2043,6 +2049,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <button class="fb-mini-btn" onclick="alTester()"><i class="fas fa-play"></i> Tester</button>
             </div>
             <div id="al-notif" class="al-notif"></div>
+            <label class="al-badge-row">🔴 Pastille sur l'icône de l'application
+                <select id="al-badge" onchange="alChange()">
+                    <option value="tout">Alarmes des 24 h + notes du jour</option>
+                    <option value="alarmes">Alarmes des 24 h seulement</option>
+                    <option value="off">Désactivée</option>
+                </select></label>
         </div>
         <div class="zone-card" style="margin-top:14px;">
             <span class="zone-title">📲 ALARMES MÊME APPLICATION FERMÉE</span>
@@ -8467,6 +8479,7 @@ service cloud.firestore {
 
     // ── Carte de la colonne gauche (aperçu) ──
     function notesRendreCarte() {
+        setTimeout(() => { if (typeof badgeMaj === 'function') badgeMaj(); }, 50);
         const box = document.getElementById('nk-side');
         if (!box) return;
         const l = notesCharger().filter(n => !n.archive).sort((a, b) => (b.epingle - a.epingle) || (b.maj - a.maj)).slice(0, 3);
@@ -9228,7 +9241,7 @@ service cloud.firestore {
         { k:'AUTRE',         ic:'📚', lbl:'Formation / Réunion / CSE' }
     ];
     const AL_DEFAUT = {
-        actif: true, son: 'reveil', snooze: 9,
+        actif: true, son: 'reveil', snooze: 9, badge: 'tout',
         types: { 'MATIN': { reveil: 60, rappel: 30 }, 'APRÈS-MIDI': { reveil: 0, rappel: 45 }, 'NUIT': { reveil: 0, rappel: 60 }, 'POSTE JOURNÉE': { reveil: 75, rappel: 30 }, 'AUTRE': { reveil: 0, rappel: 30 } },
         veille: { actif: true, heure: '20:00' }
     };
@@ -9294,6 +9307,7 @@ service cloud.firestore {
 
     // ── Carte de la colonne gauche ──
     function alRendreCarte() {
+        setTimeout(badgeMaj, 50);
         const box = document.getElementById('al-side'); if (!box) return;
         const c = alCfg();
         if (!c.actif) { box.innerHTML = `<div class="rot-empty">Alarmes désactivées.</div>`; return; }
@@ -9319,6 +9333,7 @@ service cloud.firestore {
         document.getElementById('al-veille-h').value = c.veille.heure;
         document.getElementById('al-son').value = c.son;
         document.getElementById('al-snooze').value = c.snooze;
+        document.getElementById('al-badge').value = c.badge || 'tout';
         alMajNotifEtat();
         alRendreListe();
     }
@@ -9329,6 +9344,7 @@ service cloud.firestore {
         c.veille = { actif: document.getElementById('al-veille').checked, heure: document.getElementById('al-veille-h').value || '20:00' };
         c.son = document.getElementById('al-son').value;
         c.snooze = +document.getElementById('al-snooze').value || 9;
+        c.badge = document.getElementById('al-badge').value;
         alSauverCfg(c);
         alRendreListe(); alRendreCarte();
     }
@@ -9497,6 +9513,75 @@ service cloud.firestore {
         sauver = function() { const r = sOrig.apply(this, arguments); setTimeout(alRendreCarte, 200); return r; };
     });
 
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ PASTILLE DE NOTIFICATION SUR L'ICÔNE (v9.9) ════════════════════════════
+    // Icône installée : API Badging (Windows/Mac/ChromeOS, iPhone/iPad 16.4+, Android selon le lanceur).
+    // Onglet du navigateur : favicon avec pastille + « (n) » dans le titre. En-tête : pastille sur le logo.
+    // ═══════════════════════════════════════════════════════════════════════════
+    let badgeDernier = -1, badgeImg = null;
+    const BADGE_TITRE = document.title.replace(/^\(\d+\+?\)\s*/, '');
+    function badgeCompter() {
+        if (typeof alCfg !== 'function') return 0;
+        const c = alCfg(), mode = c.badge || 'tout';
+        if (mode === 'off') return 0;
+        const lim = Date.now() + 24 * 3600000;
+        let n = c.actif ? alAlarmes(2).filter(a => !a.ignore && a.at <= lim).length : 0;
+        if (mode === 'tout' && typeof notesCharger === 'function') {
+            const auj = fmtLocal(new Date());
+            n += notesCharger().filter(x => !x.archive && x.date === auj && x.type !== 'fiche').length;
+        }
+        return n;
+    }
+    function badgeFavicon(n) {
+        const src = (typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || '';
+        if (!src) return;
+        const dessiner = () => {
+            const c = document.createElement('canvas'); c.width = c.height = 64;
+            const x = c.getContext('2d');
+            x.drawImage(badgeImg, 0, 0, 64, 64);
+            if (n > 0) {
+                const t = n > 99 ? '99+' : String(n), r = t.length > 2 ? 17 : 15;
+                x.fillStyle = '#ef4444'; x.beginPath(); x.arc(64 - r, r, r, 0, Math.PI * 2); x.fill();
+                x.lineWidth = 3; x.strokeStyle = '#ffffff'; x.stroke();
+                x.fillStyle = '#ffffff'; x.font = `bold ${t.length > 2 ? 14 : 19}px Arial, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle';
+                x.fillText(t, 64 - r, r + 1);
+            }
+            let l = document.querySelector('link[rel="icon"]');
+            if (!l) { l = document.createElement('link'); l.rel = 'icon'; document.head.appendChild(l); }
+            l.type = 'image/png'; l.href = c.toDataURL('image/png');
+        };
+        if (badgeImg && badgeImg.complete) return dessiner();
+        badgeImg = new Image(); badgeImg.onload = dessiner; badgeImg.src = src;
+    }
+    function badgeMaj() {
+        let n = 0;
+        try { n = badgeCompter(); } catch(e) {}
+        if (n === badgeDernier) return;
+        badgeDernier = n;
+        // Icône de l'application installée
+        try {
+            if ('setAppBadge' in navigator) { if (n > 0) navigator.setAppBadge(n).catch(() => {}); else navigator.clearAppBadge().catch(() => {}); }
+        } catch(e) {}
+        // Onglet du navigateur
+        document.title = (n > 0 ? `(${n > 99 ? '99+' : n}) ` : '') + BADGE_TITRE;
+        badgeFavicon(n);
+        // Logo de l'en-tête
+        const logo = document.querySelector('.app-logo');
+        if (logo) {
+            let p = logo.querySelector('.app-badge');
+            if (!p) { p = document.createElement('span'); p.className = 'app-badge'; logo.appendChild(p); }
+            p.textContent = n > 99 ? '99+' : n; p.style.display = n > 0 ? '' : 'none';
+            p.title = n > 0 ? `${n} notification${n > 1 ? 's' : ''} en cours` : '';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(badgeMaj, 900);
+        setInterval(badgeMaj, 60000);
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { badgeDernier = -1; badgeMaj(); } });
+        const logo = document.querySelector('.app-logo');
+        if (logo) { logo.style.cursor = 'pointer'; logo.addEventListener('click', () => { if (badgeDernier > 0 && typeof alOuvrir === 'function') alOuvrir(); }); }
+    });
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -9556,7 +9641,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.8';
+const CACHE_NAME = 'planning-pro-v9.9';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
