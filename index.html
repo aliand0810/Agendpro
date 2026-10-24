@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.7</title>
+    <title>Mon Planning Pro v9.8</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -759,6 +759,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .nk-actions button.danger { color:#dc2626; margin-left:auto; }
         .nk-day { position:absolute; top:2px; left:2px; border:none; background:#fef08a; border-radius:5px; font-size:0.6rem; padding:1px 3px; cursor:pointer; z-index:3; line-height:1.2; }
         .tbl-sem td { position:relative; }
+        /* ═══ ANALYSE SÉCURITÉ ═══ */
+        .nk-fi-sel { font-size:1rem !important; padding:13px 12px !important; border-width:2px !important; border-color:var(--primary-light) !important; }
+        .nk-fil { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-bottom:12px; }
+        .nk-fil span { font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:20px; background:var(--hover-row); color:var(--primary); border:1px solid var(--primary-light); }
+        .nk-fil i { font-size:0.6rem; color:var(--text-muted); }
+        .nk-theme { display:inline-block; margin:0 0 4px 4px; font-size:0.62rem; font-weight:800; color:#fff; border-radius:6px; padding:2px 7px; }
+        .nk-new-an { color:#d97706 !important; }
         /* ═══ NOTES : photos, formulaires, PDF ═══ */
         .nk-thumb { position:relative; margin:4px -2px 6px; border-radius:8px; overflow:hidden; max-height:140px; }
         .nk-thumb img { width:100%; max-height:140px; object-fit:cover; display:block; background:rgba(0,0,0,0.06); min-height:40px; }
@@ -1368,6 +1375,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <div style="display:flex; gap:6px;">
                         <button class="rot-add-btn" onclick="notesOuvrir(); noteNouvelle(false)"><i class="fas fa-plus"></i> Note</button>
                         <button class="rot-add-btn" onclick="notesOuvrir(); noteNouvelle(true)"><i class="far fa-check-square"></i> Liste</button>
+                        <button class="rot-add-btn" onclick="notesOuvrir(); nkNouvelleAnalyse()"><i class="fas fa-hard-hat"></i> Analyse</button>
                     </div>
                 </div>
 
@@ -2066,6 +2074,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <div class="nk-new">
                 <button onclick="noteNouvelle(false)"><i class="fas fa-plus"></i> Créer une note…</button>
                 <button onclick="noteNouvelle(true)" title="Nouvelle liste" aria-label="Nouvelle liste"><i class="far fa-check-square"></i></button>
+                <button onclick="nkNouvelleAnalyse()" title="Nouvelle analyse sécurité" aria-label="Nouvelle analyse sécurité" class="nk-new-an"><i class="fas fa-hard-hat"></i></button>
                 <button onclick="notesSetVue('forms')" title="Remplir un formulaire" aria-label="Remplir un formulaire"><i class="fas fa-clipboard-list"></i></button>
             </div>
             <div id="nk-liste"></div>
@@ -8430,6 +8439,7 @@ service cloud.firestore {
             return `<div class="nk-card fiche" style="background:${noteCouleur(n.couleur)}" onclick="ficheVoir('${n.id}')">
                 ${n.epingle ? '<span class="nk-pin">📌</span>' : ''}
                 <div class="nk-fiche-tag"><i class="fas fa-clipboard-list"></i> Fiche</div>
+                ${(() => { const th = (n.reponses || []).find(r => NK_THEME_COULEUR[r.r]); return th ? `<div class="nk-theme" style="background:${NK_THEME_COULEUR[th.r]}">${noteEsc(th.r)}</div>` : ''; })()}
                 <div class="nk-titre">${noteEsc(n.titre)}</div>
                 ${vignette}
                 ${rep.map(r => `<div class="nk-qr"><b>${noteEsc(r.q)}</b> ${noteEsc(String(r.r).slice(0, 60))}</div>`).join('')}
@@ -8647,7 +8657,19 @@ service cloud.firestore {
     // Formulaires : localStorage 'nk_forms_v1' (synchronisé). Une fiche remplie = une note type 'fiche'.
     // ═══════════════════════════════════════════════════════════════════════════
     const NK_FORMS_KEY = 'nk_forms_v1', NK_PH_UP = 'nk_photos_upload';
-    const NK_TYPES_Q = { texte: 'Texte libre', choix: 'Liste de choix', ouinon: 'Oui / Non', date: 'Date', nombre: 'Nombre' };
+    const NK_TYPES_Q = { texte: 'Texte libre', liste: 'Liste déroulante', choix: 'Boutons de choix', ouinon: 'Oui / Non', date: 'Date', nombre: 'Nombre' };
+    const NK_ANALYSE = {
+        id: 'f_analyse', nom: 'Analyse sécurité', couleur: 'jaune',
+        questions: [
+            { id: 'a1', q: 'Thème du sujet', type: 'liste', obligatoire: true, photo: false,
+              options: ['Proposition d\'amélioration', 'Situation dangereuse', 'Incident', 'Accident bénin', 'Accident sans arrêt', 'Accident avec arrêt'] },
+            { id: 'a2', q: 'Risque concerné', type: 'liste', obligatoire: true, photo: false,
+              options: ['Travail en hauteur', 'Engin mobile', 'Conduite automobile', 'Risque électrique', 'Risque lié à la consignation', 'Manutention', 'EPI', 'Ordre et propreté', 'Agent chimique dangereux', 'Ergonomie du poste', 'Bureau', 'Risque machine', 'Risque de chute / glissade', 'Organisation', 'Santé', 'Autres'] },
+            { id: 'a3', q: 'Notes / description', type: 'texte', options: [], obligatoire: false, photo: true },
+            { id: 'a4', q: 'Action proposée / mise en place', type: 'texte', options: [], obligatoire: false, photo: true }
+        ]
+    };
+    const NK_THEME_COULEUR = { 'Proposition d\'amélioration': '#10b981', 'Situation dangereuse': '#f59e0b', 'Incident': '#f97316', 'Accident bénin': '#ef4444', 'Accident sans arrêt': '#dc2626', 'Accident avec arrêt': '#991b1b' };
     const nkPhCache = {};
 
     // ── IndexedDB photos ──
@@ -8784,8 +8806,15 @@ service cloud.firestore {
 
     // ── Modèles de formulaires ──
     function formsCharger() {
-        try { const l = JSON.parse(localStorage.getItem(NK_FORMS_KEY)); if (Array.isArray(l)) return l; } catch(e) {}
-        return [{
+        let l = null;
+        try { l = JSON.parse(localStorage.getItem(NK_FORMS_KEY)); } catch(e) {}
+        if (Array.isArray(l)) {
+            if (!localStorage.getItem('nk_seed_analyse') && !l.some(f => f.id === NK_ANALYSE.id)) { l.unshift(JSON.parse(JSON.stringify(NK_ANALYSE))); formsSauver(l); }
+            localStorage.setItem('nk_seed_analyse', '1');
+            return l;
+        }
+        localStorage.setItem('nk_seed_analyse', '1');
+        return [JSON.parse(JSON.stringify(NK_ANALYSE)), {
             id: 'f_danger', nom: 'Remontée de situation dangereuse', couleur: 'orange',
             questions: [
                 { id: 'q1', q: 'Quel poste de travail ?', type: 'texte', options: [], obligatoire: true, photo: true },
@@ -8843,7 +8872,7 @@ service cloud.firestore {
                 <label><input type="checkbox" ${q.obligatoire ? 'checked' : ''} onchange="formBrouillon.questions[${i}].obligatoire=this.checked"> Obligatoire</label>
                 <label><input type="checkbox" ${q.photo ? 'checked' : ''} onchange="formBrouillon.questions[${i}].photo=this.checked"> 📷 Photo</label>
             </div>
-            ${q.type === 'choix' ? `<input value="${noteEsc((q.options || []).join(', '))}" placeholder="Choix séparés par des virgules : Faible, Moyen, Élevé" oninput="formBrouillon.questions[${i}].options=this.value.split(',').map(s=>s.trim()).filter(Boolean)">` : ''}
+            ${['choix', 'liste'].includes(q.type) ? `<input value="${noteEsc((q.options || []).join(', '))}" placeholder="Choix séparés par des virgules : Faible, Moyen, Élevé" oninput="formBrouillon.questions[${i}].options=this.value.split(',').map(s=>s.trim()).filter(Boolean)">` : ''}
         </div>`).join('');
     }
     function formBouger(i, d) { const q = formBrouillon.questions; [q[i], q[i + d]] = [q[i + d], q[i]]; formRendreQuestions(); }
@@ -8854,7 +8883,7 @@ service cloud.firestore {
         fb.questions = fb.questions.filter(q => q.q.trim());
         if (!fb.nom) { alert('Donnez un nom au formulaire.'); return; }
         if (!fb.questions.length) { alert('Ajoutez au moins une question.'); return; }
-        if (fb.questions.some(q => q.type === 'choix' && !(q.options || []).length)) { alert('Indiquez les choix possibles pour chaque « Liste de choix ».'); return; }
+        if (fb.questions.some(q => ['choix', 'liste'].includes(q.type) && !(q.options || []).length)) { alert('Indiquez les choix possibles pour chaque liste.'); return; }
         const l = formsCharger(), i = l.findIndex(x => x.id === fb.id);
         if (i >= 0) l[i] = fb; else l.push(fb);
         formsSauver(l);
@@ -8874,6 +8903,11 @@ service cloud.firestore {
 
     // ── Remplissage pas à pas ──
     let fiche = null, ficheEtape = 0, ficheEditId = null;
+    function nkNouvelleAnalyse() {
+        const f = formsCharger().find(x => x.id === NK_ANALYSE.id);
+        if (f) ficheDemarrer(f.id);
+        else { notesSetVue('forms'); showToast('Le formulaire « Analyse sécurité » a été supprimé : choisissez un autre formulaire', 'info', 'fa-info-circle'); }
+    }
     function ficheDemarrer(formId, noteId) {
         if (noteId) {
             const n = notesCharger().find(x => x.id === noteId); if (!n) return;
@@ -8909,12 +8943,16 @@ service cloud.firestore {
         } else {
             const r = fiche.reponses[ficheEtape];
             let champ;
-            if (r.type === 'choix') champ = `<div class="nk-choix">${r.options.map(o => `<button type="button" class="${r.r === o ? 'on' : ''}" onclick="fiche.reponses[${ficheEtape}].r=${JSON.stringify(o).replace(/"/g, '&quot;')}; ficheRendre()">${noteEsc(o)}</button>`).join('')}</div>`;
+            if (r.type === 'liste') champ = `<select id="nk-fi-rep" class="nk-fi-sel" onchange="fiche.reponses[${ficheEtape}].r=this.value; ficheRendre()">
+                    <option value="">— Choisir —</option>${r.options.map(o => `<option ${r.r === o ? 'selected' : ''}>${noteEsc(o)}</option>`).join('')}</select>`;
+            else if (r.type === 'choix') champ = `<div class="nk-choix">${r.options.map(o => `<button type="button" class="${r.r === o ? 'on' : ''}" onclick="fiche.reponses[${ficheEtape}].r=${JSON.stringify(o).replace(/"/g, '&quot;')}; ficheRendre()">${noteEsc(o)}</button>`).join('')}</div>`;
             else if (r.type === 'ouinon') champ = `<div class="nk-choix">${['Oui', 'Non'].map(o => `<button type="button" class="${r.r === o ? 'on' : ''}" onclick="fiche.reponses[${ficheEtape}].r='${o}'; ficheRendre()">${o}</button>`).join('')}</div>`;
             else if (r.type === 'date') champ = `<input type="date" id="nk-fi-rep" value="${noteEsc(r.r)}" oninput="fiche.reponses[${ficheEtape}].r=this.value">`;
             else if (r.type === 'nombre') champ = `<input type="number" inputmode="decimal" id="nk-fi-rep" value="${noteEsc(r.r)}" oninput="fiche.reponses[${ficheEtape}].r=this.value">`;
             else champ = `<textarea id="nk-fi-rep" rows="4" placeholder="Votre réponse…" oninput="fiche.reponses[${ficheEtape}].r=this.value">${noteEsc(r.r)}</textarea>`;
-            box.innerHTML = `<div class="nk-fi-q">${noteEsc(r.q)}${r.obligatoire ? ' <span class="nk-req">*</span>' : ''}</div>
+            const avant = fiche.reponses.slice(0, ficheEtape).filter(x => ['liste', 'choix', 'ouinon'].includes(x.type) && x.r);
+            const fil = avant.length ? `<div class="nk-fil">${avant.map(x => `<span style="${NK_THEME_COULEUR[x.r] ? `background:${NK_THEME_COULEUR[x.r]};color:#fff;border-color:transparent` : ''}">${noteEsc(x.r)}</span>`).join('<i class="fas fa-chevron-right"></i>')}</div>` : '';
+            box.innerHTML = `${fil}<div class="nk-fi-q">${noteEsc(r.q)}${r.obligatoire ? ' <span class="nk-req">*</span>' : ''}</div>
                 ${champ}
                 ${r.photo ? `<div class="nk-ph-grid">${photosMiniHTML(r.photos, 'fichePhotoRetirer')}</div>${photosBoutonsHTML('fichePhotoAjout')}` : ''}`;
             photosHydrater(box);
@@ -9518,7 +9556,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.7';
+const CACHE_NAME = 'planning-pro-v9.8';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
