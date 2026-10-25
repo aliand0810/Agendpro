@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v9.9</title>
+    <title>Mon Planning Pro v10.1</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -644,6 +644,69 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         @keyframes appBadgePop { from { transform:scale(0.4); } to { transform:scale(1); } }
         .al-badge-row { display:flex; flex-direction:column; gap:4px; margin-top:12px; font-size:0.78rem; font-weight:700; color:var(--text-main); }
         .al-badge-row select { margin:0 !important; padding:8px !important; font-size:0.85rem !important; }
+
+        /* ═══ PAIE — TABLEAU DE BORD ═══ */
+        .paie-chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:10px; scrollbar-width:none; }
+        .paie-chip { flex:none; border:1px solid var(--border-color); background:var(--bg-app); color:var(--text-main); border-radius:20px; padding:7px 13px; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .paie-chip.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+        .paie-dates { display:flex; gap:8px; align-items:flex-end; margin-bottom:14px; }
+        .paie-dates label { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
+        .paie-dates small { font-size:0.65rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; }
+        .paie-dates input { margin:0 !important; padding:9px !important; font-size:0.85rem !important; }
+        .paie-recalc { flex:none; width:42px; height:40px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-app); color:var(--primary); cursor:pointer; }
+        .paie-hero { background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; border-radius:16px; padding:18px 16px 14px; text-align:center; box-shadow:0 8px 24px rgba(79,70,229,0.25); }
+        .paie-hero-l { font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; opacity:0.85; }
+        .paie-hero-v { font-size:2.4rem; font-weight:900; line-height:1.15; font-family:'DM Mono',monospace; letter-spacing:-0.02em; }
+        .paie-hero-s { font-size:0.75rem; opacity:0.85; margin-top:2px; }
+        .paie-flow { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:12px; background:rgba(255,255,255,0.13); border-radius:12px; padding:8px 6px; }
+        .paie-flow div { display:flex; flex-direction:column; min-width:0; }
+        .paie-flow small { font-size:0.58rem; font-weight:700; opacity:0.85; text-transform:uppercase; white-space:nowrap; }
+        .paie-flow b { font-size:0.85rem; font-family:'DM Mono',monospace; white-space:nowrap; }
+        .paie-flow span { font-weight:900; opacity:0.7; }
+        .paie-cmp { margin-top:10px; font-size:0.72rem; font-weight:700; display:inline-block; padding:4px 10px; border-radius:20px; background:rgba(255,255,255,0.18); }
+        .paie-kpis { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px; }
+        @media (min-width:700px) { .paie-kpis { grid-template-columns:repeat(4,1fr); } }
+        .paie-kpi { background:var(--bg-app); border:1px solid var(--border-color); border-radius:12px; padding:10px 12px; display:flex; flex-direction:column; gap:2px; }
+        .paie-kpi small { font-size:0.62rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; }
+        .paie-kpi b { font-size:1.15rem; font-weight:900; color:var(--text-main); font-family:'DM Mono',monospace; }
+        .paie-kpi em { font-size:0.68rem; font-style:normal; color:var(--text-muted); }
+        .paie-card { background:var(--bg-app); border:1px solid var(--border-color); border-radius:14px; padding:12px 14px; margin-top:12px; }
+        .paie-card-t { font-size:0.72rem; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+        .paie-bar { display:flex; height:14px; border-radius:7px; overflow:hidden; background:var(--border-color); gap:2px; }
+        .paie-bar i { display:block; min-width:3px; }
+        .paie-leg { display:grid; grid-template-columns:1fr; gap:5px; margin-top:10px; }
+        @media (min-width:700px) { .paie-leg { grid-template-columns:1fr 1fr; column-gap:20px; } }
+        .paie-leg div { display:flex; align-items:center; gap:8px; font-size:0.8rem; color:var(--text-main); }
+        .paie-leg span { width:10px; height:10px; border-radius:3px; flex:none; }
+        .paie-leg b { margin-left:auto; font-family:'DM Mono',monospace; font-size:0.8rem; }
+        .paie-leg em { font-style:normal; color:var(--text-muted); font-size:0.7rem; width:34px; text-align:right; }
+        .paie-leg-in { font-size:0.65rem; color:var(--text-muted); text-transform:none; font-weight:700; display:flex; align-items:center; gap:5px; }
+        .paie-leg-in i.c { width:14px; border-top:2px dashed #ef4444; display:inline-block; }
+        .paie-weeks { display:flex; gap:6px; align-items:flex-end; overflow-x:auto; padding-top:16px; }
+        .paie-wk { flex:1; min-width:30px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+        .paie-wk-bar { position:relative; width:100%; height:110px; display:flex; align-items:flex-end; justify-content:center; }
+        .paie-wk-bar b { position:relative; width:70%; max-width:34px; background:var(--primary); border-radius:6px 6px 2px 2px; min-height:2px; }
+        .paie-wk-bar b.over { background:#f59e0b; }
+        .paie-wk-bar b em { position:absolute; top:-15px; left:50%; transform:translateX(-50%); font-size:0.62rem; font-style:normal; font-weight:800; color:var(--text-main); white-space:nowrap; }
+        .paie-wk-bar i.c { position:absolute; left:0; right:0; border-top:2px dashed #ef4444; z-index:1; pointer-events:none; }
+        .paie-wk small { font-size:0.62rem; font-weight:700; color:var(--text-muted); }
+        .paie-tbl { width:100%; border-collapse:collapse; font-size:0.8rem; }
+        .paie-tbl th { font-size:0.6rem; text-transform:uppercase; color:var(--text-muted); font-weight:800; text-align:right; padding:4px 4px 6px; border-bottom:1px solid var(--border-color); }
+        .paie-tbl th:first-child, .paie-tbl td:first-child { text-align:left; }
+        .paie-tbl td { padding:7px 4px; text-align:right; color:var(--text-main); border-bottom:1px solid var(--border-color); font-family:'DM Mono',monospace; font-size:0.75rem; }
+        .paie-tbl td:first-child { font-family:'DM Sans',sans-serif; font-size:0.8rem; }
+        .paie-tbl td:not(:first-child) { white-space:nowrap; }
+        @media (max-width:500px) { .paie-tbl th:nth-child(3), .paie-tbl td:nth-child(3) { display:none; } .paie-tbl td:first-child { font-size:0.76rem; } }
+        .paie-tbl tfoot td { font-weight:900; border-bottom:none; }
+        .paie-tbl tfoot tr:first-child td { border-top:2px solid var(--text-main); }
+        .paie-tbl tfoot tr.neg td { color:#ef4444; font-weight:700; }
+        .paie-tbl tfoot tr.net td { color:var(--primary); font-size:0.95rem; }
+        .paie-pt { display:flex; gap:10px; align-items:flex-start; font-size:0.8rem; line-height:1.4; padding:9px 10px; border-radius:10px; margin-top:6px; color:var(--text-main); border:1px solid var(--border-color); background:var(--bg-card); }
+        .paie-pt.warn { border-color:#fcd34d; background:rgba(245,158,11,0.09); }
+        .paie-pt.ko { border-color:#fca5a5; background:rgba(239,68,68,0.09); }
+        .paie-pt.ok { border-color:#86efac; background:rgba(16,185,129,0.09); }
+        .paie-lnk { border:none; background:var(--primary); color:#fff; border-radius:6px; padding:3px 9px; font-size:0.72rem; font-weight:700; cursor:pointer; margin-left:4px; font-family:'DM Sans',sans-serif; }
+        .paie-note { font-size:0.7rem; color:var(--text-muted); text-align:center; margin:10px 0 0; }
         /* ═══ ALARMES ═══ */
         .al-row { display:flex; align-items:center; gap:10px; padding:7px 4px; border-top:1px solid var(--border-color); }
         #al-side .al-row:first-child, .al-day + .al-row { border-top:none; }
@@ -1505,17 +1568,27 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
             </div>
 
-            <small>Du :</small> <input type="date" id="paie-debut" style="margin-bottom:10px;">
-            <small>Au :</small> <input type="date" id="paie-fin">
-            <button onclick="majBandeauPaieTaux(); calculerPaie();" class="btn btn-paye" style="margin-top:20px;">CALCULER LA PAIE</button>
-            
-            <div style="text-align: center; margin-top:20px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+            <div class="paie-chips">
+                <button class="paie-chip on" data-p="paie" onclick="paiePeriode('paie')">Période de paie</button>
+                <button class="paie-chip" data-p="mois" onclick="paiePeriode('mois')">Ce mois</button>
+                <button class="paie-chip" data-p="prec" onclick="paiePeriode('prec')">Mois dernier</button>
+                <button class="paie-chip" data-p="annee" onclick="paiePeriode('annee')">Année</button>
+            </div>
+            <div class="paie-dates">
+                <label><small>Du</small><input type="date" id="paie-debut" onchange="document.querySelectorAll('.paie-chip').forEach(c=>c.classList.remove('on')); paieAuto()"></label>
+                <label><small>Au</small><input type="date" id="paie-fin" onchange="document.querySelectorAll('.paie-chip').forEach(c=>c.classList.remove('on')); paieAuto()"></label>
+                <button onclick="majBandeauPaieTaux(); calculerPaie();" class="paie-recalc" title="Recalculer" aria-label="Recalculer"><i class="fas fa-sync-alt"></i></button>
+            </div>
+            <div id="paie-dash"></div>
+
+            <div style="display:none">
                 <div id="paie-salaire-net" style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">0.00 €</div>
                 <div id="paie-details-maj" style="font-size: 0.85rem; font-weight: 600; color: #10b981; margin-top: 5px;">Base: 0.00 €</div>
                 <small id="paie-h-total" style="font-weight: bold; color: #64748b; display: block; margin-top: 5px;">0 h (Travail + Absences payées)</small>
             </div>
 
             <div style="margin-top: 20px;">
+                <div class="paie-card-t" style="margin:6px 0 8px">📊 Compteurs détaillés</div>
                 <div class="paie-toolbar">
                     <span><i class="fas fa-info-circle"></i> Cliquez sur une ligne pour voir le détail des jours</span>
                     <div>
@@ -2280,6 +2353,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
    <div id="modal-config" class="modal">
     <h3><i class="fas fa-cog"></i> Réglages</h3>
 
+    <!-- PARTAGER L'APPLICATION -->
+    <div class="zone-card" style="margin-bottom:16px;">
+        <span class="zone-title">📲 PARTAGER MON PLANNING PRO</span>
+        <p style="font-size:0.75rem; color:#64748b; margin-bottom:10px;">Faites scanner ce QR code pour ouvrir l'application sur un autre téléphone ou ordinateur, puis l'installer sur l'écran d'accueil.</p>
+        <div class="fb-qr-box"><canvas id="app-qr-canvas"></canvas></div>
+        <div class="fb-btn-row" style="margin-top:8px;">
+            <button class="btn btn-paye" onclick="appQrPartager()"><i class="fas fa-share-alt"></i> Partager</button>
+            <button class="btn btn-outline" onclick="appQrTelecharger()"><i class="fas fa-download"></i> Télécharger</button>
+        </div>
+        <button class="btn btn-outline" onclick="fbCopier(appLienPartage(), 'Lien de l\'application copié')"><i class="fas fa-link"></i> Copier le lien</button>
+    </div>
+
     <!-- COMPTES & FIREBASE -->
     <div class="zone-card" style="margin-bottom:16px;">
         <span class="zone-title">☁️ COMPTES &amp; FIREBASE</span>
@@ -2371,9 +2456,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         </div>
     </div>
 
-    <hr style="margin: 4px 0 20px 0; border: 0; border-top: 1px solid var(--border-color);">
-    
-    <div class="zone-card">
+    <div class="zone-card" id="zone-sauvegarde" style="display:none;">
         <span class="zone-title">SAUVEGARDE & RESTAURATION</span>
         <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 10px;">Exportez vos données dans un fichier pour les mettre en sécurité ou les transférer.</p>
         
@@ -2537,28 +2620,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             </div>
             <div id="gdrive-sync-info" style="display:none; margin-top:8px; font-size:0.7rem; color:var(--text-muted); background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:6px 10px;">
                 <i class="fas fa-check-circle" style="color:#10b981;"></i> <span id="gdrive-sync-label">Dernière sauvegarde : —</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section PWA & Appareil (système COVO) -->
-    <div class="zone-card" style="margin-top: 16px;">
-        <span class="zone-title">📱 PWA & APPAREIL</span>
-        <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 14px;">Statut de l'application et infos appareil.</p>
-
-        <div style="display:flex;gap:12px;align-items:center;padding:10px 12px;background:var(--bg-app);border:1px solid var(--border-color);border-radius:10px;">
-            <span style="font-size:1.4rem;flex-shrink:0;">⚡</span>
-            <div style="font-size:0.78rem;color:var(--text-muted);">
-                <strong style="color:var(--text-main);display:block;margin-bottom:2px;font-size:0.8rem;">Service Worker</strong>
-                <span id="sw-status-text">Vérification...</span>
-            </div>
-        </div>
-
-        <div style="display:flex;gap:12px;align-items:center;padding:10px 12px;background:var(--bg-app);border:1px solid var(--border-color);border-radius:10px;margin-top:10px;">
-            <span style="font-size:1.4rem;flex-shrink:0;">📲</span>
-            <div style="font-size:0.78rem;color:var(--text-muted);">
-                <strong style="color:var(--text-main);display:block;margin-bottom:2px;font-size:0.8rem;" id="pwa-install-status">Vérification...</strong>
-                <span id="pwa-install-detail">—</span>
             </div>
         </div>
     </div>
@@ -3549,7 +3610,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         let hDim=0, hDimSuppl=0, hFerie=0, hFerieSuppl=0, hFerieDim=0, hFerieDimSuppl=0;
         let hNuit=0, hNuitDim=0, hNuitFerie=0;
         let hAbsences=0, hRepasPaye=0, nbRepasPaye=0, nbRepasNonPaye=0;
-        let nbCP=0, nbRTT=0, nbReposNuit=0;
+        let nbCP=0, nbRTT=0, nbReposNuit=0, hActivites=0;
 
         calendar.getEvents().forEach(e => {
             const dateS = e.startStr.split('T')[0];
@@ -3557,6 +3618,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const p = e.extendedProps;
             const isTravail = TRAVAIL_TYPES.includes(p.type);
             const h = parseFloat(p.hPayees || 0);
+            if (soldes.paieActivites && (p.type === 'RÉUNION' || (p.type || '').startsWith('CSE'))) { hActivites += h; return; }
 
             if (!isTravail) {
                 if (p.type === 'CP')           nbCP++;
@@ -3637,6 +3699,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             { label: '⭐📅➕ Férié+Dim.+Suppl.',                                   h: hFerieDimSuppl, tx: txFerieDimSuppl },
             { label: '🌙📅 Nuit+Dim.',                                             h: hNuitDim,       tx: txNuitDim },
             { label: '🌙⭐ Nuit+Férié',                                            h: hNuitFerie,     tx: txNuitFerie },
+            { label: '🗣️ Réunion / CSE',                                           h: hActivites,     tx: txBase },
             { label: '🏖️ Absences payées (CP/RTT/Repos)',                          h: hAbsences,      tx: txBase },
         ];
         const lignes = rawLignes.filter(l => l.h > 0);
@@ -4086,8 +4149,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         document.getElementById('paie-salaire-net').innerText = pr.salaireTotal.toFixed(2) + " €";
         const hAbs = pr.lignes.find(l => l.label.startsWith('🏖️'));
+        const hTrav = pr.lignes.reduce((t, l) => t + l.h, 0) - (hAbs ? hAbs.h : 0);
         document.getElementById('paie-h-total').innerText =
-            totalHeures.toFixed(1) + " h travaillées" + (hAbs ? " + " + hAbs.h + " h absences payées" : "");
+            hTrav.toFixed(1) + " h travaillées" + (hAbs ? " + " + hAbs.h + " h absences payées" : "");
+        try { paieDashboard(d, f); } catch (e) { console.error('paieDashboard', e); }
 
         // ── Ligne de détail ──
         const parts = pr.lignes.map(l => `${l.label} : ${(l.h * l.tx).toFixed(2)} €`);
@@ -4232,6 +4297,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         if (id === 'modal-config') {
             loadInfoPrefs();
             if (typeof plagesRendre === 'function') plagesRendre();
+            setTimeout(() => { if (typeof appQrRendre === 'function') appQrRendre(); }, 30);
             const cfg = JSON.parse(localStorage.getItem('autoBackupCfg') || '{"freq":"weekly","enabled":true}');
             const sel = document.getElementById('cfg-backup-freq');
             if (sel) sel.value = cfg.enabled ? cfg.freq : 'disabled';
@@ -4765,6 +4831,8 @@ function selectAct(btn, val) {
             const periode = calculerPeriode20au20();
             document.getElementById('paie-debut').value = periode.debut;
             document.getElementById('paie-fin').value = periode.fin;
+            document.querySelectorAll('.paie-chip').forEach(c => c.classList.toggle('on', c.dataset.p === 'paie'));
+            setTimeout(() => { try { calculerPaie(); } catch (e) { console.error(e); } }, 80);
         }
         if(id === 'tab-dirt') {
             const periode = calculerPeriode20au20();
@@ -5556,7 +5624,7 @@ function selectAct(btn, val) {
         sv('cfg2-salaire-brut',   s.salaireBrut   || 2500);
         sv('cfg2-taux-horaire',   tauxHoraire);
         sv('cfg2-heures-hebdo',   s.heuresSemaine || 35);
-        sv('cfg2-cotisations',    s.cotisations   || 22);
+        sv('cfg2-cotisations',    s.cotisations   ?? 22);
         sv('cfg2-prime',          s.prime         ?? 0);
 
         // Majorations : lire les nouveaux noms ET les anciens pour rétro-compatibilité
@@ -5617,7 +5685,7 @@ function selectAct(btn, val) {
             tauxHoraire:    tauxHoraire,   // alias Écran 2
             salaireBrut:    gv('cfg2-salaire-brut')  || existingSoldes.salaireBrut  || 2500,
             heuresSemaine:  heuresSem,
-            cotisations:    gv('cfg2-cotisations')   || existingSoldes.cotisations  || 22,
+            cotisations:    !isNaN(gv('cfg2-cotisations')) ? gv('cfg2-cotisations') : (existingSoldes.cotisations ?? 22),
             prime:          gv('cfg2-prime')          ?? (existingSoldes.prime       ?? 0),
             // ─── Majorations (noms courts = feuille de paie) ───
             majDimanche:    majDim,        // utilisé par calculerPaie
@@ -5745,9 +5813,9 @@ function selectAct(btn, val) {
     function majBandeauPaieTaux() {
         const s = JSON.parse(localStorage.getItem('soldes_v5') || '{}');
         const taux = s.taux || s.tauxHoraire || 0;
-        const dim   = s.majDimanche ?? 20;
-        const nuit  = s.majNuit     ?? 15;
-        const ferie = s.majFerie    ?? 25;
+        const dim   = s.majDimanche ?? 22;
+        const nuit  = s.majNuit     ?? 0;
+        const ferie = s.majFerie    ?? 100;
         const suppl = s.majSuppl    ?? 25;
         const hSem  = s.heuresSemaine || 35;
 
@@ -9582,6 +9650,199 @@ service cloud.firestore {
         const logo = document.querySelector('.app-logo');
         if (logo) { logo.style.cursor = 'pointer'; logo.addEventListener('click', () => { if (badgeDernier > 0 && typeof alOuvrir === 'function') alOuvrir(); }); }
     });
+
+    // ═══ PARTAGE DE L'APPLICATION PAR QR CODE (v10.0) ═══
+    function appLienPartage() {
+        // Avec la configuration Firebase si elle n'est pas fournie par Licence Pro : l'appareil scanné arrive directement sur la connexion
+        try { if (typeof fbGetConfig === 'function' && fbGetConfig() && localStorage.getItem('fb_cfg_source') !== 'licence') return fbLienClients(); } catch(e) {}
+        return location.origin + location.pathname;
+    }
+    function appQrRendre() {
+        const cv = document.getElementById('app-qr-canvas'); if (!cv || typeof fbDessinerQR !== 'function') return;
+        try { fbDessinerQR(cv, appLienPartage(), 'Mon Planning Pro', 'Scannez pour ouvrir l\'application'); } catch(e) {}
+    }
+    function appQrTelecharger() {
+        appQrRendre();
+        const a = document.createElement('a'); a.href = document.getElementById('app-qr-canvas').toDataURL('image/png'); a.download = 'mon_planning_pro_qr.png';
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+    async function appQrPartager() {
+        appQrRendre();
+        const cv = document.getElementById('app-qr-canvas'), lien = appLienPartage();
+        try {
+            const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+            const f = new File([blob], 'mon_planning_pro_qr.png', { type: 'image/png' });
+            const data = { title: 'Mon Planning Pro', text: 'Mon Planning Pro — ouvrez ce lien ou scannez le QR code : ' + lien, files: [f] };
+            if (navigator.canShare && navigator.canShare(data)) return await navigator.share(data);
+            if (navigator.share) return await navigator.share({ title: 'Mon Planning Pro', text: 'Mon Planning Pro', url: lien });
+        } catch(e) { if (e && e.name === 'AbortError') return; }
+        fbCopier(lien, 'Lien de l\'application copié');
+    }
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ PAIE — TABLEAU DE BORD (v10.1) ═════════════════════════════════════════
+    // Brut → cotisations → net estimé, composition, semaines vs contrat, comparaison, points d'attention.
+    // ═══════════════════════════════════════════════════════════════════════════
+    const PAIE_GROUPES = [
+        { k:'base',  lbl:'Heures de base', col:'#4f46e5', test: l => l.label === 'Heures de base' },
+        { k:'nuit',  lbl:'Nuit',           col:'#64748b', test: l => l.label.includes('Nuit') && !l.label.includes('Suppl') },
+        { k:'suppl', lbl:'Supplémentaires',col:'#f59e0b', test: l => l.label.includes('Suppl') },
+        { k:'dim',   lbl:'Dimanche',       col:'#0ea5e9', test: l => l.label.includes('Dim') },
+        { k:'ferie', lbl:'Férié',          col:'#7c3aed', test: l => l.label.includes('Férié') },
+        { k:'abs',   lbl:'Absences payées',col:'#10b981', test: l => l.label.startsWith('🏖️') },
+        { k:'act',   lbl:'Réunion / CSE',  col:'#06b6d4', test: l => l.label.startsWith('🗣️') }
+    ];
+    const paieEur = v => (Math.round(v * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+    const paieH = v => (Math.round(v * 10) / 10).toLocaleString('fr-FR') + ' h';
+    function paieJours(d, f) { const [a, b, c] = d.split('-').map(Number), [x, y, z] = f.split('-').map(Number); return Math.round((new Date(x, y - 1, z) - new Date(a, b - 1, c)) / 86400000) + 1; }
+    function paieDecaler(ds, n) { const [y, m, d] = ds.split('-').map(Number); return fmtLocal(new Date(y, m - 1, d + n)); }
+
+    // Brut / net à partir du calcul détaillé
+    function paieSynthese(d, f) {
+        const pr = _calculerPaieComplete(d, f);
+        const jours = paieJours(d, f);
+        const primeM = parseFloat(soldes.prime) || 0;
+        const prime = primeM ? (jours >= 28 && jours <= 31 ? primeM : primeM * jours / 30.44) : 0;
+        const brut = pr.salaireTotal + prime;
+        const pctCot = (soldes.cotisations !== undefined && soldes.cotisations !== '' ? parseFloat(soldes.cotisations) : 22) / 100;
+        const cotis = brut * pctCot;
+        const hAbs = (pr.lignes.find(l => l.label.startsWith('🏖️')) || {}).h || 0;
+        const hPayees = pr.lignes.reduce((s, l) => s + l.h, 0);
+        const hTravail = hPayees - hAbs;
+        const base = pr.lignes.reduce((s, l) => s + l.h * parseFloat(soldes.taux || 0), 0);
+        const majorations = pr.lignes.reduce((s, l) => s + l.h * l.tx, 0) - base;
+        return { pr, jours, prime, brut, cotis, pctCot, net: brut - cotis, hAbs, hPayees, hTravail, majorations };
+    }
+    // Heures par semaine (travail payé) sur la période
+    function paieSemaines(d, f) {
+        const TRAV = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.','FORMATION'];
+        const avecAct = !!soldes.paieActivites;
+        const sem = {};
+        calendar.getEvents().forEach(e => {
+            const ds = e.startStr.split('T')[0]; if (ds < d || ds > f) return;
+            const p = e.extendedProps || {}, t = p.type || '';
+            const estAct = t === 'RÉUNION' || t.startsWith('CSE');
+            if (!TRAV.includes(t) && !(avecAct && estAct)) return;
+            const h = parseFloat(p.hPayees || 0); if (!h) return;
+            const l = tbLundi(rotParse(ds)), k = fmtLocal(l);
+            sem[k] = sem[k] || { lundi: l, h: 0, suppl: 0 };
+            sem[k].h += h; if (t.includes('SUPPL')) sem[k].suppl += h;
+        });
+        return Object.values(sem).sort((a, b) => a.lundi - b.lundi);
+    }
+    function paieActivitesNonComptees(d, f) {
+        if (soldes.paieActivites) return 0;
+        let h = 0;
+        calendar.getEvents().forEach(e => { const ds = e.startStr.split('T')[0]; const t = (e.extendedProps || {}).type || ''; if (ds >= d && ds <= f && (t === 'RÉUNION' || t.startsWith('CSE'))) h += parseFloat(e.extendedProps.hPayees || 0); });
+        return h;
+    }
+
+    function paieDashboard(d, f) {
+        const box = document.getElementById('paie-dash'); if (!box) return;
+        const S = paieSynthese(d, f), pr = S.pr;
+        const taux = parseFloat(soldes.taux || 0), contratSem = parseFloat(soldes.heuresSemaine || 35);
+        const contratPer = contratSem * S.jours / 7;
+        // Période précédente de même durée
+        const pf = paieDecaler(d, -1), pd = paieDecaler(pf, -(S.jours - 1));
+        const P = paieSynthese(pd, pf);
+        const delta = S.net - P.net, dH = S.hTravail - P.hTravail;
+        const fl = v => v > 0.005 ? '▲' : v < -0.005 ? '▼' : '=';
+
+        // Composition du brut
+        const groupes = PAIE_GROUPES.map(g => ({ ...g, v: pr.lignes.filter(g.test).reduce((s, l) => s + l.h * l.tx, 0) })).filter(g => g.v > 0.005);
+        if (pr.hRepasPaye > 0) groupes.push({ k:'repas', lbl:'Repas payés', col:'#f97316', v: pr.hRepasPaye });
+        if (S.prime > 0) groupes.push({ k:'prime', lbl:'Prime fixe', col:'#ec4899', v: S.prime });
+        const totG = groupes.reduce((s, g) => s + g.v, 0) || 1;
+
+        // Semaines
+        const sems = paieSemaines(d, f);
+        const maxH = Math.max(contratSem * 1.25, ...sems.map(s => s.h), 1);
+
+        // Points d'attention
+        const pts = [];
+        if (!taux) pts.push(['ko', '⚠️', 'Taux horaire non défini : renseignez-le dans l\'onglet <b>Taux</b> pour obtenir un montant.']);
+        sems.filter(s => s.h - s.suppl > contratSem + 0.01).forEach(s => {
+            const ex = s.h - s.suppl - contratSem;
+            pts.push(['warn', '⏱️', `Semaine ${tbNumSem(s.lundi)} : <b>${paieH(s.h)}</b> travaillées, soit <b>${paieH(ex)}</b> au-delà de ${contratSem} h hors postes « Suppl. ». Ces heures sont payées au taux normal : vérifiez si elles devraient être majorées.`]);
+        });
+        const hAct = paieActivitesNonComptees(d, f);
+        if (hAct > 0) pts.push(['info', '🗣️', `<b>${paieH(hAct)}</b> de réunion / CSE ne sont pas comptées dans la paie. <button class="paie-lnk" onclick="paieBasculerActivites(true)">Les inclure</button>`]);
+        if (soldes.paieActivites) pts.push(['info', '🗣️', `Les heures de réunion / CSE sont incluses au taux de base. <button class="paie-lnk" onclick="paieBasculerActivites(false)">Ne plus les inclure</button>`]);
+        if (pr.nbRepasNonPaye > 0) pts.push(['info', '🍽️', `${pr.nbRepasNonPaye} pause(s) repas non payée(s), déjà déduite(s) du temps payé.`]);
+        if (d.slice(8) === f.slice(8) && S.jours > 27) pts.push(['info', '📅', `La période commence et finit le ${parseInt(d.slice(8))} : ce jour est compté dans deux périodes de paie consécutives.`]);
+        if (!pts.length) pts.push(['ok', '✅', 'Rien à signaler sur cette période.']);
+
+        box.innerHTML = `
+        <div class="paie-hero">
+            <div class="paie-hero-l">Net estimé</div>
+            <div class="paie-hero-v">${paieEur(S.net)}</div>
+            <div class="paie-hero-s">${new Date(d + 'T12:00').toLocaleDateString('fr-FR', { day:'numeric', month:'short' })} → ${new Date(f + 'T12:00').toLocaleDateString('fr-FR', { day:'numeric', month:'short', year:'numeric' })} · ${S.jours} jours</div>
+            <div class="paie-flow">
+                <div><small>Brut</small><b>${paieEur(S.brut)}</b></div>
+                <span>−</span>
+                <div><small>Cotisations ${Math.round(S.pctCot * 1000) / 10} %</small><b>${paieEur(S.cotis)}</b></div>
+                <span>=</span>
+                <div><small>Net</small><b>${paieEur(S.net)}</b></div>
+            </div>
+            <div class="paie-cmp ${delta >= 0 ? 'up' : 'down'}">${fl(delta)} ${paieEur(Math.abs(delta))} · ${fl(dH)} ${paieH(Math.abs(dH))} par rapport à la période précédente</div>
+        </div>
+        <div class="paie-kpis">
+            <div class="paie-kpi"><small>Heures travaillées</small><b>${paieH(S.hTravail)}</b><em>contrat ≈ ${paieH(contratPer)}</em></div>
+            <div class="paie-kpi"><small>Absences payées</small><b>${paieH(S.hAbs)}</b><em>CP · RTT · repos</em></div>
+            <div class="paie-kpi"><small>Majorations</small><b>${paieEur(S.majorations)}</b><em>${S.brut ? Math.round(S.majorations / S.brut * 100) : 0} % du brut</em></div>
+            <div class="paie-kpi"><small>Taux moyen</small><b>${S.hPayees ? (S.pr.salaireTotal / S.hPayees).toFixed(2).replace('.', ',') + ' €/h' : '—'}</b><em>base ${taux ? taux.toFixed(2).replace('.', ',') : '—'} €/h</em></div>
+        </div>
+        <div class="paie-card">
+            <div class="paie-card-t">Composition du brut</div>
+            <div class="paie-bar">${groupes.map(g => `<i style="width:${g.v / totG * 100}%;background:${g.col}" title="${g.lbl} : ${paieEur(g.v)}"></i>`).join('')}</div>
+            <div class="paie-leg">${groupes.map(g => `<div><span style="background:${g.col}"></span>${g.lbl}<b>${paieEur(g.v)}</b><em>${Math.round(g.v / totG * 100)} %</em></div>`).join('') || '<div class="rot-empty">Aucune heure payée sur la période.</div>'}</div>
+        </div>
+        <div class="paie-card">
+            <div class="paie-card-t">Heures par semaine <span class="paie-leg-in"><i class="c"></i>contrat ${contratSem} h</span></div>
+            ${sems.length ? `<div class="paie-weeks">${sems.map(s => {
+                const over = s.h > contratSem + 0.01;
+                return `<div class="paie-wk"><div class="paie-wk-bar"><i class="c" style="bottom:${contratSem / maxH * 100}%"></i>
+                    <b class="${over ? 'over' : ''}" style="height:${s.h / maxH * 100}%"><em>${Math.round(s.h * 10) / 10}</em></b></div><small>S${tbNumSem(s.lundi)}</small></div>`;
+            }).join('')}</div>` : '<div class="rot-empty">Aucun poste payé sur la période.</div>'}
+        </div>
+        <div class="paie-card">
+            <div class="paie-card-t">Détail du calcul</div>
+            <table class="paie-tbl"><thead><tr><th>Ligne</th><th>Heures</th><th>Taux</th><th>Montant</th></tr></thead><tbody>
+                ${pr.lignes.map(l => `<tr><td>${l.label}</td><td>${paieH(l.h)}</td><td>${l.tx.toFixed(2).replace('.', ',')} €</td><td>${paieEur(l.h * l.tx)}</td></tr>`).join('')}
+                ${pr.hRepasPaye > 0 ? `<tr><td>🍽️ Repas payés (${pr.nbRepasPaye}×)</td><td>—</td><td>—</td><td>${paieEur(pr.hRepasPaye)}</td></tr>` : ''}
+                ${S.prime > 0 ? `<tr><td>🎁 Prime mensuelle fixe${S.jours < 28 || S.jours > 31 ? ' (au prorata)' : ''}</td><td>—</td><td>—</td><td>${paieEur(S.prime)}</td></tr>` : ''}
+            </tbody><tfoot>
+                <tr><td>Brut</td><td>${paieH(S.hPayees)}</td><td></td><td>${paieEur(S.brut)}</td></tr>
+                <tr class="neg"><td>Cotisations (${Math.round(S.pctCot * 1000) / 10} %)</td><td></td><td></td><td>− ${paieEur(S.cotis)}</td></tr>
+                <tr class="net"><td>Net estimé</td><td></td><td></td><td>${paieEur(S.net)}</td></tr>
+            </tfoot></table>
+        </div>
+        <div class="paie-card">
+            <div class="paie-card-t">💡 Points d'attention</div>
+            ${pts.map(([c, ic, t]) => `<div class="paie-pt ${c}"><span>${ic}</span><div>${t}</div></div>`).join('')}
+        </div>
+        <p class="paie-note">Estimation indicative : le taux de cotisations est une moyenne (réglable dans <b>Taux</b>). Votre bulletin de paie fait foi.</p>`;
+    }
+    function paieBasculerActivites(on) {
+        soldes.paieActivites = !!on;
+        localStorage.setItem('soldes_v5', JSON.stringify(soldes));
+        calculerPaie();
+    }
+    function paiePeriode(cle) {
+        const now = new Date(), y = now.getFullYear(), m = now.getMonth();
+        let a, b;
+        if (cle === 'paie') { const p = calculerPeriode20au20(); a = p.debut; b = p.fin; }
+        else if (cle === 'mois') { a = fmtLocal(new Date(y, m, 1)); b = fmtLocal(new Date(y, m + 1, 0)); }
+        else if (cle === 'prec') { a = fmtLocal(new Date(y, m - 1, 1)); b = fmtLocal(new Date(y, m, 0)); }
+        else if (cle === 'annee') { a = fmtLocal(new Date(y, 0, 1)); b = fmtLocal(new Date(y, 11, 31)); }
+        document.getElementById('paie-debut').value = a; document.getElementById('paie-fin').value = b;
+        document.querySelectorAll('.paie-chip').forEach(c => c.classList.toggle('on', c.dataset.p === cle));
+        majBandeauPaieTaux(); calculerPaie();
+    }
+    function paieAuto() {
+        if (!document.getElementById('paie-debut').value || !document.getElementById('paie-fin').value) return paiePeriode('paie');
+        majBandeauPaieTaux(); calculerPaie();
+    }
+
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -9641,7 +9902,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v9.9';
+const CACHE_NAME = 'planning-pro-v10.1';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
