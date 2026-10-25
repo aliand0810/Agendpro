@@ -9959,11 +9959,26 @@ service cloud.firestore {
         }
         try { await auth2.signOut(); } catch (_) {}
         fbMemoriserLogin(ident, '');
+        // Le client reste connecté sur cet appareil pendant l'attente : dès que l'inscription est acceptée,
+        // l'application s'ouvre toute seule (aucun identifiant à ressaisir). S'il se déconnecte, il se reconnecte normalement.
+        try { if (fbAuth) await fbAuth.signInWithEmailAndPassword(email, pwd); } catch (_) {}
         return { ident, uid, cid };
     };
     // Appelé par licence_check.js quand l'inscription est acceptée (licence installée)
     window.licInscriptionOk = function (ident) {
         if (ident) fbMemoriserLogin(ident, '');
+        // Connexion automatique : session ouverte lors de l'inscription → on recharge le compte (désormais actif)
+        if (fbAuth && fbAuth.currentUser) {
+            showToast('🎉 Inscription acceptée — ouverture de votre espace…', 'success', 'fa-user-check');
+            let essais = 0;
+            const ouvrir = async () => {
+                if (!fbAuth.currentUser) return;
+                await fbSurAuth(fbAuth.currentUser);
+                if (!fbCompte && fbAuth.currentUser && ++essais < 30) setTimeout(ouvrir, 10000); // compte pas encore activé : on réessaie
+            };
+            ouvrir();
+            return;
+        }
         const i = document.getElementById('fb-login-id');
         if (i && ident) { i.value = ident; const p = document.getElementById('fb-login-pwd'); if (p) p.focus(); }
         else if (fbAuth && fbAuth.currentUser) fbSurAuth(fbAuth.currentUser);
