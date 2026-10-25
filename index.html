@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v10.1</title>
+    <title>Mon Planning Pro v10.3</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -301,8 +301,22 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             gap: 2px; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em;
         }
         .nav-item i { font-size: 1.15rem; transition: transform 0.2s; }
+        .bottom-nav { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); box-sizing: border-box; width: 100%; }
+        .nav-item { min-width: 0; overflow: hidden; }
+        .nav-item span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .nav-item-special:not(.active) { background: var(--hover-row) !important; color: var(--primary) !important; box-shadow: inset 0 0 0 1.5px var(--primary-light); }
+        .nav-item-special:not(.active) i { color: var(--primary); }
+        @media (max-width: 380px) {
+            .nav-item { padding: 7px 1px; font-size: 9px; letter-spacing: 0; }
+            .nav-item i { font-size: 17px; }
+            .nav-item-special { margin: 6px 2px; }
+        }
+        @media (max-width: 300px) { .nav-item span { display: none; } .nav-item { padding: 12px 1px; } }
         .nav-item.active { color: var(--primary); }
         .nav-item.active i { transform: translateY(-2px); }
+        input[type="date"], input[type="time"] { min-width: 0; max-width: 100%; box-sizing: border-box; -webkit-appearance: none; appearance: none; }
+        div[style*="display: flex"] > div[style*="flex:1"], div[style*="display:flex"] > div[style*="flex:1"], div[style*="display: flex"] > div[style*="flex: 1"] { min-width: 0; }
+        input[type="date"]::-webkit-date-and-time-value, input[type="time"]::-webkit-date-and-time-value { text-align: left; }
         .nav-item-special { background: var(--primary) !important; color: white !important; margin: 6px 4px; border-radius: 12px; }
         .nav-item-special i { color: white; }
         body.dark-mode .bottom-nav { background: #111827; border-color: #1e2a3a; }
@@ -388,7 +402,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.perm-no-dirt [onclick*="'tab-dirt'"],
         body.perm-no-taux [onclick*="'tab-config-taux'"],
         body.perm-no-impr [onclick*="'modal-print'"],
-        body.perm-no-config [onclick*="'modal-config'"],
+        body.perm-no-config #modal-config .cfg-admin-only,
         body.perm-no-legende #legend-card,
         body.perm-no-roulements .rot-manage-btn,
         body.perm-no-roulements .rot-add-btn,
@@ -408,13 +422,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.perm-no-cse #acc-cse,
         body.perm-no-cse #pacc-cse,
         body.perm-no-cse #pacc-cse-body { display: none !important; }
+        .cfg-limite-info { display:none; font-size:0.78rem; font-weight:600; color:var(--text-muted); background:var(--bg-app); border:1px dashed var(--border-color); border-radius:10px; padding:9px 12px; margin-bottom:14px; }
+        body.perm-no-config .cfg-limite-info { display:block; }
+        body.perm-no-taux .cfg-taux-lien { display:none !important; }
         .fb-perm-grp { flex-basis:100%; grid-column:1 / -1; font-size:0.62rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin:6px 0 2px; }
         .fb-perm-grp:first-child { margin-top:0; }
         .fb-gate { display:none; position:fixed; inset:0; z-index:5000; align-items:center; justify-content:center; padding:16px; background:linear-gradient(135deg,#312e81,#4f46e5 55%,#7c3aed); overflow-y:auto; }
         html.fb-pending .fb-gate { display:flex; }
-        html.fb-pending body > *:not(.fb-gate):not(script) { visibility:hidden; }
+        html.fb-pending body > *:not(.fb-gate):not(script):not(#lic-overlay) { visibility:hidden; }
         body.fb-locked { overflow:hidden; }
-        body.fb-locked > *:not(.fb-gate):not(script):not(.fb-pwd-dialog):not(.toast-container) { visibility:hidden; }
+        body.fb-locked > *:not(.fb-gate):not(script):not(.fb-pwd-dialog):not(.toast-container):not(#lic-overlay) { visibility:hidden; }
         .fb-gate-card { width:100%; max-width:400px; background:var(--bg-card); color:var(--text-main); border-radius:20px; padding:26px 22px; box-shadow:0 20px 60px rgba(0,0,0,0.35); margin:auto; }
         .fb-gate-logo { width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg,var(--primary),#7c3aed); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.4rem; margin:0 auto 8px; }
         .fb-gate-title { text-align:center; font-weight:800; font-size:1rem; color:var(--text-muted); margin-bottom:14px; }
@@ -424,6 +441,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .fb-lbl small { text-transform:none; font-weight:600; letter-spacing:0; }
         .fb-err { background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; border-radius:10px; padding:9px 11px; font-size:0.8rem; margin:10px 0; line-height:1.4; }
         body.dark-mode .fb-err { background:#450a0a; color:#fca5a5; border-color:#7f1d1d; }
+
+        .fb-inscr-box { display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:16px; padding:12px; border:1px dashed var(--primary-light); border-radius:12px; background:var(--hover-row); }
+        .fb-inscr-box span { font-size:0.82rem; font-weight:700; color:var(--text-main); }
+        .fb-inscr-box button { border:none; background:var(--primary); color:#fff; border-radius:9px; padding:8px 14px; font-weight:800; font-size:0.82rem; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .fb-role.wait { background:#fef3c7; color:#b45309; border-color:#fde68a; }
+        .fb-compte-wait { border-color:#fcd34d !important; background:rgba(245,158,11,0.07) !important; }
         .fb-hint { font-size:0.72rem; color:var(--text-muted); margin:10px 0 0; line-height:1.45; }
         .fb-p { font-size:0.8rem; color:var(--text-muted); margin:0 0 10px; line-height:1.5; }
         .fb-link { display:block; margin:14px auto 0; background:none; border:none; color:var(--primary); font-size:0.75rem; font-weight:700; cursor:pointer; text-decoration:underline; font-family:'DM Sans',sans-serif; }
@@ -2353,6 +2376,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
    <div id="modal-config" class="modal">
     <h3><i class="fas fa-cog"></i> Réglages</h3>
 
+    <div class="cfg-limite-info"><i class="fas fa-lock"></i> Certains réglages sont gérés par votre administrateur.</div>
     <!-- PARTAGER L'APPLICATION -->
     <div class="zone-card" style="margin-bottom:16px;">
         <span class="zone-title">📲 PARTAGER MON PLANNING PRO</span>
@@ -2388,7 +2412,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     <input type="hidden" id="cfg-maj-nuit" value="15">
 
     <!-- PLAGES HORAIRES -->
-    <div class="zone-card" style="margin-bottom:16px;">
+    <div class="zone-card cfg-admin-only" style="margin-bottom:16px;">
         <span class="zone-title">🕐 PLAGES HORAIRES PAR DÉFAUT</span>
         <p style="font-size:0.75rem; color:#64748b; margin-bottom:10px;">Horaires proposés automatiquement quand vous ajoutez un poste ou créez un roulement. Laissez vide pour ne rien pré-remplir.</p>
         <div class="plage-axe"><span></span><div><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span></div><span></span></div>
@@ -2405,7 +2429,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div>
 
     <!-- Lien vers l'onglet Taux -->
-    <div style="background:linear-gradient(135deg,#eef2ff,#f5f3ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+    <div class="cfg-admin-only cfg-taux-lien" style="background:linear-gradient(135deg,#eef2ff,#f5f3ff);border:1.5px solid #c4b5fd;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
         <div style="font-size:1.8rem;">🎚️</div>
         <div style="flex:1;">
             <div style="font-weight:800;font-size:0.9rem;color:#4f46e5;margin-bottom:3px;">Taux & Majorations</div>
@@ -2438,7 +2462,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div>
 
     <!-- CYCLE / ROULEMENT -->
-    <div class="zone-card" style="margin-bottom:16px;">
+    <div class="zone-card cfg-admin-only" style="margin-bottom:16px;">
         <span class="zone-title">🔄 CYCLE / ROULEMENT</span>
         <p style="font-size: 0.75rem; color: #64748b; margin-bottom: 12px;">Générez automatiquement votre planning basé sur un cycle de travail récurrent.</p>
         
@@ -2643,17 +2667,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
     <!-- ─── BOTTOM NAVIGATION (mobile) ─── -->
     <nav class="bottom-nav">
-        <button class="nav-item active" id="nav-planning" onclick="switchTabMobile('tab-planning', this)">
-            <i class="fas fa-calendar"></i>
-            <span>Planning</span>
+        <button class="nav-item" id="nav-impr" onclick="ouvrirModale('modal-print')">
+            <i class="fas fa-print"></i>
+            <span>Impr.</span>
         </button>
         <button class="nav-item" id="nav-paie" onclick="switchTabMobile('tab-paie', this)">
             <i class="fas fa-coins"></i>
             <span>Paie</span>
         </button>
-        <button class="nav-item nav-item-special" onclick="ouvrirModale('modal-print')">
-            <i class="fas fa-print"></i>
-            <span>Impr.</span>
+        <button class="nav-item nav-item-special active" id="nav-planning" onclick="switchTabMobile('tab-planning', this)">
+            <i class="fas fa-calendar"></i>
+            <span>Planning</span>
         </button>
         <button class="nav-item" id="nav-dirt" onclick="switchTabMobile('tab-dirt', this)">
             <i class="fas fa-shield-alt"></i>
@@ -7186,7 +7210,7 @@ function selectAct(btn, val) {
         { k:'compteur',   lbl:'🔄 Compteur', grp:'act' },
         { k:'cse',        lbl:'⚖️ CSE',      grp:'act' }
     ];
-    const FB_GARDES = { 'modal-notes':'notes', 'tab-paie':'paie', 'tab-dirt':'dirt', 'tab-config-taux':'taux', 'modal-print':'impr', 'modal-config':'config', 'modal-rotations':'roulements' };
+    const FB_GARDES = { 'modal-notes':'notes', 'tab-paie':'paie', 'tab-dirt':'dirt', 'tab-config-taux':'taux', 'modal-print':'impr', 'modal-rotations':'roulements' };
     const FB_REGLES = `rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
@@ -7206,11 +7230,22 @@ service cloud.firestore {
     }
     match /logins/{ident} {
       allow get: if true;
-      allow write: if isAdmin();
+      allow create: if isAdmin() || (signedIn()
+        && request.resource.data.keys().hasOnly(['email'])
+        && request.resource.data.email == request.auth.token.email);
+      allow update, delete: if isAdmin();
     }
     match /comptes/{cid} {
       allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
-      allow write: if isAdmin();
+      // Inscription en ligne : le client crée son propre compte, désactivé et en attente de validation
+      allow create: if isAdmin() || (signedIn() && cid == 'i_' + request.auth.uid
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.role == 'client'
+        && request.resource.data.actif == false
+        && request.resource.data.attente == true
+        && !('perms' in request.resource.data));
+      allow update, delete: if isAdmin();
     }
     match /plannings/{cid} {
       allow read, write: if isAdmin() || owns(cid);
@@ -7543,6 +7578,7 @@ service cloud.firestore {
                     <label class="fb-remember"><input type="checkbox" id="fb-login-remember"> Mémoriser mon identifiant et mon mot de passe sur cet appareil</label>
                     <button class="btn btn-paye" type="submit" id="fb-login-btn"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
                 </form>
+                <div class="fb-inscr-box"><span>Nouveau client ?</span><button type="button" onclick="fbOuvrirInscription()"><i class="fas fa-user-plus"></i> Créer mon compte</button></div>
                 <p class="fb-hint">Mot de passe oublié ? Demandez à votre administrateur de vous en attribuer un nouveau.</p>`;
             const attente = fbLoginEnAttente(), memo = fbLoginMemorise();
             const pre = attente || memo;
@@ -7595,6 +7631,23 @@ service cloud.firestore {
                 <textarea id="fb-gate-cfg" rows="8" spellcheck="false" class="fb-gate-cfg" placeholder="const firebaseConfig = {\n  apiKey: &quot;AIza…&quot;,\n  authDomain: &quot;…&quot;,\n  projectId: &quot;…&quot;,\n  …\n};"></textarea>
                 <button class="btn btn-paye" onclick="fbGateConnecter()"><i class="fas fa-plug"></i> Connecter Firebase</button>
                 <button class="fb-link" onclick="fbGate('verrou')">Annuler</button>`;
+        } else if (mode === 'attente') {
+            corps.innerHTML = `<div class="fb-lock-ic" style="background:#fef3c7;color:#d97706"><i class="fas fa-hourglass-half"></i></div>
+                <h2>Inscription en attente</h2>
+                <p class="fb-sub">Bonjour <b>${fbEsc(msg || '')}</b>, votre demande d'inscription a bien été reçue. Vous pourrez accéder à votre planning dès que l'administrateur l'aura validée.</p>
+                <button class="btn btn-paye" onclick="location.reload()"><i class="fas fa-redo"></i> Vérifier à nouveau</button>
+                <button class="fb-link" onclick="fbAuth && fbAuth.signOut()">Se connecter avec un autre compte</button>`;
+            clearInterval(window._fbAttenteT);
+            window._fbAttenteT = setInterval(async () => {
+                const u = fbAuth && fbAuth.currentUser;
+                if (!u || document.getElementById('fb-gate').style.display === 'none') return clearInterval(window._fbAttenteT);
+                try { const q = await fbDb.collection('comptes').where('uid', '==', u.uid).limit(1).get(); if (!q.empty && !q.docs[0].data().attente) { clearInterval(window._fbAttenteT); fbSurAuth(u); } } catch (e) {}
+            }, 20000);
+        } else if (mode === 'refuse') {
+            corps.innerHTML = `<div class="fb-lock-ic" style="background:#fee2e2;color:#dc2626"><i class="fas fa-user-times"></i></div>
+                <h2>Inscription refusée</h2>
+                <p class="fb-sub">Votre demande d'inscription n'a pas été acceptée${msg ? ' : <b>' + fbEsc(msg) + '</b>' : '.'}<br>Vous pouvez contacter l'administrateur.</p>
+                <button class="fb-link" onclick="fbAuth && fbAuth.signOut()">Retour à la connexion</button>`;
         } else if (mode === 'erreur') {
             corps.innerHTML = `<h2>Connexion impossible</h2>${err}
                 <button class="btn btn-paye" onclick="location.reload()"><i class="fas fa-redo"></i> Réessayer</button>`;
@@ -7685,6 +7738,8 @@ service cloud.firestore {
             const q = await fbDb.collection('comptes').where('uid', '==', u.uid).limit(1).get();
             if (q.empty) throw new Error('Aucun compte n\'est associé à cet identifiant.');
             const c = Object.assign({ id: q.docs[0].id }, q.docs[0].data());
+            if (c.attente) { fbCompte = null; fbGate('attente', c.nom || c.identifiant); return; }
+            if (c.refuse) { fbCompte = null; fbGate('refuse', c.motif || ''); return; }
             if (c.actif === false) throw new Error('Ce compte est désactivé. Contactez votre administrateur.');
             const attente = fbLoginEnAttente();
             if (attente) {
@@ -7706,6 +7761,7 @@ service cloud.firestore {
             if (await fbSyncDemarrage()) return; // la page se recharge
             fbGate(null); fbMajUserBtn(); fbEtat(fbDirtyList().length ? 'attente' : 'ok');
             rotTraiterPartages();
+            if (c.role === 'admin') setTimeout(fbTraiterInscriptions, 1500);
             setTimeout(() => { if (typeof photosEnvoyer === 'function') photosEnvoyer(); }, 2000);
             showToast(`👋 Bonjour ${c.nom || c.identifiant}`, 'success', 'fa-user-check');
         } catch(e) {
@@ -8010,10 +8066,23 @@ service cloud.firestore {
             fbComptesCache = q.docs.map(d => Object.assign({ id: d.id }, d.data()))
                 .sort((a, b) => (a.role === 'admin' ? -1 : 0) - (b.role === 'admin' ? -1 : 0) || String(a.nom).localeCompare(String(b.nom)));
         } catch(e) { z.innerHTML = `<div class="fb-err">⚠️ ${fbEsc(fbErreur(e))}</div>`; return; }
+        fbComptesCache.sort((a, b) => (b.attente ? 1 : 0) - (a.attente ? 1 : 0));
         const nbClients = fbComptesCache.filter(c => c.role !== 'admin').length;
         document.getElementById('fb-comptes-count').textContent = nbClients ? `${nbClients} client${nbClients > 1 ? 's' : ''}` : '';
         z.innerHTML = fbComptesCache.map(c => {
             const admin = c.role === 'admin', off = c.actif === false;
+            if (c.attente || c.refuse) return `<div class="fb-compte fb-compte-wait">
+                <div class="fb-compte-head">
+                    <div class="fb-avatar sm">${fbEsc((c.nom || c.identifiant || '?').charAt(0).toUpperCase())}</div>
+                    <div style="flex:1; min-width:0;"><div class="fb-me-nom">${fbEsc(c.nom || '')} <span class="fb-role ${c.refuse ? 'off' : 'wait'}">${c.refuse ? 'Refusée' : 'Inscription en attente'}</span></div>
+                    <div class="fb-me-id">@${fbEsc(c.identifiant || '')}${c.contact ? ' · ' + fbEsc(c.contact) : ''}${c.tel ? ' · ' + fbEsc(c.tel) : ''}</div>
+                    <div class="fb-me-id">Demande du ${new Date(c.createdAt || Date.now()).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}</div></div>
+                </div>
+                <div class="fb-compte-actions">
+                    ${c.refuse ? '' : `<button onclick="fbValiderInscription('${c.id}', true)"><i class="fas fa-check"></i> Valider</button>
+                    <button onclick="fbValiderInscription('${c.id}', false)"><i class="fas fa-times"></i> Refuser</button>`}
+                    <button class="danger" onclick="fbSupprimerCompte('${c.id}')" aria-label="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                </div></div>`;
             const perms = admin ? '<span class="fb-p" style="margin:0;">Accès complet à toutes les sections</span>'
                 : fbChipsHTML(c, p => {
                     const on = !c.perms || c.perms[p.k] !== false;
@@ -9843,6 +9912,104 @@ service cloud.firestore {
         majBandeauPaieTaux(); calculerPaie();
     }
 
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ INSCRIPTION EN LIGNE DES NOUVEAUX CLIENTS (v10.2) ══════════════════════
+    // Le client crée son compte (désactivé) depuis l'écran d'accueil ; la demande part dans Licence Pro.
+    // Licence Pro accorde la licence et active le compte (ou l'admin valide ici, dans « Clients »).
+    // ═══════════════════════════════════════════════════════════════════════════
+    function fbPermsDefaut() { const p = {}; FB_PERMS.forEach(x => p[x.k] = x.k !== 'config'); return p; }
+    function fbOuvrirInscription() {
+        if (typeof window.licOuvrirInscription === 'function') return window.licOuvrirInscription();
+        showToast('Inscription en ligne indisponible pour le moment', 'error', 'fa-times-circle');
+    }
+    // Appelé par licence_check.js (formulaire d'inscription) : crée le compte Firebase en attente
+    window.licInscription = async function (d) {
+        const ident = fbNormIdent(d.ident), pwd = String(d.pwd || '');
+        if (!fbIdentValide(ident)) throw new Error('Identifiant invalide (3 à 30 caractères : lettres minuscules, chiffres, . _ -).');
+        if (pwd.length < 6) throw new Error('Mot de passe trop court (6 caractères minimum).');
+        for (let i = 0; i < 40 && !fbDb; i++) await new Promise(r => setTimeout(r, 250));
+        const cfg = fbGetConfig();
+        if (!fbDb || !cfg) throw new Error('Inscription indisponible : l\'application n\'est pas encore reliée à son serveur. Réessayez dans un instant.');
+        try { if ((await fbDb.doc('logins/' + ident).get()).exists) throw new Error('Cet identifiant est déjà utilisé : choisissez-en un autre.'); }
+        catch (e) { if (/déjà utilisé/.test(e.message)) throw e; throw new Error(fbErreur(e)); }
+        const app2 = firebase.apps.find(a => a.name === 'fb-inscription') || firebase.initializeApp(cfg, 'fb-inscription');
+        const auth2 = app2.auth();
+        await auth2.setPersistence(firebase.auth.Auth.Persistence.NONE);
+        const email = fbEmailPour(ident);
+        let cred;
+        try { cred = await auth2.createUserWithEmailAndPassword(email, pwd); }
+        catch (e) { throw new Error(e && e.code === 'auth/email-already-in-use' ? 'Cet identifiant est déjà utilisé : choisissez-en un autre.' : fbErreur(e)); }
+        const uid = cred.user.uid, cid = 'i_' + uid;
+        try {
+            const db2 = app2.firestore(), b = db2.batch();
+            b.set(db2.doc('logins/' + ident), { email });
+            const doc = { uid, email, identifiant: ident, nom: String(d.nom || ident).slice(0, 60), role: 'client', actif: false, attente: true, createdAt: Date.now() };
+            if (d.email) doc.contact = String(d.email).slice(0, 120);
+            if (d.tel) doc.tel = String(d.tel).slice(0, 30);
+            if (d.rid) doc.rid = d.rid;
+            b.set(db2.doc('comptes/' + cid), doc);
+            await b.commit();
+        } catch (e) {
+            try { await cred.user.delete(); } catch (_) {}
+            try { await auth2.signOut(); } catch (_) {}
+            throw new Error(e && e.code === 'permission-denied'
+                ? 'L\'inscription en ligne n\'est pas encore activée sur ce serveur (l\'administrateur doit mettre à jour les règles Firestore).'
+                : fbErreur(e));
+        }
+        try { await auth2.signOut(); } catch (_) {}
+        fbMemoriserLogin(ident, '');
+        return { ident, uid, cid };
+    };
+    // Appelé par licence_check.js quand l'inscription est acceptée (licence installée)
+    window.licInscriptionOk = function (ident) {
+        if (ident) fbMemoriserLogin(ident, '');
+        const i = document.getElementById('fb-login-id');
+        if (i && ident) { i.value = ident; const p = document.getElementById('fb-login-pwd'); if (p) p.focus(); }
+        else if (fbAuth && fbAuth.currentUser) fbSurAuth(fbAuth.currentUser);
+        showToast('🎉 Inscription acceptée : connectez-vous avec votre identifiant et votre mot de passe', 'success', 'fa-user-check');
+    };
+    async function fbLicFirebaseUrl() {
+        try { const r = await fetch(LIC_SRC + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const j = await r.json(); if (j.firebase) return j.firebase.replace(/\/+$/, ''); } } catch (e) {}
+        return 'https://covo-licences-default-rtdb.europe-west1.firebasedatabase.app';
+    }
+    // Administrateur : applique les décisions prises dans Licence Pro (si Licence Pro n'a pas pu le faire directement)
+    async function fbTraiterInscriptions() {
+        if (!fbEstAdmin() || !fbDb) return;
+        let liste = [];
+        try { liste = (await fbDb.collection('comptes').where('attente', '==', true).get()).docs.map(d => Object.assign({ id: d.id }, d.data())); } catch (e) { return; }
+        if (!liste.length) return;
+        const base = await fbLicFirebaseUrl();
+        let nb = 0;
+        for (const c of liste) {
+            if (!c.rid) continue;
+            try {
+                const r = await (await fetch(`${base}/requests/${c.rid}.json?t=${Date.now()}`, { cache: 'no-store' })).json();
+                if (r && r.statut === 'accordee') { await fbDb.doc('comptes/' + c.id).update({ actif: true, attente: false, perms: fbPermsDefaut(), valideLe: Date.now() }); nb++; showToast(`✅ Inscription de « ${c.nom} » activée`, 'success', 'fa-user-check'); }
+                else if (r && r.statut === 'refusee') await fbDb.doc('comptes/' + c.id).update({ attente: false, refuse: true, motif: String(r.motif || '').slice(0, 200) });
+            } catch (e) {}
+        }
+        if (nb && document.getElementById('modal-comptes') && document.getElementById('modal-comptes').style.display === 'flex') fbRenderComptes();
+        if (liste.length - nb > 0) fbMajPastilleInscriptions(liste.length - nb);
+    }
+    function fbMajPastilleInscriptions(n) {
+        if (n > 0) showToast(`📨 ${n} inscription${n > 1 ? 's' : ''} en attente de validation (Réglages › Clients ou Licence Pro)`, 'info', 'fa-user-clock');
+    }
+    async function fbValiderInscription(cid, ok) {
+        const c = fbComptesCache.find(x => x.id === cid); if (!c) return;
+        try {
+            if (ok) {
+                if (!confirm(`Valider l'inscription de « ${c.nom} » (@${c.identifiant}) ?\n\nIl pourra se connecter avec les accès par défaut (tout sauf Configuration). Pensez aussi à lui accorder sa licence dans Licence Pro.`)) return;
+                await fbDb.doc('comptes/' + cid).update({ actif: true, attente: false, perms: fbPermsDefaut(), valideLe: Date.now() });
+                showToast(`✅ « ${c.nom} » peut maintenant se connecter`, 'success', 'fa-user-check');
+            } else {
+                const motif = prompt(`Refuser l'inscription de « ${c.nom} » ?\n\nMotif (facultatif, affiché au client) :`, '');
+                if (motif === null) return;
+                await fbDb.doc('comptes/' + cid).update({ attente: false, refuse: true, motif: motif.slice(0, 200) });
+            }
+            await fbRenderComptes();
+        } catch (e) { showToast('⚠️ ' + fbErreur(e), 'error', 'fa-times-circle'); }
+    }
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -9902,7 +10069,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v10.1';
+const CACHE_NAME = 'planning-pro-v10.3';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
