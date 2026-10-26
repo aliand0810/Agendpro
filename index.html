@@ -9764,6 +9764,12 @@ service cloud.firestore {
         else if (Notification.permission === 'default' && on) etat = `<button class="fb-mini-btn" onclick="alDemanderNotif()"><i class="fas fa-bell"></i> Autoriser les notifications</button>`;
         else if (on) etat = `✅ Actives sur cet appareil <button class="fb-mini-btn" onclick="alTestNotif()" style="margin-left:6px"><i class="fas fa-paper-plane"></i> Tester</button>`;
         else etat = '🔕 Notifications désactivées sur cet appareil';
+        const pu = alPushURL(), pst = localStorage.getItem('mpp_push_etat') || '';
+        etat += `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-color)"><b>📡 Application fermée</b>
+            <div style="display:flex;gap:6px;margin-top:4px"><input id="al-push-url" type="url" placeholder="https://mpp-notif.xxx.workers.dev" value="${pu}" style="flex:1;min-width:0;padding:6px 8px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-app);color:var(--text-main)">
+            <button class="fb-mini-btn" onclick="alPushEnregistrer()">OK</button></div>
+            <small style="color:var(--text-muted)">${pu ? (pst || 'Connexion…') : 'Collez l\'adresse de votre serveur Cloudflare.'}</small>
+            ${pu && on && Notification.permission === 'granted' ? `<button class="fb-mini-btn" onclick="alPushTest()" style="margin-top:4px"><i class="fas fa-paper-plane"></i> Tester app fermée</button>` : ''}</div>`;
         el.innerHTML = `<label class="al-notif-sw" style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:6px">🔔 Notifications sur cet appareil
             <span class="al-sw"><input type="checkbox" ${on ? 'checked' : ''} onchange="alNotifBasculer(this.checked)"><span></span></span></label><div>${etat}</div>`;
     }
@@ -9771,8 +9777,9 @@ service cloud.firestore {
         localStorage.setItem(AL_NOTIF_KEY, on ? '1' : '0');
         if (on && 'Notification' in window && Notification.permission === 'default') await alDemanderNotif();
         alMajNotifEtat();
+        alPushSync(true);
     }
-    async function alDemanderNotif() { try { await Notification.requestPermission(); } catch(e) {} alMajNotifEtat(); }
+    async function alDemanderNotif() { try { await Notification.requestPermission(); } catch(e) {} alMajNotifEtat(); alPushSync(true); }
     function alTestNotif() { alNotifier('🔔 Test — Mon Planning Pro', 'Les notifications fonctionnent sur cet appareil.'); }
     async function alNotifier(titre, corps) {
         if (!alNotifOn() || !('Notification' in window) || Notification.permission !== 'granted') return;
@@ -9785,6 +9792,59 @@ service cloud.firestore {
         } catch(e) {}
         try { new Notification(titre, opt); } catch(e) {}
     }
+
+
+    // ── Notifications push (application fermée) via Cloudflare Worker ──
+    const AL_PUSH_DEFAUT = 'https://mpp-notif.aliand0810.workers.dev';   // ← vous pouvez coller ici l'adresse du Worker pour tous les appareils
+    function alPushURL() { return (localStorage.getItem('mpp_push_url') || AL_PUSH_DEFAUT).replace(/\/+$/, ''); }
+    function alPushId() { let id = localStorage.getItem('mpp_push_id'); if (!id) { id = 'mpp-' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mpp_push_id', id); } return id; }
+    function alPushEtat(t) { localStorage.setItem('mpp_push_etat', t); const el = document.getElementById('al-notif'); if (el && el.offsetParent) alMajNotifEtat(); }
+    function alPushEnregistrer() { const v = (document.getElementById('al-push-url').value || '').trim(); localStorage.setItem('mpp_push_url', v); localStorage.removeItem('mpp_push_sig'); alPushEtat(v ? 'Connexion…' : ''); alPushSync(true); }
+    function alU8(b64) { b64 = b64.replace(/-/g, '+').replace(/_/g, '/'); while (b64.length % 4) b64 += '='; return Uint8Array.from(atob(b64), c => c.charCodeAt(0)); }
+    let alPushT = null;
+    function alPushSync(force) { clearTimeout(alPushT); alPushT = setTimeout(() => alPushSyncNow(force), force ? 50 : 3000); }
+    async function alPushSyncNow(force) {
+        const url = alPushURL(); if (!url || !('serviceWorker' in navigator) || !('PushManager' in window)) return;
+        const id = alPushId();
+        const actif = alNotifOn() && 'Notification' in window && Notification.permission === 'granted';
+        try {
+            const reg = await navigator.serviceWorker.ready;
+            let sub = await reg.pushManager.getSubscription();
+            if (!actif) {
+                await fetch(url + '/sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, enabled: false }) });
+                if (sub) await sub.unsubscribe().catch(() => {});
+                localStorage.removeItem('mpp_push_sig'); alPushEtat('🔕 Désactivé'); return;
+            }
+            if (!sub) {
+                const k = await (await fetch(url + '/vapid')).json();
+                sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: alU8(k.key) });
+            }
+            const alarmes = (typeof alAlarmes === 'function' ? alAlarmes(14) : []).filter(a => !a.ignore).map(a => ({
+                id: a.id, at: a.at, title: `${a.lbl} — ${a.poste.type}`,
+                body: `${alJour(a.poste.debut)} · début ${a.poste.hD}${a.poste.rot ? ' · ' + a.poste.rot : ''}`
+            }));
+            const corps = JSON.stringify({ id, enabled: true, subscription: sub.toJSON(), alarms: alarmes });
+            const sig = String(corps.length) + '|' + alarmes.map(a => a.id + a.at).join(',') + '|' + sub.endpoint;
+            if (!force && sig === localStorage.getItem('mpp_push_sig')) return;
+            const r = await fetch(url + '/sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: corps });
+            const j = await r.json();
+            if (!r.ok) throw new Error(j.error || r.status);
+            localStorage.setItem('mpp_push_sig', sig);
+            alPushEtat(`✅ Connecté — ${j.count} alarme(s) programmée(s) sur 14 jours`);
+        } catch (e) { alPushEtat('⚠️ ' + (e.message || e)); }
+    }
+    async function alPushTest() {
+        await alPushSyncNow(true);
+        try { const r = await fetch(alPushURL() + '/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: alPushId() }) }); const j = await r.json(); alPushEtat(j.ok ? '✅ Test envoyé — vous pouvez fermer l\'application pour les prochains essais' : '⚠️ Échec (' + (j.status || j.error) + ')'); } catch (e) { alPushEtat('⚠️ ' + e.message); }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const _sv = alSauverCfg; alSauverCfg = function () { const r = _sv.apply(this, arguments); alPushSync(); return r; };
+        const _ig = alIgnorer; alIgnorer = function () { const r = _ig.apply(this, arguments); alPushSync(); return r; };
+        if (typeof tbRender === 'function') { const _tr = tbRender; tbRender = function () { const r = _tr.apply(this, arguments); alPushSync(); return r; }; }
+        setTimeout(() => alPushSync(true), 2500);
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') alPushSync(); });
+        setInterval(() => alPushSync(), 6 * 3600000);
+    });
 
     // ── Son d'alarme (généré, aucun fichier) ──
     let alAudio = null, alSonT = null;
