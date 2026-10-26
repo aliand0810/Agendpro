@@ -350,13 +350,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             .app-content { max-width: none !important; width: 100% !important; padding: 4px calc(6px + env(safe-area-inset-right, 0px)) 0 calc(6px + env(safe-area-inset-left, 0px)) !important; box-sizing: border-box; }
             .planning-layout { gap: 0 !important; }
             .planning-sidebar { display: none !important; }
-            body.ls-side .planning-sidebar { display: block !important; position: fixed !important; top: 0; left: 0; bottom: 0; width: min(300px, 45vw) !important; max-height: none !important; z-index: 140; overflow-y: auto; background: var(--bg-app); padding: 10px 10px 10px calc(10px + env(safe-area-inset-left, 0px)); box-shadow: 6px 0 24px rgba(0,0,0,0.25); animation: lsSlide 0.25s ease; }
-            @keyframes lsSlide { from { transform: translateX(-100%); } to { transform: none; } }
+            body.ls-side .planning-layout { display: flex !important; flex-direction: row !important; align-items: flex-start !important; gap: 10px !important; }
+            body.ls-side .planning-sidebar { display: block !important; position: sticky !important; top: 4px !important; width: min(280px, 32vw) !important; flex-shrink: 0; max-height: calc(100vh - 8px) !important; overflow-y: auto; animation: lsSlide 0.25s ease; }
+            body.ls-side .planning-layout > :not(.planning-sidebar) { flex: 1; min-width: 0; }
+            @keyframes lsSlide { from { opacity: 0; margin-left: -120px; } to { opacity: 1; margin-left: 0; } }
+            body:not(.ls-bars) .lec-top { top: 4px !important; }
+            body:not(.ls-bars) .lec-strip { bottom: 6px !important; }
+            .lec-strip { padding-right: 56px !important; }
             body.lec-on .lec { width: 100%; max-width: none; }
-            .ls-fab { display: flex; position: fixed; right: calc(10px + env(safe-area-inset-right, 0px)); bottom: 10px; z-index: 150; gap: 6px; }
+            .ls-fab { display: flex; flex-direction: column; position: fixed; right: calc(6px + env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); z-index: 150; gap: 8px; }
             .ls-fab button { width: 42px; height: 42px; border-radius: 50%; border: none; background: var(--primary); color: #fff; font-size: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.25); cursor: pointer; transition: transform 0.15s; opacity: 0.85; }
             .ls-fab button:active { transform: scale(0.88); }
-            body.ls-bars .ls-fab { bottom: calc(74px + env(safe-area-inset-bottom, 0px)); }
         }
 
         .tab-btn { flex: 1; padding: 10px 8px; border-radius: 10px; border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 75px; transition: 0.2s; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; box-shadow: var(--shadow-sm); }
@@ -513,6 +517,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-m-plus { font-size:0.6rem; color:var(--text-muted); text-align:center; }
         .lec-strip { margin-bottom:6px; } .lec-strip { position:sticky; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); z-index:40; display:flex; align-items:center; gap:8px; margin-top:10px; padding:0 2px; }
         @media (min-width: 700px) { .lec-strip { bottom:12px; } }
+        body.lec-vue-semaine .lec-strip, body.lec-vue-mois .lec-strip { display:none !important; }
         .lec-fab { flex:none; width:52px; height:52px; border-radius:50%; border:1px solid var(--border-color); background:var(--bg-card); color:var(--primary); font-size:1.1rem; box-shadow:0 6px 20px rgba(0,0,0,0.15); cursor:pointer; }
         .lec-fab-auj { width:44px; height:44px; font-size:0.95rem; }
         .lec-strip-in { flex:1; min-width:0; display:flex; align-items:center; background:color-mix(in srgb, var(--bg-card) 88%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border:1px solid var(--border-color); border-radius:30px; box-shadow:0 6px 20px rgba(0,0,0,0.15); padding:4px; }
@@ -10310,6 +10315,7 @@ service cloud.firestore {
     function lecRender(defiler) {
         const box = document.getElementById('lec'); if (!box) return;
         document.body.classList.toggle('lec-on', !!lec.on);
+        ['liste','jour','semaine','mois'].forEach(v => document.body.classList.toggle('lec-vue-' + v, lec.vue === v));
         if (!lec.on) return;
         lecIdx = [];
         const hd = document.querySelector('.app-header');
