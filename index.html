@@ -517,6 +517,24 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-m-ev b { font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums; }
         .lec-m-ev small { font-size:0.55rem; font-weight:600; color:var(--text-muted); white-space:nowrap; }
         .lec-m-ev em { font-style:normal; font-size:0.54rem; font-weight:600; opacity:.8; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        /* ── Plein écran (ordinateur) ── */
+        .lec-full-btn { display:none; }
+        @media (min-width: 700px) { .lec-full-btn { display:flex; } }
+        body.lec-full { overflow:hidden; }
+        body.lec-full .lec { position:fixed; inset:0; z-index:9000; background:var(--bg-app); padding:12px 16px; display:flex !important; flex-direction:column; box-sizing:border-box; }
+        body.lec-full .lec-top { position:static; margin:0 0 10px; }
+        body.lec-full .lec-body { flex:1; min-height:0; overflow:auto; display:flex; flex-direction:column; }
+        body.lec-full .lec-strip { display:none !important; }
+        body.lec-full.lec-vue-mois .lec-m-grid { flex:1; grid-auto-rows:1fr; gap:6px; }
+        body.lec-full.lec-vue-mois .lec-m-cell { min-height:0; padding:6px; gap:5px; border-radius:12px; }
+        body.lec-full.lec-vue-mois .lec-m-n { font-size:1.05rem; line-height:28px; min-width:28px; border-radius:14px; }
+        body.lec-full.lec-vue-mois .lec-m-head { font-size:0.85rem; margin-bottom:6px; }
+        body.lec-full.lec-vue-mois .lec-m-ev { flex-direction:row; justify-content:center; flex-wrap:wrap; gap:6px; font-size:0.9rem; padding:5px 6px; }
+        body.lec-full.lec-vue-mois .lec-m-ev .ic { font-size:1.05rem; }
+        body.lec-full.lec-vue-mois .lec-m-ev b + b::before { content:'→ '; font-weight:600; opacity:.6; }
+        body.lec-full.lec-vue-mois .lec-m-ev small, body.lec-full.lec-vue-mois .lec-m-ev em { font-size:0.8rem; }
+        body.lec-full.lec-vue-mois .lec-m-ev small::before { content:'('; } body.lec-full.lec-vue-mois .lec-m-ev small::after { content:')'; }
+        @media (min-width: 700px) { body.lec-vue-mois .lec-m-cell { min-height:130px; } body.lec-vue-mois .lec-m-ev { font-size:0.75rem; } }
         .lec-m-plus { font-size:0.6rem; color:var(--text-muted); text-align:center; }
         .lec-strip { margin-bottom:6px; } .lec-strip { position:sticky; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); z-index:40; display:flex; align-items:center; gap:8px; margin-top:10px; padding:0 2px; }
         @media (min-width: 700px) { .lec-strip { bottom:12px; } }
@@ -1630,6 +1648,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             <button data-v="semaine" onclick="lecSetVue('semaine')">Semaine</button>
                             <button data-v="mois" onclick="lecSetVue('mois')">Mois</button>
                         </div>
+                        <button class="lec-mode-btn lec-full-btn" onclick="lecPleinEcran()" title="Plein écran (Échap pour quitter)"><i class="fas fa-expand"></i><span>Plein écran</span></button>
                         <button class="lec-mode-btn" onclick="lecActiver(false)" title="Revenir au mode classique"><i class="fas fa-table"></i><span>Classique</span></button>
                     </div>
                     <div id="lec-body" class="lec-body"></div>
@@ -10469,6 +10488,18 @@ service cloud.firestore {
     }
 
     // MOIS
+    function lecPleinEcran(force) {
+        const on = force !== undefined ? force : !document.body.classList.contains('lec-full');
+        document.body.classList.toggle('lec-full', on);
+        const b = document.querySelector('.lec-full-btn');
+        if (b) b.innerHTML = on ? '<i class="fas fa-compress"></i><span>Réduire</span>' : '<i class="fas fa-expand"></i><span>Plein écran</span>';
+        try {
+            if (on && !document.fullscreenElement && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
+            if (!on && document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        } catch (e) {}
+    }
+    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && document.body.classList.contains('lec-full')) lecPleinEcran(false); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('lec-full')) lecPleinEcran(false); });
     function lecMoisDetail(ev) {
         const p = ev.extendedProps || {}, f = h => h ? String(h).replace(':', 'h').replace(/h00$/, 'h') : '';
         let dur = '';
