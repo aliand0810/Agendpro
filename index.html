@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v10.3</title>
+    <title>Mon Planning Pro v10.4</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -397,6 +397,105 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .tb-rot-head-h { float:right; font-family:'DM Mono',monospace; color:var(--primary); font-weight:900; }
         .tb-rot-repos { display:block; text-align:center; font-size:0.6rem; color:var(--text-muted); opacity:0.6; padding-top:12px; }
 
+
+        /* ═══ MODE LECTURE ═══ */
+        .lec { display:none; }
+        body.lec-on .lec { display:block; }
+        body.lec-on .tb-wrap, body.lec-on .cal-toggle-btn, body.lec-on #calendar-container { display:none !important; }
+        @media (max-width: 699px) { body.lec-on .planning-sidebar { display:none; } }
+        .lec-open-btn { background:linear-gradient(135deg,#4f46e5,#7c3aed) !important; color:#fff !important; border-color:transparent !important; }
+        .lec-top { position:sticky; top:var(--lec-top, 0px); z-index:30; display:flex; gap:8px; align-items:center; padding:8px; margin:0 -4px 6px; background:linear-gradient(135deg,#312e81,#4f46e5); border-radius:16px; box-shadow:0 6px 18px rgba(49,46,129,0.25); }
+        .lec-seg { flex:1; display:flex; gap:2px; min-width:0; }
+        .lec-seg button { flex:1; min-width:0; border:none; background:transparent; color:rgba(255,255,255,0.85); font-family:'DM Sans',sans-serif; font-size:0.92rem; font-weight:600; padding:9px 4px; border-radius:11px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .lec-seg button.on { background:rgba(255,255,255,0.2); color:#fff; font-weight:800; }
+        .lec-mode-btn { flex:none; display:flex; flex-direction:column; align-items:center; gap:1px; border:none; background:rgba(255,255,255,0.12); color:#fff; border-radius:11px; padding:5px 8px; font-size:0.58rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .lec-mode-btn i { font-size:0.95rem; }
+        .lec-body { background:var(--bg-card); border:1px solid var(--border-color); border-radius:18px; padding:4px 12px 12px; min-height:50vh; }
+        .lec-dtitle > span, .lec-dh > span { min-width:0; }
+        body.dark-mode .lec-dot { outline:1.5px solid rgba(255,255,255,0.45); }
+        body.dark-mode .lec-bloc { background:color-mix(in srgb, var(--c) 30%, #111827); }
+        body.dark-mode .lec-body { background:#111827; }
+        .lec-sem { margin:14px 0 2px; font-size:0.66rem; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); }
+        .lec-day { position:relative; padding:2px 0 4px 18px; }
+        .lec-day::before { content:''; position:absolute; left:5px; top:42px; bottom:0; width:2px; background:var(--border-color); border-radius:2px; }
+        .lec-dh { margin:12px 0 8px -18px; font-size:1.18rem; font-weight:500; color:var(--text-main); display:flex; align-items:baseline; gap:8px; cursor:pointer; scroll-margin-top:130px; }
+        .lec-dh b { font-weight:800; text-transform:none; }
+        .lec-dh::first-letter { text-transform:uppercase; }
+        .lec-day.auj .lec-dh { color:var(--primary); }
+        .lec-day.vide .lec-dh { font-size:0.98rem; color:var(--text-muted); margin:8px 0 4px -18px; }
+        .lec-dh-h { margin-left:auto; font-size:0.75rem; font-weight:800; color:var(--primary); background:var(--hover-row); padding:3px 9px; border-radius:20px; font-family:'DM Mono',monospace; }
+        .lec-item { position:relative; margin-bottom:8px; cursor:pointer; }
+        .lec-dot { position:absolute; left:-18px; top:50%; transform:translateY(-50%); width:12px; height:12px; border-radius:50%; box-shadow:0 0 0 3px var(--bg-card); }
+        body.dark-mode .lec-dot { box-shadow:0 0 0 3px #111827; }
+        .lec-card { display:flex; gap:12px; align-items:center; background:var(--bg-app); border:1px solid var(--border-color); border-radius:14px; padding:12px 14px; transition:transform 0.12s; }
+        .lec-item:active .lec-card { transform:scale(0.985); }
+        .lec-time { flex:none; width:46px; text-align:right; display:flex; flex-direction:column; line-height:1.2; }
+        .lec-time b { font-size:0.95rem; font-weight:700; color:var(--text-main); font-family:'DM Mono',monospace; }
+        .lec-time small { font-size:0.72rem; color:var(--text-muted); }
+        .lec-main { flex:1; min-width:0; }
+        .lec-t { font-size:1.05rem; font-weight:800; color:var(--text-main); line-height:1.3; }
+        .lec-s { font-size:0.85rem; color:var(--text-muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .lec-s i { width:14px; text-align:center; opacity:0.8; }
+        .lec-rot { display:inline-block; vertical-align:middle; font-size:0.62rem; font-weight:800; color:#fff; padding:2px 7px; border-radius:6px; margin-left:2px; }
+        .lec-repos { font-size:0.82rem; color:var(--text-muted); padding:2px 0 6px; display:flex; align-items:center; gap:8px; }
+        .lec-repos button { border:1px dashed var(--border-color); background:none; color:var(--primary); border-radius:8px; width:26px; height:22px; cursor:pointer; font-weight:800; }
+        .lec-dtitle { font-size:1.2rem; color:var(--text-main); margin:12px 2px 10px; display:flex; align-items:baseline; gap:8px; }
+        .lec-dtitle b { font-weight:800; }
+        .lec-allday { display:flex; gap:10px; align-items:flex-start; padding:8px 0 10px; border-bottom:1px solid var(--border-color); }
+        .lec-allday > small { flex:none; width:46px; font-size:0.66rem; color:var(--text-muted); padding-top:5px; }
+        .lec-allday > div { display:flex; flex-wrap:wrap; gap:6px; }
+        .lec-ad { display:inline-flex; align-items:center; gap:4px; font-size:0.85rem; font-weight:700; color:var(--text-main); padding:4px 10px 4px 8px; border-radius:20px; background:color-mix(in srgb, var(--c) 16%, transparent); border:1px solid color-mix(in srgb, var(--c) 40%, transparent); cursor:pointer; white-space:nowrap; overflow:hidden; max-width:100%; }
+        .lec-grid-scroll { max-height:calc(100vh - 290px); min-height:320px; overflow-y:auto; -webkit-overflow-scrolling:touch; margin-top:4px; }
+        .lec-grid { position:relative; }
+        .lec-hr { position:absolute; left:0; right:0; border-top:1px solid var(--border-color); }
+        .lec-hr span { position:absolute; left:0; top:-8px; width:44px; text-align:right; font-size:0.72rem; color:var(--text-muted); background:var(--bg-card); padding-right:4px; font-family:'DM Mono',monospace; }
+        body.dark-mode .lec-hr span { background:#111827; }
+        .lec-col { position:absolute; top:0; bottom:0; }
+        .lec-bloc { position:absolute; box-sizing:border-box; border-radius:8px; padding:6px 8px; overflow:hidden; cursor:pointer; background:color-mix(in srgb, var(--c) 20%, var(--bg-card)); border-top:4px solid var(--c); box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+        .lec-bloc-t { font-size:0.95rem; font-weight:800; color:var(--text-main); line-height:1.25; }
+        .lec-bloc-h { font-size:0.82rem; color:var(--text-muted); margin-top:3px; }
+        .lec-bloc.court { padding:3px 3px; border-radius:6px; border-top-width:3px; }
+        .lec-bloc.court .lec-bloc-t { font-size:0.8rem; text-align:center; }
+        .lec-bloc.court .lec-bloc-h { font-size:0.62rem; font-weight:700; text-align:center; margin-top:1px; line-height:1.2; white-space:nowrap; overflow:hidden; }
+        .lec-now { position:absolute; left:-4px; right:0; height:2px; background:#ef4444; z-index:3; }
+        .lec-now::before { content:''; position:absolute; left:-4px; top:-4px; width:10px; height:10px; border-radius:50%; background:#ef4444; }
+        .lec-vide { text-align:center; color:var(--text-muted); font-size:0.85rem; padding:10px; }
+        .lec-wk-head, .lec-wk-ad { display:grid; grid-template-columns:44px repeat(7, 1fr); gap:2px; }
+        .lec-wk-head button { border:none; background:none; display:flex; flex-direction:column; align-items:center; padding:4px 0; border-radius:10px; cursor:pointer; color:var(--text-main); font-family:'DM Sans',sans-serif; }
+        .lec-wk-head small { font-size:0.62rem; color:var(--text-muted); }
+        .lec-wk-head b { font-size:1rem; }
+        .lec-wk-head button.auj { background:var(--primary); color:#fff; }
+        .lec-wk-head button.auj small { color:rgba(255,255,255,0.85); }
+        .lec-wk-ad { padding:4px 0; border-bottom:1px solid var(--border-color); }
+        .lec-wk-ad > div { display:flex; flex-direction:column; gap:2px; align-items:stretch; min-width:0; }
+        .lec-wk-ad .lec-ad { justify-content:center; padding:2px; font-size:0.75rem; }
+        .lec-wk-cols { position:absolute; left:46px; right:0; top:0; bottom:0; display:grid; grid-template-columns:repeat(7, 1fr); gap:2px; }
+        .lec-wk-col { position:relative; border-left:1px dashed var(--border-color); }
+        .lec-wk-col.auj { background:color-mix(in srgb, var(--primary) 6%, transparent); }
+        .lec-m-head { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:0.66rem; font-weight:700; color:var(--text-muted); margin-bottom:4px; }
+        .lec-m-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+        .lec-m-cell { min-height:74px; min-width:0; background:var(--bg-app); border:1px solid var(--border-color); border-radius:10px; padding:3px; display:flex; flex-direction:column; gap:2px; cursor:pointer; overflow:hidden; }
+        .lec-m-cell.hors { opacity:0.4; }
+        .lec-m-cell.auj .lec-m-n { background:var(--primary); color:#fff; }
+        .lec-m-cell.sel { border-color:var(--primary); box-shadow:0 0 0 1.5px var(--primary) inset; }
+        .lec-m-n { align-self:center; font-size:0.82rem; font-weight:800; color:var(--text-main); min-width:22px; text-align:center; border-radius:11px; line-height:22px; }
+        .lec-m-ev { display:flex; align-items:center; justify-content:center; gap:2px; font-size:0.62rem; font-weight:700; color:var(--text-main); background:color-mix(in srgb, var(--c) 22%, transparent); border-left:3px solid var(--c); border-radius:4px; padding:1px 2px; white-space:nowrap; overflow:hidden; }
+        .lec-m-ev em { font-style:normal; overflow:hidden; text-overflow:ellipsis; }
+        .lec-m-plus { font-size:0.6rem; color:var(--text-muted); text-align:center; }
+        .lec-strip { margin-bottom:6px; } .lec-strip { position:sticky; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); z-index:40; display:flex; align-items:center; gap:8px; margin-top:10px; padding:0 2px; }
+        @media (min-width: 700px) { .lec-strip { bottom:12px; } }
+        .lec-fab { flex:none; width:52px; height:52px; border-radius:50%; border:1px solid var(--border-color); background:var(--bg-card); color:var(--primary); font-size:1.1rem; box-shadow:0 6px 20px rgba(0,0,0,0.15); cursor:pointer; }
+        .lec-fab-auj { width:44px; height:44px; font-size:0.95rem; }
+        .lec-strip-in { flex:1; min-width:0; display:flex; align-items:center; background:color-mix(in srgb, var(--bg-card) 88%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border:1px solid var(--border-color); border-radius:30px; box-shadow:0 6px 20px rgba(0,0,0,0.15); padding:4px; }
+        .lec-arr { flex:none; width:24px; border:none; background:none; color:var(--text-muted); cursor:pointer; font-size:0.75rem; padding:0; }
+        .lec-strip-days { flex:1; min-width:0; display:grid; grid-template-columns:repeat(7,1fr); }
+        .lec-strip-days button { border:none; background:none; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4px 0; border-radius:22px; cursor:pointer; color:var(--text-main); font-family:'DM Sans',sans-serif; min-width:0; line-height:1.15; }
+        .lec-strip-days small { font-size:0.62rem; color:var(--text-muted); }
+        .lec-strip-days b { font-size:1.02rem; font-weight:700; }
+        .lec-strip-days i { width:4px; height:4px; border-radius:50%; background:var(--primary); margin-top:2px; }
+        .lec-strip-days button.auj b { color:var(--primary); }
+        .lec-strip-days button.sel { background:var(--primary); color:#fff; }
+        .lec-strip-days button.sel small, .lec-strip-days button.sel b { color:#fff; }
         /* ═══ FIREBASE — COMPTES & ACCÈS ═══ */
         body.perm-no-paie [onclick*="'tab-paie'"],
         body.perm-no-dirt [onclick*="'tab-dirt'"],
@@ -1485,6 +1584,29 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <!-- COLONNE DROITE : TABLEAU (vue principale) + Calendrier (secondary) -->
             <main class="planning-main">
 
+                <!-- ─── MODE LECTURE (agenda facile à lire) ─── -->
+                <div id="lec" class="lec">
+                    <div class="lec-top">
+                        <div class="lec-seg" role="tablist">
+                            <button data-v="liste" onclick="lecSetVue('liste')">Liste</button>
+                            <button data-v="jour" onclick="lecSetVue('jour')">Jour</button>
+                            <button data-v="semaine" onclick="lecSetVue('semaine')">Semaine</button>
+                            <button data-v="mois" onclick="lecSetVue('mois')">Mois</button>
+                        </div>
+                        <button class="lec-mode-btn" onclick="lecActiver(false)" title="Revenir au mode classique"><i class="fas fa-table"></i><span>Classique</span></button>
+                    </div>
+                    <div id="lec-body" class="lec-body"></div>
+                    <div class="lec-strip">
+                        <button class="lec-fab" onclick="ouvrirEditionJour(tbFmt(lecDate))" title="Ajouter un poste" aria-label="Ajouter un poste"><i class="fas fa-plus"></i></button>
+                        <div class="lec-strip-in">
+                            <button class="lec-arr" onclick="lecNav(-1)" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
+                            <div id="lec-strip-days" class="lec-strip-days"></div>
+                            <button class="lec-arr" onclick="lecNav(1)" aria-label="Suivant"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <button class="lec-fab lec-fab-auj" onclick="lecAujourdhui()" title="Aujourd'hui" aria-label="Aujourd'hui"><i class="fas fa-crosshairs"></i></button>
+                    </div>
+                </div>
+
                 <!-- ─── TABLEAU DE PLANNING ─── -->
                 <div class="tb-wrap">
                     <div class="tb-header">
@@ -1495,6 +1617,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             <button class="tb-btn tb-btn-today" onclick="tbToday()">Aujourd'hui</button>
                         </div>
                         <div class="tb-view-toggle">
+                            <button class="tb-view-btn lec-open-btn" onclick="lecActiver(true)" title="Agenda facile à lire">📖 Mode lecture</button>
                             <button class="tb-view-btn active" id="tb-btn-sem" onclick="tbSetView('semaine')">☰ Semaine</button>
                             <button class="tb-view-btn" id="tb-btn-mois" onclick="tbSetView('mois')">📅 Mois</button>
                             <button class="tb-view-btn" id="tb-btn-cycle" onclick="tbSetView('cycle')">🔄 Cycle</button>
@@ -9959,26 +10082,11 @@ service cloud.firestore {
         }
         try { await auth2.signOut(); } catch (_) {}
         fbMemoriserLogin(ident, '');
-        // Le client reste connecté sur cet appareil pendant l'attente : dès que l'inscription est acceptée,
-        // l'application s'ouvre toute seule (aucun identifiant à ressaisir). S'il se déconnecte, il se reconnecte normalement.
-        try { if (fbAuth) await fbAuth.signInWithEmailAndPassword(email, pwd); } catch (_) {}
         return { ident, uid, cid };
     };
     // Appelé par licence_check.js quand l'inscription est acceptée (licence installée)
     window.licInscriptionOk = function (ident) {
         if (ident) fbMemoriserLogin(ident, '');
-        // Connexion automatique : session ouverte lors de l'inscription → on recharge le compte (désormais actif)
-        if (fbAuth && fbAuth.currentUser) {
-            showToast('🎉 Inscription acceptée — ouverture de votre espace…', 'success', 'fa-user-check');
-            let essais = 0;
-            const ouvrir = async () => {
-                if (!fbAuth.currentUser) return;
-                await fbSurAuth(fbAuth.currentUser);
-                if (!fbCompte && fbAuth.currentUser && ++essais < 30) setTimeout(ouvrir, 10000); // compte pas encore activé : on réessaie
-            };
-            ouvrir();
-            return;
-        }
         const i = document.getElementById('fb-login-id');
         if (i && ident) { i.value = ident; const p = document.getElementById('fb-login-pwd'); if (p) p.focus(); }
         else if (fbAuth && fbAuth.currentUser) fbSurAuth(fbAuth.currentUser);
@@ -10025,6 +10133,284 @@ service cloud.firestore {
             await fbRenderComptes();
         } catch (e) { showToast('⚠️ ' + fbErreur(e), 'error', 'fa-times-circle'); }
     }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ MODE LECTURE — AGENDA FACILE À LIRE (v10.4) ════════════════════════════
+    // Vues Liste / Jour / Semaine / Mois + bandeau des jours en bas, inspirées des agendas de téléphone.
+    // ═══════════════════════════════════════════════════════════════════════════
+    const LEC_KEY = 'lec_mode_v1';
+    const LEC_JOURS = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+    const LEC_JOURS_L = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+    const LEC_MC = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+    const LEC_MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    let lec = (() => { try { return Object.assign({ on: false, vue: 'liste' }, JSON.parse(localStorage.getItem(LEC_KEY)) || {}); } catch (e) { return { on: false, vue: 'liste' }; } })();
+    let lecDate = new Date(); lecDate.setHours(0, 0, 0, 0);
+    const lecEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const lecFmt = d => tbFmt(d);
+    const lecParse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+    const lecAdd = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
+    function lecSauverPref() { try { localStorage.setItem(LEC_KEY, JSON.stringify({ on: lec.on, vue: lec.vue })); } catch (e) {} }
+    function lecNom(type) {
+        const T = { 'MATIN': 'Matin', 'MATIN SUPPL.': 'Matin suppl.', 'APRÈS-MIDI': 'Après-midi', 'APRÈS-MIDI SUPPL.': 'Après-midi suppl.', 'NUIT': 'Nuit', 'NUIT SUPPL.': 'Nuit suppl.',
+            'POSTE JOURNÉE': 'Journée', 'JOURNÉE SUPPL.': 'Journée suppl.', 'FORMATION': 'Formation', 'RÉUNION': 'Réunion', 'CP': 'Congé payé', 'RTT': 'RTT', 'REPOS DE NUIT': 'Repos de nuit', 'COMPTEUR 8H': 'Compteur 8 h' };
+        if (T[type]) return T[type];
+        if ((type || '').startsWith('CSE - ')) { const r = type.slice(6).toLowerCase(); return 'CSE · ' + r.charAt(0).toUpperCase() + r.slice(1); }
+        const t = String(type || 'Poste').toLowerCase(); return t.charAt(0).toUpperCase() + t.slice(1);
+    }
+    function lecH(ev) { const p = ev.extendedProps || {}; let h = parseFloat(p.hPayees || 0);
+        if (h === 0 && p.hD && p.hF) { let d = (lecMin(p.hF) - lecMin(p.hD)) / 60; h = d < 0 ? d + 24 : d; } return h; }
+    const lecMin = h => { if (!h) return null; const [a, b] = h.split(':').map(Number); return a * 60 + (b || 0); };
+    const lecHM = m => { m = ((m % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
+    function lecVisible(ev) { const rid = (ev.extendedProps || {}).rotationId; const r = rid && typeof rotGet === 'function' ? rotGet(rid) : null; return !r || r.visible !== false; }
+    function lecEvents() { return tbGetEvents().filter(lecVisible); }
+    function lecParJour(evs) { const m = {}; evs.forEach(e => { const k = (e.start || '').split('T')[0]; (m[k] = m[k] || []).push(e); }); return m; }
+    function lecTri(a, b) { const pa = a.extendedProps || {}, pb = b.extendedProps || {}; return (lecMin(pa.hD) ?? -1) - (lecMin(pb.hD) ?? -1); }
+    function lecFeries(d) { try { return getFeries(d.getFullYear()) || {}; } catch (e) { return {}; } }
+    function lecRot(ev) { const rid = (ev.extendedProps || {}).rotationId; return rid && typeof rotGet === 'function' ? rotGet(rid) : null; }
+    function lecRotChip(ev) { const r = lecRot(ev); return r ? `<span class="lec-rot" style="background:${r.couleur}">${lecEsc(r.nom)}</span>` : ''; }
+    function lecTitreJour(d) {
+        const auj = new Date(); auj.setHours(0, 0, 0, 0);
+        const diff = Math.round((d - auj) / 86400000);
+        const suite = `${d.getDate()} ${LEC_MOIS[d.getMonth()]}${d.getFullYear() !== auj.getFullYear() ? ' ' + d.getFullYear() : ''}`;
+        if (diff === 0) return `<b>Aujourd'hui</b>, ${suite}`;
+        if (diff === 1) return `<b>Demain</b>, ${suite}`;
+        if (diff === -1) return `<b>Hier</b>, ${suite}`;
+        return `<b>${LEC_JOURS_L[d.getDay()]}</b> ${suite}`;
+    }
+    function lecClicEv(ds, ev) {
+        const p = ev.extendedProps || {};
+        ouvrirEditionEvent(ds, p.type || '', p.rotationId || '');
+    }
+    // Stocke les événements affichés pour les retrouver au clic
+    let lecIdx = [];
+    const lecRef = (ds, ev) => { lecIdx.push([ds, ev]); return lecIdx.length - 1; };
+    function lecOuvrirIdx(i) { const x = lecIdx[i]; if (x) lecClicEv(x[0], x[1]); }
+
+    // ── Activation ──
+    function lecActiver(on) {
+        lec.on = on === undefined ? !lec.on : !!on; lecSauverPref();
+        document.body.classList.toggle('lec-on', lec.on);
+        if (lec.on) { lecRender(); window.scrollTo({ top: 0 }); }
+        else if (typeof tbRender === 'function') tbRender();
+        showToast(lec.on ? 'Mode lecture activé' : 'Mode classique', 'info', lec.on ? 'fa-book-open' : 'fa-table');
+    }
+    function lecSetVue(v) { lec.vue = v; lecSauverPref(); lecRender(true); }
+    function lecNav(n) {
+        if (lec.vue === 'jour') lecDate = lecAdd(lecDate, n);
+        else if (lec.vue === 'mois') lecDate = new Date(lecDate.getFullYear(), lecDate.getMonth() + n, 1);
+        else lecDate = lecAdd(lecDate, 7 * n);
+        lecRender(true);
+    }
+    function lecAujourdhui() { lecDate = new Date(); lecDate.setHours(0, 0, 0, 0); lecRender(true); }
+    function lecChoisir(ds) {
+        lecDate = lecParse(ds);
+        if (lec.vue === 'mois') lec.vue = 'jour';
+        lecRender(true);
+    }
+
+    // ── Rendu ──
+    function lecRender(defiler) {
+        const box = document.getElementById('lec'); if (!box) return;
+        document.body.classList.toggle('lec-on', !!lec.on);
+        if (!lec.on) return;
+        lecIdx = [];
+        const hd = document.querySelector('.app-header');
+        if (hd) { const ps = getComputedStyle(hd).position; document.documentElement.style.setProperty('--lec-top', (ps === 'sticky' || ps === 'fixed') ? (hd.offsetHeight + 4) + 'px' : '4px'); }
+        document.querySelectorAll('.lec-seg button').forEach(b => b.classList.toggle('on', b.dataset.v === lec.vue));
+        const evs = lecEvents(), parJour = lecParJour(evs);
+        const body = document.getElementById('lec-body');
+        if (lec.vue === 'liste') body.innerHTML = lecListe(parJour);
+        else if (lec.vue === 'jour') body.innerHTML = lecJour(parJour);
+        else if (lec.vue === 'semaine') body.innerHTML = lecSemaine(parJour);
+        else body.innerHTML = lecMoisVue(parJour);
+        lecStrip();
+        if (lec.vue === 'liste') {
+            const cible = document.getElementById('lec-j-' + lecFmt(lecDate));
+            if (cible && defiler) { const y = cible.getBoundingClientRect().top + window.scrollY - (document.querySelector('.app-header') || { offsetHeight: 0 }).offsetHeight - 70; window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }
+        } else if (lec.vue === 'jour' || lec.vue === 'semaine') {
+            const g = body.querySelector('.lec-grid-scroll');
+            if (g) { const h = parseInt(g.dataset.debut || '6', 10); g.scrollTop = Math.max(0, (h - 1) * (lec.vue === 'jour' ? 52 : 40)); }
+        }
+    }
+
+    function lecCarte(ds, ev, opts = {}) {
+        const p = ev.extendedProps || {}, col = tbColor(ev), h = lecH(ev);
+        const i = lecRef(ds, ev);
+        const horaire = p.hD && p.hF ? `${p.hD} – ${p.hF}` : '';
+        const nuit = p.hD && p.hF && lecMin(p.hF) <= lecMin(p.hD);
+        return `<div class="lec-item" onclick="lecOuvrirIdx(${i})">
+            <span class="lec-dot" style="background:${col}"></span>
+            <div class="lec-card">
+                <div class="lec-time">${p.hD ? `<b>${p.hD}</b>${p.hF ? `<small>${p.hF}${nuit ? ' +1' : ''}</small>` : ''}` : '<small>Jour<br>entier</small>'}</div>
+                <div class="lec-main">
+                    <div class="lec-t">${tbIcon(p.type)} ${lecEsc(lecNom(p.type))} ${lecRotChip(ev)}</div>
+                    ${horaire || h > 0 ? `<div class="lec-s"><i class="far fa-clock"></i> ${horaire}${horaire && h > 0 ? ' · ' : ''}${h > 0 ? (Math.round(h * 10) / 10).toString().replace('.', ',') + ' h' : ''}${p.repasDureeMin > 0 ? ` · 🍽️ ${p.repasDureeMin} min` : ''}</div>` : ''}
+                    ${p.note ? `<div class="lec-s"><i class="far fa-sticky-note"></i> ${lecEsc(p.note)}</div>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }
+    function lecNotesJour(ds) {
+        if (typeof notesCharger !== 'function') return [];
+        try { return notesCharger().filter(n => !n.archive && n.date === ds); } catch (e) { return []; }
+    }
+
+    // LISTE : 6 semaines à partir du lundi de la semaine choisie
+    function lecListe(parJour) {
+        const debut = tbLundi(lecDate), auj = lecFmt(new Date());
+        let html = '', fer = lecFeries(debut), anFer = debut.getFullYear();
+        for (let i = 0; i < 42; i++) {
+            const d = lecAdd(debut, i), ds = lecFmt(d);
+            if (d.getFullYear() !== anFer) { fer = lecFeries(d); anFer = d.getFullYear(); }
+            if (d.getDay() === 1) html += `<div class="lec-sem">Semaine ${tbNumSem(d)} · ${d.getDate()} ${LEC_MC[d.getMonth()]} – ${lecAdd(d, 6).getDate()} ${LEC_MC[lecAdd(d, 6).getMonth()]}</div>`;
+            const l = (parJour[ds] || []).slice().sort(lecTri), notes = lecNotesJour(ds);
+            html += `<section class="lec-day ${ds === auj ? 'auj' : ''} ${l.length || fer[ds] || notes.length ? '' : 'vide'}" id="lec-j-${ds}">
+                <h4 class="lec-dh" onclick="lecChoisir('${ds}'); lecSetVue('jour')"><span>${lecTitreJour(d)}</span>${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
+            if (fer[ds]) html += `<div class="lec-item lec-item-ferie"><span class="lec-dot" style="background:#7c3aed"></span><div class="lec-card"><div class="lec-time"><small>Jour<br>entier</small></div><div class="lec-main"><div class="lec-t">⭐ ${lecEsc(fer[ds])}</div><div class="lec-s">Jour férié</div></div></div></div>`;
+            l.forEach(ev => html += lecCarte(ds, ev));
+            notes.forEach(n => html += `<div class="lec-item" onclick="notesOuvrir && notesOuvrir()"><span class="lec-dot" style="background:#facc15"></span><div class="lec-card"><div class="lec-time"><small>Note</small></div><div class="lec-main"><div class="lec-t">📝 ${lecEsc(n.titre || (n.texte || '').slice(0, 40) || 'Note')}</div></div></div></div>`);
+            if (!l.length && !fer[ds] && !notes.length) html += `<div class="lec-repos" ondblclick="ouvrirEditionJour('${ds}')">💤 Repos <button onclick="event.stopPropagation(); ouvrirEditionJour('${ds}')" aria-label="Ajouter">+</button></div>`;
+            html += '</section>';
+        }
+        return html;
+    }
+    function lecTotal(l) {
+        const h = l.reduce((s, ev) => { const t = (ev.extendedProps || {}).type || ''; return s + (TB_TRAVAIL.includes(t) || TB_ACTIVITES.includes(t) || t.startsWith('CSE') ? lecH(ev) : 0); }, 0);
+        return h > 0 ? (Math.round(h * 10) / 10).toString().replace('.', ',') + ' h' : '';
+    }
+
+    // Segments horaires d'un jour (y compris la fin d'une nuit commencée la veille)
+    function lecSegments(ds, parJour) {
+        const segs = [], allDay = [];
+        (parJour[ds] || []).forEach(ev => {
+            const p = ev.extendedProps || {}, a = lecMin(p.hD), b = lecMin(p.hF);
+            if (a === null || b === null) { allDay.push(ev); return; }
+            const fin = b <= a ? 1440 : b;
+            segs.push({ ev, ds, a, b: fin, suiteDemain: b <= a, hD: p.hD, hF: p.hF });
+        });
+        const veille = lecFmt(lecAdd(lecParse(ds), -1));
+        (parJour[veille] || []).forEach(ev => {
+            const p = ev.extendedProps || {}, a = lecMin(p.hD), b = lecMin(p.hF);
+            if (a !== null && b !== null && b <= a && b > 0) segs.push({ ev, ds: veille, a: 0, b, suiteVeille: true, hD: p.hD, hF: p.hF });
+        });
+        segs.sort((x, y) => x.a - y.a || y.b - x.b);
+        // Colonnes en cas de chevauchement
+        const cols = [];
+        segs.forEach(s => { let c = cols.findIndex(fin => fin <= s.a); if (c < 0) { c = cols.length; cols.push(0); } cols[c] = s.b; s.col = c; });
+        segs.forEach(s => { s.nb = 1 + Math.max(...segs.filter(o => o.a < s.b && o.b > s.a).map(o => o.col)); });
+        return { segs, allDay };
+    }
+    function lecHeureDebut(listes) {
+        const m = Math.min(...listes.flatMap(x => x.segs.map(s => s.a)), 24 * 60);
+        return m >= 1440 ? 6 : Math.floor(m / 60);
+    }
+    function lecBloc(s, ph, court) {
+        const col = tbColor(s.ev), p = s.ev.extendedProps || {}, i = lecRef(s.ds, s.ev);
+        const top = s.a / 60 * ph, h = Math.max((s.b - s.a) / 60 * ph, court ? 18 : 24);
+        const w = 100 / s.nb;
+        return `<div class="lec-bloc ${court ? 'court' : ''}" onclick="event.stopPropagation(); lecOuvrirIdx(${i})"
+            style="top:${top}px;height:${h - 2}px;left:calc(${s.col * w}% + 2px);width:calc(${w}% - 4px);--c:${col}">
+            <div class="lec-bloc-t">${court ? tbIcon(p.type) : tbIcon(p.type) + ' ' + lecEsc(lecNom(p.type))}${!court ? ' ' + lecRotChip(s.ev) : ''}</div>
+            <div class="lec-bloc-h">${court ? `${parseInt(s.hD, 10)}h<br>${parseInt(s.hF, 10)}h` : `${s.suiteVeille ? '↳ ' : ''}${s.hD} – ${s.hF}${s.suiteDemain ? ' (+1)' : ''}`}</div>
+            ${!court && p.note ? `<div class="lec-bloc-h">${lecEsc(p.note)}</div>` : ''}
+        </div>`;
+    }
+    function lecHeures(ph) { let h = ''; for (let i = 0; i < 24; i++) h += `<div class="lec-hr" style="top:${i * ph}px"><span>${i}:00</span></div>`; return h; }
+    function lecMaintenant(ph, ds) {
+        if (ds !== lecFmt(new Date())) return '';
+        const n = new Date(), m = n.getHours() * 60 + n.getMinutes();
+        return `<div class="lec-now" style="top:${m / 60 * ph}px"></div>`;
+    }
+    function lecAllDayChips(ds, allDay, fer, court) {
+        let h = fer[ds] ? `<span class="lec-ad" style="--c:#7c3aed">⭐ ${court ? '' : lecEsc(fer[ds])}</span>` : '';
+        allDay.forEach(ev => { const p = ev.extendedProps || {}, i = lecRef(ds, ev); h += `<span class="lec-ad" style="--c:${tbColor(ev)}" onclick="event.stopPropagation(); lecOuvrirIdx(${i})">${tbIcon(p.type)} ${court ? '' : lecEsc(lecNom(p.type))}</span>`; });
+        return h;
+    }
+
+    // JOUR
+    function lecJour(parJour) {
+        const ds = lecFmt(lecDate), ph = 52, fer = lecFeries(lecDate);
+        const S = lecSegments(ds, parJour);
+        const ad = lecAllDayChips(ds, S.allDay, fer, false);
+        const l = (parJour[ds] || []);
+        return `<div class="lec-dtitle"><span>${lecTitreJour(lecDate)}</span>${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</div>
+            ${ad ? `<div class="lec-allday"><small>Jour entier</small><div>${ad}</div></div>` : ''}
+            <div class="lec-grid-scroll" data-debut="${lecHeureDebut([S])}">
+                <div class="lec-grid" style="height:${24 * ph}px" onclick="ouvrirEditionJour('${ds}')">
+                    ${lecHeures(ph)}
+                    <div class="lec-col" style="left:52px;right:6px">${S.segs.map(s => lecBloc(s, ph, false)).join('')}${lecMaintenant(ph, ds)}</div>
+                </div>
+            </div>
+            ${!S.segs.length && !ad ? '<div class="lec-vide">💤 Aucun poste ce jour — touchez la grille pour en ajouter un.</div>' : ''}`;
+    }
+
+    // SEMAINE
+    function lecSemaine(parJour) {
+        const lun = tbLundi(lecDate), ph = 40, auj = lecFmt(new Date()), fer = lecFeries(lun);
+        const jours = [...Array(7)].map((_, i) => { const d = lecAdd(lun, i), ds = lecFmt(d); return { d, ds, S: lecSegments(ds, parJour) }; });
+        const totSem = jours.reduce((s, j) => s + (parJour[j.ds] || []).reduce((t, ev) => { const ty = (ev.extendedProps || {}).type || ''; return t + (TB_TRAVAIL.includes(ty) || TB_ACTIVITES.includes(ty) || ty.startsWith('CSE') ? lecH(ev) : 0); }, 0), 0);
+        const adRow = jours.map(j => lecAllDayChips(j.ds, j.S.allDay, fer, true));
+        return `<div class="lec-dtitle"><span><b>Semaine ${tbNumSem(lun)}</b> · ${lun.getDate()} ${LEC_MC[lun.getMonth()]} – ${lecAdd(lun, 6).getDate()} ${LEC_MC[lecAdd(lun, 6).getMonth()]}</span>${totSem > 0 ? `<span class="lec-dh-h">${(Math.round(totSem * 10) / 10).toString().replace('.', ',')} h</span>` : ''}</div>
+            <div class="lec-wk-head"><span></span>${jours.map(j => `<button class="${j.ds === auj ? 'auj' : ''}" onclick="lecChoisir('${j.ds}'); lecSetVue('jour')"><small>${LEC_JOURS[j.d.getDay()]}</small><b>${j.d.getDate()}</b></button>`).join('')}</div>
+            ${adRow.some(Boolean) ? `<div class="lec-wk-ad"><span></span>${adRow.map(h => `<div>${h}</div>`).join('')}</div>` : ''}
+            <div class="lec-grid-scroll" data-debut="${lecHeureDebut(jours.map(j => j.S))}">
+                <div class="lec-grid" style="height:${24 * ph}px">
+                    ${lecHeures(ph)}
+                    <div class="lec-wk-cols">${jours.map(j => `<div class="lec-wk-col ${j.ds === auj ? 'auj' : ''}" onclick="ouvrirEditionJour('${j.ds}')">${j.S.segs.map(s => lecBloc(s, ph, true)).join('')}${lecMaintenant(ph, j.ds)}</div>`).join('')}</div>
+                </div>
+            </div>`;
+    }
+
+    // MOIS
+    function lecMoisVue(parJour) {
+        const premier = new Date(lecDate.getFullYear(), lecDate.getMonth(), 1), debut = tbLundi(premier);
+        const auj = lecFmt(new Date()), sel = lecFmt(lecDate), fer = lecFeries(premier);
+        let html = `<div class="lec-dtitle"><span><b>${LEC_MOIS[premier.getMonth()].charAt(0).toUpperCase() + LEC_MOIS[premier.getMonth()].slice(1)}</b> ${premier.getFullYear()}</span></div>
+            <div class="lec-m-head">${['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'].map(j => `<span>${j}</span>`).join('')}</div><div class="lec-m-grid">`;
+        for (let i = 0; i < 42; i++) {
+            const d = lecAdd(debut, i), ds = lecFmt(d);
+            if (i === 35 && d.getMonth() !== premier.getMonth()) break;
+            const l = (parJour[ds] || []).slice().sort(lecTri);
+            html += `<div class="lec-m-cell ${d.getMonth() !== premier.getMonth() ? 'hors' : ''} ${ds === auj ? 'auj' : ''} ${ds === sel ? 'sel' : ''}" onclick="lecChoisir('${ds}')">
+                <span class="lec-m-n">${d.getDate()}</span>
+                ${fer[ds] ? `<span class="lec-m-ev" style="--c:#7c3aed">⭐</span>` : ''}
+                ${l.slice(0, 3).map(ev => { const p = ev.extendedProps || {}; return `<span class="lec-m-ev" style="--c:${tbColor(ev)}">${tbIcon(p.type)}<em>${p.hD ? parseInt(p.hD, 10) + 'h' : ''}</em></span>`; }).join('')}
+                ${l.length > 3 ? `<span class="lec-m-plus">+${l.length - 3}</span>` : ''}
+            </div>`;
+        }
+        return html + '</div>';
+    }
+
+    // Bandeau des jours (en bas)
+    function lecStrip() {
+        const z = document.getElementById('lec-strip-days'); if (!z) return;
+        const lun = tbLundi(lecDate), auj = lecFmt(new Date()), sel = lecFmt(lecDate);
+        const parJour = lecParJour(lecEvents());
+        z.innerHTML = [...Array(7)].map((_, i) => {
+            const d = lecAdd(lun, i), ds = lecFmt(d), n = (parJour[ds] || []).length;
+            return `<button class="${ds === sel ? 'sel' : ''} ${ds === auj ? 'auj' : ''}" onclick="lecChoisir('${ds}')">
+                <small>${LEC_JOURS[d.getDay()]}</small><b>${d.getDate()}</b>${ds === sel ? `<small>${LEC_MC[d.getMonth()]}</small>` : `<i style="${n ? '' : 'visibility:hidden'}"></i>`}</button>`;
+        }).join('');
+    }
+
+    // Glisser à gauche / à droite pour changer de période
+    function lecInstallerSwipe() {
+        const b = document.getElementById('lec-body'); if (!b) return;
+        let x0 = null, y0 = null;
+        b.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+        b.addEventListener('touchend', e => {
+            if (x0 === null || lec.vue === 'liste') return;
+            const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+            if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5) lecNav(dx < 0 ? 1 : -1);
+        }, { passive: true });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        lecInstallerSwipe();
+        const _tb = tbRender;
+        tbRender = function () { const r = _tb.apply(this, arguments); if (lec.on) lecRender(); return r; };
+        if (lec.on) setTimeout(() => lecRender(true), 300);
+        setInterval(() => { if (lec.on && document.visibilityState === 'visible' && (lec.vue === 'jour' || lec.vue === 'semaine')) { const n = document.querySelector('.lec-now'); if (n) { const d = new Date(), ph = lec.vue === 'jour' ? 52 : 40; n.style.top = ((d.getHours() * 60 + d.getMinutes()) / 60 * ph) + 'px'; } } }, 60000);
+    });
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -10084,7 +10470,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v10.3';
+const CACHE_NAME = 'planning-pro-v10.4';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
