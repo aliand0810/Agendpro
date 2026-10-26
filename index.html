@@ -337,7 +337,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             body { padding-bottom: 20px; }
             .bottom-nav { display: none; }
             .main-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-            .app-content { padding: 16px 20px 0; max-width: 1200px; }
+            .app-content { padding: 16px 20px 0; max-width: none; width: 100%; box-sizing: border-box; }
+            .main-tabs { width: 100%; }
+            .main-tabs > * { flex: 1; }
+            .planning-sidebar { width: 280px !important; }
+            .planning-layout > :not(.planning-sidebar) { flex: 1; min-width: 0; }
         }
         /* ─── Téléphone en paysage : plein écran, barres masquées (v10.3) ─── */
         .ls-fab { display: none; }
@@ -9746,19 +9750,39 @@ service cloud.firestore {
     }
 
     // ── Notifications système ──
+    const AL_NOTIF_KEY = 'mpp_notif_on';
+    function alNotifOn() { return localStorage.getItem(AL_NOTIF_KEY) !== '0'; }
+    function alEstIOS() { return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
+    function alEstInstallee() { return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }
     function alMajNotifEtat() {
         const el = document.getElementById('al-notif'); if (!el) return;
-        if (!('Notification' in window)) { el.innerHTML = '⚠️ Notifications non prises en charge par ce navigateur.'; return; }
-        const p = Notification.permission;
-        el.innerHTML = p === 'granted' ? '✅ Notifications autorisées sur cet appareil'
-            : p === 'denied' ? '🚫 Notifications bloquées — autorisez-les dans les réglages du navigateur'
-            : `<button class="fb-mini-btn" onclick="alDemanderNotif()"><i class="fas fa-bell"></i> Autoriser les notifications</button>`;
+        const on = alNotifOn();
+        let etat = '';
+        if (alEstIOS() && !alEstInstallee()) etat = '📲 Sur iPhone : touchez <b>Partager</b> puis <b>« Sur l\'écran d\'accueil »</b>, ouvrez l\'application depuis l\'icône, puis activez les notifications ici.';
+        else if (!('Notification' in window)) etat = '⚠️ Notifications non prises en charge par ce navigateur.';
+        else if (Notification.permission === 'denied') etat = '🚫 Bloquées par le système — autorisez-les dans les réglages du téléphone / navigateur.';
+        else if (Notification.permission === 'default' && on) etat = `<button class="fb-mini-btn" onclick="alDemanderNotif()"><i class="fas fa-bell"></i> Autoriser les notifications</button>`;
+        else if (on) etat = `✅ Actives sur cet appareil <button class="fb-mini-btn" onclick="alTestNotif()" style="margin-left:6px"><i class="fas fa-paper-plane"></i> Tester</button>`;
+        else etat = '🔕 Notifications désactivées sur cet appareil';
+        el.innerHTML = `<label class="al-notif-sw" style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:6px">🔔 Notifications sur cet appareil
+            <span class="al-sw"><input type="checkbox" ${on ? 'checked' : ''} onchange="alNotifBasculer(this.checked)"><span></span></span></label><div>${etat}</div>`;
+    }
+    async function alNotifBasculer(on) {
+        localStorage.setItem(AL_NOTIF_KEY, on ? '1' : '0');
+        if (on && 'Notification' in window && Notification.permission === 'default') await alDemanderNotif();
+        alMajNotifEtat();
     }
     async function alDemanderNotif() { try { await Notification.requestPermission(); } catch(e) {} alMajNotifEtat(); }
+    function alTestNotif() { alNotifier('🔔 Test — Mon Planning Pro', 'Les notifications fonctionnent sur cet appareil.'); }
     async function alNotifier(titre, corps) {
-        if (!('Notification' in window) || Notification.permission !== 'granted') return;
+        if (!alNotifOn() || !('Notification' in window) || Notification.permission !== 'granted') return;
         const opt = { body: corps, tag: 'mpp-alarme', renotify: true, requireInteraction: true, vibrate: [400, 200, 400, 200, 800], icon: (typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || undefined };
-        try { const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration(); if (reg) return reg.showNotification(titre, opt); } catch(e) {}
+        try {
+            if (navigator.serviceWorker) {
+                const reg = await Promise.race([navigator.serviceWorker.ready, new Promise(r => setTimeout(r, 1500))]);
+                if (reg && reg.showNotification) return await reg.showNotification(titre, opt);
+            }
+        } catch(e) {}
         try { new Notification(titre, opt); } catch(e) {}
     }
 
@@ -10672,9 +10696,8 @@ self.addEventListener('fetch', event => {
 
     function registerServiceWorker() {
         if ('serviceWorker' in navigator) {
-            const swBlob = new Blob([swCode], { type: 'application/javascript' });
-            const swURL = URL.createObjectURL(swBlob);
-            navigator.serviceWorker.register(swURL, { scope: './' })
+            navigator.serviceWorker.register('./sw.js', { scope: './' })
+                .catch(() => navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], { type: 'application/javascript' })), { scope: './' }))
                 .then(registration => {
                     console.log('SW registered:', registration.scope);
                     const swSt = document.getElementById('sw-status-text');
