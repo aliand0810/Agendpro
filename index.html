@@ -339,15 +339,24 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             .main-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
             .app-content { padding: 16px 20px 0; max-width: 1200px; }
         }
-        /* ─── Téléphone en paysage : plein écran + barre du bas (v10.3) ─── */
+        /* ─── Téléphone en paysage : plein écran, barres masquées (v10.3) ─── */
+        .ls-fab { display: none; }
         @media (orientation: landscape) and (max-height: 520px) {
-            body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
-            .bottom-nav { display: flex !important; }
-            .main-tabs { display: none !important; }
-            .app-content { max-width: none !important; width: 100% !important; padding: 6px calc(8px + env(safe-area-inset-right, 0px)) 0 calc(8px + env(safe-area-inset-left, 0px)) !important; box-sizing: border-box; }
-            .nav-item { padding: 5px 4px; }
-            body.lec-on .planning-sidebar { display: none !important; }
+            body { padding-top: 0 !important; padding-bottom: 0 !important; }
+            .app-header, .bottom-nav, .main-tabs { display: none !important; }
+            body.ls-bars .app-header { display: flex !important; }
+            body.ls-bars .bottom-nav { display: flex !important; }
+            body.ls-bars { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
+            .app-content { max-width: none !important; width: 100% !important; padding: 4px calc(6px + env(safe-area-inset-right, 0px)) 0 calc(6px + env(safe-area-inset-left, 0px)) !important; box-sizing: border-box; }
+            .planning-layout { gap: 0 !important; }
+            .planning-sidebar { display: none !important; }
+            body.ls-side .planning-sidebar { display: block !important; position: fixed !important; top: 0; left: 0; bottom: 0; width: min(300px, 45vw) !important; max-height: none !important; z-index: 140; overflow-y: auto; background: var(--bg-app); padding: 10px 10px 10px calc(10px + env(safe-area-inset-left, 0px)); box-shadow: 6px 0 24px rgba(0,0,0,0.25); animation: lsSlide 0.25s ease; }
+            @keyframes lsSlide { from { transform: translateX(-100%); } to { transform: none; } }
             body.lec-on .lec { width: 100%; max-width: none; }
+            .ls-fab { display: flex; position: fixed; right: calc(10px + env(safe-area-inset-right, 0px)); bottom: 10px; z-index: 150; gap: 6px; }
+            .ls-fab button { width: 42px; height: 42px; border-radius: 50%; border: none; background: var(--primary); color: #fff; font-size: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.25); cursor: pointer; transition: transform 0.15s; opacity: 0.85; }
+            .ls-fab button:active { transform: scale(0.88); }
+            body.ls-bars .ls-fab { bottom: calc(74px + env(safe-area-inset-bottom, 0px)); }
         }
 
         .tab-btn { flex: 1; padding: 10px 8px; border-radius: 10px; border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 75px; transition: 0.2s; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; box-shadow: var(--shadow-sm); }
@@ -2815,6 +2824,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
     <div class="overlay" id="overlay" onclick="fermerModales()"></div>
 
+    <div class="ls-fab">
+        <button onclick="document.body.classList.toggle('ls-side')" title="Afficher les informations" aria-label="Informations"><i class="fas fa-info"></i></button>
+        <button onclick="document.body.classList.toggle('ls-bars')" title="Afficher les barres" aria-label="Menus"><i class="fas fa-bars"></i></button>
+    </div>
     <!-- ─── BOTTOM NAVIGATION (mobile) ─── -->
     <nav class="bottom-nav">
         <button class="nav-item" id="nav-paie" onclick="switchTabMobile('tab-paie', this)">
