@@ -321,6 +321,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .nav-item-special i { color: white; }
         body.dark-mode .bottom-nav { background: #111827; border-color: #1e2a3a; }
 
+        /* ─── Barre animée au toucher (v10.3) ─── */
+        .nav-item { position: relative; transition: color 0.2s, transform 0.18s cubic-bezier(.3,1.6,.5,1); }
+        .nav-item:active { transform: scale(0.88); }
+        .nav-item.nav-pop i { animation: navPop 0.42s cubic-bezier(.3,1.6,.5,1); }
+        @keyframes navPop { 0% { transform: scale(1); } 40% { transform: scale(1.35) translateY(-4px); } 100% { transform: scale(1) translateY(-2px); } }
+        .nav-ripple { position: absolute; border-radius: 50%; pointer-events: none; background: currentColor; opacity: 0.25; transform: scale(0); animation: navRipple 0.5s ease-out forwards; }
+        @keyframes navRipple { to { transform: scale(2.6); opacity: 0; } }
+        .nav-item::after { content: ''; position: absolute; bottom: 3px; left: 50%; width: 0; height: 3px; border-radius: 3px; background: var(--primary); transform: translateX(-50%); transition: width 0.25s ease; }
+        .nav-item.active:not(.nav-item-special)::after { width: 22px; }
+
         /* ─── DESKTOP: hide bottom nav, show top tabs ─── */
         .main-tabs { display: none; }
         @media (min-width: 700px) {
@@ -328,6 +338,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             .bottom-nav { display: none; }
             .main-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
             .app-content { padding: 16px 20px 0; max-width: 1200px; }
+        }
+        /* ─── Téléphone en paysage : plein écran + barre du bas (v10.3) ─── */
+        @media (orientation: landscape) and (max-height: 520px) {
+            body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
+            .bottom-nav { display: flex !important; }
+            .main-tabs { display: none !important; }
+            .app-content { max-width: none !important; width: 100% !important; padding: 6px calc(8px + env(safe-area-inset-right, 0px)) 0 calc(8px + env(safe-area-inset-left, 0px)) !important; box-sizing: border-box; }
+            .nav-item { padding: 5px 4px; }
+            body.lec-on .planning-sidebar { display: none !important; }
+            body.lec-on .lec { width: 100%; max-width: none; }
         }
 
         .tab-btn { flex: 1; padding: 10px 8px; border-radius: 10px; border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 75px; transition: 0.2s; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; box-shadow: var(--shadow-sm); }
@@ -2434,7 +2454,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <div id="rot-liste"></div>
             <div class="rot-hint">
                 <strong>👁️ Masquer</strong> : le roulement disparaît du planning et n'est plus compté dans la paie, les stats et l'analyse DIRT — mais il est conservé et réutilisable à tout moment.<br>
-                <strong>💶 Paie</strong> : décochez pour garder le roulement affiché mais ne pas le comptabiliser dans le calcul de paie.<br>
+                <strong>💶 Paie</strong> : décochez pour garder le roulement affiché mais ne pas le comptabiliser dans la paie ni dans l'analyse DIRT.<br>
                 <strong>🎯 Seul</strong> : n'affiche que ce roulement.<br>
                 <strong>⧉ Dupliquer</strong> : copie le cycle avec un décalage de jours (idéal pour plusieurs équipes).
             </div>
@@ -2797,21 +2817,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
     <!-- ─── BOTTOM NAVIGATION (mobile) ─── -->
     <nav class="bottom-nav">
-        <button class="nav-item" id="nav-impr" onclick="ouvrirModale('modal-print')">
-            <i class="fas fa-print"></i>
-            <span>Impr.</span>
-        </button>
         <button class="nav-item" id="nav-paie" onclick="switchTabMobile('tab-paie', this)">
             <i class="fas fa-coins"></i>
             <span>Paie</span>
         </button>
-        <button class="nav-item nav-item-special active" id="nav-planning" onclick="switchTabMobile('tab-planning', this)">
-            <i class="fas fa-calendar"></i>
-            <span>Planning</span>
-        </button>
         <button class="nav-item" id="nav-dirt" onclick="switchTabMobile('tab-dirt', this)">
             <i class="fas fa-shield-alt"></i>
             <span>DIRT</span>
+        </button>
+        <button class="nav-item nav-item-special active" id="nav-planning" onclick="switchTabMobile('tab-planning', this)">
+            <i class="fas fa-calendar"></i>
+            <span>Planning</span>
         </button>
         <button class="nav-item" id="nav-config-taux" onclick="switchTabMobile('tab-config-taux', this)">
             <i class="fas fa-sliders-h"></i>
@@ -4716,7 +4732,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         const marge = (ds, n) => { const [y, m, j] = ds.split('-').map(Number); return fmtLocal(new Date(y, m - 1, j + n)); };
         const dEtendu = marge(d, -3), fEtendu = marge(f, 3);
         const postes = calendar.getEvents()
-            .filter(e => { const ds = e.startStr.split('T')[0]; return ds >= dEtendu && ds <= fEtendu && DIRT_TYPES.includes(e.extendedProps.type); })
+            .filter(e => { const ds = e.startStr.split('T')[0]; return ds >= dEtendu && ds <= fEtendu && !rotHorsPaie(e) && DIRT_TYPES.includes(e.extendedProps.type); })
             .sort((a, b) => dirtTsDebut(a) - dirtTsDebut(b));
         const [y1, m1, j1] = d.split('-').map(Number), [y2, m2, j2] = f.split('-').map(Number);
         const debP = new Date(y1, m1 - 1, j1).getTime(), finP = new Date(y2, m2 - 1, j2 + 1).getTime();
@@ -7188,7 +7204,7 @@ function selectAct(btn, val) {
                 <div class="rot-mini-wrap">${rotMiniMotif(r.motif)}</div>
                 <div class="rot-card-actions">
                     <button onclick="rotBasculer('${r.id}')"><i class="fas ${off ? 'fa-eye' : 'fa-eye-slash'}"></i> ${off ? 'Afficher' : 'Masquer'}</button>
-                    <label class="rot-paie-chk" style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:700;cursor:pointer;padding:4px 8px;border:1px solid var(--border-color);border-radius:8px;" title="Compter ce roulement dans le calcul de la paie"><input type="checkbox" ${r.paie === false ? '' : 'checked'} onchange="rotBasculerPaie('${r.id}')" style="width:auto;margin:0;"> 💶 Paie</label>
+                    <label class="rot-paie-chk" style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:700;cursor:pointer;padding:4px 8px;border:1px solid var(--border-color);border-radius:8px;" title="Compter ce roulement dans la paie et l'analyse DIRT"><input type="checkbox" ${r.paie === false ? '' : 'checked'} onchange="rotBasculerPaie('${r.id}')" style="width:auto;margin:0;"> 💶 Paie</label>
                     <button onclick="rotSolo('${r.id}')" title="Afficher uniquement celui-ci"><i class="fas fa-bullseye"></i> Seul</button>
                     <button onclick="rotModifier('${r.id}')"><i class="fas fa-pen"></i> Modifier</button>
                     <button onclick="rotDupliquer('${r.id}')" title="Dupliquer avec décalage"><i class="fas fa-clone"></i> Dupliquer</button>
@@ -10208,6 +10224,7 @@ service cloud.firestore {
     const lecFmt = d => tbFmt(d);
     const lecParse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
     const lecAdd = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
+    lec.on = true; // mode lecture par défaut à l'ouverture (v10.3)
     function lecSauverPref() { try { localStorage.setItem(LEC_KEY, JSON.stringify({ on: lec.on, vue: lec.vue })); } catch (e) {} }
     function lecNom(type) {
         const T = { 'MATIN': 'Matin', 'MATIN SUPPL.': 'Matin suppl.', 'APRÈS-MIDI': 'Après-midi', 'APRÈS-MIDI SUPPL.': 'Après-midi suppl.', 'NUIT': 'Nuit', 'NUIT SUPPL.': 'Nuit suppl.',
@@ -10222,6 +10239,15 @@ service cloud.firestore {
     const lecHM = m => { m = ((m % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
     function lecVisible(ev) { const rid = (ev.extendedProps || {}).rotationId; const r = rid && typeof rotGet === 'function' ? rotGet(rid) : null; return !r || r.visible !== false; }
     function lecEvents() { return tbGetEvents().filter(lecVisible); }
+    document.addEventListener('pointerdown', ev => {
+        const b = ev.target.closest && ev.target.closest('.bottom-nav .nav-item'); if (!b) return;
+        const r = b.getBoundingClientRect(), sz = Math.max(r.width, r.height);
+        const sp = document.createElement('span'); sp.className = 'nav-ripple';
+        sp.style.cssText = `width:${sz}px;height:${sz}px;left:${ev.clientX - r.left - sz/2}px;top:${ev.clientY - r.top - sz/2}px;`;
+        b.appendChild(sp); setTimeout(() => sp.remove(), 550);
+        b.classList.remove('nav-pop'); void b.offsetWidth; b.classList.add('nav-pop');
+        if (navigator.vibrate) { try { navigator.vibrate(8); } catch(_) {} }
+    }, { passive: true });
     function lecParJour(evs) { const m = {}; evs.forEach(e => { const k = (e.start || '').split('T')[0]; (m[k] = m[k] || []).push(e); }); return m; }
     function lecTri(a, b) { const pa = a.extendedProps || {}, pb = b.extendedProps || {}; return (lecMin(pa.hD) ?? -1) - (lecMin(pb.hD) ?? -1); }
     function lecFeries(d) { try { return getFeries(d.getFullYear()) || {}; } catch (e) { return {}; } }
