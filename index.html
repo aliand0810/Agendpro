@@ -507,13 +507,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-wk-col.auj { background:color-mix(in srgb, var(--primary) 6%, transparent); }
         .lec-m-head { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:0.66rem; font-weight:700; color:var(--text-muted); margin-bottom:4px; }
         .lec-m-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
-        .lec-m-cell { min-height:74px; min-width:0; background:var(--bg-app); border:1px solid var(--border-color); border-radius:10px; padding:3px; display:flex; flex-direction:column; gap:2px; cursor:pointer; overflow:hidden; }
+        .lec-m-cell { min-height:118px; min-width:0; background:var(--bg-app); border:1px solid var(--border-color); border-radius:10px; padding:3px 2px; display:flex; flex-direction:column; gap:3px; cursor:pointer; overflow:hidden; }
         .lec-m-cell.hors { opacity:0.4; }
         .lec-m-cell.auj .lec-m-n { background:var(--primary); color:#fff; }
         .lec-m-cell.sel { border-color:var(--primary); box-shadow:0 0 0 1.5px var(--primary) inset; }
         .lec-m-n { align-self:center; font-size:0.82rem; font-weight:800; color:var(--text-main); min-width:22px; text-align:center; border-radius:11px; line-height:22px; }
-        .lec-m-ev { display:flex; align-items:center; justify-content:center; gap:2px; font-size:0.62rem; font-weight:700; color:var(--text-main); background:color-mix(in srgb, var(--c) 22%, transparent); border-left:3px solid var(--c); border-radius:4px; padding:1px 2px; white-space:nowrap; overflow:hidden; }
-        .lec-m-ev em { font-style:normal; overflow:hidden; text-overflow:ellipsis; }
+        .lec-m-ev { display:flex; flex-direction:column; align-items:center; gap:0; font-size:0.6rem; font-weight:700; color:var(--text-main); background:color-mix(in srgb, var(--c) 22%, transparent); border-left:3px solid var(--c); border-radius:5px; padding:2px 1px; line-height:1.15; overflow:hidden; }
+        .lec-m-ev .ic { font-size:0.8rem; line-height:1; }
+        .lec-m-ev b { font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums; }
+        .lec-m-ev small { font-size:0.55rem; font-weight:600; color:var(--text-muted); white-space:nowrap; }
+        .lec-m-ev em { font-style:normal; font-size:0.54rem; font-weight:600; opacity:.8; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         .lec-m-plus { font-size:0.6rem; color:var(--text-muted); text-align:center; }
         .lec-strip { margin-bottom:6px; } .lec-strip { position:sticky; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); z-index:40; display:flex; align-items:center; gap:8px; margin-top:10px; padding:0 2px; }
         @media (min-width: 700px) { .lec-strip { bottom:12px; } }
@@ -10466,6 +10469,14 @@ service cloud.firestore {
     }
 
     // MOIS
+    function lecMoisDetail(ev) {
+        const p = ev.extendedProps || {}, f = h => h ? String(h).replace(':', 'h').replace(/h00$/, 'h') : '';
+        let dur = '';
+        if (p.hD && p.hF) { const [a, b] = p.hD.split(':').map(Number), [c, d] = p.hF.split(':').map(Number); let m = (c * 60 + (d || 0)) - (a * 60 + (b || 0)); if (m <= 0) m += 1440; dur = (m / 60).toFixed(m % 60 ? 1 : 0).replace('.', ',') + 'h'; }
+        else if (p.hPayees) dur = String(p.hPayees).replace('.', ',') + 'h';
+        const nom = p.type || ev.title || '';
+        return `<span class="lec-m-ev" style="--c:${tbColor(ev)}"><span class="ic">${tbIcon(p.type)}</span>${p.hD ? `<b>${f(p.hD)}</b>` : ''}${p.hF ? `<b>${f(p.hF)}</b>` : ''}${dur ? `<small>${dur}</small>` : ''}${!p.hD && nom ? `<em>${nom}</em>` : ''}</span>`;
+    }
     function lecMoisVue(parJour) {
         const premier = new Date(lecDate.getFullYear(), lecDate.getMonth(), 1), debut = tbLundi(premier);
         const auj = lecFmt(new Date()), sel = lecFmt(lecDate), fer = lecFeries(premier);
@@ -10478,7 +10489,7 @@ service cloud.firestore {
             html += `<div class="lec-m-cell ${d.getMonth() !== premier.getMonth() ? 'hors' : ''} ${ds === auj ? 'auj' : ''} ${ds === sel ? 'sel' : ''}" onclick="lecChoisir('${ds}')">
                 <span class="lec-m-n">${d.getDate()}</span>
                 ${fer[ds] ? `<span class="lec-m-ev" style="--c:#7c3aed">⭐</span>` : ''}
-                ${l.slice(0, 3).map(ev => { const p = ev.extendedProps || {}; return `<span class="lec-m-ev" style="--c:${tbColor(ev)}">${tbIcon(p.type)}<em>${p.hD ? parseInt(p.hD, 10) + 'h' : ''}</em></span>`; }).join('')}
+                ${l.slice(0, 3).map(ev => lecMoisDetail(ev)).join('')}
                 ${l.length > 3 ? `<span class="lec-m-plus">+${l.length - 3}</span>` : ''}
             </div>`;
         }
