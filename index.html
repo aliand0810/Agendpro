@@ -540,6 +540,19 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.lec-full.lec-vue-mois .lec-m-ev small::before { content:'('; } body.lec-full.lec-vue-mois .lec-m-ev small::after { content:')'; }
         @media (min-width: 700px) { body.lec-vue-mois .lec-m-cell { min-height:130px; } body.lec-vue-mois .lec-m-ev { font-size:0.75rem; } }
         #lec-body { touch-action: pan-y; user-select: none; }
+        .sb-grip { display:inline-flex; align-items:center; justify-content:center; width:22px; height:26px; margin:-4px 4px -4px -6px; color:var(--text-muted); cursor:grab; touch-action:none; border-radius:6px; opacity:.6; flex:none; }
+        .sb-grip:hover { opacity:1; background:var(--bg-app); }
+        .sidebar-card.sb-drag { opacity:.9; box-shadow:0 10px 28px rgba(79,70,229,.35); outline:2px solid var(--primary); transform:scale(1.02); z-index:5; position:relative; cursor:grabbing; }
+        .nk-pj-list { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
+        .nk-pj { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.6); border:1px solid var(--border-color); border-radius:10px; padding:4px 6px; }
+        body.dark-mode .nk-pj { background:rgba(0,0,0,.25); }
+        .nk-pj-open { flex:1; min-width:0; display:flex; align-items:center; gap:8px; border:none; background:none; cursor:pointer; text-align:left; color:var(--text-main); padding:4px; }
+        .nk-pj-open i { color:#dc2626; font-size:1.3rem; }
+        .nk-pj-open span { display:flex; flex-direction:column; min-width:0; }
+        .nk-pj-open b { font-size:.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .nk-pj-open small { font-size:.7rem; color:var(--text-muted); }
+        .nk-pj-add { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border:1px dashed var(--border-color); border-radius:10px; font-size:.82rem; font-weight:700; color:var(--primary); cursor:pointer; margin:4px 0 8px; }
+        .nk-pj-tag { display:inline-flex; gap:4px; align-items:center; font-size:.7rem; font-weight:700; color:#dc2626; margin-top:4px; }
         .lec-m-plus { font-size:0.6rem; color:var(--text-muted); text-align:center; }
         .lec-strip { margin-bottom:6px; } .lec-strip { position:sticky; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); z-index:40; display:flex; align-items:center; gap:8px; margin-top:10px; padding:0 2px; }
         @media (min-width: 700px) { .lec-strip { bottom:12px; } }
@@ -2391,6 +2404,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <input type="date" id="nk-date">
             </div>
             <div id="nk-photos"></div>
+            <div id="nk-fichiers"></div>
             <div class="nk-couleurs" id="nk-couleurs"></div>
             <div class="nk-actions">
                 <button onclick="noteBasculerListe()" id="nk-btn-liste"></button>
@@ -8853,6 +8867,7 @@ service cloud.firestore {
             ${n.titre ? `<div class="nk-titre">${noteEsc(n.titre)}</div>` : ''}
             ${vignette}
             ${corps}
+            ${(n.fichiers || []).length ? `<div class="nk-pj-tag"><i class="fas fa-paperclip"></i> ${n.fichiers.length} PDF</div>` : ''}
             ${n.date ? `<div class="nk-date">📅 ${noteDateFr(n.date)}</div>` : ''}
         </div>`;
     }
@@ -8931,6 +8946,7 @@ service cloud.firestore {
         document.getElementById('nk-couleurs').innerHTML = NOTES_COULEURS.map(c => `<button type="button" class="nk-sw ${c.k === n.couleur ? 'sel' : ''}" style="background:${c.bg}" onclick="noteSetCouleur('${c.k}')" title="${c.lbl}" aria-label="${c.lbl}"></button>`).join('');
         noteRendreItems();
         noteRendrePhotos();
+        noteRendreFichiers();
         document.getElementById('modal-notes').scrollTop = 0;
         setTimeout(() => { const t = document.getElementById(n.titre || n.texte ? 'nk-texte' : 'nk-titre'); if (t && t.style.display !== 'none') t.focus(); }, 50);
     }
@@ -8970,7 +8986,7 @@ service cloud.firestore {
             noteLireChamps();
             const n = noteBrouillon;
             n.liste = (n.liste || []).filter(i => i.t.trim());
-            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length && !(n.photos || []).length;
+            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length && !(n.photos || []).length && !(n.fichiers || []).length;
             const l = notesCharger(), i = l.findIndex(x => x.id === n.id);
             if (vide) { if (i >= 0) { l.splice(i, 1); notesSauver(l); } }
             else {
@@ -9196,6 +9212,101 @@ service cloud.firestore {
         box.innerHTML = `<div class="nk-ph-grid">${photosMiniHTML(noteBrouillon.photos, 'notePhotoRetirer')}</div>` + photosBoutonsHTML('notePhotoAjout');
         photosHydrater(box);
     }
+
+
+    // ── Fichiers PDF joints aux notes (v10.5) ──
+    const NK_PDF_PART = 700000, NK_PDF_MAX = 15 * 1024 * 1024;
+    function noteRendreFichiers() {
+        const box = document.getElementById('nk-fichiers'); if (!box || !noteBrouillon) return;
+        const l = noteBrouillon.fichiers = noteBrouillon.fichiers || [];
+        box.innerHTML = `<div class="nk-pj-list">${l.map((x, i) => `<div class="nk-pj">
+                <button type="button" class="nk-pj-open" onclick="notePdfOuvrir(${i})"><i class="fas fa-file-pdf"></i><span><b>${noteEsc(x.nom)}</b><small>${(x.taille / 1024 / 1024).toFixed(x.taille > 1048576 ? 1 : 2).replace('.', ',')} Mo</small></span></button>
+                <button type="button" class="nk-x" onclick="notePdfRetirer(${i})" aria-label="Retirer">×</button></div>`).join('')}</div>
+            <label class="nk-pj-add"><i class="fas fa-paperclip"></i> Joindre un PDF<input type="file" accept="application/pdf,.pdf" multiple hidden onchange="notePdfAjout(this)"></label>`;
+    }
+    function nkLireDataURL(file) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(file); }); }
+    async function notePdfAjout(input) {
+        const files = [...(input.files || [])]; input.value = '';
+        for (const file of files) {
+            if (!/pdf$/i.test(file.type) && !/\.pdf$/i.test(file.name)) { showToast('Seuls les fichiers PDF sont acceptés', 'error', 'fa-file-pdf'); continue; }
+            if (file.size > NK_PDF_MAX) { showToast(`« ${file.name} » dépasse 15 Mo`, 'error', 'fa-file-pdf'); continue; }
+            try {
+                const data = await nkLireDataURL(file), id = 'pdf_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+                const parts = Math.ceil(data.length / NK_PDF_PART);
+                for (let k = 0; k < parts; k++) await photoSauver(`${id}_${k}`, data.slice(k * NK_PDF_PART, (k + 1) * NK_PDF_PART));
+                noteBrouillon.fichiers = (noteBrouillon.fichiers || []).concat({ id, nom: file.name, taille: file.size, parts });
+                noteRendreFichiers();
+            } catch (e) { showToast('Impossible d\'ajouter ce PDF', 'error', 'fa-file-pdf'); }
+        }
+    }
+    function notePdfRetirer(i) { if (!confirm('Retirer ce PDF de la note ?')) return; noteBrouillon.fichiers.splice(i, 1); noteRendreFichiers(); }
+    async function notePdfBlob(x) {
+        let data = '';
+        for (let k = 0; k < x.parts; k++) { const p = await photoCharger(`${x.id}_${k}`); if (!p) throw new Error('manquant'); data += p; }
+        const bin = atob(data.split(',')[1]), u = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+        return new Blob([u], { type: 'application/pdf' });
+    }
+    async function notePdfOuvrir(i) {
+        const x = noteBrouillon.fichiers[i];
+        let blob; try { blob = await notePdfBlob(x); } catch (e) { return showToast('PDF pas encore disponible sur cet appareil', 'error', 'fa-file-pdf'); }
+        const url = URL.createObjectURL(blob);
+        const o = document.createElement('div'); o.className = 'nk-pdf';
+        o.innerHTML = `<div class="nk-pdf-box">
+            <div class="nk-pdf-bar"><b><i class="fas fa-file-pdf"></i> ${noteEsc(x.nom)}</b><button aria-label="Fermer">×</button></div>
+            <iframe src="${url}"></iframe>
+            <div class="nk-pdf-act">
+                <a class="btn btn-outline" href="${url}" download="${noteEsc(x.nom)}"><i class="fas fa-download"></i> Télécharger</a>
+                <a class="btn btn-paye" href="${url}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+            </div></div>`;
+        o.querySelector('.nk-pdf-bar button').onclick = () => { o.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
+        document.body.appendChild(o);
+    }
+
+    // ── Réorganiser les cartes de la colonne gauche (v10.5) ──
+    const SB_ORDRE_KEY = 'sb_ordre_v1';
+    function sbOrdreAppliquer() {
+        const side = document.querySelector('.planning-sidebar'); if (!side) return;
+        let ordre = []; try { ordre = JSON.parse(localStorage.getItem(SB_ORDRE_KEY)) || []; } catch (e) {}
+        ordre.forEach(id => { const c = document.getElementById(id); if (c && c.parentElement === side) side.appendChild(c); });
+        // cartes non listées (nouvelles) gardent leur place relative à la fin
+        side.querySelectorAll('.sidebar-card.sb-col').forEach(c => {
+            const t = c.querySelector('.sidebar-card-title');
+            if (t && !t.querySelector('.sb-grip')) {
+                t.insertAdjacentHTML('afterbegin', `<span class="sb-grip" title="Maintenir et glisser pour déplacer" aria-label="Déplacer"><i class="fas fa-grip-vertical"></i></span>`);
+                sbGripInstaller(t.querySelector('.sb-grip'), c);
+            }
+        });
+    }
+    function sbOrdreSauver() {
+        const side = document.querySelector('.planning-sidebar');
+        localStorage.setItem(SB_ORDRE_KEY, JSON.stringify([...side.querySelectorAll(':scope > .sidebar-card.sb-col')].map(c => c.id)));
+    }
+    function sbGripInstaller(grip, card) {
+        grip.addEventListener('click', e => e.stopPropagation());
+        grip.addEventListener('pointerdown', e => {
+            e.preventDefault(); e.stopPropagation();
+            const side = card.parentElement;
+            card.classList.add('sb-drag'); document.body.style.userSelect = 'none';
+            if (navigator.vibrate) navigator.vibrate(15);
+            const bouge = ev => {
+                const y = ev.clientY;
+                const autres = [...side.querySelectorAll(':scope > .sidebar-card.sb-col:not(.sb-drag)')];
+                const apres = autres.find(c => { const r = c.getBoundingClientRect(); return y < r.top + r.height / 2; });
+                if (apres) { if (card.nextElementSibling !== apres) side.insertBefore(card, apres); }
+                else { const der = autres[autres.length - 1]; if (der && der.nextElementSibling !== card) der.after(card); }
+                const sr = side.getBoundingClientRect();
+                if (y < sr.top + 40) side.scrollTop -= 8; else if (y > sr.bottom - 40) side.scrollTop += 8;
+            };
+            const fin = () => {
+                card.classList.remove('sb-drag');
+                document.body.style.userSelect = ''; document.removeEventListener('pointermove', bouge); document.removeEventListener('pointerup', fin); document.removeEventListener('pointercancel', fin);
+                sbOrdreSauver();
+            };
+            document.addEventListener('pointermove', bouge); document.addEventListener('pointerup', fin); document.addEventListener('pointercancel', fin);
+        });
+    }
+    document.addEventListener('DOMContentLoaded', () => setTimeout(sbOrdreAppliquer, 300));
 
     // ── Modèles de formulaires ──
     function formsCharger() {
