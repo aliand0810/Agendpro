@@ -553,6 +553,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .nk-pj-open small { font-size:.7rem; color:var(--text-muted); }
         .nk-pj-add { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border:1px dashed var(--border-color); border-radius:10px; font-size:.82rem; font-weight:700; color:var(--primary); cursor:pointer; margin:4px 0 8px; }
         .nk-pj-tag { display:inline-flex; gap:4px; align-items:center; font-size:.7rem; font-weight:700; color:#dc2626; margin-top:4px; }
+        .nk-voir-zone { border:1px solid var(--border-color); border-radius:12px; padding:12px 14px; margin-top:10px; }
+        .nk-voir-txt { white-space:pre-wrap; word-break:break-word; font-size:.95rem; line-height:1.5; color:var(--text-main); }
+        .nk-voir-txt a { color:var(--primary); }
+        .nk-voir-liste .nk-li { display:flex; gap:8px; align-items:center; padding:3px 0; font-size:.95rem; }
+        .nk-voir-liste .nk-li.ok span { text-decoration:line-through; opacity:.55; }
+        .nk-voir-mod { background:var(--primary) !important; color:#fff !important; }
         .lec-m-plus { font-size:0.6rem; color:var(--text-muted); text-align:center; }
         .lec-strip { margin-bottom:6px; } .lec-strip { position:sticky; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); z-index:40; display:flex; align-items:center; gap:8px; margin-top:10px; padding:0 2px; }
         @media (min-width: 700px) { .lec-strip { bottom:12px; } }
@@ -2452,7 +2458,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <button class="btn btn-outline" onclick="nkPartagerPDF(ficheVueId)"><i class="fas fa-share-alt"></i> Partager</button>
             </div>
             <div class="nk-actions" style="margin-top:8px;">
-                <button onclick="ficheDemarrer(null, ficheVueId)"><i class="fas fa-pen"></i> Modifier</button>
+                <button onclick="nkVoirModifier()" class="nk-voir-mod"><i class="fas fa-pen"></i> Modifier</button>
                 <button onclick="ficheVoirArchiver()" id="nk-voir-arch"></button>
                 <button class="danger" onclick="ficheVoirSupprimer()"><i class="fas fa-trash-alt"></i> Supprimer</button>
             </div>
@@ -8862,7 +8868,7 @@ service cloud.firestore {
             const t = n.texte || '';
             corps = `<div class="nk-txt">${noteEsc(compact && t.length > 160 ? t.slice(0, 160) + '…' : t)}</div>`;
         }
-        return `<div class="nk-card" style="background:${noteCouleur(n.couleur)}" onclick="noteOuvrir('${n.id}')">
+        return `<div class="nk-card" style="background:${noteCouleur(n.couleur)}" onclick="noteVoir('${n.id}')">
             ${n.epingle ? '<span class="nk-pin" title="Épinglée">📌</span>' : ''}
             ${n.titre ? `<div class="nk-titre">${noteEsc(n.titre)}</div>` : ''}
             ${vignette}
@@ -8997,7 +9003,8 @@ service cloud.firestore {
             }
         }
         noteBrouillon = null; noteEditId = null;
-        nkRetourListe();
+        const ret = noteRetourApercu; noteRetourApercu = null;
+        if (ret && notesCharger().some(x => x.id === ret)) noteVoir(ret); else nkRetourListe();
     }
     function noteBasculerArchive() {
         const arch = !noteBrouillon.archive;
@@ -9050,7 +9057,7 @@ service cloud.firestore {
     }
     function notesDuJour(ds) {
         const l = notesCharger().filter(n => n.date === ds && !n.archive);
-        if (l.length === 1) return noteOuvrir(l[0].id);
+        if (l.length === 1) return noteVoir(l[0].id);
         notesOuvrir(); notesRecherche = ''; notesRendre();
     }
     document.addEventListener('DOMContentLoaded', () => {
@@ -9214,6 +9221,36 @@ service cloud.firestore {
     }
 
 
+
+    // ── Aperçu d'une note (lecture), avec bouton Modifier (v10.6) ──
+    function noteVoir(id) {
+        const n = notesCharger().find(x => x.id === id); if (!n) return;
+        if (n.type === 'fiche') return ficheVoir(id);
+        ficheVueId = id;
+        if (document.getElementById('modal-notes').style.display !== 'block') { fermerModales(); ouvrirModale('modal-notes'); }
+        nkVue('nk-vue-voir');
+        const box = document.getElementById('nk-voir-corps');
+        const lien = t => noteEsc(t).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+        const corps = n.estListe
+            ? `<div class="nk-voir-liste">${(n.liste || []).map((it, idx) => `<div class="nk-li ${it.ok ? 'ok' : ''}"><button class="nk-cb" onclick="noteCocher('${n.id}', ${idx}); noteVoir('${n.id}')">${it.ok ? '☑' : '☐'}</button><span>${noteEsc(it.t)}</span></div>`).join('')}</div>`
+            : `<div class="nk-voir-txt">${lien(n.texte || '') || '<i style="opacity:.6">— aucun texte —</i>'}</div>`;
+        const phs = n.photos || [], fic = n.fichiers || [];
+        box.innerHTML = `<div class="nk-voir-h" style="background:${noteCouleur(n.couleur)}">
+                <div class="nk-voir-t">${n.epingle ? '📌 ' : ''}${noteEsc(n.titre || 'Note sans titre')}</div>
+                <div class="nk-voir-m">${n.date ? '📅 ' + noteDateFr(n.date) : ''}${n.maj ? `${n.date ? ' · ' : ''}modifiée le ${new Date(n.maj).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} à ${new Date(n.maj).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}` : ''}</div>
+            </div>
+            <div class="nk-voir-zone" style="background:${noteCouleur(n.couleur)}">${corps}</div>
+            ${phs.length ? `<div class="nk-ph-grid" style="margin-top:10px">${photosMiniHTML(phs)}</div>` : ''}
+            ${fic.length ? `<div class="nk-pj-list">${fic.map((x, i) => `<div class="nk-pj"><button type="button" class="nk-pj-open" onclick="notePdfOuvrir(${i}, '${n.id}')"><i class="fas fa-file-pdf"></i><span><b>${noteEsc(x.nom)}</b><small>${(x.taille / 1048576).toFixed(x.taille > 1048576 ? 1 : 2).replace('.', ',')} Mo · toucher pour ouvrir</small></span></button></div>`).join('')}</div>` : ''}`;
+        photosHydrater(box);
+        document.getElementById('nk-voir-arch').innerHTML = n.archive ? '<i class="fas fa-box-open"></i> Désarchiver' : '<i class="fas fa-archive"></i> Archiver';
+    }
+    let noteRetourApercu = null;
+    function nkVoirModifier() {
+        const n = notesCharger().find(x => x.id === ficheVueId); if (!n) return;
+        if (n.type === 'fiche') ficheDemarrer(null, ficheVueId); else { noteRetourApercu = ficheVueId; noteOuvrir(ficheVueId); }
+    }
+
     // ── Fichiers PDF joints aux notes (v10.5) ──
     const NK_PDF_PART = 700000, NK_PDF_MAX = 15 * 1024 * 1024;
     function noteRendreFichiers() {
@@ -9247,8 +9284,9 @@ service cloud.firestore {
         for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
         return new Blob([u], { type: 'application/pdf' });
     }
-    async function notePdfOuvrir(i) {
-        const x = noteBrouillon.fichiers[i];
+    async function notePdfOuvrir(i, noteId) {
+        const src = noteId ? notesCharger().find(n => n.id === noteId) : noteBrouillon;
+        const x = src && src.fichiers && src.fichiers[i]; if (!x) return;
         let blob; try { blob = await notePdfBlob(x); } catch (e) { return showToast('PDF pas encore disponible sur cet appareil', 'error', 'fa-file-pdf'); }
         const url = URL.createObjectURL(blob);
         const o = document.createElement('div'); o.className = 'nk-pdf';
@@ -9519,16 +9557,16 @@ service cloud.firestore {
     function ficheVoirArchiver() {
         const l = notesCharger(), n = l.find(x => x.id === ficheVueId); if (!n) return;
         n.archive = !n.archive; n.maj = Date.now(); notesSauver(l);
-        showToast(n.archive ? '🗄️ Fiche archivée' : '📤 Fiche désarchivée', 'info', 'fa-archive');
+        showToast((n.type === 'fiche' ? (n.archive ? '🗄️ Fiche archivée' : '📤 Fiche désarchivée') : (n.archive ? '🗄️ Note archivée' : '📤 Note désarchivée')), 'info', 'fa-archive');
         nkRetourListe();
     }
     function ficheVoirSupprimer() {
         const n = notesCharger().find(x => x.id === ficheVueId); if (!n) return;
-        if (!confirm('Supprimer définitivement cette fiche et ses photos ?')) return;
+        if (!confirm(n.type === 'fiche' ? 'Supprimer définitivement cette fiche et ses photos ?' : 'Supprimer définitivement cette note ?')) return;
         notePhotosDe(n).forEach(photoSupprimer);
         notesSauver(notesCharger().filter(x => x.id !== ficheVueId));
         nkRetourListe();
-        showToast('🗑️ Fiche supprimée', 'success', 'fa-trash-alt');
+        showToast(n.type === 'fiche' ? '🗑️ Fiche supprimée' : '🗑️ Note supprimée', 'success', 'fa-trash-alt');
     }
     function notePhotosDe(n) { return n.type === 'fiche' ? n.reponses.flatMap(r => r.photos || []) : (n.photos || []); }
 
