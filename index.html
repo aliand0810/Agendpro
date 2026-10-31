@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v11.1</title>
+    <title>Mon Planning Pro v11.2</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -507,6 +507,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .app-version small { font-size:0.68rem; }
         .app-version button { flex:none; border:1px solid var(--border-color); background:var(--bg-app); color:var(--primary); border-radius:9px; padding:7px 10px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
         /* ═══ DÉTAIL DE LA JOURNÉE ═══ */
+        body.lec-masque .lec-tarif, body.lec-masque .lec-dh-h, body.lec-masque .lec-hh, body.lec-masque .jd-money { display:none !important; }
+        .lec-eye-btn.on { background:rgba(255,255,255,0.3); }
+        @media (max-width: 420px) { .lec-top .lec-mode-btn span { display:none; } .lec-top .lec-mode-btn { padding:9px 10px; } .lec-top .lec-mode-btn i { font-size:1.05rem; } .lec-seg button { font-size:0.86rem; padding:9px 2px; } }
+        .jd-eye { flex:none; height:36px; border-radius:18px; border:none; background:var(--bg-app); color:var(--primary); cursor:pointer; display:flex; align-items:center; gap:5px; padding:0 11px; font-size:0.72rem; font-weight:800; font-family:'DM Sans',sans-serif; }
+        .jd-eye.on { background:var(--primary); color:#fff; }
+        .jd-masque-info { display:none; width:100%; align-items:center; gap:12px; text-align:left; border:1.5px dashed var(--primary-light); background:var(--hover-row); color:var(--primary); border-radius:14px; padding:12px 14px; margin-bottom:12px; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .jd-masque-info i { font-size:1.2rem; }
+        .jd-masque-info span { display:flex; flex-direction:column; } .jd-masque-info small { color:var(--text-muted); font-size:0.74rem; margin-top:2px; }
+        body.lec-masque .jd-masque-info { display:flex; }
+
         .lec-tarif { color:#047857 !important; white-space:normal !important; }
         .lec-dh-add { margin-left:auto !important; }
         .lec-dh:has(.lec-dh-h) .lec-dh-add { margin-left:6px !important; }
@@ -1783,6 +1793,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             <button data-v="semaine" onclick="lecSetVue('semaine')">Semaine</button>
                             <button data-v="mois" onclick="lecSetVue('mois')">Mois</button>
                         </div>
+                        <button class="lec-mode-btn lec-eye-btn" onclick="lecMontants()" title="Afficher les tarifs et les heures"><i class="fas fa-eye-slash"></i><span>Montants</span></button>
                         <button class="lec-mode-btn" onclick="lecActiver(false)" title="Revenir au mode classique"><i class="fas fa-table"></i><span>Classique</span></button>
                     </div>
                     <div id="lec-body" class="lec-body"></div>
@@ -10449,13 +10460,27 @@ service cloud.firestore {
     const LEC_JOURS_L = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
     const LEC_MC = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
     const LEC_MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
-    let lec = (() => { try { return Object.assign({ on: false, vue: 'liste' }, JSON.parse(localStorage.getItem(LEC_KEY)) || {}); } catch (e) { return { on: false, vue: 'liste' }; } })();
+    let lec = (() => { try { return Object.assign({ on: false, vue: 'liste', montants: false }, JSON.parse(localStorage.getItem(LEC_KEY)) || {}); } catch (e) { return { on: false, vue: 'liste', montants: false }; } })();
     let lecDate = new Date(); lecDate.setHours(0, 0, 0, 0);
     const lecEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const lecFmt = d => tbFmt(d);
     const lecParse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
     const lecAdd = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
-    function lecSauverPref() { try { localStorage.setItem(LEC_KEY, JSON.stringify({ on: lec.on, vue: lec.vue })); } catch (e) {} }
+    function lecSauverPref() { try { localStorage.setItem(LEC_KEY, JSON.stringify({ on: lec.on, vue: lec.vue, montants: !!lec.montants })); } catch (e) {} }
+    // Tarifs et heures : masqués par défaut, bouton œil pour les afficher
+    function lecAppliquerMontants() {
+        document.body.classList.toggle('lec-masque', !lec.montants);
+        document.querySelectorAll('.lec-eye-btn').forEach(b => {
+            b.innerHTML = lec.montants ? '<i class="fas fa-eye"></i><span>Montants</span>' : '<i class="fas fa-eye-slash"></i><span>Montants</span>';
+            b.title = lec.montants ? 'Masquer les tarifs et les heures' : 'Afficher les tarifs et les heures';
+            b.classList.toggle('on', !!lec.montants);
+        });
+    }
+    function lecMontants(v) {
+        lec.montants = v === undefined ? !lec.montants : !!v; lecSauverPref(); lecAppliquerMontants();
+        showToast(lec.montants ? '👁 Tarifs et heures affichés' : '🙈 Tarifs et heures masqués', 'info', lec.montants ? 'fa-eye' : 'fa-eye-slash');
+    }
+    document.addEventListener('DOMContentLoaded', () => lecAppliquerMontants());
     function lecNom(type) {
         const T = { 'MATIN': 'Matin', 'MATIN SUPPL.': 'Matin suppl.', 'APRÈS-MIDI': 'Après-midi', 'APRÈS-MIDI SUPPL.': 'Après-midi suppl.', 'NUIT': 'Nuit', 'NUIT SUPPL.': 'Nuit suppl.',
             'POSTE JOURNÉE': 'Journée', 'JOURNÉE SUPPL.': 'Journée suppl.', 'FORMATION': 'Formation', 'RÉUNION': 'Réunion', 'CP': 'Congé payé', 'RTT': 'RTT', 'REPOS DE NUIT': 'Repos de nuit', 'COMPTEUR 8H': 'Compteur 8 h' };
@@ -10556,7 +10581,7 @@ service cloud.firestore {
                 <div class="lec-time">${p.hD ? `<b>${p.hD}</b>${p.hF ? `<small>${p.hF}${nuit ? ' +1' : ''}</small>` : ''}` : '<small>Jour<br>entier</small>'}</div>
                 <div class="lec-main">
                     <div class="lec-t">${tbIcon(p.type)} ${lecEsc(lecNom(p.type))} ${lecRotChip(ev)}</div>
-                    ${horaire || h > 0 ? `<div class="lec-s"><i class="far fa-clock"></i> ${horaire}${horaire && h > 0 ? ' · ' : ''}${h > 0 ? (Math.round(h * 10) / 10).toString().replace('.', ',') + ' h' : ''}${p.repasDureeMin > 0 ? ` · 🍽️ ${p.repasDureeMin} min` : ''}</div>` : ''}
+                    ${horaire || h > 0 ? `<div class="lec-s"><i class="far fa-clock"></i> ${horaire}<span class="lec-hh">${horaire && h > 0 ? ' · ' : ''}${h > 0 ? (Math.round(h * 10) / 10).toString().replace('.', ',') + ' h' : ''}</span>${p.repasDureeMin > 0 ? ` · 🍽️ ${p.repasDureeMin} min` : ''}</div>` : ''}
                     ${p.note ? `<div class="lec-s"><i class="far fa-sticky-note"></i> ${lecEsc(p.note)}</div>` : ''}
                     ${(() => { const t = jdTarifPoste(ds, ev); return t ? `<div class="lec-s lec-tarif">💶 ${jdEur(t.taux)}/h · <b>${jdEur(t.montant)}</b> brut${t.libelle ? ' · ' + t.libelle : ''}</div>` : ''; })()}
                 </div>
@@ -11347,10 +11372,12 @@ service cloud.firestore {
         let h = `<div class="jd-head">
                 <div><div class="jd-date">${LEC_JOURS_L[d.getDay()]} ${d.getDate()} ${LEC_MOIS[d.getMonth()]} ${d.getFullYear()}</div>
                 <div class="jd-tags"><span class="lec-sem-badge">Semaine ${tbNumSem(d)}</span>${fer ? `<span class="jd-tag fer">⭐ ${evtEsc(fer)}</span>` : ''}${dim ? '<span class="jd-tag dim">Dimanche</span>' : ''}${nuitPostes.length ? '<span class="jd-tag nuit">🌙 Poste de nuit</span>' : ''}</div></div>
+                <button class="jd-eye lec-eye-btn" onclick="lecMontants()"></button>
                 <button class="jd-x" onclick="fermerModales()" aria-label="Fermer">×</button>
             </div>`;
         // Résumé
-        h += `<div class="jd-resume">
+        h += `<button class="jd-masque-info" onclick="lecMontants(true)"><i class="fas fa-eye-slash"></i><span><b>Tarifs et heures masqués</b><small>Touchez pour afficher le taux, les heures, les paniers et les frais de la journée</small></span></button>`;
+        h += `<div class="jd-resume jd-money">
                 <div><small>Heures payées</small><b>${jdH(hTot)}</b></div>
                 <div><small>Brut du jour</small><b>${jdEur(brut)}</b></div>
                 <div class="hl"><small>Total du jour</small><b>${jdEur(net + ind.total)}</b><em>net + indemnités</em></div>
@@ -11368,11 +11395,11 @@ service cloud.firestore {
             const mod = `ouvrirEditionEvent('${ds}', '${String(p.type || '').replace(/'/g, "\\'")}', '${p.rotationId || ''}')`;
             h += `<div class="jd-poste${focus ? ' focus' : ''}" style="--c:${tbColor(e)}">
                 <div class="jd-p-t">${tbIcon(p.type)} <b>${evtEsc(lecNom(p.type))}</b>${r ? ` <span class="lec-rot" style="background:${r.couleur}">${evtEsc(r.nom)}</span>` : ''}<button class="jd-p-mod" onclick="fermerModales(); ${mod}"><i class="fas fa-pen"></i> Modifier</button></div>
-                ${t ? `<div class="jd-p-tarif"><span>💶 Taux appliqué <b>${jdEur(t.taux)}/h</b>${t.libelle ? ` <small>(${t.libelle})</small>` : ''}</span><b>${jdEur(t.montant)}</b></div>` : ''}
-                ${p.hD && p.hF ? `<div class="jd-p-l"><i class="far fa-clock"></i> ${p.hD} → ${p.hF}${jdMin(p.hF) <= jdMin(p.hD) ? ' (lendemain)' : ''} · présence ${jdH(brute)}</div>` : ''}
-                ${parseFloat(p.hPayees || 0) ? `<div class="jd-p-l"><i class="fas fa-euro-sign"></i> ${jdH(parseFloat(p.hPayees))} payées</div>` : ''}
+                ${t ? `<div class="jd-p-tarif jd-money"><span>💶 Taux appliqué <b>${jdEur(t.taux)}/h</b>${t.libelle ? ` <small>(${t.libelle})</small>` : ''}</span><b>${jdEur(t.montant)}</b></div>` : ''}
+                ${p.hD && p.hF ? `<div class="jd-p-l"><i class="far fa-clock"></i> ${p.hD} → ${p.hF}${jdMin(p.hF) <= jdMin(p.hD) ? ' (lendemain)' : ''} <span class="lec-hh"> · présence ${jdH(brute)}</span></div>` : ''}
+                ${parseFloat(p.hPayees || 0) ? `<div class="jd-p-l jd-money"><i class="fas fa-euro-sign"></i> ${jdH(parseFloat(p.hPayees))} payées</div>` : ''}
                 ${p.repasDureeMin > 0 ? `<div class="jd-p-l"><i class="fas fa-utensils"></i> Pause repas ${p.repasDureeMin} min · ${p.repasPaye === 'paye' ? 'payée' : 'non payée (déduite)'}</div>` : ''}
-                ${hn > 0 ? `<div class="jd-p-l nuit"><i class="fas fa-moon"></i> ${jdH(hn)} de nuit (${c.nuitD}–${c.nuitF})</div>` : ''}
+                ${hn > 0 ? `<div class="jd-p-l nuit jd-money"><i class="fas fa-moon"></i> ${jdH(hn)} de nuit (${c.nuitD}–${c.nuitF})</div>` : ''}
                 ${p.note ? `<div class="jd-p-l"><i class="far fa-sticky-note"></i> ${evtEsc(p.note)}</div>` : ''}
             </div>`;
         });
@@ -11380,14 +11407,14 @@ service cloud.firestore {
         h += `</div>`;
         // Heures de nuit
         if (hNuit > 0) {
-            h += `<div class="jd-sec"><div class="jd-sec-t">🌙 Heures de nuit</div>
+            h += `<div class="jd-sec jd-money"><div class="jd-sec-t">🌙 Heures de nuit</div>
                 <div class="jd-ligne"><span>Heures dans la plage ${c.nuitD} – ${c.nuitF}</span><b>${jdH(hNuit)}</b></div>
                 ${c.majHN > 0 ? `<div class="jd-ligne"><span>Majoration heures de nuit (+${c.majHN} %)</span><b>${jdEur(Math.min(hNuit, hTot) * c.taux * c.majHN / 100)}</b></div>` : `<div class="jd-info">Aucune majoration « par heure de nuit » n'est réglée. ${lienTaux}</div>`}
                 ${nuitPostes.length && pr.pctNuit > 0 ? `<div class="jd-ligne"><span>Majoration poste de nuit (+${Math.round(pr.pctNuit * 100)} %)</span><b>incluse ci-dessous</b></div>` : ''}
             </div>`;
         }
         // Tarif de la journée
-        h += `<div class="jd-sec"><div class="jd-sec-t">💶 Tarif de la journée</div>`;
+        h += `<div class="jd-sec jd-money"><div class="jd-sec-t">💶 Tarif de la journée</div>`;
         if (!c.taux) h += `<div class="jd-info warn">⚠️ Taux horaire non défini : ${lienTaux}</div>`;
         if (pr.lignes.length) {
             h += `<table class="jd-tbl"><thead><tr><th>Ligne</th><th>Heures</th><th>Taux</th><th>Montant</th></tr></thead><tbody>
@@ -11401,7 +11428,7 @@ service cloud.firestore {
         } else h += `<div class="jd-vide">Aucune heure payée ce jour.</div>`;
         h += `</div>`;
         // Paniers
-        h += `<div class="jd-sec"><div class="jd-sec-t">🍽️ Paniers</div>`;
+        h += `<div class="jd-sec jd-money"><div class="jd-sec-t">🍽️ Paniers</div>`;
         if (!ind.paniers.length) h += `<div class="jd-vide">Pas de poste : pas de panier.</div>`;
         else if (!c.pj && !c.pn) h += `<div class="jd-info">Montants des paniers non réglés (jour et nuit). ${lienTaux}</div>`;
         ind.paniers.forEach(x => {
@@ -11410,24 +11437,25 @@ service cloud.firestore {
         });
         h += `</div>`;
         // Déplacement
-        h += `<div class="jd-sec"><div class="jd-sec-t">🚗 Frais de déplacement</div>`;
+        h += `<div class="jd-sec jd-money"><div class="jd-sec-t">🚗 Frais de déplacement</div>`;
         if (!ind.postes) h += `<div class="jd-vide">Pas de poste : pas de déplacement.</div>`;
         else if (ind.dep > 0) h += `<div class="jd-ligne"><span>${ind.depTxt}</span><b>${jdEur(ind.dep)}</b></div>`;
         else h += `<div class="jd-info">Frais de déplacement non réglés. ${lienTaux}</div>`;
         h += `</div>`;
         // Total
-        h += `<div class="jd-total">
+        h += `<div class="jd-total jd-money">
                 <div class="jd-ligne"><span>Net du jour (estimé)</span><b>${jdEur(net)}</b></div>
                 ${ind.totalPaniers > 0 ? `<div class="jd-ligne"><span>+ Paniers</span><b>${jdEur(ind.totalPaniers)}</b></div>` : ''}
                 ${ind.dep > 0 ? `<div class="jd-ligne"><span>+ Déplacement</span><b>${jdEur(ind.dep)}</b></div>` : ''}
                 <div class="jd-ligne big"><span>Total de la journée</span><b>${jdEur(net + ind.total)}</b></div>
             </div>
-            <p class="jd-note">Estimation : les cotisations sont un pourcentage moyen et les postes de nuit sont comptés le jour où ils commencent. Votre bulletin de paie fait foi.</p>
+            <p class="jd-note jd-money">Estimation : les cotisations sont un pourcentage moyen et les postes de nuit sont comptés le jour où ils commencent. Votre bulletin de paie fait foi.</p>
             <div class="evt-actions">
                 <button class="btn btn-outline" onclick="fermerModales(); lecChoisir('${ds}'); lecSetVue('jour')"><i class="fas fa-clock"></i> Vue Jour</button>
                 <button class="btn btn-paye" onclick="fermerModales(); ouvrirEditionJour('${ds}')"><i class="fas fa-plus"></i> Ajouter un poste</button>
             </div>`;
         z.innerHTML = h;
+        lecAppliquerMontants();
         const m = document.getElementById('modal-jour'); if (m) m.scrollTop = 0;
         const f = z.querySelector('.jd-poste.focus'); if (f && m) setTimeout(() => { m.scrollTop = Math.max(0, f.offsetTop - 120); }, 60);
     }
@@ -11481,7 +11509,7 @@ service cloud.firestore {
     }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '11.1', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '11.2', APP_VERSION_DATE = '31/10/2026';
     function appVersionRendre() {
         const z = document.getElementById('app-version'); if (!z) return;
         z.innerHTML = `<img src="${(typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || ''}" alt="" onerror="this.remove()">
@@ -11557,7 +11585,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v11.1';
+const CACHE_NAME = 'planning-pro-v11.2';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
