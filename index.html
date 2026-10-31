@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v10.7</title>
+    <title>Mon Planning Pro v10.8</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -498,6 +498,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-strip-days button.sel small, .lec-strip-days button.sel b { color:#fff; }
 
         /* ═══ ÉVÉNEMENTS PARTAGÉS ═══ */
+        .lec-sem-badge { flex:none; font-size:0.66rem; font-weight:800; color:#fff; background:var(--primary); border-radius:6px; padding:2px 6px; letter-spacing:0.02em; align-self:center; font-family:'DM Mono',monospace; }
+        .lec-m-head, .lec-m-grid { grid-template-columns:24px repeat(7,1fr) !important; }
+        .lec-m-wk { display:flex; align-items:flex-start; justify-content:center; padding-top:6px; font-size:0.58rem; font-weight:800; color:var(--primary); font-family:'DM Mono',monospace; cursor:pointer; padding-top:10px; letter-spacing:-0.03em; }
+        .lec-m-cell { position:relative; }
+        .lec-strip-in { position:relative; }
+        .lec-strip-sem { position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-size:0.62rem; font-weight:800; color:#fff; background:var(--primary); padding:2px 9px; border-radius:10px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.15); font-family:'DM Sans',sans-serif; }
+        .evt-semaine { margin-top:6px; font-size:0.8rem; color:var(--primary); background:var(--hover-row); border-radius:8px; padding:6px 10px; }
+
         .evt-tb-chip { display:flex; flex-direction:column; align-items:flex-start; width:100%; box-sizing:border-box; border:none; border-left:3px solid var(--c); background:color-mix(in srgb, var(--c) 16%, var(--bg-card)); color:var(--text-main); border-radius:6px; padding:3px 5px; margin-bottom:3px; cursor:pointer; text-align:left; font-family:'DM Sans',sans-serif; min-width:0; }
         .evt-tb-chip span { font-size:0.68rem; font-weight:800; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
         .evt-tb-chip small { font-size:0.6rem; color:var(--text-muted); white-space:nowrap; }
@@ -1584,7 +1592,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
     <!-- ─── DESKTOP TABS (hidden on mobile) ─── -->
     <div class="main-tabs">
-        <button onclick="planningClassique(); switchTab('tab-planning', this)" class="tab-btn active"><i class="fas fa-calendar"></i> Planning</button>
+        <button onclick="planningLecture(); switchTab('tab-planning', this)" class="tab-btn active"><i class="fas fa-calendar"></i> Planning</button>
         <button onclick="switchTab('tab-paie', this)" class="tab-btn"><i class="fas fa-coins"></i> Paie</button>
         <button onclick="switchTab('tab-dirt', this)" class="tab-btn"><i class="fas fa-shield-alt"></i> DIRT</button>
         <button onclick="switchTab('tab-config-taux', this)" class="tab-btn"><i class="fas fa-sliders-h"></i> Taux</button>
@@ -1703,7 +1711,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <div id="lec-body" class="lec-body"></div>
                     <div class="lec-strip">
                         <button class="lec-fab" onclick="event.stopPropagation(); lecAjouterMenu(this)" title="Ajouter un poste ou un événement" aria-label="Ajouter"><i class="fas fa-plus"></i></button>
-                        <div class="lec-strip-in">
+                        <div class="lec-strip-in"><span id="lec-strip-sem" class="lec-strip-sem"></span>
                             <button class="lec-arr" onclick="lecNav(-1)" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
                             <div id="lec-strip-days" class="lec-strip-days"></div>
                             <button class="lec-arr" onclick="lecNav(1)" aria-label="Suivant"><i class="fas fa-chevron-right"></i></button>
@@ -2908,7 +2916,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <i class="fas fa-coins"></i>
             <span>Paie</span>
         </button>
-        <button class="nav-item nav-item-special active" id="nav-planning" onclick="planningClassique(); switchTabMobile('tab-planning', this)">
+        <button class="nav-item nav-item-special active" id="nav-planning" onclick="planningLecture(); switchTabMobile('tab-planning', this)">
             <i class="fas fa-calendar"></i>
             <span>Planning</span>
         </button>
@@ -10414,7 +10422,7 @@ service cloud.firestore {
             if (d.getDay() === 1) html += `<div class="lec-sem">Semaine ${tbNumSem(d)} · ${d.getDate()} ${LEC_MC[d.getMonth()]} – ${lecAdd(d, 6).getDate()} ${LEC_MC[lecAdd(d, 6).getMonth()]}</div>`;
             const l = (parJour[ds] || []).slice().sort(lecTri), notes = lecNotesJour(ds), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
             html += `<section class="lec-day ${ds === auj ? 'auj' : ''} ${l.length || fer[ds] || notes.length || evj.length ? '' : 'vide'}" id="lec-j-${ds}">
-                <h4 class="lec-dh" onclick="lecChoisir('${ds}'); lecSetVue('jour')"><span>${lecTitreJour(d)}</span>${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
+                <h4 class="lec-dh" onclick="lecChoisir('${ds}'); lecSetVue('jour')"><span>${lecTitreJour(d)}</span>${d.getDay() === 1 || ds === auj ? `<span class="lec-sem-badge">S${tbNumSem(d)}</span>` : ''}${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
             if (fer[ds]) html += `<div class="lec-item lec-item-ferie"><span class="lec-dot" style="background:#7c3aed"></span><div class="lec-card"><div class="lec-time"><small>Jour<br>entier</small></div><div class="lec-main"><div class="lec-t">⭐ ${lecEsc(fer[ds])}</div><div class="lec-s">Jour férié</div></div></div></div>`;
             l.forEach(ev => html += lecCarte(ds, ev));
             evj.forEach(e => html += evtCarteLecture(e));
@@ -10499,7 +10507,7 @@ service cloud.firestore {
         const S = lecSegments(ds, parJour);
         const ad = lecAllDayChips(ds, S.allDay, fer, false);
         const l = (parJour[ds] || []);
-        return `<div class="lec-dtitle"><span>${lecTitreJour(lecDate)}</span>${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</div>
+        return `<div class="lec-dtitle"><span>${lecTitreJour(lecDate)}</span><span class="lec-sem-badge">S${tbNumSem(lecDate)}</span>${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</div>
             ${ad ? `<div class="lec-allday"><small>Jour entier</small><div>${ad}</div></div>` : ''}
             <div class="lec-grid-scroll" data-debut="${lecHeureDebut([S])}">
                 <div class="lec-grid" style="height:${24 * ph}px" onclick="ouvrirEditionJour('${ds}')">
@@ -10532,11 +10540,12 @@ service cloud.firestore {
         const premier = new Date(lecDate.getFullYear(), lecDate.getMonth(), 1), debut = tbLundi(premier);
         const auj = lecFmt(new Date()), sel = lecFmt(lecDate), fer = lecFeries(premier);
         let html = `<div class="lec-dtitle"><span><b>${LEC_MOIS[premier.getMonth()].charAt(0).toUpperCase() + LEC_MOIS[premier.getMonth()].slice(1)}</b> ${premier.getFullYear()}</span></div>
-            <div class="lec-m-head">${['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'].map(j => `<span>${j}</span>`).join('')}</div><div class="lec-m-grid">`;
+            <div class="lec-m-head"><span></span>${['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'].map(j => `<span>${j}</span>`).join('')}</div><div class="lec-m-grid">`;
         for (let i = 0; i < 42; i++) {
             const d = lecAdd(debut, i), ds = lecFmt(d);
             if (i === 35 && d.getMonth() !== premier.getMonth()) break;
             const l = (parJour[ds] || []).slice().sort(lecTri), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
+            if (i % 7 === 0) html += `<div class="lec-m-wk" onclick="lecChoisir('${ds}'); lecSetVue('semaine')" title="Semaine ${tbNumSem(d)}">S${tbNumSem(d)}</div>`;
             html += `<div class="lec-m-cell ${d.getMonth() !== premier.getMonth() ? 'hors' : ''} ${ds === auj ? 'auj' : ''} ${ds === sel ? 'sel' : ''}" onclick="lecChoisir('${ds}')">
                 <span class="lec-m-n">${d.getDate()}</span>
                 ${fer[ds] ? `<span class="lec-m-ev" style="--c:#7c3aed">⭐</span>` : ''}
@@ -10552,6 +10561,7 @@ service cloud.firestore {
     function lecStrip() {
         const z = document.getElementById('lec-strip-days'); if (!z) return;
         const lun = tbLundi(lecDate), auj = lecFmt(new Date()), sel = lecFmt(lecDate);
+        const zs = document.getElementById('lec-strip-sem'); if (zs) zs.textContent = 'Semaine ' + tbNumSem(lun);
         const parJour = lecParJour(lecEvents());
         z.innerHTML = [...Array(7)].map((_, i) => {
             const d = lecAdd(lun, i), ds = lecFmt(d), n = (parJour[ds] || []).length + (typeof evtDuJour === 'function' ? evtDuJour(ds).length : 0);
@@ -10667,6 +10677,18 @@ service cloud.firestore {
         if (typeof lec !== 'undefined' && lec.on && typeof lecRender === 'function') lecRender();
         else if (typeof tbRender === 'function') tbRender();
     }
+    function evtTexteSemaine(debut, fin) {
+        if (!debut) return '';
+        const d = lecParse(debut), l = tbLundi(d), di = lecAdd(l, 6), sd = tbNumSem(d);
+        const court = x => x.getDate() + ' ' + LEC_MC[x.getMonth()];
+        let t = `📆 <b>Semaine ${sd}</b> · du ${court(l)} au ${court(di)}`;
+        if (fin && fin > debut) { const sf = tbNumSem(lecParse(fin)); if (sf !== sd) t = `📆 <b>Semaines ${sd} → ${sf}</b> · ${court(l)} au ${court(lecAdd(tbLundi(lecParse(fin)), 6))}`; }
+        return t;
+    }
+    function evtMajSemaine() {
+        const z = document.getElementById('evt-semaine'); if (!z) return;
+        z.innerHTML = evtTexteSemaine((document.getElementById('evt-date') || {}).value, (document.getElementById('evt-fin') || {}).value);
+    }
     function evtChipTableau(e, mois) {
         const nb = (e.pieces || []).length;
         return `<button class="evt-tb-chip${mois ? ' mois' : ''}" style="--c:${e.couleur || '#4f46e5'}" onclick="event.stopPropagation(); evtOuvrir('${e.id}')" ondblclick="event.stopPropagation()"
@@ -10674,6 +10696,11 @@ service cloud.firestore {
             <span>📅 ${evtEsc(e.titre)}</span>${mois ? '' : `<small>${e.journee || !e.hD ? 'Journée' : e.hD + (e.hF ? '–' + e.hF : '')}${nb ? ' · 📎' + nb : ''}</small>`}${mois && nb ? '<i>📎</i>' : ''}</button>`;
     }
     // Bouton « Planning » : retour au mode classique
+    function planningLecture() {
+        if (typeof lec === 'undefined') return;
+        if (!lec.on) { lec.on = true; lecSauverPref(); document.body.classList.add('lec-on'); }
+        setTimeout(() => lecRender(true), 30);
+    }
     function planningClassique() {
         if (typeof lec !== 'undefined' && lec.on) { lec.on = false; lecSauverPref(); document.body.classList.remove('lec-on'); if (typeof tbRender === 'function') tbRender(); }
     }
@@ -10686,7 +10713,7 @@ service cloud.firestore {
         const n = document.getElementById('evt-side-count'); if (n) n.textContent = l.length ? `(${l.length})` : '';
         z.innerHTML = l.length ? l.map(e => `<button class="evt-side-it" onclick="evtOuvrir('${e.id}')" style="--c:${e.couleur || '#4f46e5'}">
             <span class="evt-side-d"><b>${new Date(e.date + 'T12:00').getDate()}</b><small>${new Date(e.date + 'T12:00').toLocaleDateString('fr-FR', { month: 'short' })}</small></span>
-            <span class="evt-side-b"><b>${evtEsc(e.titre)}${(e.pieces || []).length ? ' 📎' : ''}</b><small>${evtBadgePartage(e)} ${evtHoraire(e)}${e.auteurUid !== evtUid() ? ' · par @' + evtEsc(e.auteurIdent) : ''}</small></span></button>`).join('')
+            <span class="evt-side-b"><b>${evtEsc(e.titre)}${(e.pieces || []).length ? ' 📎' : ''}</b><small>${evtBadgePartage(e)} S${tbNumSem(lecParse(e.date))} · ${evtHoraire(e)}${e.auteurUid !== evtUid() ? ' · par @' + evtEsc(e.auteurIdent) : ''}</small></span></button>`).join('')
             : '<div class="rot-empty">Aucun événement à venir</div>';
     }
     // Carte pour la vue Liste du mode lecture
@@ -10727,6 +10754,7 @@ service cloud.firestore {
             box.innerHTML = `<div class="evt-view" style="--c:${e.couleur || '#4f46e5'}">
                 <div class="evt-view-t">${evtEsc(e.titre)}</div>
                 <div class="evt-view-r"><i class="far fa-calendar"></i> ${new Date(e.date + 'T12:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${e.fin && e.fin !== e.date ? ' → ' + new Date(e.fin + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : ''}</div>
+                <div class="evt-semaine">${evtTexteSemaine(e.date, e.fin)}</div>
                 <div class="evt-view-r"><i class="far fa-clock"></i> ${evtHoraire(e) || '—'}</div>
                 ${e.lieu ? `<div class="evt-view-r"><i class="fas fa-map-marker-alt"></i> ${evtEsc(e.lieu)}</div>` : ''}
                 ${e.desc ? `<div class="evt-view-d">${evtTexteMentions(e.desc).replace(/\n/g, '<br>')}</div>` : ''}
@@ -10746,9 +10774,10 @@ service cloud.firestore {
             <label class="evt-lbl">Titre</label>
             <input id="evt-titre" maxlength="80" placeholder="Ex. Réunion d'équipe, anniversaire, rendez-vous…" value="${evtEsc(e.titre)}">
             <div class="evt-row">
-                <div><label class="evt-lbl">Date</label><input type="date" id="evt-date" value="${e.date}"></div>
-                <div><label class="evt-lbl">Jusqu'au <small>(facultatif)</small></label><input type="date" id="evt-fin" value="${e.fin || ''}"></div>
+                <div><label class="evt-lbl">Date</label><input type="date" id="evt-date" value="${e.date}" oninput="evtMajSemaine()" onchange="evtMajSemaine()"></div>
+                <div><label class="evt-lbl">Jusqu'au <small>(facultatif)</small></label><input type="date" id="evt-fin" value="${e.fin || ''}" oninput="evtMajSemaine()" onchange="evtMajSemaine()"></div>
             </div>
+            <div class="evt-semaine" id="evt-semaine">${evtTexteSemaine(e.date, e.fin)}</div>
             <label class="evt-check"><input type="checkbox" id="evt-journee" ${e.journee ? 'checked' : ''} onchange="document.getElementById('evt-heures').style.display=this.checked?'none':''"> Journée entière</label>
             <div class="evt-row" id="evt-heures" style="${e.journee ? 'display:none' : ''}">
                 <div><label class="evt-lbl">Début</label><input type="time" id="evt-hd" value="${e.hD || ''}"></div>
@@ -11150,7 +11179,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v10.7';
+const CACHE_NAME = 'planning-pro-v10.8';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
