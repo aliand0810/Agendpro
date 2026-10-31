@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v10.8</title>
+    <title>Mon Planning Pro v10.9</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -497,6 +497,52 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-strip-days button.sel { background:var(--primary); color:#fff; }
         .lec-strip-days button.sel small, .lec-strip-days button.sel b { color:#fff; }
 
+
+        /* ═══ DÉTAIL DE LA JOURNÉE ═══ */
+        .lec-dh { cursor:pointer; }
+        .lec-dh::after { content:'›'; margin-left:2px; color:var(--text-muted); font-weight:400; }
+        .jd-open-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin:0 0 10px; padding:10px; border:1.5px dashed var(--primary-light); background:var(--hover-row); color:var(--primary); border-radius:12px; font-weight:800; font-size:0.82rem; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .jd-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; }
+        .jd-head > div { flex:1; min-width:0; }
+        .jd-date { font-size:1.25rem; font-weight:800; color:var(--text-main); }
+        .jd-date::first-letter { text-transform:uppercase; }
+        .jd-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+        .jd-tag { font-size:0.7rem; font-weight:800; padding:2px 8px; border-radius:6px; }
+        .jd-tag.fer { background:#ede9fe; color:#6d28d9; } .jd-tag.dim { background:#e0f2fe; color:#0369a1; } .jd-tag.nuit { background:#1e293b; color:#e2e8f0; }
+        .jd-x { flex:none; width:36px; height:36px; border-radius:50%; border:none; background:var(--bg-app); font-size:1.3rem; cursor:pointer; color:var(--text-main); }
+        .jd-resume { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:12px; }
+        .jd-resume > div { background:var(--bg-app); border:1px solid var(--border-color); border-radius:12px; padding:8px; display:flex; flex-direction:column; min-width:0; }
+        .jd-resume small { font-size:0.6rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); }
+        .jd-resume b { font-size:1rem; font-family:'DM Mono',monospace; color:var(--text-main); white-space:nowrap; }
+        .jd-resume em { font-size:0.6rem; font-style:normal; color:rgba(255,255,255,0.85); }
+        .jd-resume .hl { background:linear-gradient(135deg,#4f46e5,#7c3aed); border:none; } .jd-resume .hl small, .jd-resume .hl b { color:#fff; }
+        .jd-sec { border:1px solid var(--border-color); border-radius:14px; padding:10px 12px; margin-bottom:10px; background:var(--bg-card); }
+        .jd-sec-t { font-size:0.75rem; font-weight:800; color:var(--primary); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:8px; }
+        .jd-poste { border-left:4px solid var(--c); background:color-mix(in srgb, var(--c) 9%, var(--bg-app)); border-radius:10px; padding:8px 10px; margin-bottom:6px; }
+        .jd-poste.evt { cursor:pointer; }
+        .jd-p-t { font-size:0.95rem; color:var(--text-main); }
+        .jd-p-l { font-size:0.8rem; color:var(--text-muted); margin-top:3px; } .jd-p-l i { width:16px; text-align:center; }
+        .jd-p-l.nuit { color:#4338ca; font-weight:700; }
+        body.dark-mode .jd-p-l.nuit { color:#a5b4fc; }
+        .jd-ligne { display:flex; justify-content:space-between; align-items:baseline; gap:10px; font-size:0.86rem; color:var(--text-main); padding:5px 0; border-bottom:1px dashed var(--border-color); }
+        .jd-ligne:last-child { border-bottom:none; }
+        .jd-ligne small { color:var(--text-muted); font-size:0.74rem; }
+        .jd-ligne b { font-family:'DM Mono',monospace; white-space:nowrap; }
+        .jd-info { font-size:0.8rem; color:var(--text-muted); background:var(--bg-app); border-radius:8px; padding:8px 10px; }
+        .jd-info.warn { color:#b45309; background:#fef3c7; margin-bottom:8px; }
+        .jd-lien { border:none; background:var(--primary); color:#fff; border-radius:6px; padding:3px 9px; font-size:0.72rem; font-weight:700; cursor:pointer; margin-left:4px; font-family:'DM Sans',sans-serif; }
+        .jd-vide { font-size:0.82rem; color:var(--text-muted); }
+        .jd-tbl { width:100%; border-collapse:collapse; font-size:0.76rem; }
+        .jd-tbl th { font-size:0.58rem; text-transform:uppercase; color:var(--text-muted); text-align:right; padding:3px; border-bottom:1px solid var(--border-color); }
+        .jd-tbl th:first-child, .jd-tbl td:first-child { text-align:left; }
+        .jd-tbl td { padding:5px 3px; text-align:right; color:var(--text-main); border-bottom:1px solid var(--border-color); white-space:nowrap; }
+        .jd-tbl td:first-child { white-space:normal; }
+        .jd-tbl tfoot td { font-weight:800; border-bottom:none; } .jd-tbl tfoot tr.neg td { color:#ef4444; font-weight:600; }
+        .jd-total { background:linear-gradient(135deg,#eef2ff,#f5f3ff); border:1px solid #c7d2fe; border-radius:14px; padding:8px 12px; }
+        body.dark-mode .jd-total { background:linear-gradient(135deg,#1e1b4b,#2e1065); border-color:#3730a3; }
+        .jd-total .big { font-size:1.05rem; font-weight:800; } .jd-total .big b { color:var(--primary); }
+        .jd-note { font-size:0.68rem; color:var(--text-muted); margin:8px 2px 0; text-align:center; }
+        .cfg-indem-hint { font-size:0.75rem; color:var(--text-muted); margin:0 0 10px; line-height:1.45; }
         /* ═══ ÉVÉNEMENTS PARTAGÉS ═══ */
         .lec-sem-badge { flex:none; font-size:0.66rem; font-weight:800; color:#fff; background:var(--primary); border-radius:6px; padding:2px 6px; letter-spacing:0.02em; align-self:center; font-family:'DM Mono',monospace; }
         .lec-m-head, .lec-m-grid { grid-template-columns:24px repeat(7,1fr) !important; }
@@ -925,6 +971,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .paie-tbl tfoot td { font-weight:900; border-bottom:none; }
         .paie-tbl tfoot tr:first-child td { border-top:2px solid var(--text-main); }
         .paie-tbl tfoot tr.neg td { color:#ef4444; font-weight:700; }
+        .paie-tbl tfoot tr.ind td { color:#059669; font-weight:700; }
         .paie-tbl tfoot tr.net td { color:var(--primary); font-size:0.95rem; }
         .paie-pt { display:flex; gap:10px; align-items:flex-start; font-size:0.8rem; line-height:1.4; padding:9px 10px; border-radius:10px; margin-top:6px; color:var(--text-main); border:1px solid var(--border-color); background:var(--bg-card); }
         .paie-pt.warn { border-color:#fcd34d; background:rgba(245,158,11,0.09); }
@@ -2041,6 +2088,41 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
             </div>
 
+            <!-- Paniers, déplacements & heures de nuit -->
+            <div class="cfg-acc-section" id="cfg-acc-indem">
+                <div class="cfg-acc-header" onclick="cfgToggleAcc('cfg-acc-indem')">
+                    <span><i class="fas fa-utensils" style="color:var(--primary);margin-right:6px;"></i> Paniers, déplacements &amp; heures de nuit</span>
+                    <i class="fas fa-chevron-right cfg-acc-arrow"></i>
+                </div>
+                <div class="cfg-acc-body">
+                    <p class="cfg-indem-hint">Utilisés pour le <b>détail de la journée</b> (mode lecture) et ajoutés à la paie. Les paniers et frais de déplacement sont des indemnités : ils s'ajoutent au net, sans cotisations.</p>
+                    <div class="cfg-form-row three">
+                        <div class="cfg-form-group"><label>🍽️ Panier de jour (€)</label><input type="number" id="cfg2-panier-jour" value="0" min="0" step="0.01" placeholder="0,00"></div>
+                        <div class="cfg-form-group"><label>🌙 Panier de nuit (€)</label><input type="number" id="cfg2-panier-nuit" value="0" min="0" step="0.01" placeholder="0,00"></div>
+                        <div class="cfg-form-group"><label>Durée mini. du poste (h)</label><input type="number" id="cfg2-panier-min" value="6" min="0" step="0.5"></div>
+                    </div>
+                    <div class="cfg-divider"></div>
+                    <div class="cfg-form-group"><label>🚗 Frais de déplacement</label>
+                        <select id="cfg2-dep-mode" onchange="cfg2MajDep()">
+                            <option value="aucun">Aucun</option>
+                            <option value="forfait">Forfait par jour travaillé</option>
+                            <option value="km">Au kilomètre (aller-retour)</option>
+                        </select></div>
+                    <div class="cfg-form-row" id="cfg2-dep-forfait-row"><div class="cfg-form-group"><label>Forfait par jour (€)</label><input type="number" id="cfg2-dep-forfait" value="0" min="0" step="0.01"></div></div>
+                    <div class="cfg-form-row" id="cfg2-dep-km-row">
+                        <div class="cfg-form-group"><label>Distance domicile → travail (km)</label><input type="number" id="cfg2-dep-km" value="0" min="0" step="0.1"></div>
+                        <div class="cfg-form-group"><label>Indemnité (€/km)</label><input type="number" id="cfg2-dep-bareme" value="0.35" min="0" step="0.001"></div>
+                    </div>
+                    <div class="cfg-divider"></div>
+                    <div class="cfg-form-row three">
+                        <div class="cfg-form-group"><label>🌙 Heures de nuit : de</label><input type="time" id="cfg2-hnuit-debut" value="21:00"></div>
+                        <div class="cfg-form-group"><label>à</label><input type="time" id="cfg2-hnuit-fin" value="06:00"></div>
+                        <div class="cfg-form-group"><label>Majoration / heure de nuit (%)</label><input type="number" id="cfg2-maj-hnuit" value="0" min="0" max="200" step="1"></div>
+                    </div>
+                    <p class="cfg-indem-hint">La majoration par heure de nuit s'applique à chaque heure travaillée dans cette plage, quel que soit le poste. Elle s'ajoute à la majoration « Nuit (poste entier) » : laissez-la à 0 si votre entreprise n'en verse qu'une.</p>
+                </div>
+            </div>
+
             <!-- Soldes initiaux -->
             <div class="cfg-acc-section" id="cfg-acc-soldes">
                 <div class="cfg-acc-header" onclick="cfgToggleAcc('cfg-acc-soldes')">
@@ -2364,6 +2446,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div>
 
     <!-- ═══ MODALE ALARMES & RÉVEILS ═══ -->
+    <div id="modal-jour" class="modal">
+        <div id="jd-corps"></div>
+    </div>
+
     <div id="modal-evt" class="modal">
         <h3><i class="fas fa-calendar-plus"></i> Événement</h3>
         <div id="evt-corps"></div>
@@ -3875,7 +3961,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         let hDim=0, hDimSuppl=0, hFerie=0, hFerieSuppl=0, hFerieDim=0, hFerieDimSuppl=0;
         let hNuit=0, hNuitDim=0, hNuitFerie=0;
         let hAbsences=0, hRepasPaye=0, nbRepasPaye=0, nbRepasNonPaye=0;
-        let nbCP=0, nbRTT=0, nbReposNuit=0, hActivites=0;
+        let nbCP=0, nbRTT=0, nbReposNuit=0, hActivites=0, hHNuit=0;
+        const pctHNuit = (parseFloat(soldes.majHNuit) || 0) / 100;
 
         calendar.getEvents().forEach(e => {
             const dateS = e.startStr.split('T')[0];
@@ -3892,6 +3979,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 return;
             }
             if (h === 0) return;
+            if (pctHNuit > 0 && p.hD && p.hF) hHNuit += Math.min(h, jdHeuresNuit(p.hD, p.hF));
 
             const isSuppl = SUPPL_TYPES.includes(p.type);
             const isNuit  = NUIT_TYPES.includes(p.type);
@@ -3966,6 +4054,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             { label: '🌙⭐ Nuit+Férié',                                            h: hNuitFerie,     tx: txNuitFerie },
             { label: '🗣️ Réunion / CSE',                                           h: hActivites,     tx: txBase },
             { label: '🏖️ Absences payées (CP/RTT/Repos)',                          h: hAbsences,      tx: txBase },
+            { label: `🌃 Heures de nuit ${jdCfg().nuitD}–${jdCfg().nuitF} (+${Math.round(pctHNuit*100)}%)`, h: hHNuit, tx: tauxBase * pctHNuit, prime: true },
         ];
         const lignes = rawLignes.filter(l => l.h > 0);
         const salaireTotal = lignes.reduce((s, l) => s + l.h * l.tx, 0) + hRepasPaye;
@@ -4414,7 +4503,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         document.getElementById('paie-salaire-net').innerText = pr.salaireTotal.toFixed(2) + " €";
         const hAbs = pr.lignes.find(l => l.label.startsWith('🏖️'));
-        const hTrav = pr.lignes.reduce((t, l) => t + l.h, 0) - (hAbs ? hAbs.h : 0);
+        const hTrav = pr.lignes.reduce((t, l) => t + (l.prime ? 0 : l.h), 0) - (hAbs ? hAbs.h : 0);
         document.getElementById('paie-h-total').innerText =
             hTrav.toFixed(1) + " h travaillées" + (hAbs ? " + " + hAbs.h + " h absences payées" : "");
         try { paieDashboard(d, f); } catch (e) { console.error('paieDashboard', e); }
@@ -5916,6 +6005,19 @@ function selectAct(btn, val) {
         sv('cfg2-dur-nuit',       s.durNuit       || 10);
         sv('cfg2-dur-journee',    s.durJournee    || 7);
 
+        // Paniers, déplacements, heures de nuit
+        sv('cfg2-panier-jour',  s.panierJour  ?? 0);
+        sv('cfg2-panier-nuit',  s.panierNuit  ?? 0);
+        sv('cfg2-panier-min',   s.panierMinH  ?? 6);
+        sv('cfg2-dep-mode',     s.depMode     || 'aucun');
+        sv('cfg2-dep-forfait',  s.depForfait  ?? 0);
+        sv('cfg2-dep-km',       s.depKm       ?? 0);
+        sv('cfg2-dep-bareme',   s.depBareme   ?? 0.35);
+        sv('cfg2-hnuit-debut',  s.hNuitDebut  || '21:00');
+        sv('cfg2-hnuit-fin',    s.hNuitFin    || '06:00');
+        sv('cfg2-maj-hnuit',    s.majHNuit    ?? 0);
+        cfg2MajDep();
+
         // Soldes
         sv('cfg2-sol-cp',       s.cp           ?? 25);
         sv('cfg2-sol-rtt',      s.rtt          ?? 12);
@@ -5979,6 +6081,17 @@ function selectAct(btn, val) {
             durAprem:       gv('cfg2-dur-aprem')    || existingSoldes.durAprem    || 7.5,
             durNuit:        gv('cfg2-dur-nuit')     || existingSoldes.durNuit     || 10,
             durJournee:     gv('cfg2-dur-journee')  || existingSoldes.durJournee  || 7,
+            // ─── Paniers, déplacements, heures de nuit ───
+            panierJour:     isNaN(gv('cfg2-panier-jour')) ? (existingSoldes.panierJour ?? 0) : gv('cfg2-panier-jour'),
+            panierNuit:     isNaN(gv('cfg2-panier-nuit')) ? (existingSoldes.panierNuit ?? 0) : gv('cfg2-panier-nuit'),
+            panierMinH:     isNaN(gv('cfg2-panier-min'))  ? (existingSoldes.panierMinH ?? 6) : gv('cfg2-panier-min'),
+            depMode:        gvs('cfg2-dep-mode') || existingSoldes.depMode || 'aucun',
+            depForfait:     isNaN(gv('cfg2-dep-forfait')) ? (existingSoldes.depForfait ?? 0) : gv('cfg2-dep-forfait'),
+            depKm:          isNaN(gv('cfg2-dep-km'))      ? (existingSoldes.depKm ?? 0)      : gv('cfg2-dep-km'),
+            depBareme:      isNaN(gv('cfg2-dep-bareme'))  ? (existingSoldes.depBareme ?? 0.35) : gv('cfg2-dep-bareme'),
+            hNuitDebut:     gvs('cfg2-hnuit-debut') || existingSoldes.hNuitDebut || '21:00',
+            hNuitFin:       gvs('cfg2-hnuit-fin')   || existingSoldes.hNuitFin   || '06:00',
+            majHNuit:       isNaN(gv('cfg2-maj-hnuit')) ? (existingSoldes.majHNuit ?? 0) : gv('cfg2-maj-hnuit'),
         });
 
         // Soldes initiaux (permettre 0)
@@ -10033,7 +10146,7 @@ service cloud.firestore {
     // ═══════════════════════════════════════════════════════════════════════════
     const PAIE_GROUPES = [
         { k:'base',  lbl:'Heures de base', col:'#4f46e5', test: l => l.label === 'Heures de base' },
-        { k:'nuit',  lbl:'Nuit',           col:'#64748b', test: l => l.label.includes('Nuit') && !l.label.includes('Suppl') },
+        { k:'nuit',  lbl:'Nuit',           col:'#64748b', test: l => (l.label.includes('Nuit') || l.prime) && !l.label.includes('Suppl') },
         { k:'suppl', lbl:'Supplémentaires',col:'#f59e0b', test: l => l.label.includes('Suppl') },
         { k:'dim',   lbl:'Dimanche',       col:'#0ea5e9', test: l => l.label.includes('Dim') },
         { k:'ferie', lbl:'Férié',          col:'#7c3aed', test: l => l.label.includes('Férié') },
@@ -10055,11 +10168,12 @@ service cloud.firestore {
         const pctCot = (soldes.cotisations !== undefined && soldes.cotisations !== '' ? parseFloat(soldes.cotisations) : 22) / 100;
         const cotis = brut * pctCot;
         const hAbs = (pr.lignes.find(l => l.label.startsWith('🏖️')) || {}).h || 0;
-        const hPayees = pr.lignes.reduce((s, l) => s + l.h, 0);
+        const hPayees = pr.lignes.reduce((s, l) => s + (l.prime ? 0 : l.h), 0);
         const hTravail = hPayees - hAbs;
-        const base = pr.lignes.reduce((s, l) => s + l.h * parseFloat(soldes.taux || 0), 0);
+        const base = pr.lignes.reduce((s, l) => s + (l.prime ? 0 : l.h) * parseFloat(soldes.taux || 0), 0);
         const majorations = pr.lignes.reduce((s, l) => s + l.h * l.tx, 0) - base;
-        return { pr, jours, prime, brut, cotis, pctCot, net: brut - cotis, hAbs, hPayees, hTravail, majorations };
+        const ind = jdIndemnitesPeriode(d, f);
+        return { pr, jours, prime, brut, cotis, pctCot, net: brut - cotis + ind.total, netSalaire: brut - cotis, ind, hAbs, hPayees, hTravail, majorations };
     }
     // Heures par semaine (travail payé) sur la période
     function paieSemaines(d, f) {
@@ -10129,6 +10243,7 @@ service cloud.firestore {
                 <div><small>Brut</small><b>${paieEur(S.brut)}</b></div>
                 <span>−</span>
                 <div><small>Cotisations ${Math.round(S.pctCot * 1000) / 10} %</small><b>${paieEur(S.cotis)}</b></div>
+                ${S.ind.total > 0 ? `<span>+</span><div><small>Indemnités</small><b>${paieEur(S.ind.total)}</b></div>` : ''}
                 <span>=</span>
                 <div><small>Net</small><b>${paieEur(S.net)}</b></div>
             </div>
@@ -10156,12 +10271,15 @@ service cloud.firestore {
         <div class="paie-card">
             <div class="paie-card-t">Détail du calcul</div>
             <table class="paie-tbl"><thead><tr><th>Ligne</th><th>Heures</th><th>Taux</th><th>Montant</th></tr></thead><tbody>
-                ${pr.lignes.map(l => `<tr><td>${l.label}</td><td>${paieH(l.h)}</td><td>${l.tx.toFixed(2).replace('.', ',')} €</td><td>${paieEur(l.h * l.tx)}</td></tr>`).join('')}
+                ${pr.lignes.map(l => `<tr><td>${l.label}</td><td>${l.prime ? '(' + paieH(l.h) + ')' : paieH(l.h)}</td><td>${l.tx.toFixed(2).replace('.', ',')} €</td><td>${paieEur(l.h * l.tx)}</td></tr>`).join('')}
                 ${pr.hRepasPaye > 0 ? `<tr><td>🍽️ Repas payés (${pr.nbRepasPaye}×)</td><td>—</td><td>—</td><td>${paieEur(pr.hRepasPaye)}</td></tr>` : ''}
                 ${S.prime > 0 ? `<tr><td>🎁 Prime mensuelle fixe${S.jours < 28 || S.jours > 31 ? ' (au prorata)' : ''}</td><td>—</td><td>—</td><td>${paieEur(S.prime)}</td></tr>` : ''}
             </tbody><tfoot>
                 <tr><td>Brut</td><td>${paieH(S.hPayees)}</td><td></td><td>${paieEur(S.brut)}</td></tr>
                 <tr class="neg"><td>Cotisations (${Math.round(S.pctCot * 1000) / 10} %)</td><td></td><td></td><td>− ${paieEur(S.cotis)}</td></tr>
+                ${S.ind.nbPJ ? `<tr class="ind"><td>🍽️ Paniers de jour (${S.ind.nbPJ}×)</td><td></td><td>${paieEur(S.ind.panierJour)}</td><td>+ ${paieEur(S.ind.nbPJ * S.ind.panierJour)}</td></tr>` : ''}
+                ${S.ind.nbPN ? `<tr class="ind"><td>🌙 Paniers de nuit (${S.ind.nbPN}×)</td><td></td><td>${paieEur(S.ind.panierNuit)}</td><td>+ ${paieEur(S.ind.nbPN * S.ind.panierNuit)}</td></tr>` : ''}
+                ${S.ind.dep > 0 ? `<tr class="ind"><td>🚗 Frais de déplacement (${S.ind.nbJours} j)</td><td></td><td></td><td>+ ${paieEur(S.ind.dep)}</td></tr>` : ''}
                 <tr class="net"><td>Net estimé</td><td></td><td></td><td>${paieEur(S.net)}</td></tr>
             </tfoot></table>
         </div>
@@ -10422,7 +10540,7 @@ service cloud.firestore {
             if (d.getDay() === 1) html += `<div class="lec-sem">Semaine ${tbNumSem(d)} · ${d.getDate()} ${LEC_MC[d.getMonth()]} – ${lecAdd(d, 6).getDate()} ${LEC_MC[lecAdd(d, 6).getMonth()]}</div>`;
             const l = (parJour[ds] || []).slice().sort(lecTri), notes = lecNotesJour(ds), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
             html += `<section class="lec-day ${ds === auj ? 'auj' : ''} ${l.length || fer[ds] || notes.length || evj.length ? '' : 'vide'}" id="lec-j-${ds}">
-                <h4 class="lec-dh" onclick="lecChoisir('${ds}'); lecSetVue('jour')"><span>${lecTitreJour(d)}</span>${d.getDay() === 1 || ds === auj ? `<span class="lec-sem-badge">S${tbNumSem(d)}</span>` : ''}${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
+                <h4 class="lec-dh" onclick="jourDetailOuvrir('${ds}')"><span>${lecTitreJour(d)}</span>${d.getDay() === 1 || ds === auj ? `<span class="lec-sem-badge">S${tbNumSem(d)}</span>` : ''}${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
             if (fer[ds]) html += `<div class="lec-item lec-item-ferie"><span class="lec-dot" style="background:#7c3aed"></span><div class="lec-card"><div class="lec-time"><small>Jour<br>entier</small></div><div class="lec-main"><div class="lec-t">⭐ ${lecEsc(fer[ds])}</div><div class="lec-s">Jour férié</div></div></div></div>`;
             l.forEach(ev => html += lecCarte(ds, ev));
             evj.forEach(e => html += evtCarteLecture(e));
@@ -10508,6 +10626,7 @@ service cloud.firestore {
         const ad = lecAllDayChips(ds, S.allDay, fer, false);
         const l = (parJour[ds] || []);
         return `<div class="lec-dtitle"><span>${lecTitreJour(lecDate)}</span><span class="lec-sem-badge">S${tbNumSem(lecDate)}</span>${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</div>
+            <button class="jd-open-btn" onclick="jourDetailOuvrir('${ds}')"><i class="fas fa-receipt"></i> Détail de ma journée : tarif, paniers, déplacement</button>
             ${ad ? `<div class="lec-allday"><small>Jour entier</small><div>${ad}</div></div>` : ''}
             <div class="lec-grid-scroll" data-debut="${lecHeureDebut([S])}">
                 <div class="lec-grid" style="height:${24 * ph}px" onclick="ouvrirEditionJour('${ds}')">
@@ -11120,6 +11239,158 @@ service cloud.firestore {
         setTimeout(() => document.addEventListener('click', function f(ev) { if (!m.contains(ev.target) && ev.target !== btn && !btn.contains(ev.target)) { m.remove(); document.removeEventListener('click', f); } }), 0);
     }
     document.addEventListener('DOMContentLoaded', () => setTimeout(evtRendreCarte, 400));
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ DÉTAIL DE LA JOURNÉE (v10.9) : tarif, heures de nuit, paniers, déplacement ═
+    // ═══════════════════════════════════════════════════════════════════════════
+    function jdCfg() {
+        const s = (typeof soldes !== 'undefined' && soldes) || {};
+        const n = (v, d) => { const x = parseFloat(v); return isNaN(x) ? d : x; };
+        return { taux: n(s.taux, 0), pj: n(s.panierJour, 0), pn: n(s.panierNuit, 0), pmin: n(s.panierMinH, 6),
+            depMode: s.depMode || 'aucun', depF: n(s.depForfait, 0), depKm: n(s.depKm, 0), depB: n(s.depBareme, 0.35),
+            nuitD: s.hNuitDebut || '21:00', nuitF: s.hNuitFin || '06:00', majHN: n(s.majHNuit, 0), cot: n(s.cotisations, 22) };
+    }
+    const jdMin = h => { const [a, b] = String(h || '0:0').split(':').map(Number); return a * 60 + (b || 0); };
+    // Heures d'un poste situées dans la plage de nuit (gère le passage de minuit)
+    function jdHeuresNuit(hD, hF) {
+        if (!hD || !hF) return 0;
+        const c = jdCfg(); let a = jdMin(hD), b = jdMin(hF); if (b <= a) b += 1440;
+        let nd = jdMin(c.nuitD), nf = jdMin(c.nuitF); if (nf <= nd) nf += 1440;
+        let m = 0;
+        for (let k = -1; k <= 1; k++) m += Math.max(0, Math.min(b, nf + k * 1440) - Math.max(a, nd + k * 1440));
+        return m / 60;
+    }
+    const JD_TRAVAIL = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.','FORMATION'];
+    function jdDureeBrute(p) { if (!p.hD || !p.hF) return parseFloat(p.hPayees || 0); let d = (jdMin(p.hF) - jdMin(p.hD)) / 60; return d <= 0 ? d + 24 : d; }
+    function jdEstNuit(p) { if ((p.type || '').startsWith('NUIT')) return true; const d = jdDureeBrute(p); return d > 0 && jdHeuresNuit(p.hD, p.hF) >= d / 2; }
+    // Paniers et déplacement d'une journée
+    function jdIndemnitesJour(ds, evs) {
+        const c = jdCfg(); evs = evs || tbEventsForDate(ds);
+        const postes = evs.filter(e => JD_TRAVAIL.includes((e.extendedProps || {}).type));
+        const r = { paniers: [], dep: 0, depTxt: '', postes: postes.length };
+        postes.forEach(e => {
+            const p = e.extendedProps || {}, dur = jdDureeBrute(p), nuit = jdEstNuit(p);
+            const droit = dur >= c.pmin, montant = nuit ? c.pn : c.pj;
+            r.paniers.push({ type: p.type, nuit, dur, droit, montant: droit ? montant : 0 });
+        });
+        if (postes.length) {
+            if (c.depMode === 'forfait' && c.depF > 0) { r.dep = c.depF; r.depTxt = 'Forfait journalier'; }
+            else if (c.depMode === 'km' && c.depKm > 0) { r.dep = c.depKm * 2 * c.depB; r.depTxt = `2 × ${String(c.depKm).replace('.', ',')} km × ${String(c.depB).replace('.', ',')} €/km`; }
+        }
+        r.totalPaniers = r.paniers.reduce((s, x) => s + x.montant, 0);
+        r.total = r.totalPaniers + r.dep;
+        return r;
+    }
+    function jdIndemnitesPeriode(d, f) {
+        const c = jdCfg(), parJour = {};
+        tbGetEvents().forEach(e => { const k = (e.start || '').split('T')[0]; if (k >= d && k <= f) (parJour[k] = parJour[k] || []).push(e); });
+        let nbPJ = 0, nbPN = 0, dep = 0, nbJours = 0;
+        Object.entries(parJour).forEach(([k, l]) => { const r = jdIndemnitesJour(k, l); r.paniers.forEach(x => { if (x.montant > 0) x.nuit ? nbPN++ : nbPJ++; }); if (r.dep > 0) { dep += r.dep; nbJours++; } });
+        return { nbPJ, nbPN, panierJour: c.pj, panierNuit: c.pn, dep, nbJours, total: nbPJ * c.pj + nbPN * c.pn + dep };
+    }
+    const jdEur = v => (Math.round(v * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+    const jdH = v => { const h = Math.floor(v + 1e-9), m = Math.round((v - h) * 60); return m ? `${h} h ${String(m).padStart(2, '0')}` : `${h} h`; };
+
+    function jourDetailOuvrir(ds) {
+        fermerModales(); ouvrirModale('modal-jour');
+        const z = document.getElementById('jd-corps'), c = jdCfg(), d = lecParse(ds);
+        const evs = tbEventsForDate(ds).filter(lecVisible).sort(lecTri);
+        const travail = evs.filter(e => JD_TRAVAIL.includes((e.extendedProps || {}).type));
+        const autres = evs.filter(e => !JD_TRAVAIL.includes((e.extendedProps || {}).type));
+        const fer = lecFeries(d)[ds], dim = d.getDay() === 0;
+        const pr = _calculerPaieComplete(ds, ds);
+        const brut = pr.salaireTotal, net = brut * (1 - c.cot / 100);
+        const ind = jdIndemnitesJour(ds, evs);
+        const hNuit = travail.reduce((s, e) => { const p = e.extendedProps || {}; return s + jdHeuresNuit(p.hD, p.hF); }, 0);
+        const hTot = travail.reduce((s, e) => s + parseFloat((e.extendedProps || {}).hPayees || 0), 0);
+        const evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
+        const lienTaux = `<button class="jd-lien" onclick="fermerModales(); switchTab('tab-config-taux', document.querySelector('[onclick*=tab-config-taux]')); setTimeout(()=>{ const a=document.getElementById('cfg-acc-indem'); if(a){ a.classList.add('open'); a.scrollIntoView({behavior:'smooth'}); } }, 250)">Régler dans Taux</button>`;
+        const nuitPostes = travail.filter(e => jdEstNuit(e.extendedProps || {}));
+        let h = `<div class="jd-head">
+                <div><div class="jd-date">${LEC_JOURS_L[d.getDay()]} ${d.getDate()} ${LEC_MOIS[d.getMonth()]} ${d.getFullYear()}</div>
+                <div class="jd-tags"><span class="lec-sem-badge">Semaine ${tbNumSem(d)}</span>${fer ? `<span class="jd-tag fer">⭐ ${evtEsc(fer)}</span>` : ''}${dim ? '<span class="jd-tag dim">Dimanche</span>' : ''}${nuitPostes.length ? '<span class="jd-tag nuit">🌙 Poste de nuit</span>' : ''}</div></div>
+                <button class="jd-x" onclick="fermerModales()" aria-label="Fermer">×</button>
+            </div>`;
+        // Résumé
+        h += `<div class="jd-resume">
+                <div><small>Heures payées</small><b>${jdH(hTot)}</b></div>
+                <div><small>Brut du jour</small><b>${jdEur(brut)}</b></div>
+                <div class="hl"><small>Total du jour</small><b>${jdEur(net + ind.total)}</b><em>net + indemnités</em></div>
+            </div>`;
+        // Ma journée
+        h += `<div class="jd-sec"><div class="jd-sec-t">🗓️ Ma journée</div>`;
+        if (!evs.length && !evj.length) h += `<div class="jd-vide">💤 Journée de repos : aucun poste.</div>`;
+        evs.forEach(e => {
+            const p = e.extendedProps || {}, r = lecRot(e), hn = jdHeuresNuit(p.hD, p.hF), brute = jdDureeBrute(p);
+            h += `<div class="jd-poste" style="--c:${tbColor(e)}">
+                <div class="jd-p-t">${tbIcon(p.type)} <b>${evtEsc(lecNom(p.type))}</b>${r ? ` <span class="lec-rot" style="background:${r.couleur}">${evtEsc(r.nom)}</span>` : ''}</div>
+                ${p.hD && p.hF ? `<div class="jd-p-l"><i class="far fa-clock"></i> ${p.hD} → ${p.hF}${jdMin(p.hF) <= jdMin(p.hD) ? ' (lendemain)' : ''} · présence ${jdH(brute)}</div>` : ''}
+                ${parseFloat(p.hPayees || 0) ? `<div class="jd-p-l"><i class="fas fa-euro-sign"></i> ${jdH(parseFloat(p.hPayees))} payées</div>` : ''}
+                ${p.repasDureeMin > 0 ? `<div class="jd-p-l"><i class="fas fa-utensils"></i> Pause repas ${p.repasDureeMin} min · ${p.repasPaye === 'paye' ? 'payée' : 'non payée (déduite)'}</div>` : ''}
+                ${hn > 0 ? `<div class="jd-p-l nuit"><i class="fas fa-moon"></i> ${jdH(hn)} de nuit (${c.nuitD}–${c.nuitF})</div>` : ''}
+                ${p.note ? `<div class="jd-p-l"><i class="far fa-sticky-note"></i> ${evtEsc(p.note)}</div>` : ''}
+            </div>`;
+        });
+        evj.forEach(e => { h += `<div class="jd-poste evt" style="--c:${e.couleur || '#4f46e5'}" onclick="evtOuvrir('${e.id}')"><div class="jd-p-t">📅 <b>${evtEsc(e.titre)}</b> ${evtBadgePartage(e)}${(e.pieces || []).length ? ' 📎' : ''}</div><div class="jd-p-l"><i class="far fa-clock"></i> ${evtHoraire(e)}${e.lieu ? ' · ' + evtEsc(e.lieu) : ''}</div></div>`; });
+        h += `</div>`;
+        // Heures de nuit
+        if (hNuit > 0) {
+            h += `<div class="jd-sec"><div class="jd-sec-t">🌙 Heures de nuit</div>
+                <div class="jd-ligne"><span>Heures dans la plage ${c.nuitD} – ${c.nuitF}</span><b>${jdH(hNuit)}</b></div>
+                ${c.majHN > 0 ? `<div class="jd-ligne"><span>Majoration heures de nuit (+${c.majHN} %)</span><b>${jdEur(Math.min(hNuit, hTot) * c.taux * c.majHN / 100)}</b></div>` : `<div class="jd-info">Aucune majoration « par heure de nuit » n'est réglée. ${lienTaux}</div>`}
+                ${nuitPostes.length && pr.pctNuit > 0 ? `<div class="jd-ligne"><span>Majoration poste de nuit (+${Math.round(pr.pctNuit * 100)} %)</span><b>incluse ci-dessous</b></div>` : ''}
+            </div>`;
+        }
+        // Tarif de la journée
+        h += `<div class="jd-sec"><div class="jd-sec-t">💶 Tarif de la journée</div>`;
+        if (!c.taux) h += `<div class="jd-info warn">⚠️ Taux horaire non défini : ${lienTaux}</div>`;
+        if (pr.lignes.length) {
+            h += `<table class="jd-tbl"><thead><tr><th>Ligne</th><th>Heures</th><th>Taux</th><th>Montant</th></tr></thead><tbody>
+                ${pr.lignes.map(l => `<tr><td>${l.label}</td><td>${l.prime ? '(' + jdH(l.h) + ')' : jdH(l.h)}</td><td>${jdEur(l.tx)}</td><td>${jdEur(l.h * l.tx)}</td></tr>`).join('')}
+                ${pr.hRepasPaye > 0 ? `<tr><td>🍽️ Repas payé</td><td>—</td><td>—</td><td>${jdEur(pr.hRepasPaye)}</td></tr>` : ''}
+                </tbody><tfoot>
+                <tr><td colspan="3">Brut du jour</td><td>${jdEur(brut)}</td></tr>
+                <tr class="neg"><td colspan="3">Cotisations (${String(c.cot).replace('.', ',')} %)</td><td>− ${jdEur(brut - net)}</td></tr>
+                <tr><td colspan="3">Net du jour (estimé)</td><td>${jdEur(net)}</td></tr>
+                </tfoot></table>`;
+        } else h += `<div class="jd-vide">Aucune heure payée ce jour.</div>`;
+        h += `</div>`;
+        // Paniers
+        h += `<div class="jd-sec"><div class="jd-sec-t">🍽️ Paniers</div>`;
+        if (!ind.paniers.length) h += `<div class="jd-vide">Pas de poste : pas de panier.</div>`;
+        else if (!c.pj && !c.pn) h += `<div class="jd-info">Montants des paniers non réglés (jour et nuit). ${lienTaux}</div>`;
+        ind.paniers.forEach(x => {
+            const lib = x.nuit ? '🌙 Panier de nuit' : '☀️ Panier de jour';
+            h += `<div class="jd-ligne"><span>${lib} <small>· ${evtEsc(lecNom(x.type))}${!x.droit ? ` — poste de ${jdH(x.dur)} &lt; ${String(c.pmin).replace('.', ',')} h` : ''}</small></span><b>${x.droit ? jdEur(x.montant) : 'non dû'}</b></div>`;
+        });
+        h += `</div>`;
+        // Déplacement
+        h += `<div class="jd-sec"><div class="jd-sec-t">🚗 Frais de déplacement</div>`;
+        if (!ind.postes) h += `<div class="jd-vide">Pas de poste : pas de déplacement.</div>`;
+        else if (ind.dep > 0) h += `<div class="jd-ligne"><span>${ind.depTxt}</span><b>${jdEur(ind.dep)}</b></div>`;
+        else h += `<div class="jd-info">Frais de déplacement non réglés. ${lienTaux}</div>`;
+        h += `</div>`;
+        // Total
+        h += `<div class="jd-total">
+                <div class="jd-ligne"><span>Net du jour (estimé)</span><b>${jdEur(net)}</b></div>
+                ${ind.totalPaniers > 0 ? `<div class="jd-ligne"><span>+ Paniers</span><b>${jdEur(ind.totalPaniers)}</b></div>` : ''}
+                ${ind.dep > 0 ? `<div class="jd-ligne"><span>+ Déplacement</span><b>${jdEur(ind.dep)}</b></div>` : ''}
+                <div class="jd-ligne big"><span>Total de la journée</span><b>${jdEur(net + ind.total)}</b></div>
+            </div>
+            <p class="jd-note">Estimation : les cotisations sont un pourcentage moyen et les postes de nuit sont comptés le jour où ils commencent. Votre bulletin de paie fait foi.</p>
+            <div class="evt-actions">
+                <button class="btn btn-outline" onclick="fermerModales(); lecChoisir('${ds}'); lecSetVue('jour')"><i class="fas fa-clock"></i> Vue Jour</button>
+                <button class="btn btn-paye" onclick="fermerModales(); ouvrirEditionJour('${ds}')"><i class="fas fa-plus"></i> Ajouter un poste</button>
+            </div>`;
+        z.innerHTML = h;
+        const m = document.getElementById('modal-jour'); if (m) m.scrollTop = 0;
+    }
+    function cfg2MajDep() {
+        const m = (document.getElementById('cfg2-dep-mode') || {}).value || 'aucun';
+        const f = document.getElementById('cfg2-dep-forfait-row'), k = document.getElementById('cfg2-dep-km-row');
+        if (f) f.style.display = m === 'forfait' ? '' : 'none';
+        if (k) k.style.display = m === 'km' ? '' : 'none';
+    }
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -11179,7 +11450,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v10.8';
+const CACHE_NAME = 'planning-pro-v10.9';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
