@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v10.9</title>
+    <title>Mon Planning Pro v11.1</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -498,7 +498,37 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-strip-days button.sel small, .lec-strip-days button.sel b { color:#fff; }
 
 
+
+        .app-version { display:flex; align-items:center; gap:10px; margin:18px 0 4px; padding:12px; border-top:1px solid var(--border-color); color:var(--text-muted); }
+        .app-version img { width:34px; height:34px; border-radius:9px; }
+        .app-version > div { flex:1; display:flex; flex-direction:column; min-width:0; }
+        .app-version b { font-size:0.85rem; color:var(--text-main); }
+        .app-version span { font-size:0.75rem; font-family:'DM Mono',monospace; }
+        .app-version small { font-size:0.68rem; }
+        .app-version button { flex:none; border:1px solid var(--border-color); background:var(--bg-app); color:var(--primary); border-radius:9px; padding:7px 10px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
         /* ═══ DÉTAIL DE LA JOURNÉE ═══ */
+        .lec-tarif { color:#047857 !important; white-space:normal !important; }
+        .lec-dh-add { margin-left:auto !important; }
+        .lec-dh:has(.lec-dh-h) .lec-dh-add { margin-left:6px !important; }
+        body.dark-mode .lec-tarif { color:#6ee7b7 !important; }
+        .lec-tarif b { font-family:'DM Mono',monospace; }
+        .lec-dh-add { order:3; flex:none; width:30px; height:30px; border-radius:50%; border:1.5px solid var(--primary-light); background:var(--hover-row); color:var(--primary); font-size:1.15rem; font-weight:700; line-height:1; cursor:pointer; padding:0; margin-left:6px; }
+        .lec-dh > span:first-of-type { order:1; } .lec-dh .lec-sem-badge { order:1; } .lec-dh .lec-dh-h { order:2; }
+        .lec-dh::after { order:4; }
+        .lec-day { position:relative; }
+        .lec-add-menu-jour { position:fixed; left:12px; right:12px; bottom:calc(84px + env(safe-area-inset-bottom, 0px)); top:auto; z-index:1200; max-width:420px; margin:0 auto; animation:none; }
+        .lec-add-menu-jour::before { content:attr(data-titre); display:block; padding:10px 14px 4px; font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; }
+        .jd-add { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+        .jd-add button { display:flex; align-items:center; justify-content:center; gap:7px; border:none; border-radius:12px; padding:11px 8px; font-weight:800; font-size:0.82rem; cursor:pointer; font-family:'DM Sans',sans-serif; background:var(--primary); color:#fff; }
+        .jd-add button:last-child { background:var(--hover-row); color:var(--primary); border:1.5px solid var(--primary-light); }
+        .jd-p-t { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+        .jd-p-mod { margin-left:auto; border:1px solid var(--border-color); background:var(--bg-card); color:var(--primary); border-radius:8px; padding:4px 9px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .jd-p-tarif { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin:6px 0 2px; padding:6px 8px; border-radius:8px; background:rgba(16,185,129,0.1); color:#047857; font-size:0.82rem; }
+        body.dark-mode .jd-p-tarif { color:#6ee7b7; }
+        .jd-p-tarif small { color:var(--text-muted); font-size:0.7rem; }
+        .jd-p-tarif > b { font-family:'DM Mono',monospace; white-space:nowrap; }
+        .jd-poste.focus { box-shadow:0 0 0 2px var(--c), 0 4px 14px rgba(0,0,0,0.12); }
+
         .lec-dh { cursor:pointer; }
         .lec-dh::after { content:'›'; margin-left:2px; color:var(--text-muted); font-weight:400; }
         .jd-open-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin:0 0 10px; padding:10px; border:1.5px dashed var(--primary-light); background:var(--hover-row); color:var(--primary); border-radius:12px; font-weight:800; font-size:0.82rem; cursor:pointer; font-family:'DM Sans',sans-serif; }
@@ -2976,6 +3006,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div>
 
     <button onclick="fermerModales()" class="btn btn-outline" style="margin-top: 20px;">Fermer</button>
+    <div class="app-version" id="app-version"></div>
 </div>
     <!-- MODALE DÉTAILS PAIE -->
     <div id="modal-details" class="modal" style="max-height:92vh;">
@@ -10459,7 +10490,7 @@ service cloud.firestore {
     // Stocke les événements affichés pour les retrouver au clic
     let lecIdx = [];
     const lecRef = (ds, ev) => { lecIdx.push([ds, ev]); return lecIdx.length - 1; };
-    function lecOuvrirIdx(i) { const x = lecIdx[i]; if (x) lecClicEv(x[0], x[1]); }
+    function lecOuvrirIdx(i) { const x = lecIdx[i]; if (x) jourDetailOuvrir(x[0], x[1]); }
 
     // ── Activation ──
     function lecActiver(on) {
@@ -10481,6 +10512,12 @@ service cloud.firestore {
         lecDate = lecParse(ds);
         if (lec.vue === 'mois') lec.vue = 'jour';
         lecRender(true);
+    }
+    function lecToucherDate(ds) {
+        const deja = lecFmt(lecDate) === ds;
+        lecDate = lecParse(ds);
+        lecRender(true);
+        if (lec.vue === 'liste' || lec.vue === 'mois' || deja) jourDetailOuvrir(ds);
     }
 
     // ── Rendu ──
@@ -10521,6 +10558,7 @@ service cloud.firestore {
                     <div class="lec-t">${tbIcon(p.type)} ${lecEsc(lecNom(p.type))} ${lecRotChip(ev)}</div>
                     ${horaire || h > 0 ? `<div class="lec-s"><i class="far fa-clock"></i> ${horaire}${horaire && h > 0 ? ' · ' : ''}${h > 0 ? (Math.round(h * 10) / 10).toString().replace('.', ',') + ' h' : ''}${p.repasDureeMin > 0 ? ` · 🍽️ ${p.repasDureeMin} min` : ''}</div>` : ''}
                     ${p.note ? `<div class="lec-s"><i class="far fa-sticky-note"></i> ${lecEsc(p.note)}</div>` : ''}
+                    ${(() => { const t = jdTarifPoste(ds, ev); return t ? `<div class="lec-s lec-tarif">💶 ${jdEur(t.taux)}/h · <b>${jdEur(t.montant)}</b> brut${t.libelle ? ' · ' + t.libelle : ''}</div>` : ''; })()}
                 </div>
             </div>
         </div>`;
@@ -10540,12 +10578,12 @@ service cloud.firestore {
             if (d.getDay() === 1) html += `<div class="lec-sem">Semaine ${tbNumSem(d)} · ${d.getDate()} ${LEC_MC[d.getMonth()]} – ${lecAdd(d, 6).getDate()} ${LEC_MC[lecAdd(d, 6).getMonth()]}</div>`;
             const l = (parJour[ds] || []).slice().sort(lecTri), notes = lecNotesJour(ds), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
             html += `<section class="lec-day ${ds === auj ? 'auj' : ''} ${l.length || fer[ds] || notes.length || evj.length ? '' : 'vide'}" id="lec-j-${ds}">
-                <h4 class="lec-dh" onclick="jourDetailOuvrir('${ds}')"><span>${lecTitreJour(d)}</span>${d.getDay() === 1 || ds === auj ? `<span class="lec-sem-badge">S${tbNumSem(d)}</span>` : ''}${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
+                <h4 class="lec-dh" onclick="jourDetailOuvrir('${ds}')"><button class="lec-dh-add" onclick="event.stopPropagation(); lecAjouterJour(this, '${ds}')" aria-label="Ajouter">+</button><span>${lecTitreJour(d)}</span>${d.getDay() === 1 || ds === auj ? `<span class="lec-sem-badge">S${tbNumSem(d)}</span>` : ''}${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
             if (fer[ds]) html += `<div class="lec-item lec-item-ferie"><span class="lec-dot" style="background:#7c3aed"></span><div class="lec-card"><div class="lec-time"><small>Jour<br>entier</small></div><div class="lec-main"><div class="lec-t">⭐ ${lecEsc(fer[ds])}</div><div class="lec-s">Jour férié</div></div></div></div>`;
             l.forEach(ev => html += lecCarte(ds, ev));
             evj.forEach(e => html += evtCarteLecture(e));
             notes.forEach(n => html += `<div class="lec-item" onclick="notesOuvrir && notesOuvrir()"><span class="lec-dot" style="background:#facc15"></span><div class="lec-card"><div class="lec-time"><small>Note</small></div><div class="lec-main"><div class="lec-t">📝 ${lecEsc(n.titre || (n.texte || '').slice(0, 40) || 'Note')}</div></div></div></div>`);
-            if (!l.length && !fer[ds] && !notes.length && !evj.length) html += `<div class="lec-repos" ondblclick="ouvrirEditionJour('${ds}')">💤 Repos <button onclick="event.stopPropagation(); ouvrirEditionJour('${ds}')" aria-label="Ajouter">+</button></div>`;
+            if (!l.length && !fer[ds] && !notes.length && !evj.length) html += `<div class="lec-repos" ondblclick="ouvrirEditionJour('${ds}')">💤 Repos</div>`;
             html += '</section>';
         }
         return html;
@@ -10665,7 +10703,7 @@ service cloud.firestore {
             if (i === 35 && d.getMonth() !== premier.getMonth()) break;
             const l = (parJour[ds] || []).slice().sort(lecTri), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
             if (i % 7 === 0) html += `<div class="lec-m-wk" onclick="lecChoisir('${ds}'); lecSetVue('semaine')" title="Semaine ${tbNumSem(d)}">S${tbNumSem(d)}</div>`;
-            html += `<div class="lec-m-cell ${d.getMonth() !== premier.getMonth() ? 'hors' : ''} ${ds === auj ? 'auj' : ''} ${ds === sel ? 'sel' : ''}" onclick="lecChoisir('${ds}')">
+            html += `<div class="lec-m-cell ${d.getMonth() !== premier.getMonth() ? 'hors' : ''} ${ds === auj ? 'auj' : ''} ${ds === sel ? 'sel' : ''}" onclick="lecToucherDate('${ds}')">
                 <span class="lec-m-n">${d.getDate()}</span>
                 ${fer[ds] ? `<span class="lec-m-ev" style="--c:#7c3aed">⭐</span>` : ''}
                 ${l.slice(0, 3).map(ev => { const p = ev.extendedProps || {}; return `<span class="lec-m-ev" style="--c:${tbColor(ev)}">${tbIcon(p.type)}<em>${p.hD ? parseInt(p.hD, 10) + 'h' : ''}</em></span>`; }).join('')}
@@ -10684,7 +10722,7 @@ service cloud.firestore {
         const parJour = lecParJour(lecEvents());
         z.innerHTML = [...Array(7)].map((_, i) => {
             const d = lecAdd(lun, i), ds = lecFmt(d), n = (parJour[ds] || []).length + (typeof evtDuJour === 'function' ? evtDuJour(ds).length : 0);
-            return `<button class="${ds === sel ? 'sel' : ''} ${ds === auj ? 'auj' : ''}" onclick="lecChoisir('${ds}')">
+            return `<button class="${ds === sel ? 'sel' : ''} ${ds === auj ? 'auj' : ''}" onclick="lecToucherDate('${ds}')">
                 <small>${LEC_JOURS[d.getDay()]}</small><b>${d.getDate()}</b>${ds === sel ? `<small>${LEC_MC[d.getMonth()]}</small>` : `<i style="${n ? '' : 'visibility:hidden'}"></i>`}</button>`;
         }).join('');
     }
@@ -11291,7 +11329,7 @@ service cloud.firestore {
     const jdEur = v => (Math.round(v * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
     const jdH = v => { const h = Math.floor(v + 1e-9), m = Math.round((v - h) * 60); return m ? `${h} h ${String(m).padStart(2, '0')}` : `${h} h`; };
 
-    function jourDetailOuvrir(ds) {
+    function jourDetailOuvrir(ds, evFocus) {
         fermerModales(); ouvrirModale('modal-jour');
         const z = document.getElementById('jd-corps'), c = jdCfg(), d = lecParse(ds);
         const evs = tbEventsForDate(ds).filter(lecVisible).sort(lecTri);
@@ -11317,13 +11355,20 @@ service cloud.firestore {
                 <div><small>Brut du jour</small><b>${jdEur(brut)}</b></div>
                 <div class="hl"><small>Total du jour</small><b>${jdEur(net + ind.total)}</b><em>net + indemnités</em></div>
             </div>`;
+        h += `<div class="jd-add">
+                <button onclick="fermerModales(); ouvrirEditionJour('${ds}')"><i class="fas fa-briefcase"></i> Ajouter un poste</button>
+                <button onclick="fermerModales(); evtNouveau('${ds}')"><i class="fas fa-calendar-plus"></i> Ajouter un événement</button>
+            </div>`;
         // Ma journée
         h += `<div class="jd-sec"><div class="jd-sec-t">🗓️ Ma journée</div>`;
         if (!evs.length && !evj.length) h += `<div class="jd-vide">💤 Journée de repos : aucun poste.</div>`;
         evs.forEach(e => {
             const p = e.extendedProps || {}, r = lecRot(e), hn = jdHeuresNuit(p.hD, p.hF), brute = jdDureeBrute(p);
-            h += `<div class="jd-poste" style="--c:${tbColor(e)}">
-                <div class="jd-p-t">${tbIcon(p.type)} <b>${evtEsc(lecNom(p.type))}</b>${r ? ` <span class="lec-rot" style="background:${r.couleur}">${evtEsc(r.nom)}</span>` : ''}</div>
+            const t = jdTarifPoste(ds, e), focus = !!evFocus && ['type', 'hD', 'hF', 'rotationId'].every(k => ((evFocus.extendedProps || {})[k] || '') === (p[k] || ''));
+            const mod = `ouvrirEditionEvent('${ds}', '${String(p.type || '').replace(/'/g, "\\'")}', '${p.rotationId || ''}')`;
+            h += `<div class="jd-poste${focus ? ' focus' : ''}" style="--c:${tbColor(e)}">
+                <div class="jd-p-t">${tbIcon(p.type)} <b>${evtEsc(lecNom(p.type))}</b>${r ? ` <span class="lec-rot" style="background:${r.couleur}">${evtEsc(r.nom)}</span>` : ''}<button class="jd-p-mod" onclick="fermerModales(); ${mod}"><i class="fas fa-pen"></i> Modifier</button></div>
+                ${t ? `<div class="jd-p-tarif"><span>💶 Taux appliqué <b>${jdEur(t.taux)}/h</b>${t.libelle ? ` <small>(${t.libelle})</small>` : ''}</span><b>${jdEur(t.montant)}</b></div>` : ''}
                 ${p.hD && p.hF ? `<div class="jd-p-l"><i class="far fa-clock"></i> ${p.hD} → ${p.hF}${jdMin(p.hF) <= jdMin(p.hD) ? ' (lendemain)' : ''} · présence ${jdH(brute)}</div>` : ''}
                 ${parseFloat(p.hPayees || 0) ? `<div class="jd-p-l"><i class="fas fa-euro-sign"></i> ${jdH(parseFloat(p.hPayees))} payées</div>` : ''}
                 ${p.repasDureeMin > 0 ? `<div class="jd-p-l"><i class="fas fa-utensils"></i> Pause repas ${p.repasDureeMin} min · ${p.repasPaye === 'paye' ? 'payée' : 'non payée (déduite)'}</div>` : ''}
@@ -11384,6 +11429,49 @@ service cloud.firestore {
             </div>`;
         z.innerHTML = h;
         const m = document.getElementById('modal-jour'); if (m) m.scrollTop = 0;
+        const f = z.querySelector('.jd-poste.focus'); if (f && m) setTimeout(() => { m.scrollTop = Math.max(0, f.offsetTop - 120); }, 60);
+    }
+
+    // Taux horaire appliqué à un poste (mêmes règles que la paie) + montant brut du poste
+    function jdTarifPoste(ds, ev) {
+        const p = ev.extendedProps || {}, type = p.type || '';
+        if (!JD_TRAVAIL.includes(type)) return null;
+        const s = (typeof soldes !== 'undefined' && soldes) || {}, base = parseFloat(s.taux || 0);
+        const h = parseFloat(p.hPayees || 0); if (!base || !h) return null;
+        const v = (k, d) => (s[k] !== undefined && s[k] !== '' ? parseFloat(s[k]) : d) / 100;
+        const pDim = v('majDimanche', 22), pFer = v('majFerie', 100), pNuit = v('majNuit', 0), pSup = v('majSuppl', 25),
+              pSupM = v('majSupplMatin', 25), pSupAM = v('majSupplAM', 25), pSupN = v('majSupplNuit', 100);
+        const sup = type.includes('SUPPL'), nuit = type.startsWith('NUIT');
+        const fer = !!(lecFeries(lecParse(ds))[ds]), dim = lecParse(ds).getDay() === 0;
+        let pct = 0, lib = [];
+        if (nuit && sup && fer) { pct = pNuit + pFer; lib = ['nuit', 'férié']; }
+        else if (nuit && sup && dim) { pct = pNuit + pDim; lib = ['nuit', 'dimanche']; }
+        else if (nuit && sup) { pct = pNuit + pSupN; lib = ['nuit suppl.']; }
+        else if (nuit && fer) { pct = pNuit + pFer; lib = ['nuit', 'férié']; }
+        else if (nuit && dim) { pct = pNuit + pDim; lib = ['nuit', 'dimanche']; }
+        else if (nuit) { pct = pNuit; lib = ['nuit']; }
+        else if (sup && fer && dim) { pct = pFer + pDim + pSup; lib = ['suppl.', 'férié', 'dimanche']; }
+        else if (sup && fer) { pct = pFer + pSup; lib = ['suppl.', 'férié']; }
+        else if (sup && dim) { pct = pDim + pSup; lib = ['suppl.', 'dimanche']; }
+        else if (sup) { pct = type === 'MATIN SUPPL.' ? pSupM : type === 'APRÈS-MIDI SUPPL.' ? pSupAM : pSup; lib = ['suppl.']; }
+        else if (fer && dim) { pct = pFer + pDim; lib = ['férié', 'dimanche']; }
+        else if (fer) { pct = pFer; lib = ['férié']; }
+        else if (dim) { pct = pDim; lib = ['dimanche']; }
+        const taux = base * (1 + pct);
+        const c = jdCfg(), hn = c.majHN > 0 ? Math.min(h, jdHeuresNuit(p.hD, p.hF)) : 0;
+        const primeNuit = hn * base * c.majHN / 100;
+        const repas = p.repasDureeMin > 0 && p.repasPaye === 'paye' ? (p.repasDureeMin / 60) * (parseFloat(p.repasTaux) || parseFloat(s.tauxRepas) || base) : 0;
+        const libelle = (pct > 0 ? 'base +' + Math.round(pct * 100) + ' % ' + lib.join(' + ') : 'taux de base') + (primeNuit > 0 ? ' · + heures de nuit' : '') + (repas > 0 ? ' · + repas' : '');
+        return { taux, h, montant: h * taux + primeNuit + repas, libelle, pct };
+    }
+    // « + » d'un jour de la liste : poste ou événement
+    function lecAjouterJour(btn, ds) {
+        const old = document.getElementById('lec-add-menu'); if (old) old.remove();
+        const m = document.createElement('div'); m.id = 'lec-add-menu'; m.className = 'lec-add-menu lec-add-menu-jour'; m.dataset.titre = 'Ajouter le ' + lecParse(ds).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+        m.innerHTML = `<button onclick="document.getElementById('lec-add-menu').remove(); ouvrirEditionJour('${ds}')"><i class="fas fa-briefcase"></i><span><b>Poste de travail</b><small>Matin, nuit, congé…</small></span></button>
+            <button onclick="document.getElementById('lec-add-menu').remove(); evtNouveau('${ds}')"><i class="fas fa-calendar-plus"></i><span><b>Événement</b><small>Privé ou partagé avec @pseudo</small></span></button>`;
+        document.body.appendChild(m);
+        setTimeout(() => document.addEventListener('click', function f(ev) { if (!m.contains(ev.target)) { m.remove(); document.removeEventListener('click', f); } }), 0);
     }
     function cfg2MajDep() {
         const m = (document.getElementById('cfg2-dep-mode') || {}).value || 'aucun';
@@ -11391,6 +11479,25 @@ service cloud.firestore {
         if (f) f.style.display = m === 'forfait' ? '' : 'none';
         if (k) k.style.display = m === 'km' ? '' : 'none';
     }
+
+    // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
+    const APP_VERSION = '11.1', APP_VERSION_DATE = '31/10/2026';
+    function appVersionRendre() {
+        const z = document.getElementById('app-version'); if (!z) return;
+        z.innerHTML = `<img src="${(typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || ''}" alt="" onerror="this.remove()">
+            <div><b>Mon Planning Pro</b><span>Version ${APP_VERSION}</span><small>du ${APP_VERSION_DATE}</small></div>
+            <button onclick="appVerifierMaj(this)"><i class="fas fa-sync-alt"></i> Mises à jour</button>`;
+    }
+    async function appVerifierMaj(btn) {
+        btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification…';
+        try {
+            const r = 'serviceWorker' in navigator ? await navigator.serviceWorker.getRegistration() : null;
+            if (r) { await r.update(); if (r.installing || r.waiting) { showToast('⬇️ Nouvelle version trouvée : rechargement…', 'success', 'fa-download'); setTimeout(() => location.reload(), 1500); return; } }
+            showToast(`✅ Vous avez la dernière version (${APP_VERSION})`, 'success', 'fa-check');
+        } catch (e) { showToast('Vérification impossible (hors ligne ?)', 'error', 'fa-wifi'); }
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-sync-alt"></i> Mises à jour';
+    }
+    document.addEventListener('DOMContentLoaded', appVersionRendre);
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -11450,7 +11557,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v10.9';
+const CACHE_NAME = 'planning-pro-v11.1';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
