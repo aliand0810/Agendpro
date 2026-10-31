@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v10.4</title>
+    <title>Mon Planning Pro v10.7</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -321,50 +321,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .nav-item-special i { color: white; }
         body.dark-mode .bottom-nav { background: #111827; border-color: #1e2a3a; }
 
-        /* ─── Barre animée au toucher (v10.3) ─── */
-        .nav-item { position: relative; transition: color 0.2s, transform 0.18s cubic-bezier(.3,1.6,.5,1); }
-        .nav-item:active { transform: scale(0.88); }
-        .nav-item.nav-pop i { animation: navPop 0.42s cubic-bezier(.3,1.6,.5,1); }
-        @keyframes navPop { 0% { transform: scale(1); } 40% { transform: scale(1.35) translateY(-4px); } 100% { transform: scale(1) translateY(-2px); } }
-        .nav-ripple { position: absolute; border-radius: 50%; pointer-events: none; background: currentColor; opacity: 0.25; transform: scale(0); animation: navRipple 0.5s ease-out forwards; }
-        @keyframes navRipple { to { transform: scale(2.6); opacity: 0; } }
-        .nav-item::after { content: ''; position: absolute; bottom: 3px; left: 50%; width: 0; height: 3px; border-radius: 3px; background: var(--primary); transform: translateX(-50%); transition: width 0.25s ease; }
-        .nav-item.active:not(.nav-item-special)::after { width: 22px; }
-
         /* ─── DESKTOP: hide bottom nav, show top tabs ─── */
         .main-tabs { display: none; }
         @media (min-width: 700px) {
             body { padding-bottom: 20px; }
             .bottom-nav { display: none; }
             .main-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-            .app-content { padding: 16px 20px 0; max-width: none; width: 100%; box-sizing: border-box; }
-            .main-tabs { width: 100%; }
-            .main-tabs > * { flex: 1; }
-            .planning-sidebar { width: 280px !important; }
-            .planning-layout > :not(.planning-sidebar) { flex: 1; min-width: 0; }
-        }
-        /* ─── Téléphone en paysage : plein écran, barres masquées (v10.3) ─── */
-        .ls-fab { display: none; }
-        @media (orientation: landscape) and (max-height: 520px) {
-            body { padding-top: 0 !important; padding-bottom: 0 !important; }
-            .app-header, .bottom-nav, .main-tabs { display: none !important; }
-            body.ls-bars .app-header { display: flex !important; }
-            body.ls-bars .bottom-nav { display: flex !important; }
-            body.ls-bars { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)) !important; }
-            .app-content { max-width: none !important; width: 100% !important; padding: 4px calc(6px + env(safe-area-inset-right, 0px)) 0 calc(6px + env(safe-area-inset-left, 0px)) !important; box-sizing: border-box; }
-            .planning-layout { gap: 0 !important; }
-            .planning-sidebar { display: none !important; }
-            body.ls-side .planning-layout { display: flex !important; flex-direction: row !important; align-items: flex-start !important; gap: 10px !important; }
-            body.ls-side .planning-sidebar { display: block !important; position: sticky !important; top: 4px !important; width: min(280px, 32vw) !important; flex-shrink: 0; max-height: calc(100vh - 8px) !important; overflow-y: auto; animation: lsSlide 0.25s ease; }
-            body.ls-side .planning-layout > :not(.planning-sidebar) { flex: 1; min-width: 0; }
-            @keyframes lsSlide { from { opacity: 0; margin-left: -120px; } to { opacity: 1; margin-left: 0; } }
-            body:not(.ls-bars) .lec-top { top: 4px !important; }
-            body:not(.ls-bars) .lec-strip { bottom: 6px !important; }
-            .lec-strip { padding-right: 56px !important; }
-            body.lec-on .lec { width: 100%; max-width: none; }
-            .ls-fab { display: flex; flex-direction: column; position: fixed; right: calc(6px + env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); z-index: 150; gap: 8px; }
-            .ls-fab button { width: 42px; height: 42px; border-radius: 50%; border: none; background: var(--primary); color: #fff; font-size: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.25); cursor: pointer; transition: transform 0.15s; opacity: 0.85; }
-            .ls-fab button:active { transform: scale(0.88); }
+            .app-content { padding: 16px 20px 0; max-width: 1200px; }
         }
 
         .tab-btn { flex: 1; padding: 10px 8px; border-radius: 10px; border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 75px; transition: 0.2s; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; box-shadow: var(--shadow-sm); }
@@ -511,58 +474,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-wk-col.auj { background:color-mix(in srgb, var(--primary) 6%, transparent); }
         .lec-m-head { display:grid; grid-template-columns:repeat(7,1fr); text-align:center; font-size:0.66rem; font-weight:700; color:var(--text-muted); margin-bottom:4px; }
         .lec-m-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
-        .lec-m-cell { min-height:118px; min-width:0; background:var(--bg-app); border:1px solid var(--border-color); border-radius:10px; padding:3px 2px; display:flex; flex-direction:column; gap:3px; cursor:pointer; overflow:hidden; }
+        .lec-m-cell { min-height:74px; min-width:0; background:var(--bg-app); border:1px solid var(--border-color); border-radius:10px; padding:3px; display:flex; flex-direction:column; gap:2px; cursor:pointer; overflow:hidden; }
         .lec-m-cell.hors { opacity:0.4; }
         .lec-m-cell.auj .lec-m-n { background:var(--primary); color:#fff; }
         .lec-m-cell.sel { border-color:var(--primary); box-shadow:0 0 0 1.5px var(--primary) inset; }
         .lec-m-n { align-self:center; font-size:0.82rem; font-weight:800; color:var(--text-main); min-width:22px; text-align:center; border-radius:11px; line-height:22px; }
-        .lec-m-ev { display:flex; flex-direction:column; align-items:center; gap:0; font-size:0.6rem; font-weight:700; color:var(--text-main); background:color-mix(in srgb, var(--c) 22%, transparent); border-left:3px solid var(--c); border-radius:5px; padding:2px 1px; line-height:1.15; overflow:hidden; }
-        .lec-m-ev .ic { font-size:0.8rem; line-height:1; }
-        .lec-m-ev b { font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums; }
-        .lec-m-ev small { font-size:0.55rem; font-weight:600; color:var(--text-muted); white-space:nowrap; }
-        .lec-m-ev em { font-style:normal; font-size:0.54rem; font-weight:600; opacity:.8; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        /* ── Plein écran (ordinateur) ── */
-        .lec-full-btn { display:none; }
-        @media (min-width: 700px) { .lec-full-btn { display:flex; } }
-        body.lec-full { overflow:hidden; }
-        body.lec-full .lec { position:fixed; inset:0; z-index:9000; background:var(--bg-app); padding:12px 16px; display:flex !important; flex-direction:column; box-sizing:border-box; }
-        body.lec-full .lec-top { position:static; margin:0 0 10px; }
-        body.lec-full .lec-body { flex:1; min-height:0; overflow:auto; display:flex; flex-direction:column; }
-        body.lec-full .lec-strip { display:none !important; }
-        body.lec-full.lec-vue-mois .lec-m-grid { flex:1; grid-auto-rows:1fr; gap:6px; }
-        body.lec-full.lec-vue-mois .lec-m-cell { min-height:0; padding:6px; gap:5px; border-radius:12px; }
-        body.lec-full.lec-vue-mois .lec-m-n { font-size:1.05rem; line-height:28px; min-width:28px; border-radius:14px; }
-        body.lec-full.lec-vue-mois .lec-m-head { font-size:0.85rem; margin-bottom:6px; }
-        body.lec-full.lec-vue-mois .lec-m-ev { flex-direction:row; justify-content:center; flex-wrap:wrap; gap:6px; font-size:0.9rem; padding:5px 6px; }
-        body.lec-full.lec-vue-mois .lec-m-ev .ic { font-size:1.05rem; }
-        body.lec-full.lec-vue-mois .lec-m-ev b + b::before { content:'→ '; font-weight:600; opacity:.6; }
-        body.lec-full.lec-vue-mois .lec-m-ev small, body.lec-full.lec-vue-mois .lec-m-ev em { font-size:0.8rem; }
-        body.lec-full.lec-vue-mois .lec-m-ev small::before { content:'('; } body.lec-full.lec-vue-mois .lec-m-ev small::after { content:')'; }
-        @media (min-width: 700px) { body.lec-vue-mois .lec-m-cell { min-height:130px; } body.lec-vue-mois .lec-m-ev { font-size:0.75rem; } }
-        #lec-body { touch-action: pan-y; user-select: none; }
-        .sb-grip { display:inline-flex; align-items:center; justify-content:center; width:22px; height:26px; margin:-4px 4px -4px -6px; color:var(--text-muted); cursor:grab; touch-action:none; border-radius:6px; opacity:.6; flex:none; }
-        .sb-grip:hover { opacity:1; background:var(--bg-app); }
-        .sidebar-card.sb-drag { opacity:.9; box-shadow:0 10px 28px rgba(79,70,229,.35); outline:2px solid var(--primary); transform:scale(1.02); z-index:5; position:relative; cursor:grabbing; }
-        .nk-pj-list { display:flex; flex-direction:column; gap:6px; margin:8px 0; }
-        .nk-pj { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.6); border:1px solid var(--border-color); border-radius:10px; padding:4px 6px; }
-        body.dark-mode .nk-pj { background:rgba(0,0,0,.25); }
-        .nk-pj-open { flex:1; min-width:0; display:flex; align-items:center; gap:8px; border:none; background:none; cursor:pointer; text-align:left; color:var(--text-main); padding:4px; }
-        .nk-pj-open i { color:#dc2626; font-size:1.3rem; }
-        .nk-pj-open span { display:flex; flex-direction:column; min-width:0; }
-        .nk-pj-open b { font-size:.85rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .nk-pj-open small { font-size:.7rem; color:var(--text-muted); }
-        .nk-pj-add { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border:1px dashed var(--border-color); border-radius:10px; font-size:.82rem; font-weight:700; color:var(--primary); cursor:pointer; margin:4px 0 8px; }
-        .nk-pj-tag { display:inline-flex; gap:4px; align-items:center; font-size:.7rem; font-weight:700; color:#dc2626; margin-top:4px; }
-        .nk-voir-zone { border:1px solid var(--border-color); border-radius:12px; padding:12px 14px; margin-top:10px; }
-        .nk-voir-txt { white-space:pre-wrap; word-break:break-word; font-size:.95rem; line-height:1.5; color:var(--text-main); }
-        .nk-voir-txt a { color:var(--primary); }
-        .nk-voir-liste .nk-li { display:flex; gap:8px; align-items:center; padding:3px 0; font-size:.95rem; }
-        .nk-voir-liste .nk-li.ok span { text-decoration:line-through; opacity:.55; }
-        .nk-voir-mod { background:var(--primary) !important; color:#fff !important; }
+        .lec-m-ev { display:flex; align-items:center; justify-content:center; gap:2px; font-size:0.62rem; font-weight:700; color:var(--text-main); background:color-mix(in srgb, var(--c) 22%, transparent); border-left:3px solid var(--c); border-radius:4px; padding:1px 2px; white-space:nowrap; overflow:hidden; }
+        .lec-m-ev em { font-style:normal; overflow:hidden; text-overflow:ellipsis; }
         .lec-m-plus { font-size:0.6rem; color:var(--text-muted); text-align:center; }
         .lec-strip { margin-bottom:6px; } .lec-strip { position:sticky; bottom:calc(74px + env(safe-area-inset-bottom, 0px)); z-index:40; display:flex; align-items:center; gap:8px; margin-top:10px; padding:0 2px; }
         @media (min-width: 700px) { .lec-strip { bottom:12px; } }
-        body.lec-vue-semaine .lec-strip, body.lec-vue-mois .lec-strip { display:none !important; }
         .lec-fab { flex:none; width:52px; height:52px; border-radius:50%; border:1px solid var(--border-color); background:var(--bg-card); color:var(--primary); font-size:1.1rem; box-shadow:0 6px 20px rgba(0,0,0,0.15); cursor:pointer; }
         .lec-fab-auj { width:44px; height:44px; font-size:0.95rem; }
         .lec-strip-in { flex:1; min-width:0; display:flex; align-items:center; background:color-mix(in srgb, var(--bg-card) 88%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border:1px solid var(--border-color); border-radius:30px; box-shadow:0 6px 20px rgba(0,0,0,0.15); padding:4px; }
@@ -575,6 +496,100 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .lec-strip-days button.auj b { color:var(--primary); }
         .lec-strip-days button.sel { background:var(--primary); color:#fff; }
         .lec-strip-days button.sel small, .lec-strip-days button.sel b { color:#fff; }
+
+        /* ═══ ÉVÉNEMENTS PARTAGÉS ═══ */
+        .evt-tb-chip { display:flex; flex-direction:column; align-items:flex-start; width:100%; box-sizing:border-box; border:none; border-left:3px solid var(--c); background:color-mix(in srgb, var(--c) 16%, var(--bg-card)); color:var(--text-main); border-radius:6px; padding:3px 5px; margin-bottom:3px; cursor:pointer; text-align:left; font-family:'DM Sans',sans-serif; min-width:0; }
+        .evt-tb-chip span { font-size:0.68rem; font-weight:800; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .evt-tb-chip small { font-size:0.6rem; color:var(--text-muted); white-space:nowrap; }
+        .evt-tb-chip.mois { flex-direction:row; align-items:center; gap:2px; padding:1px 3px; margin:1px 0 0; }
+        .evt-tb-chip.mois span { font-size:0.6rem; flex:1; min-width:0; }
+        .evt-tb-chip.mois i { font-style:normal; font-size:0.55rem; }
+        body.pdfv-on { overflow:hidden; }
+        .pdfv { position:fixed; inset:0; z-index:7500; background:#1f2937; display:flex; flex-direction:column; }
+        .pdfv-bar { display:flex; align-items:center; gap:6px; padding:calc(8px + env(safe-area-inset-top, 0px)) 10px 8px; background:#111827; color:#fff; }
+        .pdfv-bar button { flex:none; width:40px; height:40px; border:none; border-radius:12px; background:rgba(255,255,255,0.1); color:#fff; font-size:1rem; cursor:pointer; }
+        .pdfv-t { flex:1; min-width:0; display:flex; flex-direction:column; }
+        .pdfv-t b { font-size:0.92rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .pdfv-t b i { color:#f87171; }
+        .pdfv-t small { font-size:0.7rem; opacity:0.75; }
+        .pdfv-pages { flex:1; overflow:auto; -webkit-overflow-scrolling:touch; padding:8px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+        .pdfv-page { display:flex; flex-direction:column; align-items:center; gap:3px; }
+        .pdfv-page canvas { background:#fff; box-shadow:0 4px 16px rgba(0,0,0,0.4); border-radius:2px; max-width:none; }
+        .pdfv-page small { color:#9ca3af; font-size:0.68rem; }
+        .pdfv-pages iframe { width:100%; flex:1; min-height:70vh; border:none; background:#fff; }
+        .pdfv-load { color:#e5e7eb; display:flex; flex-direction:column; align-items:center; gap:12px; margin-top:30vh; font-size:0.9rem; }
+        .pdfv-act { display:flex; gap:8px; padding:10px 10px calc(10px + env(safe-area-inset-bottom, 0px)); background:#111827; }
+        .pdfv-act button { flex:1; border:none; border-radius:12px; padding:12px 6px; background:rgba(255,255,255,0.1); color:#fff; font-weight:700; font-size:0.85rem; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .pdfv-act button:first-child { background:#4f46e5; }
+
+        .evt-pdfs { display:flex; flex-direction:column; gap:6px; }
+        .evt-pdf { display:flex; align-items:center; gap:8px; border:1px solid var(--border-color); background:var(--bg-app); border-radius:10px; padding:6px 6px 6px 10px; }
+        .evt-pdf > i { color:#dc2626; font-size:1.25rem; }
+        .evt-pdf-nom { flex:1; min-width:0; display:flex; flex-direction:column; align-items:flex-start; border:none; background:none; cursor:pointer; text-align:left; padding:0; color:var(--text-main); font-family:'DM Sans',sans-serif; }
+        .evt-pdf-nom b { font-size:0.85rem; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .evt-pdf-nom small { font-size:0.7rem; color:var(--text-muted); }
+        .evt-pdf-bt { flex:none; width:34px; height:34px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-card); color:var(--primary); cursor:pointer; }
+        .evt-pdf-bt.danger { color:#ef4444; }
+        .evt-pdf-add { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:6px; padding:10px; border:1.5px dashed #fca5a5; border-radius:10px; color:#dc2626; font-weight:800; font-size:0.85rem; cursor:pointer; background:rgba(239,68,68,0.05); }
+        .evt-pdf-add input { display:none; }
+        .evt-pdf-tit { font-size:0.75rem; font-weight:800; color:var(--text-muted); margin-bottom:-2px; }
+        .evt-clip { font-size:0.75rem; font-weight:800; color:var(--text-muted); white-space:nowrap; }
+
+        .evt-side { display:flex; flex-direction:column; gap:6px; margin-bottom:8px; }
+        .evt-side-it { display:flex; gap:10px; align-items:center; text-align:left; border:1px solid var(--border-color); border-left:4px solid var(--c); background:var(--bg-app); border-radius:10px; padding:7px 9px; cursor:pointer; font-family:'DM Sans',sans-serif; color:var(--text-main); }
+        .evt-side-d { display:flex; flex-direction:column; align-items:center; min-width:30px; line-height:1.05; }
+        .evt-side-d b { font-size:1.05rem; } .evt-side-d small { font-size:0.6rem; color:var(--text-muted); text-transform:uppercase; }
+        .evt-side-b { display:flex; flex-direction:column; min-width:0; }
+        .evt-side-b b { font-size:0.84rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .evt-side-b small { font-size:0.7rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .evt-share { font-size:0.8em; }
+        .evt-at { display:inline-block; font-weight:700; color:var(--primary); background:var(--hover-row); border-radius:6px; padding:0 5px; margin:0 3px 2px 0; font-size:0.92em; }
+        .evt-at.inconnu { color:var(--text-muted); text-decoration:line-through; }
+        .evt-par { font-style:italic; margin-right:6px; }
+        .evt-qui { white-space:normal !important; }
+        .evt-card { border-left:4px solid var(--c) !important; background:color-mix(in srgb, var(--c) 7%, var(--bg-app)) !important; }
+        .evt-dot { border-radius:3px !important; transform:translateY(-50%) rotate(45deg) !important; }
+        .evt-bloc { border-top:none !important; border-left:4px solid var(--c); background-image:repeating-linear-gradient(135deg, transparent 0 8px, color-mix(in srgb, var(--c) 8%, transparent) 8px 16px) !important; }
+        .evt-m em { font-size:0.58rem; }
+        .evt-lbl { display:block; font-size:0.72rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.03em; margin:12px 0 4px; }
+        .evt-lbl small { text-transform:none; font-weight:600; letter-spacing:0; }
+        #evt-corps input, #evt-corps textarea { width:100%; box-sizing:border-box; margin:0 !important; }
+        .evt-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        .evt-row > div { min-width:0; }
+        .evt-check { display:flex; align-items:center; gap:8px; margin-top:10px; font-size:0.88rem; font-weight:600; color:var(--text-main); }
+        .evt-check input { width:18px !important; height:18px; accent-color:var(--primary); }
+        .evt-mwrap { position:relative; }
+        .evt-sugg { display:none; position:absolute; left:0; right:0; top:100%; z-index:20; background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.18); margin-top:4px; overflow:hidden; }
+        .evt-sugg button { display:flex; gap:10px; align-items:center; width:100%; border:none; background:none; padding:8px 10px; cursor:pointer; text-align:left; color:var(--text-main); font-family:'DM Sans',sans-serif; border-bottom:1px solid var(--border-color); }
+        .evt-sugg button:last-child { border-bottom:none; }
+        .evt-sugg button:hover { background:var(--hover-row); }
+        .evt-sugg button span:last-child { display:flex; flex-direction:column; } .evt-sugg small { color:var(--text-muted); font-size:0.72rem; }
+        .evt-sugg-vide { padding:10px; font-size:0.8rem; color:var(--text-muted); }
+        .evt-pers { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; min-height:24px; align-items:center; }
+        .evt-pers-vide { font-size:0.78rem; color:var(--text-muted); }
+        .evt-chip { display:inline-flex; align-items:center; gap:4px; font-size:0.8rem; font-weight:800; color:var(--primary); background:var(--hover-row); border:1px solid var(--primary-light); border-radius:20px; padding:3px 6px 3px 10px; }
+        .evt-chip small { font-weight:600; color:var(--text-muted); }
+        .evt-chip.inconnu { color:#b45309; border-color:#fcd34d; background:#fef3c7; }
+        .evt-chip button { border:none; background:none; color:inherit; font-size:1rem; line-height:1; cursor:pointer; padding:0 2px; }
+        .evt-partage { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+        .evt-partage button { display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center; border:1.5px solid var(--border-color); background:var(--bg-app); border-radius:12px; padding:8px 4px; cursor:pointer; color:var(--text-main); font-family:'DM Sans',sans-serif; min-width:0; }
+        .evt-partage button span { font-size:1.2rem; } .evt-partage button b { font-size:0.74rem; line-height:1.15; } .evt-partage button small { font-size:0.62rem; color:var(--text-muted); line-height:1.2; }
+        .evt-partage button.on { border-color:var(--primary); background:var(--hover-row); box-shadow:0 0 0 1.5px var(--primary) inset; }
+        .evt-cols { display:flex; gap:8px; flex-wrap:wrap; }
+        .evt-cols button { width:30px; height:30px; border-radius:50%; border:3px solid transparent; cursor:pointer; box-shadow:0 0 0 1px var(--border-color); }
+        .evt-cols button.on { border-color:var(--bg-card); box-shadow:0 0 0 2px var(--text-main); }
+        .evt-actions { display:flex; gap:8px; margin-top:16px; }
+        .evt-actions .btn { flex:1; margin:0 !important; }
+        .evt-actions .evt-del { flex:none; width:48px; color:#ef4444; border-color:#fecaca; }
+        .evt-view { border-left:5px solid var(--c); padding:4px 0 4px 14px; display:flex; flex-direction:column; gap:8px; }
+        .evt-view-t { font-size:1.25rem; font-weight:800; color:var(--text-main); }
+        .evt-view-r { font-size:0.88rem; color:var(--text-main); } .evt-view-r i { width:18px; color:var(--text-muted); }
+        .evt-view-d { font-size:0.9rem; background:var(--bg-app); border-radius:10px; padding:10px; color:var(--text-main); line-height:1.45; }
+        .lec-add-menu { position:absolute; left:2px; bottom:62px; z-index:60; background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; box-shadow:0 12px 34px rgba(0,0,0,0.22); overflow:hidden; min-width:230px; animation:fadeScale 0.15s ease; }
+        .lec-add-menu button { display:flex; gap:12px; align-items:center; width:100%; border:none; background:none; padding:12px 14px; text-align:left; cursor:pointer; color:var(--text-main); font-family:'DM Sans',sans-serif; border-bottom:1px solid var(--border-color); }
+        .lec-add-menu button:last-child { border-bottom:none; }
+        .lec-add-menu i { width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:var(--hover-row); color:var(--primary); }
+        .lec-add-menu span { display:flex; flex-direction:column; } .lec-add-menu small { font-size:0.72rem; color:var(--text-muted); }
+        .lec-strip { position:sticky; }
         /* ═══ FIREBASE — COMPTES & ACCÈS ═══ */
         body.perm-no-paie [onclick*="'tab-paie'"],
         body.perm-no-dirt [onclick*="'tab-dirt'"],
@@ -586,6 +601,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.perm-no-roulements .rot-add-btn,
         body.perm-no-google #zone-google-sync,
         body.perm-no-notes #nk-card,
+        body.perm-no-evenements .evt-add-btn,
         body.perm-no-notes .nk-day-btn,
         body.perm-no-notes .nk-day,
         body.perm-no-reunion [data-leg="reunion"],
@@ -1568,7 +1584,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
     <!-- ─── DESKTOP TABS (hidden on mobile) ─── -->
     <div class="main-tabs">
-        <button onclick="switchTab('tab-planning', this)" class="tab-btn active"><i class="fas fa-calendar"></i> Planning</button>
+        <button onclick="planningClassique(); switchTab('tab-planning', this)" class="tab-btn active"><i class="fas fa-calendar"></i> Planning</button>
         <button onclick="switchTab('tab-paie', this)" class="tab-btn"><i class="fas fa-coins"></i> Paie</button>
         <button onclick="switchTab('tab-dirt', this)" class="tab-btn"><i class="fas fa-shield-alt"></i> DIRT</button>
         <button onclick="switchTab('tab-config-taux', this)" class="tab-btn"><i class="fas fa-sliders-h"></i> Taux</button>
@@ -1635,6 +1651,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     </div>
                 </div>
 
+                <!-- Événements partagés -->
+                <div class="sidebar-card sb-col" id="evt-card">
+                    <div class="sidebar-card-title">
+                        <i class="fas fa-calendar-plus"></i> Événements <span id="evt-side-count" style="font-weight:600;"></span>
+                        <button class="rot-manage-btn" onclick="lecActiver(true); lecSetVue('liste')">Agenda</button>
+                    </div>
+                    <div id="evt-side" class="evt-side"></div>
+                    <button class="rot-add-btn evt-add-btn" onclick="evtNouveau()"><i class="fas fa-plus"></i> Nouvel événement</button>
+                </div>
+
                 <!-- Roulements (multi-cycles) -->
                 <div class="sidebar-card sb-col" id="nk-card">
                     <div class="sidebar-card-title">
@@ -1672,12 +1698,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             <button data-v="semaine" onclick="lecSetVue('semaine')">Semaine</button>
                             <button data-v="mois" onclick="lecSetVue('mois')">Mois</button>
                         </div>
-                        <button class="lec-mode-btn lec-full-btn" onclick="lecPleinEcran()" title="Plein écran (Échap pour quitter)"><i class="fas fa-expand"></i><span>Plein écran</span></button>
                         <button class="lec-mode-btn" onclick="lecActiver(false)" title="Revenir au mode classique"><i class="fas fa-table"></i><span>Classique</span></button>
                     </div>
                     <div id="lec-body" class="lec-body"></div>
                     <div class="lec-strip">
-                        <button class="lec-fab" onclick="ouvrirEditionJour(tbFmt(lecDate))" title="Ajouter un poste" aria-label="Ajouter un poste"><i class="fas fa-plus"></i></button>
+                        <button class="lec-fab" onclick="event.stopPropagation(); lecAjouterMenu(this)" title="Ajouter un poste ou un événement" aria-label="Ajouter"><i class="fas fa-plus"></i></button>
                         <div class="lec-strip-in">
                             <button class="lec-arr" onclick="lecNav(-1)" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
                             <div id="lec-strip-days" class="lec-strip-days"></div>
@@ -1755,14 +1780,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
     <div id="tab-paie" class="tab-content">
         <div style="background: var(--bg-card); padding: 20px; border-radius: 15px; border: 1px solid var(--border-color);">
-            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-                <button class="btn btn-outline" onclick="imprimerPlanningDefaut()" style="flex:1;min-width:140px;margin:0;color:var(--primary);border-color:var(--primary);" title="Imprime la période de paie avec tous les éléments (réglages par défaut)">
-                    <i class="fas fa-calendar-check"></i> Planning par défaut
-                </button>
-                <button class="btn btn-paye" onclick="cfg2Imprimer()" style="flex:1;min-width:140px;margin:0;">
-                    <i class="fas fa-print"></i> Imprimer
-                </button>
-            </div>
             <h3>Calcul Paie &amp; Statistiques</h3>
 
             <!-- Bandeau taux actifs -->
@@ -2135,6 +2152,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
             </div>
 
+            <button class="btn btn-paye" onclick="cfg2Imprimer()" style="margin-top:8px;">
+                <i class="fas fa-print"></i> Imprimer le Planning
+            </button>
         </div>
 
     </div><!-- /tab-config-taux -->
@@ -2336,6 +2356,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div>
 
     <!-- ═══ MODALE ALARMES & RÉVEILS ═══ -->
+    <div id="modal-evt" class="modal">
+        <h3><i class="fas fa-calendar-plus"></i> Événement</h3>
+        <div id="evt-corps"></div>
+    </div>
+
     <div id="modal-alarmes" class="modal">
         <h3><i class="fas fa-bell"></i> Alarmes &amp; réveils</h3>
         <label class="al-main"><span><b>Alarmes selon mon planning</b><small>Calculées automatiquement à partir de vos postes à venir</small></span>
@@ -2410,7 +2435,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <input type="date" id="nk-date">
             </div>
             <div id="nk-photos"></div>
-            <div id="nk-fichiers"></div>
             <div class="nk-couleurs" id="nk-couleurs"></div>
             <div class="nk-actions">
                 <button onclick="noteBasculerListe()" id="nk-btn-liste"></button>
@@ -2458,7 +2482,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <button class="btn btn-outline" onclick="nkPartagerPDF(ficheVueId)"><i class="fas fa-share-alt"></i> Partager</button>
             </div>
             <div class="nk-actions" style="margin-top:8px;">
-                <button onclick="nkVoirModifier()" class="nk-voir-mod"><i class="fas fa-pen"></i> Modifier</button>
+                <button onclick="ficheDemarrer(null, ficheVueId)"><i class="fas fa-pen"></i> Modifier</button>
                 <button onclick="ficheVoirArchiver()" id="nk-voir-arch"></button>
                 <button class="danger" onclick="ficheVoirSupprimer()"><i class="fas fa-trash-alt"></i> Supprimer</button>
             </div>
@@ -2509,13 +2533,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <div class="rot-toolbar">
                 <button class="btn btn-paye" onclick="rotNouveau()"><i class="fas fa-plus"></i> Nouveau roulement</button>
                 <button class="btn btn-outline" id="rot-btn-all" onclick="rotToutAfficher()" style="display:none;"><i class="fas fa-eye"></i> Tout afficher</button>
-                <button class="btn btn-outline" onclick="if(confirm('Recréer les postes manquants de tous les roulements affichés ?\n(les jours modifiés à la main sont conservés)')) rotReparer(true)"><i class="fas fa-sync-alt"></i> Régénérer les postes</button>
                 <button class="btn btn-outline fb-admin-only" onclick="fbOuvrirPartage({})"><i class="fas fa-paper-plane"></i> Envoyer aux clients</button>
             </div>
             <div id="rot-liste"></div>
             <div class="rot-hint">
                 <strong>👁️ Masquer</strong> : le roulement disparaît du planning et n'est plus compté dans la paie, les stats et l'analyse DIRT — mais il est conservé et réutilisable à tout moment.<br>
-                <strong>💶 Paie</strong> : décochez pour garder le roulement affiché mais ne pas le comptabiliser dans la paie ni dans l'analyse DIRT.<br>
                 <strong>🎯 Seul</strong> : n'affiche que ce roulement.<br>
                 <strong>⧉ Dupliquer</strong> : copie le cycle avec un décalage de jours (idéal pour plusieurs équipes).
             </div>
@@ -2876,23 +2898,23 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
     <div class="overlay" id="overlay" onclick="fermerModales()"></div>
 
-    <div class="ls-fab">
-        <button onclick="document.body.classList.toggle('ls-side')" title="Afficher les informations" aria-label="Informations"><i class="fas fa-info"></i></button>
-        <button onclick="document.body.classList.toggle('ls-bars')" title="Afficher les barres" aria-label="Menus"><i class="fas fa-bars"></i></button>
-    </div>
     <!-- ─── BOTTOM NAVIGATION (mobile) ─── -->
     <nav class="bottom-nav">
+        <button class="nav-item" id="nav-impr" onclick="ouvrirModale('modal-print')">
+            <i class="fas fa-print"></i>
+            <span>Impr.</span>
+        </button>
         <button class="nav-item" id="nav-paie" onclick="switchTabMobile('tab-paie', this)">
             <i class="fas fa-coins"></i>
             <span>Paie</span>
         </button>
+        <button class="nav-item nav-item-special active" id="nav-planning" onclick="planningClassique(); switchTabMobile('tab-planning', this)">
+            <i class="fas fa-calendar"></i>
+            <span>Planning</span>
+        </button>
         <button class="nav-item" id="nav-dirt" onclick="switchTabMobile('tab-dirt', this)">
             <i class="fas fa-shield-alt"></i>
             <span>DIRT</span>
-        </button>
-        <button class="nav-item nav-item-special active" id="nav-planning" onclick="switchTabMobile('tab-planning', this)">
-            <i class="fas fa-calendar"></i>
-            <span>Planning</span>
         </button>
         <button class="nav-item" id="nav-config-taux" onclick="switchTabMobile('tab-config-taux', this)">
             <i class="fas fa-sliders-h"></i>
@@ -3850,7 +3872,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         calendar.getEvents().forEach(e => {
             const dateS = e.startStr.split('T')[0];
             if (dateS < debut || dateS > fin) return;
-            if (rotHorsPaie(e)) return;
             const p = e.extendedProps;
             const isTravail = TRAVAIL_TYPES.includes(p.type);
             const h = parseFloat(p.hPayees || 0);
@@ -4303,7 +4324,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         events.forEach(e => {
             const dateS = e.startStr.split('T')[0];
             if(dateS < d || dateS > f) return;
-            if (rotHorsPaie(e)) return;
             const p = e.extendedProps;
             const isTravail = TRAVAIL_TYPES.includes(p.type);
             const isActivite = ACTIVITE_TYPES.includes(p.type);
@@ -4797,7 +4817,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         const marge = (ds, n) => { const [y, m, j] = ds.split('-').map(Number); return fmtLocal(new Date(y, m - 1, j + n)); };
         const dEtendu = marge(d, -3), fEtendu = marge(f, 3);
         const postes = calendar.getEvents()
-            .filter(e => { const ds = e.startStr.split('T')[0]; return ds >= dEtendu && ds <= fEtendu && !rotHorsPaie(e) && DIRT_TYPES.includes(e.extendedProps.type); })
+            .filter(e => { const ds = e.startStr.split('T')[0]; return ds >= dEtendu && ds <= fEtendu && DIRT_TYPES.includes(e.extendedProps.type); })
             .sort((a, b) => dirtTsDebut(a) - dirtTsDebut(b));
         const [y1, m1, j1] = d.split('-').map(Number), [y2, m2, j2] = f.split('-').map(Number);
         const debP = new Date(y1, m1 - 1, j1).getTime(), finP = new Date(y2, m2 - 1, j2 + 1).getTime();
@@ -5673,6 +5693,17 @@ function selectAct(btn, val) {
             });
             html += '</tr>';
         });
+        if (typeof evtDuJour === 'function') {
+            const evW = jours7.map(d => evtDuJour(d.jStr));
+            if (evW.some(l => l.length)) {
+                html += `<tr class="tb-rot-head"><td colspan="7" style="border-left:4px solid #4f46e5;"><span class="tb-rot-head-dot" style="background:#4f46e5"></span>📅 Événements <small style="font-weight:600;color:var(--text-muted)">— touchez pour ouvrir</small></td></tr><tr>`;
+                evW.forEach((l, i) => {
+                    const d = jours7[i];
+                    html += `<td class="${d.isToday ? 'td-today' : (d.isWE ? 'td-weekend' : '')}" style="min-height:40px;">${l.map(e => evtChipTableau(e)).join('')}</td>`;
+                });
+                html += '</tr>';
+            }
+        }
         html += '</tbody>';
 
         // Ligne totaux journaliers
@@ -5776,6 +5807,7 @@ function selectAct(btn, val) {
                 html += `<span class="m-dot" style="background:${color};${tbRotStyle(ev)}" title="${(p.type||'')}${tbRotNom(ev)}">${rM ? `<b class="m-rot" style="background:${rM.couleur}">${rotEsc(rM.nom)}</b> ` : ''}${icon} ${typeStr}</span>`;
             });
             if (events.length > 3) html += `<span class="m-more">+${events.length-3}</span>`;
+            if (typeof evtDuJour === 'function') evtDuJour(jStr).slice(0, 2).forEach(e => { html += evtChipTableau(e, true); });
 
             html += '</td>';
             col++;
@@ -6012,19 +6044,6 @@ function selectAct(btn, val) {
         const fnEl = document.getElementById('cfg2-impr-fin');
         if (dbEl) dbEl.value = fmt(debut);
         if (fnEl) fnEl.value = fmt(fin);
-    }
-
-    // Planning par défaut : période de paie affichée + tous les filtres, aperçu direct (v10.3)
-    function imprimerPlanningDefaut() {
-        ouvrirModale('modal-print');
-        ['chk-travail','chk-cp','chk-rtt','chk-repos','chk-compteur','chk-reunion','chk-cse','chk-print-ferie','chk-print-dimanche','chk-print-paie','chk-print-repas']
-            .forEach(id => { const el = document.getElementById(id); if (el) el.checked = true; });
-        const pd = document.getElementById('paie-debut'), pf = document.getElementById('paie-fin');
-        if (pd && pf && pd.value && pf.value) {
-            document.getElementById('print-debut').value = pd.value;
-            document.getElementById('print-fin').value = pf.value;
-        } else if (typeof setPrintPeriode === 'function') setPrintPeriode('20au20');
-        lancerImpression(false);
     }
 
     // Imprimer le planning avec les options configurées
@@ -7060,41 +7079,6 @@ function selectAct(btn, val) {
             showToast(visible ? `👁️ « ${rot.nom} » affiché` : `🙈 « ${rot.nom} » masqué (conservé)`, 'info', visible ? 'fa-eye' : 'fa-eye-slash');
         }
     }
-    // ── Réparation : recrée les postes des roulements affichés qui n'en ont plus (v10.3) ──
-    function rotReparer(manuel) {
-        if (typeof calendar === 'undefined' || !calendar || typeof rotState === 'undefined') return 0;
-        let total = 0;
-        rotState.list.filter(r => r.visible !== false).forEach(r => {
-            // postes restés dans la réserve « masqués » alors que le roulement est affiché
-            const res = rotState.hidden[r.id];
-            if (res && res.length) {
-                calendar.batchRendering(() => res.forEach(e => calendar.addEvent(e)));
-                total += res.length; delete rotState.hidden[r.id];
-            }
-            const nb = calendar.getEvents().filter(e => (e.extendedProps || {}).rotationId === r.id).length;
-            if (nb === 0 || manuel) total += rotGenerer(r);
-        });
-        if (total) rotRafraichir();
-        if (manuel) showToast(total ? `✅ ${total} postes restaurés` : '✅ Tous les roulements sont complets', 'success', 'fa-sync-alt');
-        return total;
-    }
-    document.addEventListener('DOMContentLoaded', () => setTimeout(() => { try { rotReparer(false); } catch(_) {} }, 1500));
-
-    // ── Roulements comptabilisés dans la paie (v10.3) ──
-    function rotHorsPaie(e) {
-        const rid = ((e && e.extendedProps) || {}).rotationId;
-        if (!rid) return false;
-        const r = rotGet(rid);
-        return !!(r && r.paie === false);
-    }
-    function rotBasculerPaie(id) {
-        const r = rotGet(id); if (!r) return;
-        r.paie = r.paie === false ? true : false;
-        rotSauverState();
-        rotRenderListe();
-        if (typeof paieAuto === 'function' && document.getElementById('paie-debut')) { try { paieAuto(); } catch(_) {} }
-        showToast(r.paie === false ? `💶 « ${r.nom} » exclu de la paie` : `💶 « ${r.nom} » comptabilisé dans la paie`, 'info', 'fa-coins');
-    }
     function rotBasculer(id) { const r = rotGet(id); if (r) rotSetVisible(id, r.visible === false); }
     function rotSolo(id) {
         rotState.list.forEach(r => rotSetVisible(r.id, r.id === id, true));
@@ -7262,14 +7246,12 @@ function selectAct(btn, val) {
                     <span class="rot-dot" style="background:${r.couleur}"></span>
                     <strong class="rot-card-name">${rotEsc(r.nom)}</strong>
                     ${off ? '<span class="rot-badge">Masqué</span>' : ''}
-                    ${r.paie === false ? '<span class="rot-badge" style="background:#fee2e2;color:#b91c1c;">Hors paie</span>' : ''}
                     ${r.partage ? `<span class="rot-badge shared" title="Envoyé par ${rotEsc(r.partage.par || 'l\'administrateur')}">📥 Admin</span>` : ''}
                 </div>
                 <div class="rot-card-meta">Cycle de ${r.motif.length} j · ${rotFmtFr(r.debut)} → ${rotFmtFr(r.fin)} · ≈ ${hs.toFixed(1)} h/sem</div>
                 <div class="rot-mini-wrap">${rotMiniMotif(r.motif)}</div>
                 <div class="rot-card-actions">
                     <button onclick="rotBasculer('${r.id}')"><i class="fas ${off ? 'fa-eye' : 'fa-eye-slash'}"></i> ${off ? 'Afficher' : 'Masquer'}</button>
-                    <label class="rot-paie-chk" style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:700;cursor:pointer;padding:4px 8px;border:1px solid var(--border-color);border-radius:8px;" title="Compter ce roulement dans la paie et l'analyse DIRT"><input type="checkbox" ${r.paie === false ? '' : 'checked'} onchange="rotBasculerPaie('${r.id}')" style="width:auto;margin:0;"> 💶 Paie</label>
                     <button onclick="rotSolo('${r.id}')" title="Afficher uniquement celui-ci"><i class="fas fa-bullseye"></i> Seul</button>
                     <button onclick="rotModifier('${r.id}')"><i class="fas fa-pen"></i> Modifier</button>
                     <button onclick="rotDupliquer('${r.id}')" title="Dupliquer avec décalage"><i class="fas fa-clone"></i> Dupliquer</button>
@@ -7469,6 +7451,7 @@ function selectAct(btn, val) {
         { k:'roulements', lbl:'🔁 Gérer les roulements' },
         { k:'google',     lbl:'📡 Synchro Google' },
         { k:'notes',      lbl:'📝 Notes' },
+        { k:'evenements', lbl:'📅 Créer des événements' },
         { k:'reunion',    lbl:'🗣️ Réunion',  grp:'act' },
         { k:'compteur',   lbl:'🔄 Compteur', grp:'act' },
         { k:'cse',        lbl:'⚖️ CSE',      grp:'act' }
@@ -7509,6 +7492,30 @@ service cloud.firestore {
         && request.resource.data.attente == true
         && !('perms' in request.resource.data));
       allow update, delete: if isAdmin();
+    }
+    // Annuaire des pseudos mentionnables (@identifiant)
+    match /annuaire/{ident} {
+      allow read: if signedIn();
+      allow create, update: if isAdmin() || (signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && get(/databases/$(db)/documents/logins/$(ident)).data.email == request.auth.token.email);
+      allow delete: if isAdmin();
+    }
+    // Événements : privés, partagés avec les personnes mentionnées, ou avec tout le monde
+    match /evenements/{eid} {
+      allow read: if signedIn() && (resource.data.auteurUid == request.auth.uid
+        || resource.data.tous == true || request.auth.uid in resource.data.lecteurs);
+      allow create: if signedIn() && request.resource.data.auteurUid == request.auth.uid;
+      allow update: if signedIn() && resource.data.auteurUid == request.auth.uid
+        && request.resource.data.auteurUid == request.auth.uid;
+      allow delete: if isAdmin() || (signedIn() && resource.data.auteurUid == request.auth.uid);
+      // Fichiers PDF joints (découpés en morceaux)
+      match /pieces/{pid} {
+        function ev() { return get(/databases/$(db)/documents/evenements/$(eid)).data; }
+        allow read: if signedIn() && (ev().auteurUid == request.auth.uid
+          || ev().tous == true || request.auth.uid in ev().lecteurs);
+        allow write: if isAdmin() || (signedIn() && ev().auteurUid == request.auth.uid);
+      }
     }
     match /plannings/{cid} {
       allow read, write: if isAdmin() || owns(cid);
@@ -7742,7 +7749,7 @@ service cloud.firestore {
     }
     function fbViderLocal() {
         fbApplying = true;
-        try { FB_SYNC_KEYS.concat([FB_DIRTY_KEY, FB_SYNCAT_KEY]).forEach(k => localStorage.removeItem(k)); }
+        try { FB_SYNC_KEYS.concat([FB_DIRTY_KEY, FB_SYNCAT_KEY, 'evt_cache_v1', 'evt_masques_v1']).forEach(k => localStorage.removeItem(k)); }
         finally { fbApplying = false; }
         if (typeof photosViderLocal === 'function') photosViderLocal();
     }
@@ -8025,6 +8032,7 @@ service cloud.firestore {
             fbGate(null); fbMajUserBtn(); fbEtat(fbDirtyList().length ? 'attente' : 'ok');
             rotTraiterPartages();
             if (c.role === 'admin') setTimeout(fbTraiterInscriptions, 1500);
+            setTimeout(evtDemarrer, 900);
             setTimeout(() => { if (typeof photosEnvoyer === 'function') photosEnvoyer(); }, 2000);
             showToast(`👋 Bonjour ${c.nom || c.identifiant}`, 'success', 'fa-user-check');
         } catch(e) {
@@ -8868,12 +8876,11 @@ service cloud.firestore {
             const t = n.texte || '';
             corps = `<div class="nk-txt">${noteEsc(compact && t.length > 160 ? t.slice(0, 160) + '…' : t)}</div>`;
         }
-        return `<div class="nk-card" style="background:${noteCouleur(n.couleur)}" onclick="noteVoir('${n.id}')">
+        return `<div class="nk-card" style="background:${noteCouleur(n.couleur)}" onclick="noteOuvrir('${n.id}')">
             ${n.epingle ? '<span class="nk-pin" title="Épinglée">📌</span>' : ''}
             ${n.titre ? `<div class="nk-titre">${noteEsc(n.titre)}</div>` : ''}
             ${vignette}
             ${corps}
-            ${(n.fichiers || []).length ? `<div class="nk-pj-tag"><i class="fas fa-paperclip"></i> ${n.fichiers.length} PDF</div>` : ''}
             ${n.date ? `<div class="nk-date">📅 ${noteDateFr(n.date)}</div>` : ''}
         </div>`;
     }
@@ -8952,7 +8959,6 @@ service cloud.firestore {
         document.getElementById('nk-couleurs').innerHTML = NOTES_COULEURS.map(c => `<button type="button" class="nk-sw ${c.k === n.couleur ? 'sel' : ''}" style="background:${c.bg}" onclick="noteSetCouleur('${c.k}')" title="${c.lbl}" aria-label="${c.lbl}"></button>`).join('');
         noteRendreItems();
         noteRendrePhotos();
-        noteRendreFichiers();
         document.getElementById('modal-notes').scrollTop = 0;
         setTimeout(() => { const t = document.getElementById(n.titre || n.texte ? 'nk-texte' : 'nk-titre'); if (t && t.style.display !== 'none') t.focus(); }, 50);
     }
@@ -8992,7 +8998,7 @@ service cloud.firestore {
             noteLireChamps();
             const n = noteBrouillon;
             n.liste = (n.liste || []).filter(i => i.t.trim());
-            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length && !(n.photos || []).length && !(n.fichiers || []).length;
+            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length && !(n.photos || []).length;
             const l = notesCharger(), i = l.findIndex(x => x.id === n.id);
             if (vide) { if (i >= 0) { l.splice(i, 1); notesSauver(l); } }
             else {
@@ -9003,8 +9009,7 @@ service cloud.firestore {
             }
         }
         noteBrouillon = null; noteEditId = null;
-        const ret = noteRetourApercu; noteRetourApercu = null;
-        if (ret && notesCharger().some(x => x.id === ret)) noteVoir(ret); else nkRetourListe();
+        nkRetourListe();
     }
     function noteBasculerArchive() {
         const arch = !noteBrouillon.archive;
@@ -9057,7 +9062,7 @@ service cloud.firestore {
     }
     function notesDuJour(ds) {
         const l = notesCharger().filter(n => n.date === ds && !n.archive);
-        if (l.length === 1) return noteVoir(l[0].id);
+        if (l.length === 1) return noteOuvrir(l[0].id);
         notesOuvrir(); notesRecherche = ''; notesRendre();
     }
     document.addEventListener('DOMContentLoaded', () => {
@@ -9219,132 +9224,6 @@ service cloud.firestore {
         box.innerHTML = `<div class="nk-ph-grid">${photosMiniHTML(noteBrouillon.photos, 'notePhotoRetirer')}</div>` + photosBoutonsHTML('notePhotoAjout');
         photosHydrater(box);
     }
-
-
-
-    // ── Aperçu d'une note (lecture), avec bouton Modifier (v10.6) ──
-    function noteVoir(id) {
-        const n = notesCharger().find(x => x.id === id); if (!n) return;
-        if (n.type === 'fiche') return ficheVoir(id);
-        ficheVueId = id;
-        if (document.getElementById('modal-notes').style.display !== 'block') { fermerModales(); ouvrirModale('modal-notes'); }
-        nkVue('nk-vue-voir');
-        const box = document.getElementById('nk-voir-corps');
-        const lien = t => noteEsc(t).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-        const corps = n.estListe
-            ? `<div class="nk-voir-liste">${(n.liste || []).map((it, idx) => `<div class="nk-li ${it.ok ? 'ok' : ''}"><button class="nk-cb" onclick="noteCocher('${n.id}', ${idx}); noteVoir('${n.id}')">${it.ok ? '☑' : '☐'}</button><span>${noteEsc(it.t)}</span></div>`).join('')}</div>`
-            : `<div class="nk-voir-txt">${lien(n.texte || '') || '<i style="opacity:.6">— aucun texte —</i>'}</div>`;
-        const phs = n.photos || [], fic = n.fichiers || [];
-        box.innerHTML = `<div class="nk-voir-h" style="background:${noteCouleur(n.couleur)}">
-                <div class="nk-voir-t">${n.epingle ? '📌 ' : ''}${noteEsc(n.titre || 'Note sans titre')}</div>
-                <div class="nk-voir-m">${n.date ? '📅 ' + noteDateFr(n.date) : ''}${n.maj ? `${n.date ? ' · ' : ''}modifiée le ${new Date(n.maj).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} à ${new Date(n.maj).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}` : ''}</div>
-            </div>
-            <div class="nk-voir-zone" style="background:${noteCouleur(n.couleur)}">${corps}</div>
-            ${phs.length ? `<div class="nk-ph-grid" style="margin-top:10px">${photosMiniHTML(phs)}</div>` : ''}
-            ${fic.length ? `<div class="nk-pj-list">${fic.map((x, i) => `<div class="nk-pj"><button type="button" class="nk-pj-open" onclick="notePdfOuvrir(${i}, '${n.id}')"><i class="fas fa-file-pdf"></i><span><b>${noteEsc(x.nom)}</b><small>${(x.taille / 1048576).toFixed(x.taille > 1048576 ? 1 : 2).replace('.', ',')} Mo · toucher pour ouvrir</small></span></button></div>`).join('')}</div>` : ''}`;
-        photosHydrater(box);
-        document.getElementById('nk-voir-arch').innerHTML = n.archive ? '<i class="fas fa-box-open"></i> Désarchiver' : '<i class="fas fa-archive"></i> Archiver';
-    }
-    let noteRetourApercu = null;
-    function nkVoirModifier() {
-        const n = notesCharger().find(x => x.id === ficheVueId); if (!n) return;
-        if (n.type === 'fiche') ficheDemarrer(null, ficheVueId); else { noteRetourApercu = ficheVueId; noteOuvrir(ficheVueId); }
-    }
-
-    // ── Fichiers PDF joints aux notes (v10.5) ──
-    const NK_PDF_PART = 700000, NK_PDF_MAX = 15 * 1024 * 1024;
-    function noteRendreFichiers() {
-        const box = document.getElementById('nk-fichiers'); if (!box || !noteBrouillon) return;
-        const l = noteBrouillon.fichiers = noteBrouillon.fichiers || [];
-        box.innerHTML = `<div class="nk-pj-list">${l.map((x, i) => `<div class="nk-pj">
-                <button type="button" class="nk-pj-open" onclick="notePdfOuvrir(${i})"><i class="fas fa-file-pdf"></i><span><b>${noteEsc(x.nom)}</b><small>${(x.taille / 1024 / 1024).toFixed(x.taille > 1048576 ? 1 : 2).replace('.', ',')} Mo</small></span></button>
-                <button type="button" class="nk-x" onclick="notePdfRetirer(${i})" aria-label="Retirer">×</button></div>`).join('')}</div>
-            <label class="nk-pj-add"><i class="fas fa-paperclip"></i> Joindre un PDF<input type="file" accept="application/pdf,.pdf" multiple hidden onchange="notePdfAjout(this)"></label>`;
-    }
-    function nkLireDataURL(file) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(file); }); }
-    async function notePdfAjout(input) {
-        const files = [...(input.files || [])]; input.value = '';
-        for (const file of files) {
-            if (!/pdf$/i.test(file.type) && !/\.pdf$/i.test(file.name)) { showToast('Seuls les fichiers PDF sont acceptés', 'error', 'fa-file-pdf'); continue; }
-            if (file.size > NK_PDF_MAX) { showToast(`« ${file.name} » dépasse 15 Mo`, 'error', 'fa-file-pdf'); continue; }
-            try {
-                const data = await nkLireDataURL(file), id = 'pdf_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-                const parts = Math.ceil(data.length / NK_PDF_PART);
-                for (let k = 0; k < parts; k++) await photoSauver(`${id}_${k}`, data.slice(k * NK_PDF_PART, (k + 1) * NK_PDF_PART));
-                noteBrouillon.fichiers = (noteBrouillon.fichiers || []).concat({ id, nom: file.name, taille: file.size, parts });
-                noteRendreFichiers();
-            } catch (e) { showToast('Impossible d\'ajouter ce PDF', 'error', 'fa-file-pdf'); }
-        }
-    }
-    function notePdfRetirer(i) { if (!confirm('Retirer ce PDF de la note ?')) return; noteBrouillon.fichiers.splice(i, 1); noteRendreFichiers(); }
-    async function notePdfBlob(x) {
-        let data = '';
-        for (let k = 0; k < x.parts; k++) { const p = await photoCharger(`${x.id}_${k}`); if (!p) throw new Error('manquant'); data += p; }
-        const bin = atob(data.split(',')[1]), u = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
-        return new Blob([u], { type: 'application/pdf' });
-    }
-    async function notePdfOuvrir(i, noteId) {
-        const src = noteId ? notesCharger().find(n => n.id === noteId) : noteBrouillon;
-        const x = src && src.fichiers && src.fichiers[i]; if (!x) return;
-        let blob; try { blob = await notePdfBlob(x); } catch (e) { return showToast('PDF pas encore disponible sur cet appareil', 'error', 'fa-file-pdf'); }
-        const url = URL.createObjectURL(blob);
-        const o = document.createElement('div'); o.className = 'nk-pdf';
-        o.innerHTML = `<div class="nk-pdf-box">
-            <div class="nk-pdf-bar"><b><i class="fas fa-file-pdf"></i> ${noteEsc(x.nom)}</b><button aria-label="Fermer">×</button></div>
-            <iframe src="${url}"></iframe>
-            <div class="nk-pdf-act">
-                <a class="btn btn-outline" href="${url}" download="${noteEsc(x.nom)}"><i class="fas fa-download"></i> Télécharger</a>
-                <a class="btn btn-paye" href="${url}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
-            </div></div>`;
-        o.querySelector('.nk-pdf-bar button').onclick = () => { o.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); };
-        document.body.appendChild(o);
-    }
-
-    // ── Réorganiser les cartes de la colonne gauche (v10.5) ──
-    const SB_ORDRE_KEY = 'sb_ordre_v1';
-    function sbOrdreAppliquer() {
-        const side = document.querySelector('.planning-sidebar'); if (!side) return;
-        let ordre = []; try { ordre = JSON.parse(localStorage.getItem(SB_ORDRE_KEY)) || []; } catch (e) {}
-        ordre.forEach(id => { const c = document.getElementById(id); if (c && c.parentElement === side) side.appendChild(c); });
-        // cartes non listées (nouvelles) gardent leur place relative à la fin
-        side.querySelectorAll('.sidebar-card.sb-col').forEach(c => {
-            const t = c.querySelector('.sidebar-card-title');
-            if (t && !t.querySelector('.sb-grip')) {
-                t.insertAdjacentHTML('afterbegin', `<span class="sb-grip" title="Maintenir et glisser pour déplacer" aria-label="Déplacer"><i class="fas fa-grip-vertical"></i></span>`);
-                sbGripInstaller(t.querySelector('.sb-grip'), c);
-            }
-        });
-    }
-    function sbOrdreSauver() {
-        const side = document.querySelector('.planning-sidebar');
-        localStorage.setItem(SB_ORDRE_KEY, JSON.stringify([...side.querySelectorAll(':scope > .sidebar-card.sb-col')].map(c => c.id)));
-    }
-    function sbGripInstaller(grip, card) {
-        grip.addEventListener('click', e => e.stopPropagation());
-        grip.addEventListener('pointerdown', e => {
-            e.preventDefault(); e.stopPropagation();
-            const side = card.parentElement;
-            card.classList.add('sb-drag'); document.body.style.userSelect = 'none';
-            if (navigator.vibrate) navigator.vibrate(15);
-            const bouge = ev => {
-                const y = ev.clientY;
-                const autres = [...side.querySelectorAll(':scope > .sidebar-card.sb-col:not(.sb-drag)')];
-                const apres = autres.find(c => { const r = c.getBoundingClientRect(); return y < r.top + r.height / 2; });
-                if (apres) { if (card.nextElementSibling !== apres) side.insertBefore(card, apres); }
-                else { const der = autres[autres.length - 1]; if (der && der.nextElementSibling !== card) der.after(card); }
-                const sr = side.getBoundingClientRect();
-                if (y < sr.top + 40) side.scrollTop -= 8; else if (y > sr.bottom - 40) side.scrollTop += 8;
-            };
-            const fin = () => {
-                card.classList.remove('sb-drag');
-                document.body.style.userSelect = ''; document.removeEventListener('pointermove', bouge); document.removeEventListener('pointerup', fin); document.removeEventListener('pointercancel', fin);
-                sbOrdreSauver();
-            };
-            document.addEventListener('pointermove', bouge); document.addEventListener('pointerup', fin); document.addEventListener('pointercancel', fin);
-        });
-    }
-    document.addEventListener('DOMContentLoaded', () => setTimeout(sbOrdreAppliquer, 300));
 
     // ── Modèles de formulaires ──
     function formsCharger() {
@@ -9557,16 +9436,16 @@ service cloud.firestore {
     function ficheVoirArchiver() {
         const l = notesCharger(), n = l.find(x => x.id === ficheVueId); if (!n) return;
         n.archive = !n.archive; n.maj = Date.now(); notesSauver(l);
-        showToast((n.type === 'fiche' ? (n.archive ? '🗄️ Fiche archivée' : '📤 Fiche désarchivée') : (n.archive ? '🗄️ Note archivée' : '📤 Note désarchivée')), 'info', 'fa-archive');
+        showToast(n.archive ? '🗄️ Fiche archivée' : '📤 Fiche désarchivée', 'info', 'fa-archive');
         nkRetourListe();
     }
     function ficheVoirSupprimer() {
         const n = notesCharger().find(x => x.id === ficheVueId); if (!n) return;
-        if (!confirm(n.type === 'fiche' ? 'Supprimer définitivement cette fiche et ses photos ?' : 'Supprimer définitivement cette note ?')) return;
+        if (!confirm('Supprimer définitivement cette fiche et ses photos ?')) return;
         notePhotosDe(n).forEach(photoSupprimer);
         notesSauver(notesCharger().filter(x => x.id !== ficheVueId));
         nkRetourListe();
-        showToast(n.type === 'fiche' ? '🗑️ Fiche supprimée' : '🗑️ Note supprimée', 'success', 'fa-trash-alt');
+        showToast('🗑️ Fiche supprimée', 'success', 'fa-trash-alt');
     }
     function notePhotosDe(n) { return n.type === 'fiche' ? n.reponses.flatMap(r => r.photos || []) : (n.photos || []); }
 
@@ -9644,6 +9523,7 @@ service cloud.firestore {
             const r = await notePDF(n);
             if (nkPdfCourant && nkPdfCourant.url) URL.revokeObjectURL(nkPdfCourant.url);
             nkPdfCourant = Object.assign(r, { url: URL.createObjectURL(r.blob) });
+            if (typeof pdfApercuAfficher === 'function') { pdfApercuOuvrir(r.nom); pdfApercuAfficher(r.blob, r.nom); return; }
             const o = document.createElement('div');
             o.className = 'nk-pdf';
             o.innerHTML = `<div class="nk-pdf-box">
@@ -9900,101 +9780,21 @@ service cloud.firestore {
     }
 
     // ── Notifications système ──
-    const AL_NOTIF_KEY = 'mpp_notif_on';
-    function alNotifOn() { return localStorage.getItem(AL_NOTIF_KEY) !== '0'; }
-    function alEstIOS() { return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); }
-    function alEstInstallee() { return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }
     function alMajNotifEtat() {
         const el = document.getElementById('al-notif'); if (!el) return;
-        const on = alNotifOn();
-        let etat = '';
-        if (alEstIOS() && !alEstInstallee()) etat = '📲 Sur iPhone : touchez <b>Partager</b> puis <b>« Sur l\'écran d\'accueil »</b>, ouvrez l\'application depuis l\'icône, puis activez les notifications ici.';
-        else if (!('Notification' in window)) etat = '⚠️ Notifications non prises en charge par ce navigateur.';
-        else if (Notification.permission === 'denied') etat = '🚫 Bloquées par le système — autorisez-les dans les réglages du téléphone / navigateur.';
-        else if (Notification.permission === 'default' && on) etat = `<button class="fb-mini-btn" onclick="alDemanderNotif()"><i class="fas fa-bell"></i> Autoriser les notifications</button>`;
-        else if (on) etat = `✅ Actives sur cet appareil <button class="fb-mini-btn" onclick="alTestNotif()" style="margin-left:6px"><i class="fas fa-paper-plane"></i> Tester</button>`;
-        else etat = '🔕 Notifications désactivées sur cet appareil';
-        const pu = alPushURL(), pst = localStorage.getItem('mpp_push_etat') || '';
-        etat += `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-color)"><b>📡 Application fermée</b>
-            <div style="display:flex;gap:6px;margin-top:4px"><input id="al-push-url" type="url" placeholder="https://mpp-notif.xxx.workers.dev" value="${pu}" style="flex:1;min-width:0;padding:6px 8px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-app);color:var(--text-main)">
-            <button class="fb-mini-btn" onclick="alPushEnregistrer()">OK</button></div>
-            <small style="color:var(--text-muted)">${pu ? (pst || 'Connexion…') : 'Collez l\'adresse de votre serveur Cloudflare.'}</small>
-            ${pu && on && Notification.permission === 'granted' ? `<button class="fb-mini-btn" onclick="alPushTest()" style="margin-top:4px"><i class="fas fa-paper-plane"></i> Tester app fermée</button>` : ''}</div>`;
-        el.innerHTML = `<label class="al-notif-sw" style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:6px">🔔 Notifications sur cet appareil
-            <span class="al-sw"><input type="checkbox" ${on ? 'checked' : ''} onchange="alNotifBasculer(this.checked)"><span></span></span></label><div>${etat}</div>`;
+        if (!('Notification' in window)) { el.innerHTML = '⚠️ Notifications non prises en charge par ce navigateur.'; return; }
+        const p = Notification.permission;
+        el.innerHTML = p === 'granted' ? '✅ Notifications autorisées sur cet appareil'
+            : p === 'denied' ? '🚫 Notifications bloquées — autorisez-les dans les réglages du navigateur'
+            : `<button class="fb-mini-btn" onclick="alDemanderNotif()"><i class="fas fa-bell"></i> Autoriser les notifications</button>`;
     }
-    async function alNotifBasculer(on) {
-        localStorage.setItem(AL_NOTIF_KEY, on ? '1' : '0');
-        if (on && 'Notification' in window && Notification.permission === 'default') await alDemanderNotif();
-        alMajNotifEtat();
-        alPushSync(true);
-    }
-    async function alDemanderNotif() { try { await Notification.requestPermission(); } catch(e) {} alMajNotifEtat(); alPushSync(true); }
-    function alTestNotif() { alNotifier('🔔 Test — Mon Planning Pro', 'Les notifications fonctionnent sur cet appareil.'); }
+    async function alDemanderNotif() { try { await Notification.requestPermission(); } catch(e) {} alMajNotifEtat(); }
     async function alNotifier(titre, corps) {
-        if (!alNotifOn() || !('Notification' in window) || Notification.permission !== 'granted') return;
+        if (!('Notification' in window) || Notification.permission !== 'granted') return;
         const opt = { body: corps, tag: 'mpp-alarme', renotify: true, requireInteraction: true, vibrate: [400, 200, 400, 200, 800], icon: (typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || undefined };
-        try {
-            if (navigator.serviceWorker) {
-                const reg = await Promise.race([navigator.serviceWorker.ready, new Promise(r => setTimeout(r, 1500))]);
-                if (reg && reg.showNotification) return await reg.showNotification(titre, opt);
-            }
-        } catch(e) {}
+        try { const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration(); if (reg) return reg.showNotification(titre, opt); } catch(e) {}
         try { new Notification(titre, opt); } catch(e) {}
     }
-
-
-    // ── Notifications push (application fermée) via Cloudflare Worker ──
-    const AL_PUSH_DEFAUT = 'https://mpp-notif.aliand0810.workers.dev';   // ← vous pouvez coller ici l'adresse du Worker pour tous les appareils
-    function alPushURL() { return (localStorage.getItem('mpp_push_url') || AL_PUSH_DEFAUT).replace(/\/+$/, ''); }
-    function alPushId() { let id = localStorage.getItem('mpp_push_id'); if (!id) { id = 'mpp-' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mpp_push_id', id); } return id; }
-    function alPushEtat(t) { localStorage.setItem('mpp_push_etat', t); const el = document.getElementById('al-notif'); if (el && el.offsetParent) alMajNotifEtat(); }
-    function alPushEnregistrer() { const v = (document.getElementById('al-push-url').value || '').trim(); localStorage.setItem('mpp_push_url', v); localStorage.removeItem('mpp_push_sig'); alPushEtat(v ? 'Connexion…' : ''); alPushSync(true); }
-    function alU8(b64) { b64 = b64.replace(/-/g, '+').replace(/_/g, '/'); while (b64.length % 4) b64 += '='; return Uint8Array.from(atob(b64), c => c.charCodeAt(0)); }
-    let alPushT = null;
-    function alPushSync(force) { clearTimeout(alPushT); alPushT = setTimeout(() => alPushSyncNow(force), force ? 50 : 3000); }
-    async function alPushSyncNow(force) {
-        const url = alPushURL(); if (!url || !('serviceWorker' in navigator) || !('PushManager' in window)) return;
-        const id = alPushId();
-        const actif = alNotifOn() && 'Notification' in window && Notification.permission === 'granted';
-        try {
-            const reg = await navigator.serviceWorker.ready;
-            let sub = await reg.pushManager.getSubscription();
-            if (!actif) {
-                await fetch(url + '/sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, enabled: false }) });
-                if (sub) await sub.unsubscribe().catch(() => {});
-                localStorage.removeItem('mpp_push_sig'); alPushEtat('🔕 Désactivé'); return;
-            }
-            if (!sub) {
-                const k = await (await fetch(url + '/vapid')).json();
-                sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: alU8(k.key) });
-            }
-            const alarmes = (typeof alAlarmes === 'function' ? alAlarmes(14) : []).filter(a => !a.ignore).map(a => ({
-                id: a.id, at: a.at, title: `${a.lbl} — ${a.poste.type}`,
-                body: `${alJour(a.poste.debut)} · début ${a.poste.hD}${a.poste.rot ? ' · ' + a.poste.rot : ''}`
-            }));
-            const corps = JSON.stringify({ id, enabled: true, subscription: sub.toJSON(), alarms: alarmes });
-            const sig = String(corps.length) + '|' + alarmes.map(a => a.id + a.at).join(',') + '|' + sub.endpoint;
-            if (!force && sig === localStorage.getItem('mpp_push_sig')) return;
-            const r = await fetch(url + '/sync', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: corps });
-            const j = await r.json();
-            if (!r.ok) throw new Error(j.error || r.status);
-            localStorage.setItem('mpp_push_sig', sig);
-            alPushEtat(`✅ Connecté — ${j.count} alarme(s) programmée(s) sur 14 jours`);
-        } catch (e) { alPushEtat('⚠️ ' + (e.message || e)); }
-    }
-    async function alPushTest() {
-        await alPushSyncNow(true);
-        try { const r = await fetch(alPushURL() + '/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: alPushId() }) }); const j = await r.json(); alPushEtat(j.ok ? '✅ Test envoyé — vous pouvez fermer l\'application pour les prochains essais' : '⚠️ Échec (' + (j.status || j.error) + ')'); } catch (e) { alPushEtat('⚠️ ' + e.message); }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        const _sv = alSauverCfg; alSauverCfg = function () { const r = _sv.apply(this, arguments); alPushSync(); return r; };
-        const _ig = alIgnorer; alIgnorer = function () { const r = _ig.apply(this, arguments); alPushSync(); return r; };
-        if (typeof tbRender === 'function') { const _tr = tbRender; tbRender = function () { const r = _tr.apply(this, arguments); alPushSync(); return r; }; }
-        setTimeout(() => alPushSync(true), 2500);
-        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') alPushSync(); });
-        setInterval(() => alPushSync(), 6 * 3600000);
-    });
 
     // ── Son d'alarme (généré, aucun fichier) ──
     let alAudio = null, alSonT = null;
@@ -10259,7 +10059,7 @@ service cloud.firestore {
         const avecAct = !!soldes.paieActivites;
         const sem = {};
         calendar.getEvents().forEach(e => {
-            const ds = e.startStr.split('T')[0]; if (ds < d || ds > f || rotHorsPaie(e)) return;
+            const ds = e.startStr.split('T')[0]; if (ds < d || ds > f) return;
             const p = e.extendedProps || {}, t = p.type || '';
             const estAct = t === 'RÉUNION' || t.startsWith('CSE');
             if (!TRAV.includes(t) && !(avecAct && estAct)) return;
@@ -10273,7 +10073,7 @@ service cloud.firestore {
     function paieActivitesNonComptees(d, f) {
         if (soldes.paieActivites) return 0;
         let h = 0;
-        calendar.getEvents().forEach(e => { const ds = e.startStr.split('T')[0]; const t = (e.extendedProps || {}).type || ''; if (ds >= d && ds <= f && !rotHorsPaie(e) && (t === 'RÉUNION' || t.startsWith('CSE'))) h += parseFloat(e.extendedProps.hPayees || 0); });
+        calendar.getEvents().forEach(e => { const ds = e.startStr.split('T')[0]; const t = (e.extendedProps || {}).type || ''; if (ds >= d && ds <= f && (t === 'RÉUNION' || t.startsWith('CSE'))) h += parseFloat(e.extendedProps.hPayees || 0); });
         return h;
     }
 
@@ -10498,7 +10298,6 @@ service cloud.firestore {
     const lecFmt = d => tbFmt(d);
     const lecParse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
     const lecAdd = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
-    lec.on = true; // mode lecture par défaut à l'ouverture (v10.3)
     function lecSauverPref() { try { localStorage.setItem(LEC_KEY, JSON.stringify({ on: lec.on, vue: lec.vue })); } catch (e) {} }
     function lecNom(type) {
         const T = { 'MATIN': 'Matin', 'MATIN SUPPL.': 'Matin suppl.', 'APRÈS-MIDI': 'Après-midi', 'APRÈS-MIDI SUPPL.': 'Après-midi suppl.', 'NUIT': 'Nuit', 'NUIT SUPPL.': 'Nuit suppl.',
@@ -10513,15 +10312,6 @@ service cloud.firestore {
     const lecHM = m => { m = ((m % 1440) + 1440) % 1440; return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
     function lecVisible(ev) { const rid = (ev.extendedProps || {}).rotationId; const r = rid && typeof rotGet === 'function' ? rotGet(rid) : null; return !r || r.visible !== false; }
     function lecEvents() { return tbGetEvents().filter(lecVisible); }
-    document.addEventListener('pointerdown', ev => {
-        const b = ev.target.closest && ev.target.closest('.bottom-nav .nav-item'); if (!b) return;
-        const r = b.getBoundingClientRect(), sz = Math.max(r.width, r.height);
-        const sp = document.createElement('span'); sp.className = 'nav-ripple';
-        sp.style.cssText = `width:${sz}px;height:${sz}px;left:${ev.clientX - r.left - sz/2}px;top:${ev.clientY - r.top - sz/2}px;`;
-        b.appendChild(sp); setTimeout(() => sp.remove(), 550);
-        b.classList.remove('nav-pop'); void b.offsetWidth; b.classList.add('nav-pop');
-        if (navigator.vibrate) { try { navigator.vibrate(8); } catch(_) {} }
-    }, { passive: true });
     function lecParJour(evs) { const m = {}; evs.forEach(e => { const k = (e.start || '').split('T')[0]; (m[k] = m[k] || []).push(e); }); return m; }
     function lecTri(a, b) { const pa = a.extendedProps || {}, pb = b.extendedProps || {}; return (lecMin(pa.hD) ?? -1) - (lecMin(pb.hD) ?? -1); }
     function lecFeries(d) { try { return getFeries(d.getFullYear()) || {}; } catch (e) { return {}; } }
@@ -10571,7 +10361,6 @@ service cloud.firestore {
     function lecRender(defiler) {
         const box = document.getElementById('lec'); if (!box) return;
         document.body.classList.toggle('lec-on', !!lec.on);
-        ['liste','jour','semaine','mois'].forEach(v => document.body.classList.toggle('lec-vue-' + v, lec.vue === v));
         if (!lec.on) return;
         lecIdx = [];
         const hd = document.querySelector('.app-header');
@@ -10623,13 +10412,14 @@ service cloud.firestore {
             const d = lecAdd(debut, i), ds = lecFmt(d);
             if (d.getFullYear() !== anFer) { fer = lecFeries(d); anFer = d.getFullYear(); }
             if (d.getDay() === 1) html += `<div class="lec-sem">Semaine ${tbNumSem(d)} · ${d.getDate()} ${LEC_MC[d.getMonth()]} – ${lecAdd(d, 6).getDate()} ${LEC_MC[lecAdd(d, 6).getMonth()]}</div>`;
-            const l = (parJour[ds] || []).slice().sort(lecTri), notes = lecNotesJour(ds);
-            html += `<section class="lec-day ${ds === auj ? 'auj' : ''} ${l.length || fer[ds] || notes.length ? '' : 'vide'}" id="lec-j-${ds}">
+            const l = (parJour[ds] || []).slice().sort(lecTri), notes = lecNotesJour(ds), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
+            html += `<section class="lec-day ${ds === auj ? 'auj' : ''} ${l.length || fer[ds] || notes.length || evj.length ? '' : 'vide'}" id="lec-j-${ds}">
                 <h4 class="lec-dh" onclick="lecChoisir('${ds}'); lecSetVue('jour')"><span>${lecTitreJour(d)}</span>${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
             if (fer[ds]) html += `<div class="lec-item lec-item-ferie"><span class="lec-dot" style="background:#7c3aed"></span><div class="lec-card"><div class="lec-time"><small>Jour<br>entier</small></div><div class="lec-main"><div class="lec-t">⭐ ${lecEsc(fer[ds])}</div><div class="lec-s">Jour férié</div></div></div></div>`;
             l.forEach(ev => html += lecCarte(ds, ev));
+            evj.forEach(e => html += evtCarteLecture(e));
             notes.forEach(n => html += `<div class="lec-item" onclick="notesOuvrir && notesOuvrir()"><span class="lec-dot" style="background:#facc15"></span><div class="lec-card"><div class="lec-time"><small>Note</small></div><div class="lec-main"><div class="lec-t">📝 ${lecEsc(n.titre || (n.texte || '').slice(0, 40) || 'Note')}</div></div></div></div>`);
-            if (!l.length && !fer[ds] && !notes.length) html += `<div class="lec-repos" ondblclick="ouvrirEditionJour('${ds}')">💤 Repos <button onclick="event.stopPropagation(); ouvrirEditionJour('${ds}')" aria-label="Ajouter">+</button></div>`;
+            if (!l.length && !fer[ds] && !notes.length && !evj.length) html += `<div class="lec-repos" ondblclick="ouvrirEditionJour('${ds}')">💤 Repos <button onclick="event.stopPropagation(); ouvrirEditionJour('${ds}')" aria-label="Ajouter">+</button></div>`;
             html += '</section>';
         }
         return html;
@@ -10653,6 +10443,13 @@ service cloud.firestore {
             const p = ev.extendedProps || {}, a = lecMin(p.hD), b = lecMin(p.hF);
             if (a !== null && b !== null && b <= a && b > 0) segs.push({ ev, ds: veille, a: 0, b, suiteVeille: true, hD: p.hD, hF: p.hF });
         });
+        if (typeof evtDuJour === 'function') evtDuJour(ds).forEach(e => {
+            const a = lecMin(e.hD), b = lecMin(e.hF);
+            if (e.journee || a === null) { allDay.push({ evt: e }); return; }
+            const premier = e.date === ds;
+            if (!premier && !e.fin) return;
+            segs.push({ evt: e, a: premier ? a : 0, b: e.fin && e.fin > ds ? 1440 : (b === null ? Math.min(a + 60, 1440) : (b <= a ? 1440 : b)), hD: e.hD, hF: e.hF || '' });
+        });
         segs.sort((x, y) => x.a - y.a || y.b - x.b);
         // Colonnes en cas de chevauchement
         const cols = [];
@@ -10665,6 +10462,14 @@ service cloud.firestore {
         return m >= 1440 ? 6 : Math.floor(m / 60);
     }
     function lecBloc(s, ph, court) {
+        if (s.evt) {
+            const e = s.evt, top = s.a / 60 * ph, h = Math.max((s.b - s.a) / 60 * ph, court ? 18 : 24), w = 100 / s.nb;
+            return `<div class="lec-bloc evt-bloc ${court ? 'court' : ''}" onclick="event.stopPropagation(); evtOuvrir('${e.id}')"
+                style="top:${top}px;height:${h - 2}px;left:calc(${s.col * w}% + 2px);width:calc(${w}% - 4px);--c:${e.couleur || '#4f46e5'}">
+                <div class="lec-bloc-t">📅${court ? '' : ' ' + lecEsc(e.titre) + ' ' + evtBadgePartage(e)}</div>
+                <div class="lec-bloc-h">${court ? `${parseInt(e.hD, 10)}h` : `${e.hD}${e.hF ? ' – ' + e.hF : ''}${e.lieu ? ' · ' + lecEsc(e.lieu) : ''}`}</div>
+            </div>`;
+        }
         const col = tbColor(s.ev), p = s.ev.extendedProps || {}, i = lecRef(s.ds, s.ev);
         const top = s.a / 60 * ph, h = Math.max((s.b - s.a) / 60 * ph, court ? 18 : 24);
         const w = 100 / s.nb;
@@ -10683,7 +10488,8 @@ service cloud.firestore {
     }
     function lecAllDayChips(ds, allDay, fer, court) {
         let h = fer[ds] ? `<span class="lec-ad" style="--c:#7c3aed">⭐ ${court ? '' : lecEsc(fer[ds])}</span>` : '';
-        allDay.forEach(ev => { const p = ev.extendedProps || {}, i = lecRef(ds, ev); h += `<span class="lec-ad" style="--c:${tbColor(ev)}" onclick="event.stopPropagation(); lecOuvrirIdx(${i})">${tbIcon(p.type)} ${court ? '' : lecEsc(lecNom(p.type))}</span>`; });
+        allDay.forEach(ev => { if (ev.evt) { h += `<span class="lec-ad evt-ad" style="--c:${ev.evt.couleur || '#4f46e5'}" onclick="event.stopPropagation(); evtOuvrir('${ev.evt.id}')">📅 ${court ? '' : lecEsc(ev.evt.titre)}</span>`; return; }
+            const p = ev.extendedProps || {}, i = lecRef(ds, ev); h += `<span class="lec-ad" style="--c:${tbColor(ev)}" onclick="event.stopPropagation(); lecOuvrirIdx(${i})">${tbIcon(p.type)} ${court ? '' : lecEsc(lecNom(p.type))}</span>`; });
         return h;
     }
 
@@ -10722,40 +10528,21 @@ service cloud.firestore {
     }
 
     // MOIS
-    function lecPleinEcran(force) {
-        const on = force !== undefined ? force : !document.body.classList.contains('lec-full');
-        document.body.classList.toggle('lec-full', on);
-        const b = document.querySelector('.lec-full-btn');
-        if (b) b.innerHTML = on ? '<i class="fas fa-compress"></i><span>Réduire</span>' : '<i class="fas fa-expand"></i><span>Plein écran</span>';
-        try {
-            if (on && !document.fullscreenElement && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
-            if (!on && document.fullscreenElement) document.exitFullscreen().catch(() => {});
-        } catch (e) {}
-    }
-    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && document.body.classList.contains('lec-full')) lecPleinEcran(false); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('lec-full')) lecPleinEcran(false); });
-    function lecMoisDetail(ev) {
-        const p = ev.extendedProps || {}, f = h => h ? String(h).replace(':', 'h').replace(/h00$/, 'h') : '';
-        let dur = '';
-        if (p.hD && p.hF) { const [a, b] = p.hD.split(':').map(Number), [c, d] = p.hF.split(':').map(Number); let m = (c * 60 + (d || 0)) - (a * 60 + (b || 0)); if (m <= 0) m += 1440; dur = (m / 60).toFixed(m % 60 ? 1 : 0).replace('.', ',') + 'h'; }
-        else if (p.hPayees) dur = String(p.hPayees).replace('.', ',') + 'h';
-        const nom = p.type || ev.title || '';
-        return `<span class="lec-m-ev" style="--c:${tbColor(ev)}"><span class="ic">${tbIcon(p.type)}</span>${p.hD ? `<b>${f(p.hD)}</b>` : ''}${p.hF ? `<b>${f(p.hF)}</b>` : ''}${dur ? `<small>${dur}</small>` : ''}${!p.hD && nom ? `<em>${nom}</em>` : ''}</span>`;
-    }
     function lecMoisVue(parJour) {
         const premier = new Date(lecDate.getFullYear(), lecDate.getMonth(), 1), debut = tbLundi(premier);
         const auj = lecFmt(new Date()), sel = lecFmt(lecDate), fer = lecFeries(premier);
-        let html = `<div class="lec-dtitle" style="justify-content:space-between;align-items:center"><button class="lec-arr" onclick="lecNav(-1)" aria-label="Mois précédent"><i class="fas fa-chevron-left"></i></button><span><b>${LEC_MOIS[premier.getMonth()].charAt(0).toUpperCase() + LEC_MOIS[premier.getMonth()].slice(1)}</b> ${premier.getFullYear()}</span><button class="lec-arr" onclick="lecNav(1)" aria-label="Mois suivant"><i class="fas fa-chevron-right"></i></button></div>
+        let html = `<div class="lec-dtitle"><span><b>${LEC_MOIS[premier.getMonth()].charAt(0).toUpperCase() + LEC_MOIS[premier.getMonth()].slice(1)}</b> ${premier.getFullYear()}</span></div>
             <div class="lec-m-head">${['lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.', 'dim.'].map(j => `<span>${j}</span>`).join('')}</div><div class="lec-m-grid">`;
         for (let i = 0; i < 42; i++) {
             const d = lecAdd(debut, i), ds = lecFmt(d);
             if (i === 35 && d.getMonth() !== premier.getMonth()) break;
-            const l = (parJour[ds] || []).slice().sort(lecTri);
+            const l = (parJour[ds] || []).slice().sort(lecTri), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
             html += `<div class="lec-m-cell ${d.getMonth() !== premier.getMonth() ? 'hors' : ''} ${ds === auj ? 'auj' : ''} ${ds === sel ? 'sel' : ''}" onclick="lecChoisir('${ds}')">
                 <span class="lec-m-n">${d.getDate()}</span>
                 ${fer[ds] ? `<span class="lec-m-ev" style="--c:#7c3aed">⭐</span>` : ''}
-                ${l.slice(0, 3).map(ev => lecMoisDetail(ev)).join('')}
+                ${l.slice(0, 3).map(ev => { const p = ev.extendedProps || {}; return `<span class="lec-m-ev" style="--c:${tbColor(ev)}">${tbIcon(p.type)}<em>${p.hD ? parseInt(p.hD, 10) + 'h' : ''}</em></span>`; }).join('')}
                 ${l.length > 3 ? `<span class="lec-m-plus">+${l.length - 3}</span>` : ''}
+                ${evj.slice(0, 2).map(e => `<span class="lec-m-ev evt-m" style="--c:${e.couleur || '#4f46e5'}">📅<em>${lecEsc(e.titre)}</em></span>`).join('')}
             </div>`;
         }
         return html + '</div>';
@@ -10767,7 +10554,7 @@ service cloud.firestore {
         const lun = tbLundi(lecDate), auj = lecFmt(new Date()), sel = lecFmt(lecDate);
         const parJour = lecParJour(lecEvents());
         z.innerHTML = [...Array(7)].map((_, i) => {
-            const d = lecAdd(lun, i), ds = lecFmt(d), n = (parJour[ds] || []).length;
+            const d = lecAdd(lun, i), ds = lecFmt(d), n = (parJour[ds] || []).length + (typeof evtDuJour === 'function' ? evtDuJour(ds).length : 0);
             return `<button class="${ds === sel ? 'sel' : ''} ${ds === auj ? 'auj' : ''}" onclick="lecChoisir('${ds}')">
                 <small>${LEC_JOURS[d.getDay()]}</small><b>${d.getDate()}</b>${ds === sel ? `<small>${LEC_MC[d.getMonth()]}</small>` : `<i style="${n ? '' : 'visibility:hidden'}"></i>`}</button>`;
         }).join('');
@@ -10776,41 +10563,13 @@ service cloud.firestore {
     // Glisser à gauche / à droite pour changer de période
     function lecInstallerSwipe() {
         const b = document.getElementById('lec-body'); if (!b) return;
-        let x0 = null, y0 = null, t0 = 0, glisse = false;
-        const debut = (x, y) => { x0 = x; y0 = y; t0 = Date.now(); glisse = false; };
-        const bouge = (x, y) => {
+        let x0 = null, y0 = null;
+        b.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+        b.addEventListener('touchend', e => {
             if (x0 === null || lec.vue === 'liste') return;
-            const dx = x - x0, dy = y - y0;
-            if (!glisse && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.3) glisse = true;
-            if (glisse) { b.style.transition = 'none'; b.style.transform = `translateX(${dx * 0.6}px)`; b.style.opacity = String(1 - Math.min(Math.abs(dx) / 600, 0.4)); }
-        };
-        const fin = (x) => {
-            if (x0 === null) return;
-            const dx = x - x0, rapide = Date.now() - t0 < 300 && Math.abs(dx) > 30; x0 = null;
-            b.style.transition = 'transform .18s ease, opacity .18s ease';
-            if (glisse && (Math.abs(dx) > 50 || rapide)) {
-                const dir = dx < 0 ? 1 : -1;
-                b.style.transform = `translateX(${-dir * 40}%)`; b.style.opacity = '0';
-                setTimeout(() => {
-                    lecNav(dir);
-                    b.style.transition = 'none'; b.style.transform = `translateX(${dir * 40}%)`;
-                    requestAnimationFrame(() => { b.style.transition = 'transform .2s ease, opacity .2s ease'; b.style.transform = ''; b.style.opacity = ''; });
-                }, 160);
-            } else { b.style.transform = ''; b.style.opacity = ''; }
-        };
-        b.addEventListener('touchstart', e => debut(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-        b.addEventListener('touchmove', e => bouge(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-        b.addEventListener('touchend', e => fin(e.changedTouches[0].clientX), { passive: true });
-        // souris (ordinateur) : cliquer-glisser
-        b.addEventListener('mousedown', e => { if (e.button === 0) debut(e.clientX, e.clientY); });
-        window.addEventListener('mousemove', e => { if (x0 !== null) bouge(e.clientX, e.clientY); });
-        window.addEventListener('mouseup', e => fin(e.clientX));
-        b.addEventListener('click', e => { if (glisse) { e.stopPropagation(); e.preventDefault(); glisse = false; } }, true);
-        // flèches du clavier
-        document.addEventListener('keydown', e => {
-            if (!lec.on || lec.vue === 'liste' || /INPUT|SELECT|TEXTAREA/.test((e.target.tagName || '')) || document.querySelector('.modal.active, .modal.show')) return;
-            if (e.key === 'ArrowRight') lecNav(1); else if (e.key === 'ArrowLeft') lecNav(-1);
-        });
+            const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+            if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5) lecNav(dx < 0 ? 1 : -1);
+        }, { passive: true });
     }
     document.addEventListener('DOMContentLoaded', () => {
         lecInstallerSwipe();
@@ -10819,6 +10578,519 @@ service cloud.firestore {
         if (lec.on) setTimeout(() => lecRender(true), 300);
         setInterval(() => { if (lec.on && document.visibilityState === 'visible' && (lec.vue === 'jour' || lec.vue === 'semaine')) { const n = document.querySelector('.lec-now'); if (n) { const d = new Date(), ph = lec.vue === 'jour' ? 52 : 40; n.style.top = ((d.getHours() * 60 + d.getMinutes()) / 60 * ph) + 'px'; } } }, 60000);
     });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ ÉVÉNEMENTS PARTAGEABLES AVEC MENTIONS @PSEUDO (v10.5) ══════════════════
+    // Firestore : evenements/{id}  { auteurUid, auteurIdent, auteurNom, titre, date, fin, journee, hD, hF,
+    //                                lieu, desc, couleur, partage:'prive'|'mentions'|'tous', mentions[], lecteurs[], tous }
+    //             annuaire/{ident} { uid, ident, nom }   (pseudos mentionnables)
+    // ═══════════════════════════════════════════════════════════════════════════
+    const EVT_CACHE = 'evt_cache_v1', EVT_MASQ = 'evt_masques_v1', EVT_VUS = 'evt_vus_v1';
+    const EVT_COULEURS = ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#8b5cf6', '#64748b'];
+    const EVT_PARTAGE = { prive: { ic: '🔒', lbl: 'Privé', txt: 'Visible par moi seul' }, mentions: { ic: '👥', lbl: 'Personnes mentionnées', txt: 'Visible par les @pseudos mentionnés' }, tous: { ic: '🌐', lbl: 'Tout le monde', txt: 'Visible par tous les comptes' } };
+    let evtListe = (() => { try { return JSON.parse(localStorage.getItem(EVT_CACHE)) || []; } catch (e) { return []; } })();
+    let evtAnnu = [], evtEdit = null, evtChargement = null;
+    const evtJ = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
+    const evtEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const evtMoi = () => (typeof fbCompte !== 'undefined' && fbCompte) ? fbCompte : null;
+    const evtUid = () => (typeof fbAuth !== 'undefined' && fbAuth && fbAuth.currentUser) ? fbAuth.currentUser.uid : null;
+    const evtEstAuteur = e => !!evtUid() && e.auteurUid === evtUid();
+    function evtMentionsDe(txt) { return [...new Set((String(txt || '').match(/@([a-z0-9._-]{3,30})/gi) || []).map(m => m.slice(1).toLowerCase().replace(/[.]+$/, '')))]; }
+    function evtTexteMentions(txt) {
+        return evtEsc(txt).replace(/@([a-z0-9._-]{3,30})/gi, (m, id) => { const k = id.toLowerCase().replace(/[.]+$/, ''); const a = evtAnnu.find(x => x.ident === k); return `<span class="evt-at${a ? '' : ' inconnu'}">@${evtEsc(id)}</span>`; });
+    }
+
+    // ── Données ──
+    function evtVisibles() { const m = evtJ(EVT_MASQ, []); return evtListe.filter(e => !m.includes(e.id)); }
+    function evtDuJour(ds) { return evtVisibles().filter(e => e.date <= ds && (e.fin || e.date) >= ds).sort((a, b) => (a.journee ? -1 : 0) - (b.journee ? -1 : 0) || String(a.hD || '').localeCompare(String(b.hD || ''))); }
+    function evtSauverCache() { try { localStorage.setItem(EVT_CACHE, JSON.stringify(evtListe)); } catch (e) {} }
+    async function evtCharger(silencieux) {
+        if (typeof fbDb === 'undefined' || !fbDb || !evtUid()) return;
+        if (evtChargement) return evtChargement;
+        evtChargement = (async () => {
+            const uid = evtUid(), col = fbDb.collection('evenements'), m = new Map();
+            const req = [col.where('auteurUid', '==', uid).get(), col.where('lecteurs', 'array-contains', uid).get(), col.where('tous', '==', true).get()];
+            const res = await Promise.allSettled(req);
+            let ok = false;
+            res.forEach(r => { if (r.status === 'fulfilled') { ok = true; r.value.docs.forEach(d => m.set(d.id, Object.assign({ id: d.id }, d.data()))); } });
+            if (!ok) return;
+            const limite = tbFmt(new Date(Date.now() - 90 * 864e5));
+            evtListe = [...m.values()].filter(e => (e.fin || e.date) >= limite);
+            evtSauverCache();
+            evtNotifierNouveaux(silencieux);
+            evtRafraichir();
+        })().finally(() => { evtChargement = null; });
+        return evtChargement;
+    }
+    function evtNotifierNouveaux(silencieux) {
+        const uid = evtUid(), cle = EVT_VUS + '_' + uid;
+        const autres = evtListe.filter(e => e.auteurUid !== uid);
+        // Première fois sur cet appareil : on ne signale que les partages des 3 derniers jours
+        const vus = evtJ(cle, null) || autres.filter(e => (e.cree || 0) < Date.now() - 3 * 864e5).map(e => e.id);
+        const nouveaux = autres.filter(e => !vus.includes(e.id));
+        localStorage.setItem(cle, JSON.stringify(vus.concat(nouveaux.map(e => e.id)).slice(-500)));
+        if (!nouveaux.length) return;
+        if (silencieux) return;
+        nouveaux.slice(0, 3).forEach((e, i) => setTimeout(() => {
+            const moi = evtMoi(), cite = moi && (e.mentions || []).includes(moi.identifiant);
+            showToast(`📅 ${e.auteurNom || '@' + e.auteurIdent} ${cite ? 'vous a mentionné' : 'a partagé'} : « ${e.titre} » (${new Date(e.date + 'T12:00').toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })})`, 'info', 'fa-calendar-plus');
+        }, i * 1800));
+    }
+    async function evtChargerAnnuaire() {
+        if (typeof fbDb === 'undefined' || !fbDb) return evtAnnu;
+        try { evtAnnu = (await fbDb.collection('annuaire').get()).docs.map(d => Object.assign({ ident: d.id }, d.data())).filter(a => a.uid).sort((a, b) => String(a.nom || a.ident).localeCompare(String(b.nom || b.ident))); } catch (e) {}
+        return evtAnnu;
+    }
+    // Chaque compte s'inscrit dans l'annuaire (pseudo mentionnable) ; l'administrateur complète pour tous
+    async function evtPublierAnnuaire() {
+        const c = evtMoi(), uid = evtUid(); if (!c || !uid || !fbDb) return;
+        try { await fbDb.doc('annuaire/' + c.identifiant).set({ uid, ident: c.identifiant, nom: c.nom || c.identifiant }); } catch (e) {}
+        if (fbEstAdmin()) {
+            try {
+                const q = await fbDb.collection('comptes').get(), b = fbDb.batch(); let n = 0;
+                q.docs.forEach(d => { const x = d.data(); if (x.uid && x.identifiant && x.actif !== false && !x.attente) { b.set(fbDb.doc('annuaire/' + x.identifiant), { uid: x.uid, ident: x.identifiant, nom: x.nom || x.identifiant }); n++; } });
+                if (n) await b.commit();
+            } catch (e) {}
+        }
+    }
+    function evtDemarrer() {
+        evtRafraichir();
+        evtPublierAnnuaire().then(() => evtChargerAnnuaire()).then(() => evtRafraichir());
+        evtCharger();
+        clearInterval(window._evtT); window._evtT = setInterval(() => { if (document.visibilityState === 'visible') evtCharger(); }, 120000);
+    }
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && evtUid()) evtCharger(); });
+
+    // ── Affichage ──
+    function evtRafraichir() {
+        evtRendreCarte();
+        if (typeof lec !== 'undefined' && lec.on && typeof lecRender === 'function') lecRender();
+        else if (typeof tbRender === 'function') tbRender();
+    }
+    function evtChipTableau(e, mois) {
+        const nb = (e.pieces || []).length;
+        return `<button class="evt-tb-chip${mois ? ' mois' : ''}" style="--c:${e.couleur || '#4f46e5'}" onclick="event.stopPropagation(); evtOuvrir('${e.id}')" ondblclick="event.stopPropagation()"
+            title="${evtEsc(e.titre)}${e.hD ? ' · ' + e.hD : ''}${nb ? ' · ' + nb + ' PDF' : ''}">
+            <span>📅 ${evtEsc(e.titre)}</span>${mois ? '' : `<small>${e.journee || !e.hD ? 'Journée' : e.hD + (e.hF ? '–' + e.hF : '')}${nb ? ' · 📎' + nb : ''}</small>`}${mois && nb ? '<i>📎</i>' : ''}</button>`;
+    }
+    // Bouton « Planning » : retour au mode classique
+    function planningClassique() {
+        if (typeof lec !== 'undefined' && lec.on) { lec.on = false; lecSauverPref(); document.body.classList.remove('lec-on'); if (typeof tbRender === 'function') tbRender(); }
+    }
+    function evtHoraire(e) { return e.journee ? 'Journée entière' : (e.hD ? e.hD + (e.hF ? ' – ' + e.hF : '') : ''); }
+    function evtBadgePartage(e) { const p = EVT_PARTAGE[e.partage] || EVT_PARTAGE.prive; return `<span class="evt-share" title="${p.txt}">${p.ic}</span>`; }
+    function evtRendreCarte() {
+        const z = document.getElementById('evt-side'); if (!z) return;
+        const auj = tbFmt(new Date());
+        const l = evtVisibles().filter(e => (e.fin || e.date) >= auj).sort((a, b) => (a.date + (a.hD || '')).localeCompare(b.date + (b.hD || ''))).slice(0, 5);
+        const n = document.getElementById('evt-side-count'); if (n) n.textContent = l.length ? `(${l.length})` : '';
+        z.innerHTML = l.length ? l.map(e => `<button class="evt-side-it" onclick="evtOuvrir('${e.id}')" style="--c:${e.couleur || '#4f46e5'}">
+            <span class="evt-side-d"><b>${new Date(e.date + 'T12:00').getDate()}</b><small>${new Date(e.date + 'T12:00').toLocaleDateString('fr-FR', { month: 'short' })}</small></span>
+            <span class="evt-side-b"><b>${evtEsc(e.titre)}${(e.pieces || []).length ? ' 📎' : ''}</b><small>${evtBadgePartage(e)} ${evtHoraire(e)}${e.auteurUid !== evtUid() ? ' · par @' + evtEsc(e.auteurIdent) : ''}</small></span></button>`).join('')
+            : '<div class="rot-empty">Aucun événement à venir</div>';
+    }
+    // Carte pour la vue Liste du mode lecture
+    function evtCarteLecture(e) {
+        const autre = e.auteurUid !== evtUid(), m = (e.mentions || []);
+        return `<div class="lec-item" onclick="evtOuvrir('${e.id}')">
+            <span class="lec-dot evt-dot" style="background:${e.couleur || '#4f46e5'}"></span>
+            <div class="lec-card evt-card" style="--c:${e.couleur || '#4f46e5'}">
+                <div class="lec-time">${!e.journee && e.hD ? `<b>${e.hD}</b>${e.hF ? `<small>${e.hF}</small>` : ''}` : '<small>Jour<br>entier</small>'}</div>
+                <div class="lec-main">
+                    <div class="lec-t">📅 ${evtEsc(e.titre)} ${evtBadgePartage(e)}${(e.pieces || []).length ? ` <span class="evt-clip" title="Fichiers joints">📎${e.pieces.length}</span>` : ''}</div>
+                    ${e.lieu ? `<div class="lec-s"><i class="fas fa-map-marker-alt"></i> ${evtEsc(e.lieu)}</div>` : ''}
+                    ${m.length || autre ? `<div class="lec-s evt-qui">${autre ? `<span class="evt-par">par @${evtEsc(e.auteurIdent)}</span>` : ''}${m.map(x => `<span class="evt-at">@${evtEsc(x)}</span>`).join('')}</div>` : ''}
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // ── Fenêtre création / modification ──
+    function evtNouveau(ds) {
+        if (typeof fbPeut === 'function' && !fbPeut('evenements')) return fbRefus();
+        evtOuvrir(null, ds);
+    }
+    function evtOuvrir(id, ds) {
+        const e = id ? evtListe.find(x => x.id === id) : null;
+        if (id && !e) return showToast('Événement introuvable', 'error', 'fa-times-circle');
+        evtEdit = e ? JSON.parse(JSON.stringify(e)) : { titre: '', date: ds || tbFmt(new Date()), fin: '', journee: false, hD: '', hF: '', lieu: '', desc: '', couleur: EVT_COULEURS[0], partage: 'prive', mentions: [] };
+        evtEdit.pieces = evtEdit.pieces || []; evtEdit._ajouts = []; evtEdit._suppr = [];
+        fermerModales(); ouvrirModale('modal-evt');
+        evtRendreFenetre();
+        if (!evtAnnu.length) evtChargerAnnuaire().then(() => evtRendreFenetre(true));
+    }
+    function evtRendreFenetre(garder) {
+        const e = evtEdit, box = document.getElementById('evt-corps'); if (!box || !e) return;
+        const lecture = e.id && (!evtEstAuteur(e) || !e._edition);
+        if (garder && !lecture) { evtLireForm(); }
+        if (lecture) {
+            box.innerHTML = `<div class="evt-view" style="--c:${e.couleur || '#4f46e5'}">
+                <div class="evt-view-t">${evtEsc(e.titre)}</div>
+                <div class="evt-view-r"><i class="far fa-calendar"></i> ${new Date(e.date + 'T12:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${e.fin && e.fin !== e.date ? ' → ' + new Date(e.fin + 'T12:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }) : ''}</div>
+                <div class="evt-view-r"><i class="far fa-clock"></i> ${evtHoraire(e) || '—'}</div>
+                ${e.lieu ? `<div class="evt-view-r"><i class="fas fa-map-marker-alt"></i> ${evtEsc(e.lieu)}</div>` : ''}
+                ${e.desc ? `<div class="evt-view-d">${evtTexteMentions(e.desc).replace(/\n/g, '<br>')}</div>` : ''}
+                ${(e.pieces || []).length ? `<div class="evt-pdf-tit">📎 ${e.pieces.length} fichier${e.pieces.length > 1 ? 's' : ''} PDF — touchez pour l'aperçu</div><div class="evt-pdfs">${evtPiecesHTML(true)}</div>` : ''}
+                <div class="evt-view-r"><i class="fas fa-user"></i> Créé par <b>${evtEstAuteur(e) ? 'vous' : evtEsc(e.auteurNom || '')}</b> <span class="evt-at">@${evtEsc(e.auteurIdent)}</span></div>
+                ${(e.mentions || []).length ? `<div class="evt-view-r"><i class="fas fa-at"></i> ${(e.mentions || []).map(x => `<span class="evt-at">@${evtEsc(x)}</span>`).join(' ')}</div>` : ''}
+                <div class="evt-view-r">${evtBadgePartage(e)} ${(EVT_PARTAGE[e.partage] || EVT_PARTAGE.prive).txt}</div>
+            </div>
+            <div class="evt-actions">
+                ${evtEstAuteur(e) ? `<button class="btn btn-outline" onclick="evtEdit._edition=true; evtRendreFenetre()"><i class="fas fa-pen"></i> Modifier</button>`
+                    : `<button class="btn btn-outline" onclick="evtMasquer('${e.id}')"><i class="fas fa-eye-slash"></i> Retirer de mon agenda</button>`}
+                <button class="btn btn-paye" onclick="fermerModales()">Fermer</button>
+            </div>`;
+            return;
+        }
+        box.innerHTML = `
+            <label class="evt-lbl">Titre</label>
+            <input id="evt-titre" maxlength="80" placeholder="Ex. Réunion d'équipe, anniversaire, rendez-vous…" value="${evtEsc(e.titre)}">
+            <div class="evt-row">
+                <div><label class="evt-lbl">Date</label><input type="date" id="evt-date" value="${e.date}"></div>
+                <div><label class="evt-lbl">Jusqu'au <small>(facultatif)</small></label><input type="date" id="evt-fin" value="${e.fin || ''}"></div>
+            </div>
+            <label class="evt-check"><input type="checkbox" id="evt-journee" ${e.journee ? 'checked' : ''} onchange="document.getElementById('evt-heures').style.display=this.checked?'none':''"> Journée entière</label>
+            <div class="evt-row" id="evt-heures" style="${e.journee ? 'display:none' : ''}">
+                <div><label class="evt-lbl">Début</label><input type="time" id="evt-hd" value="${e.hD || ''}"></div>
+                <div><label class="evt-lbl">Fin</label><input type="time" id="evt-hf" value="${e.hF || ''}"></div>
+            </div>
+            <label class="evt-lbl">Lieu <small>(facultatif)</small></label>
+            <input id="evt-lieu" maxlength="120" placeholder="Adresse, salle…" value="${evtEsc(e.lieu)}">
+            <label class="evt-lbl">Description <small>— tapez @ pour mentionner quelqu'un</small></label>
+            <div class="evt-mwrap"><textarea id="evt-desc" rows="3" maxlength="2000" placeholder="Ex. Pensez à apporter les EPI @jean.dupont" oninput="evtSaisieMention(this)" onblur="setTimeout(evtFermerSugg, 200)">${evtEsc(e.desc)}</textarea><div class="evt-sugg" id="evt-sugg"></div></div>
+            <label class="evt-lbl">Fichiers PDF <small>(5 Mo max. par fichier)</small></label>
+            <div class="evt-pdfs" id="evt-pdfs">${evtPiecesHTML(false)}</div>
+            <label class="evt-pdf-add"><input type="file" accept="application/pdf,.pdf" multiple onchange="evtAjouterPdf(this)"><i class="fas fa-file-pdf"></i> Joindre un PDF</label>
+            <label class="evt-lbl">Personnes mentionnées</label>
+            <div class="evt-pers" id="evt-pers"></div>
+            <div class="evt-mwrap"><input id="evt-pers-in" placeholder="@pseudo — ajouter une personne" autocapitalize="none" spellcheck="false" oninput="evtSaisieMention(this, true)" onkeydown="if(event.key==='Enter'){event.preventDefault(); evtAjouterPers(this.value)}" onblur="setTimeout(evtFermerSugg, 200)"><div class="evt-sugg" id="evt-sugg-p"></div></div>
+            <label class="evt-lbl">Partage</label>
+            <div class="evt-partage">${Object.entries(EVT_PARTAGE).map(([k, p]) => `<button type="button" class="${e.partage === k ? 'on' : ''}" onclick="evtLireForm(); evtEdit.partage='${k}'; evtEdit._partageChoisi=true; evtRendreFenetre()"><span>${p.ic}</span><b>${p.lbl}</b><small>${p.txt}</small></button>`).join('')}</div>
+            <label class="evt-lbl">Couleur</label>
+            <div class="evt-cols">${EVT_COULEURS.map(c => `<button type="button" class="${e.couleur === c ? 'on' : ''}" style="background:${c}" onclick="evtLireForm(); evtEdit.couleur='${c}'; evtRendreFenetre()" aria-label="Couleur"></button>`).join('')}</div>
+            <div id="evt-err" class="fb-err" style="display:none"></div>
+            <div class="evt-actions">
+                ${e.id ? `<button class="btn btn-outline evt-del" onclick="evtSupprimer('${e.id}')"><i class="fas fa-trash-alt"></i></button>` : ''}
+                <button class="btn btn-outline" onclick="fermerModales()">Annuler</button>
+                <button class="btn btn-paye" id="evt-save" onclick="evtEnregistrer()"><i class="fas fa-check"></i> Enregistrer</button>
+            </div>`;
+        evtRendrePers();
+        if (!e.id) setTimeout(() => { const t = document.getElementById('evt-titre'); if (t && !t.value) t.focus(); }, 80);
+    }
+    function evtLireForm() {
+        const g = id => { const x = document.getElementById(id); return x ? x.value : ''; };
+        if (!document.getElementById('evt-titre') || !evtEdit) return;
+        Object.assign(evtEdit, { titre: g('evt-titre').trim(), date: g('evt-date'), fin: g('evt-fin'), journee: document.getElementById('evt-journee').checked, hD: g('evt-hd'), hF: g('evt-hf'), lieu: g('evt-lieu').trim(), desc: g('evt-desc') });
+    }
+    function evtRendrePers() {
+        const z = document.getElementById('evt-pers'); if (!z) return;
+        const desc = evtMentionsDe((document.getElementById('evt-desc') || {}).value || evtEdit.desc);
+        const tous = [...new Set([...(evtEdit.mentions || []), ...desc])];
+        z.innerHTML = tous.length ? tous.map(x => { const a = evtAnnu.find(y => y.ident === x); return `<span class="evt-chip ${a ? '' : 'inconnu'}" title="${a ? evtEsc(a.nom) : 'Pseudo inconnu'}">@${evtEsc(x)}${a ? ` <small>${evtEsc(a.nom)}</small>` : ' <small>inconnu</small>'}${(evtEdit.mentions || []).includes(x) ? `<button onclick="evtRetirerPers('${x}')" aria-label="Retirer">×</button>` : ''}</span>`; }).join('')
+            : '<span class="evt-pers-vide">Personne pour l\'instant</span>';
+    }
+    function evtAjouterPers(v) {
+        const k = String(v || '').trim().replace(/^@/, '').toLowerCase(); if (!k) return;
+        evtEdit.mentions = [...new Set([...(evtEdit.mentions || []), k])];
+        if (evtEdit.partage === 'prive') { evtLireForm(); evtEdit.partage = 'mentions'; evtRendreFenetre(); showToast('👥 Partage réglé sur « Personnes mentionnées »', 'info', 'fa-users'); }
+        const i = document.getElementById('evt-pers-in'); if (i) { i.value = ''; i.focus(); }
+        evtFermerSugg(); evtRendrePers();
+    }
+    function evtRetirerPers(k) { evtEdit.mentions = (evtEdit.mentions || []).filter(x => x !== k); evtRendrePers(); }
+    // Suggestions de pseudos pendant la saisie de « @… »
+    function evtSaisieMention(el, champPers) {
+        const zone = document.getElementById(champPers ? 'evt-sugg-p' : 'evt-sugg');
+        let q = null, debut = 0;
+        if (champPers) { q = el.value.trim().replace(/^@/, '').toLowerCase(); }
+        else {
+            const avant = el.value.slice(0, el.selectionStart), m = avant.match(/@([a-z0-9._-]*)$/i);
+            if (m) { q = m[1].toLowerCase(); debut = el.selectionStart - m[0].length; }
+            evtRendrePers();
+        }
+        if (q === null || (champPers && !el.value.trim())) return evtFermerSugg();
+        const moi = evtMoi() && evtMoi().identifiant;
+        const l = evtAnnu.filter(a => a.ident !== moi && (a.ident.includes(q) || String(a.nom || '').toLowerCase().includes(q))).slice(0, 6);
+        if (!l.length) { zone.innerHTML = `<div class="evt-sugg-vide">${evtAnnu.length ? 'Aucun pseudo trouvé' : 'Annuaire en cours de chargement…'}</div>`; zone.style.display = 'block'; return; }
+        zone.innerHTML = l.map(a => `<button type="button" onmousedown="event.preventDefault()" onclick="evtChoisirSugg('${a.ident}', ${champPers ? 'true' : 'false'}, ${debut})"><span class="fb-avatar sm">${evtEsc((a.nom || a.ident).charAt(0).toUpperCase())}</span><span><b>${evtEsc(a.nom || a.ident)}</b><small>@${evtEsc(a.ident)}</small></span></button>`).join('');
+        zone.style.display = 'block';
+    }
+    function evtChoisirSugg(ident, champPers, debut) {
+        if (champPers) return evtAjouterPers(ident);
+        const t = document.getElementById('evt-desc'), fin = t.selectionStart;
+        t.value = t.value.slice(0, debut) + '@' + ident + ' ' + t.value.slice(fin);
+        const pos = debut + ident.length + 2; t.focus(); t.setSelectionRange(pos, pos);
+        if (evtEdit.partage === 'prive') { evtLireForm(); evtEdit.partage = 'mentions'; evtRendreFenetre(); const t2 = document.getElementById('evt-desc'); t2.focus(); t2.setSelectionRange(pos, pos); }
+        evtFermerSugg(); evtRendrePers();
+    }
+    function evtFermerSugg() { document.querySelectorAll('.evt-sugg').forEach(z => z.style.display = 'none'); }
+
+    async function evtEnregistrer() {
+        evtLireForm();
+        const e = evtEdit, err = document.getElementById('evt-err');
+        const ko = m => { err.style.display = 'block'; err.textContent = '⚠️ ' + m; };
+        err.style.display = 'none';
+        if (!e.titre) return ko('Indiquez un titre.');
+        if (!e.date) return ko('Indiquez une date.');
+        if (e.fin && e.fin < e.date) return ko('La date de fin est avant la date de début.');
+        if (!e.journee && e.hD && e.hF && !e.fin && e.hF <= e.hD && !confirm('L\'heure de fin est avant l\'heure de début : l\'événement se termine le lendemain ?')) return;
+        if (typeof fbDb === 'undefined' || !fbDb || !evtUid()) return ko('Connexion au serveur indisponible.');
+        await evtChargerAnnuaire();
+        const moi = evtMoi();
+        const mentions = [...new Set([...(e.mentions || []), ...evtMentionsDe(e.desc)])].filter(x => x !== moi.identifiant);
+        const inconnus = mentions.filter(x => !evtAnnu.find(a => a.ident === x));
+        if (inconnus.length && !confirm(`Pseudo${inconnus.length > 1 ? 's' : ''} inconnu${inconnus.length > 1 ? 's' : ''} : ${inconnus.map(x => '@' + x).join(', ')}\n\n${inconnus.length > 1 ? 'Ces personnes ne recevront' : 'Cette personne ne recevra'} pas l'événement. Enregistrer quand même ?`)) return;
+        // Personne mentionnée alors que le partage est resté sur « Privé » (sans choix explicite) : on partage avec elle
+        if (e.partage === 'prive' && !e._partageChoisi && mentions.some(x => evtAnnu.find(a => a.ident === x))) e.partage = 'mentions';
+        if (e.partage === 'mentions' && !mentions.some(x => evtAnnu.find(a => a.ident === x))) return ko('Partage « Personnes mentionnées » : mentionnez au moins une personne avec @pseudo, ou choisissez « Privé ».');
+        const lecteurs = e.partage === 'mentions' || e.partage === 'tous' ? mentions.map(x => (evtAnnu.find(a => a.ident === x) || {}).uid).filter(Boolean) : [];
+        const doc = {
+            auteurUid: evtUid(), auteurIdent: moi.identifiant, auteurNom: moi.nom || moi.identifiant,
+            titre: e.titre.slice(0, 80), date: e.date, fin: e.fin && e.fin !== e.date ? e.fin : '', journee: !!e.journee,
+            hD: e.journee ? '' : (e.hD || ''), hF: e.journee ? '' : (e.hF || ''), lieu: (e.lieu || '').slice(0, 120), desc: (e.desc || '').slice(0, 2000),
+            couleur: e.couleur || EVT_COULEURS[0], partage: e.partage, mentions, lecteurs, tous: e.partage === 'tous',
+            cree: e.cree || Date.now(), maj: Date.now(),
+            pieces: (e.pieces || []).filter(p => !(e._suppr || []).includes(p.id)).concat((e._ajouts || []).map(a => ({ id: a.id, nom: a.nom, taille: a.taille, n: 0 })))
+        };
+        fbBoutonAttente('evt-save', true, 'Enregistrement…');
+        try {
+            const ref = e.id ? fbDb.doc('evenements/' + e.id) : fbDb.collection('evenements').doc('e_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
+            const id = e.id || ref.id;
+            const ajouts = e._ajouts || [];
+            if (ajouts.length) doc.pieces = doc.pieces.filter(p => !ajouts.some(a => a.id === p.id)); // ajoutés une fois envoyés
+            await ref.set(doc);
+            // Fichiers retirés
+            for (const p of (e.pieces || []).filter(p => (e._suppr || []).includes(p.id))) await evtSupprimerMorceaux(id, p);
+            // Fichiers ajoutés
+            const echecs = [];
+            for (let k = 0; k < ajouts.length; k++) {
+                const a = ajouts[k];
+                try {
+                    const n = await evtEnvoyerPdf(id, a, (i, t) => { const b = document.getElementById('evt-save'); if (b) b.innerHTML = `<i class="fas fa-spinner fa-spin"></i> PDF ${k + 1}/${ajouts.length} · ${Math.round(i / t * 100)} %`; });
+                    doc.pieces.push({ id: a.id, nom: a.nom, taille: a.taille, n });
+                    evtPdfCache.set(id + '/' + a.id, a.file);
+                } catch (x) { echecs.push(a.nom); }
+            }
+            if (ajouts.length) await ref.set(doc);
+            if (echecs.length) showToast('⚠️ Non envoyé : ' + echecs.join(', '), 'error', 'fa-file-pdf');
+            evtListe = evtListe.filter(x => x.id !== id).concat([Object.assign({ id }, doc)]);
+            evtSauverCache(); fermerModales(); evtRafraichir();
+            const n = lecteurs.length;
+            showToast(doc.partage === 'prive' ? '🔒 Événement enregistré (privé)' : doc.partage === 'tous' ? '🌐 Événement partagé avec tout le monde' : `👥 Événement partagé avec ${n} personne${n > 1 ? 's' : ''}`, 'success', 'fa-calendar-check');
+        } catch (x) {
+            fbBoutonAttente('evt-save', false);
+            ko(x && x.code === 'permission-denied' ? 'Enregistrement refusé par le serveur : l\'administrateur doit mettre à jour les règles Firestore (Réglages › Copier les règles).' : fbErreur(x));
+        }
+    }
+    async function evtSupprimer(id) {
+        const e = evtListe.find(x => x.id === id); if (!e) return;
+        if (!confirm(`Supprimer « ${e.titre} » ?${e.partage !== 'prive' ? '\n\nIl disparaîtra aussi de l\'agenda des personnes avec qui il est partagé.' : ''}`)) return;
+        try { for (const p of (e.pieces || [])) { try { await evtSupprimerMorceaux(id, p); } catch (x) {} } await fbDb.doc('evenements/' + id).delete(); evtListe = evtListe.filter(x => x.id !== id); evtSauverCache(); fermerModales(); evtRafraichir(); showToast('🗑️ Événement supprimé', 'success', 'fa-trash-alt'); }
+        catch (x) { showToast('⚠️ ' + fbErreur(x), 'error', 'fa-times-circle'); }
+    }
+
+    // ── Fichiers PDF joints aux événements (Firestore : evenements/{id}/pieces/{fichier}_{n}) ──
+    const EVT_PDF_MAX = 5 * 1024 * 1024, EVT_PDF_NB = 5, EVT_MORCEAU = 900000;
+    const evtPdfCache = new Map();
+    const evtTaille = o => o < 1024 * 1024 ? Math.max(1, Math.round(o / 1024)) + ' Ko' : (o / 1048576).toFixed(1).replace('.', ',') + ' Mo';
+    function evtPiecesHTML(lecture) {
+        const e = evtEdit; if (!e) return '';
+        const l = (e.pieces || []).filter(p => !(e._suppr || []).includes(p.id)).map(p => ({ ...p, local: false })).concat((e._ajouts || []).map(a => ({ ...a, local: true })));
+        if (!l.length) return lecture ? '' : '<span class="evt-pers-vide">Aucun fichier</span>';
+        return l.map(p => `<div class="evt-pdf">
+            <i class="fas fa-file-pdf"></i>
+            <button class="evt-pdf-nom" onclick="evtOuvrirPdf('${p.id}')" title="Ouvrir"><b>${evtEsc(p.nom)}</b><small>${evtTaille(p.taille)}${p.local ? ' · à envoyer' : ''}</small></button>
+            <button class="evt-pdf-bt" onclick="evtOuvrirPdf('${p.id}', true)" title="Télécharger" aria-label="Télécharger"><i class="fas fa-download"></i></button>
+            ${lecture ? '' : `<button class="evt-pdf-bt danger" onclick="evtRetirerPdf('${p.id}')" title="Retirer" aria-label="Retirer"><i class="fas fa-times"></i></button>`}
+        </div>`).join('');
+    }
+    function evtMajPdfs() { const z = document.getElementById('evt-pdfs'); if (z) z.innerHTML = evtPiecesHTML(false); }
+    function evtAjouterPdf(input) {
+        const e = evtEdit; if (!e) return;
+        const nb = () => (e.pieces || []).filter(p => !(e._suppr || []).includes(p.id)).length + (e._ajouts || []).length;
+        [...input.files].forEach(f => {
+            const pdf = f.type === 'application/pdf' || /\.pdf$/i.test(f.name);
+            if (!pdf) return showToast(`« ${f.name} » n'est pas un PDF`, 'error', 'fa-file-pdf');
+            if (f.size > EVT_PDF_MAX) return showToast(`« ${f.name} » dépasse 5 Mo (${evtTaille(f.size)})`, 'error', 'fa-file-pdf');
+            if (nb() >= EVT_PDF_NB) return showToast(`${EVT_PDF_NB} fichiers maximum par événement`, 'error', 'fa-file-pdf');
+            e._ajouts.push({ id: 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), nom: f.name.slice(0, 100), taille: f.size, file: f });
+        });
+        input.value = ''; evtMajPdfs();
+    }
+    function evtRetirerPdf(pid) {
+        const e = evtEdit; if (!e) return;
+        if ((e._ajouts || []).some(a => a.id === pid)) e._ajouts = e._ajouts.filter(a => a.id !== pid);
+        else if (!e._suppr.includes(pid)) e._suppr.push(pid);
+        evtMajPdfs();
+    }
+    function evtLireBase64(file) {
+        return new Promise((ok, ko) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1] || ''); r.onerror = () => ko(r.error); r.readAsDataURL(file); });
+    }
+    async function evtEnvoyerPdf(eid, a, prog) {
+        const b64 = await evtLireBase64(a.file), n = Math.max(1, Math.ceil(b64.length / EVT_MORCEAU));
+        for (let i = 0; i < n; i++) {
+            if (prog) prog(i, n);
+            await fbDb.doc(`evenements/${eid}/pieces/${a.id}_${i}`).set({ i, n, d: b64.slice(i * EVT_MORCEAU, (i + 1) * EVT_MORCEAU) });
+        }
+        return n;
+    }
+    async function evtSupprimerMorceaux(eid, p) {
+        for (let i = 0; i < (p.n || 0); i++) await fbDb.doc(`evenements/${eid}/pieces/${p.id}_${i}`).delete();
+    }
+    async function evtTelechargerPdf(eid, p) {
+        const k = eid + '/' + p.id;
+        if (evtPdfCache.has(k)) return evtPdfCache.get(k);
+        if (!p.n) throw new Error('Fichier pas encore envoyé');
+        const parts = [];
+        for (let i = 0; i < p.n; i++) {
+            const d = await fbDb.doc(`evenements/${eid}/pieces/${p.id}_${i}`).get();
+            if (!d.exists) throw new Error('Fichier incomplet sur le serveur');
+            parts.push(d.data().d);
+        }
+        const bin = atob(parts.join('')), u8 = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+        const blob = new Blob([u8], { type: 'application/pdf' });
+        evtPdfCache.set(k, blob);
+        return blob;
+    }
+    async function evtOuvrirPdf(pid, telecharger) {
+        const e = evtEdit; if (!e) return;
+        const local = (e._ajouts || []).find(a => a.id === pid), p = local || (e.pieces || []).find(x => x.id === pid);
+        if (!p) return;
+        const w = null;
+        try {
+            if (!telecharger) pdfApercuOuvrir(p.nom);
+            else if (!local) showToast('📄 Chargement de « ' + p.nom + ' »…', 'info', 'fa-file-pdf');
+            const blob = local ? local.file : await evtTelechargerPdf(e.id, p);
+            const url = URL.createObjectURL(blob);
+            if (!telecharger) { URL.revokeObjectURL(url); return pdfApercuAfficher(blob, p.nom); }
+            else {
+                const a = document.createElement('a'); a.href = url; a.download = p.nom.toLowerCase().endsWith('.pdf') ? p.nom : p.nom + '.pdf';
+                document.body.appendChild(a); a.click(); a.remove();
+            }
+            setTimeout(() => URL.revokeObjectURL(url), 120000);
+        } catch (x) {
+            pdfApercuFermer();
+            showToast('⚠️ ' + (x && x.code === 'permission-denied' ? 'Accès refusé : règles Firestore à mettre à jour' : (x.message || fbErreur(x))), 'error', 'fa-file-pdf');
+        }
+    }
+
+    // ═══ APERÇU PDF INTÉGRÉ (PDF.js : toutes les pages, y compris sur iPhone) ═══
+    let pdfApercu = null;
+    function pdfChargerLib() {
+        if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+        return new Promise((ok, ko) => {
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+            s.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; ok(window.pdfjsLib); };
+            s.onerror = () => ko(new Error('Lecteur PDF indisponible (hors ligne ?)'));
+            document.head.appendChild(s);
+        });
+    }
+    function pdfApercuOuvrir(nom) {
+        pdfApercuFermer();
+        const o = document.createElement('div');
+        o.className = 'pdfv'; o.id = 'pdfv';
+        o.innerHTML = `<div class="pdfv-bar">
+                <button onclick="pdfApercuFermer()" aria-label="Fermer"><i class="fas fa-arrow-left"></i></button>
+                <div class="pdfv-t"><b><i class="fas fa-file-pdf"></i> ${evtEsc(nom)}</b><small id="pdfv-info">Chargement…</small></div>
+                <button onclick="pdfApercuZoom(-1)" aria-label="Réduire"><i class="fas fa-search-minus"></i></button>
+                <button onclick="pdfApercuZoom(1)" aria-label="Agrandir"><i class="fas fa-search-plus"></i></button>
+            </div>
+            <div class="pdfv-pages" id="pdfv-pages"><div class="pdfv-load"><div class="fb-spin"></div>Chargement du PDF…</div></div>
+            <div class="pdfv-act">
+                <button onclick="pdfApercuPartager()"><i class="fas fa-share-alt"></i> Partager</button>
+                <button onclick="pdfApercuTelecharger()"><i class="fas fa-download"></i> Télécharger</button>
+                <button onclick="pdfApercuOnglet()"><i class="fas fa-external-link-alt"></i> Ouvrir</button>
+            </div>`;
+        document.body.appendChild(o);
+        document.body.classList.add('pdfv-on');
+        pdfApercu = { nom, blob: null, doc: null, zoom: 1 };
+    }
+    function pdfApercuFermer() {
+        const o = document.getElementById('pdfv'); if (o) o.remove();
+        document.body.classList.remove('pdfv-on');
+        if (pdfApercu && pdfApercu.doc) try { pdfApercu.doc.destroy(); } catch (e) {}
+        pdfApercu = null;
+    }
+    async function pdfApercuAfficher(blob, nom) {
+        if (!document.getElementById('pdfv')) pdfApercuOuvrir(nom);
+        pdfApercu.blob = blob;
+        const z = document.getElementById('pdfv-pages');
+        try {
+            const lib = await pdfChargerLib();
+            const doc = await lib.getDocument({ data: new Uint8Array(await blob.arrayBuffer()) }).promise;
+            if (!pdfApercu) return;
+            pdfApercu.doc = doc;
+            await pdfApercuRendre();
+        } catch (e) {
+            // Secours : lecteur intégré du navigateur
+            if (!z) return;
+            pdfApercu.url = URL.createObjectURL(blob);
+            z.innerHTML = `<iframe src="${pdfApercu.url}" title="Aperçu PDF"></iframe>`;
+            const i = document.getElementById('pdfv-info'); if (i) i.textContent = 'Aperçu simplifié';
+        }
+    }
+    async function pdfApercuRendre() {
+        const a = pdfApercu, z = document.getElementById('pdfv-pages'); if (!a || !a.doc || !z) return;
+        const n = Math.min(a.doc.numPages, 60), larg = Math.min(z.clientWidth - 16, 900) * a.zoom, dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+        const info = document.getElementById('pdfv-info');
+        if (info) info.textContent = `${a.doc.numPages} page${a.doc.numPages > 1 ? 's' : ''}${a.doc.numPages > 60 ? ' (60 premières affichées)' : ''} · ${Math.round(a.zoom * 100)} %`;
+        const jeton = a.jeton = Date.now();
+        z.innerHTML = '';
+        for (let k = 1; k <= n; k++) {
+            if (!pdfApercu || pdfApercu.jeton !== jeton) return;
+            const page = await a.doc.getPage(k), v0 = page.getViewport({ scale: 1 }), vp = page.getViewport({ scale: larg / v0.width * dpr });
+            const c = document.createElement('canvas'); c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+            c.style.width = Math.floor(vp.width / dpr) + 'px'; c.style.height = Math.floor(vp.height / dpr) + 'px';
+            const wrap = document.createElement('div'); wrap.className = 'pdfv-page'; wrap.appendChild(c);
+            const num = document.createElement('small'); num.textContent = k + ' / ' + a.doc.numPages; wrap.appendChild(num);
+            z.appendChild(wrap);
+            await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+        }
+    }
+    function pdfApercuZoom(d) {
+        if (!pdfApercu || !pdfApercu.doc) return;
+        pdfApercu.zoom = Math.max(0.5, Math.min(3, Math.round((pdfApercu.zoom + d * 0.25) * 100) / 100));
+        pdfApercuRendre();
+    }
+    function pdfApercuNom() { const n = (pdfApercu && pdfApercu.nom) || 'document.pdf'; return /\.pdf$/i.test(n) ? n : n + '.pdf'; }
+    function pdfApercuTelecharger() {
+        if (!pdfApercu || !pdfApercu.blob) return;
+        const u = URL.createObjectURL(pdfApercu.blob), a = document.createElement('a'); a.href = u; a.download = pdfApercuNom();
+        document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000);
+    }
+    function pdfApercuOnglet() {
+        if (!pdfApercu || !pdfApercu.blob) return;
+        const u = URL.createObjectURL(pdfApercu.blob);
+        if (!window.open(u, '_blank')) pdfApercuTelecharger();
+        setTimeout(() => URL.revokeObjectURL(u), 120000);
+    }
+    async function pdfApercuPartager() {
+        if (!pdfApercu || !pdfApercu.blob) return;
+        const f = new File([pdfApercu.blob], pdfApercuNom(), { type: 'application/pdf' });
+        try {
+            if (navigator.canShare && navigator.canShare({ files: [f] })) await navigator.share({ files: [f], title: pdfApercuNom() });
+            else { pdfApercuTelecharger(); showToast('Partage non disponible sur cet appareil : PDF téléchargé', 'info', 'fa-download'); }
+        } catch (e) { if (e && e.name !== 'AbortError') showToast('⚠️ Partage impossible', 'error', 'fa-share-alt'); }
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('pdfv')) pdfApercuFermer(); });
+    function evtMasquer(id) {
+        const m = evtJ(EVT_MASQ, []); if (!m.includes(id)) m.push(id);
+        localStorage.setItem(EVT_MASQ, JSON.stringify(m.slice(-500)));
+        fermerModales(); evtRafraichir(); showToast('Événement retiré de votre agenda', 'info', 'fa-eye-slash');
+    }
+    // Choix rapide « Poste » / « Événement » (bouton + du mode lecture)
+    function lecAjouterMenu(btn) {
+        let m = document.getElementById('lec-add-menu');
+        if (m) { m.remove(); return; }
+        const ds = tbFmt(lecDate);
+        m = document.createElement('div'); m.id = 'lec-add-menu'; m.className = 'lec-add-menu';
+        m.innerHTML = `<button onclick="document.getElementById('lec-add-menu').remove(); ouvrirEditionJour('${ds}')"><i class="fas fa-briefcase"></i><span><b>Poste de travail</b><small>Matin, nuit, congé…</small></span></button>
+            <button onclick="document.getElementById('lec-add-menu').remove(); evtNouveau('${ds}')"><i class="fas fa-calendar-plus"></i><span><b>Événement</b><small>Privé ou partagé avec @pseudo</small></span></button>`;
+        btn.parentElement.appendChild(m);
+        setTimeout(() => document.addEventListener('click', function f(ev) { if (!m.contains(ev.target) && ev.target !== btn && !btn.contains(ev.target)) { m.remove(); document.removeEventListener('click', f); } }), 0);
+    }
+    document.addEventListener('DOMContentLoaded', () => setTimeout(evtRendreCarte, 400));
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -10878,7 +11150,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v10.4';
+const CACHE_NAME = 'planning-pro-v10.7';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
@@ -10934,8 +11206,9 @@ self.addEventListener('fetch', event => {
 
     function registerServiceWorker() {
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js', { scope: './' })
-                .catch(() => navigator.serviceWorker.register(URL.createObjectURL(new Blob([swCode], { type: 'application/javascript' })), { scope: './' }))
+            const swBlob = new Blob([swCode], { type: 'application/javascript' });
+            const swURL = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swURL, { scope: './' })
                 .then(registration => {
                     console.log('SW registered:', registration.scope);
                     const swSt = document.getElementById('sw-status-text');
