@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v11.9</title>
+    <title>Mon Planning Pro v12.0</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -541,7 +541,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .impv-bar button { flex:none; height:40px; min-width:40px; border:none; border-radius:12px; background:rgba(255,255,255,0.12); color:#fff; cursor:pointer; font-weight:800; font-family:'DM Sans',sans-serif; padding:0 12px; }
         .impv-bar .impv-go { background:#fff; color:#1e1b4b; }
         .impv-t { flex:1; min-width:0; display:flex; flex-direction:column; } .impv-t b { font-size:0.92rem; } .impv-t small { font-size:0.7rem; opacity:0.75; }
-        .impv iframe { flex:1; width:100%; border:none; background:#e2e8f0; }
+        .impv-scroll { flex:1; overflow:auto; -webkit-overflow-scrolling:touch; background:#cbd5e1; padding:4px; }
+        .impv-page { margin:0 auto; overflow:hidden; }
+        .impv-bar button[aria-label="Réduire"], .impv-bar button[aria-label="Agrandir"] { padding:0; width:40px; }
+        .impv-page iframe { border:none; background:#e2e8f0; transform-origin:0 0; display:block; }
         @media (max-width: 420px) { .impv-go span { display:none; } }
 
         .eq-row { display:none; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; border:1px dashed var(--border-color); background:var(--bg-app); margin-bottom:8px; }
@@ -553,6 +556,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .eq-tag { display:inline-block; color:#fff; font-size:0.72rem; font-weight:800; padding:1px 7px; border-radius:6px; }
         .eq-row select { flex:none; width:auto !important; max-width:130px; margin:0 !important; padding:6px 8px !important; font-size:0.8rem !important; }
 
+        .tab-impr { background:#334155 !important; border-color:#334155 !important; color:#fff !important; }
         /* ═══ ORDINATEUR : toute la largeur de l'écran ═══ */
         .lec-m-nom, .lec-m-rot, .lec-dh-c { display:none; }
         @media (min-width: 1100px) {
@@ -606,6 +610,49 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         @media (min-width: 1600px) {
             .planning-sidebar { width: 320px !important; }
             .lec-wk .lec-day { min-height:180px; }
+        }
+
+        /* ═══ VERSION ORDINATEUR (≥ 1100 px) : interface de bureau ═══ */
+        .desk-nav { display:none; }
+        @media (min-width: 1100px) {
+            :root { --desk-nav: 236px; }
+            body { background: var(--bg-app); }
+            .app-header { padding-left: 22px; padding-right: 22px; height: 60px; box-sizing: border-box; }
+            .app-header .app-logo { width: 38px; height: 38px; }
+            .app-title { font-size: 1.12rem; }
+            /* Menu latéral fixe */
+            .main-tabs { position: fixed; top: 60px; left: 0; bottom: 0; width: var(--desk-nav); z-index: 40; display: flex !important; flex-direction: column; flex-wrap: nowrap !important; gap: 4px !important; margin: 0 !important; padding: 18px 14px; overflow-y: auto;
+                background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%); box-shadow: 4px 0 24px rgba(15,23,42,0.12); }
+            .main-tabs .tab-btn, .main-tabs .tab-btn.tab-impr { flex: none !important; justify-content: flex-start; gap: 12px; padding: 12px 14px; border: none !important; border-radius: 12px; background: transparent !important; color: rgba(255,255,255,0.78) !important; box-shadow: none !important; font-size: 0.92rem; font-weight: 700; min-width: 0; text-align: left; }
+            .main-tabs .tab-btn i { width: 20px; text-align: center; font-size: 1rem; }
+            .main-tabs .tab-btn:hover { background: rgba(255,255,255,0.08) !important; color: #fff !important; }
+            .main-tabs .tab-btn.active { background: #fff !important; color: #312e81 !important; box-shadow: 0 6px 16px rgba(0,0,0,0.25) !important; }
+            .desk-nav { display: flex; flex-direction: column; gap: 2px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.12); flex: 1; }
+            .desk-nav-t { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.45); padding: 10px 14px 4px; }
+            .desk-nav-b { display: flex; align-items: center; gap: 12px; border: none; background: transparent; color: rgba(255,255,255,0.72); font-weight: 600; font-size: 0.85rem; padding: 9px 14px; border-radius: 10px; cursor: pointer; text-align: left; font-family: 'DM Sans', sans-serif; }
+            .desk-nav-b i { width: 20px; text-align: center; }
+            .desk-nav-b:hover { background: rgba(255,255,255,0.08); color: #fff; }
+            body.lec-on #desk-lecture, body:not(.lec-on) #desk-classique { background: rgba(255,255,255,0.14); color: #fff; }
+            .desk-nav-v { margin-top: auto; padding: 14px 14px 4px; font-size: 0.68rem; color: rgba(255,255,255,0.4); }
+            /* Contenu à droite du menu */
+            .app-content { margin-left: var(--desk-nav) !important; padding: 22px 28px 0 !important; max-width: none !important; }
+            /* Planning : agenda au centre, panneau d'informations à droite */
+            .planning-layout { gap: 22px !important; }
+            .planning-sidebar { order: 2; width: 330px !important; top: 82px !important; max-height: calc(100vh - 100px) !important; }
+            .planning-main { order: 1; }
+            .sidebar-card { border-radius: 16px; padding: 14px 14px 12px; }
+            .lec-top { border-radius: 18px; padding: 10px; }
+            .lec-seg button { font-size: 0.95rem; padding: 10px 6px; }
+            .lec-body { border-radius: 20px; box-shadow: 0 2px 14px rgba(15,23,42,0.05); }
+            .tb-wrap, #tab-paie > div, #tab-dirt > div, .cfg-section-card { border-radius: 20px !important; box-shadow: 0 2px 14px rgba(15,23,42,0.05) !important; }
+            .toast-container { top: 74px; }
+        }
+        @media (min-width: 1100px) and (max-width: 1449px) {
+            body.lec-on .planning-sidebar { display:none !important; }
+        }
+        @media (min-width: 1600px) {
+            :root { --desk-nav: 260px; }
+            .planning-sidebar { width: 360px !important; }
         }
         /* ═══ DÉTAIL DE LA JOURNÉE ═══ */
         body.lec-masque .lec-tarif, body.lec-masque .lec-dh-h, body.lec-masque .lec-hh, body.lec-masque .jd-money { display:none !important; }
@@ -1831,8 +1878,19 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         <button onclick="switchTab('tab-paie', this)" class="tab-btn"><i class="fas fa-coins"></i> Paie</button>
         <button onclick="switchTab('tab-dirt', this)" class="tab-btn"><i class="fas fa-shield-alt"></i> DIRT</button>
         <button onclick="switchTab('tab-config-taux', this)" class="tab-btn"><i class="fas fa-sliders-h"></i> Taux</button>
-        <button onclick="ouvrirModale('modal-print')" class="tab-btn" style="background: #334155; border-color: #334155; color: white;"><i class="fas fa-print"></i> Impr.</button>
-        <button onclick="ouvrirModale('modal-config')" class="tab-btn"><i class="fas fa-cog"></i> Config</button>
+        <button onclick="ouvrirModale('modal-print')" class="tab-btn tab-impr"><i class="fas fa-print"></i> Imprimer</button>
+        <button onclick="ouvrirModale('modal-config')" class="tab-btn"><i class="fas fa-cog"></i> Réglages</button>
+        <div class="desk-nav">
+            <div class="desk-nav-t">Affichage</div>
+            <button class="desk-nav-b" id="desk-lecture" onclick="if(!document.getElementById('tab-planning').classList.contains('active')) switchTab('tab-planning', document.querySelector('.main-tabs .tab-btn')); lecActiver(true)"><i class="fas fa-book-open"></i> Mode lecture</button>
+            <button class="desk-nav-b" id="desk-classique" onclick="if(!document.getElementById('tab-planning').classList.contains('active')) switchTab('tab-planning', document.querySelector('.main-tabs .tab-btn')); lecActiver(false)"><i class="fas fa-table"></i> Mode classique</button>
+            <div class="desk-nav-t">Raccourcis</div>
+            <button class="desk-nav-b" onclick="ouvrirEditionJour(tbFmt(new Date()))"><i class="fas fa-plus-circle"></i> Ajouter un poste</button>
+            <button class="desk-nav-b" onclick="evtNouveau()"><i class="fas fa-calendar-plus"></i> Nouvel événement</button>
+            <button class="desk-nav-b" onclick="notesOuvrir()"><i class="far fa-sticky-note"></i> Notes</button>
+            <button class="desk-nav-b" onclick="alOuvrir()"><i class="fas fa-bell"></i> Alarmes</button>
+            <div class="desk-nav-v" id="desk-version"></div>
+        </div>
     </div>
 
     <div id="tab-planning" class="tab-content active">
@@ -4605,7 +4663,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   @bottom-left { content: "Mon Planning Pro${version ? ' · v' + version : ''}"; font: 7.5pt Inter, 'Segoe UI', Arial, sans-serif; color: #94a3b8; }
   @bottom-right { content: "Page " counter(page) " / " counter(pages); font: 7.5pt Inter, 'Segoe UI', Arial, sans-serif; color: #94a3b8; } }
 * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-html { background: #e2e8f0; }
+html { background: #e2e8f0; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { margin: 0; font: 9.5pt/1.45 Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #0f172a; }
 .feuille { background: #fff; width: ${impMiseEnPage === 'calendrier' ? '297mm' : '210mm'}; min-height: ${impMiseEnPage === 'calendrier' ? '210mm' : '297mm'}; margin: 0 auto; padding: 14mm 12mm; }
 @media screen { .feuille { margin: 16px auto; box-shadow: 0 6px 30px rgba(15,23,42,.18); border-radius: 4px; } }
@@ -4634,7 +4692,7 @@ body { margin: 0; font: 9.5pt/1.45 Inter, 'Segoe UI', Roboto, 'Helvetica Neue', 
 .tbl td { padding: 5px 6px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
 .tbl tr.nj td { border-top: 1px solid #e2e8f0; }
 .tbl tr.we td.c-j { color: #64748b; } .tbl tr.ferie td { background: #faf5ff; } .tbl tr.evt td { color: #3730a3; }
-.r { text-align: right !important; font-variant-numeric: tabular-nums; }
+.r { text-align: right !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .c-j { width: 62px; white-space: nowrap; color: #334155; } .c-j b { font-weight: 800; color: #0f172a; text-transform: capitalize; }
 .c-a { font-weight: 600; } .c-a i { font-style: normal; color: #64748b; font-weight: 500; }
 .c-h { width: 92px; white-space: nowrap; font-variant-numeric: tabular-nums; color: #1e293b; }
@@ -4655,13 +4713,14 @@ body { margin: 0; font: 9.5pt/1.45 Inter, 'Segoe UI', Roboto, 'Helvetica Neue', 
 .cal-g td.we { background: #f8fafc; } .cal-g td.ferie { background: #faf5ff; } .cal-g td.hors { background: #fff; color: #cbd5e1; }
 .cal-n { font-weight: 800; font-size: 8.5pt; text-align: right; color: #0f172a; } .hors .cal-n { color: #cbd5e1; }
 .cal-f { font-size: 6.5pt; color: #6d28d9; font-weight: 700; margin-top: -2px; }
-.cal-e { border-left: 3px solid var(--c); background: #f8fafc; padding: 1px 4px; margin-top: 2px; border-radius: 0 3px 3px 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.cal-e b { font-weight: 700; } .cal-e span { color: #64748b; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.cal-e { border-left: 3px solid var(--c); background: #f8fafc; padding: 1px 4px; margin-top: 2px; border-radius: 0 3px 3px 0; overflow: hidden; line-height: 1.25; }
+.cal-e b { display: block; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .cal-e span { display: block; color: #64748b; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .saut { break-after: page; page-break-after: always; }
 .paie { margin-top: 18px; break-inside: avoid; page-break-inside: avoid; }
 .paie h2, .sign-l { font-size: 11pt; color: #1e1b4b; margin: 0 0 6px; }
 .tbl-paie td { border-bottom: 1px solid #f1f5f9; } .tbl-paie small { color: #94a3b8; }
-.tbl-paie tfoot td { padding: 6px; font-weight: 700; border-bottom: none; }
+.tbl-paie tfoot td { padding: 6px; font-weight: 700; border-bottom: none; font-size: 9pt; }
+.tbl-paie td:first-child { width: 55%; }
 .t-brut td { border-top: 1.5px solid #1e1b4b; } .t-neg td { color: #b91c1c; font-weight: 600 !important; } .t-ind td { color: #047857; font-weight: 600 !important; }
 .t-net td { background: #1e1b4b; color: #fff; font-size: 11pt; font-weight: 800 !important; }
 .mention { font-size: 7.5pt; color: #94a3b8; margin: 6px 0 0; }
@@ -4692,23 +4751,36 @@ ${sign}
         o.innerHTML = `<div class="impv-bar">
                 <button onclick="document.getElementById('impv').remove()" aria-label="Fermer"><i class="fas fa-arrow-left"></i></button>
                 <div class="impv-t"><b>Aperçu avant impression</b><small>${impMiseEnPage === 'calendrier' ? 'A4 paysage' : 'A4 portrait'} · ${impMiseEnPage === 'liste' ? 'liste détaillée' : impMiseEnPage === 'calendrier' ? 'calendrier' : 'calendrier + liste'} · ${document.getElementById('chk-print-paie').checked ? 'avec paie' : 'sans paie'}</small></div>
+                <button onclick="impZoom(-1)" aria-label="Réduire"><i class="fas fa-search-minus"></i></button>
+                <button onclick="impZoom(1)" aria-label="Agrandir"><i class="fas fa-search-plus"></i></button>
                 <button onclick="impImprimerApercu()" class="impv-go"><i class="fas fa-print"></i><span> Imprimer / PDF</span></button>
             </div>
-            <iframe id="impv-frame" title="Aperçu avant impression"></iframe>`;
+            <div class="impv-scroll" id="impv-scroll"><div class="impv-page" id="impv-page"><iframe id="impv-frame" title="Aperçu avant impression" scrolling="no"></iframe></div></div>`;
         document.body.appendChild(o);
-        const f = document.getElementById('impv-frame');
-        // La feuille A4 est réduite pour tenir dans la largeur de l'écran (comme un vrai aperçu)
+        const f = document.getElementById('impv-frame'), sc = document.getElementById('impv-scroll'), pg = document.getElementById('impv-page');
+        // La feuille A4 garde sa vraie taille dans le cadre, et le cadre entier est réduit pour tenir dans l'écran
+        // (le texte reste net et proportionné, comme un vrai aperçu)
+        const L = impMiseEnPage === 'calendrier' ? 1123 + 40 : 794 + 40;
         const ajuster = () => {
             try {
-                const doc = f.contentDocument, fe = doc && doc.querySelector('.feuille'); if (!fe) return;
-                doc.documentElement.style.zoom = '';
-                const l = fe.offsetWidth + 32, z = Math.min(1, f.clientWidth / l);
-                doc.documentElement.style.zoom = z < 1 ? z : '';
+                const doc = f.contentDocument; if (!doc || !doc.body) return;
+                f.style.width = L + 'px';
+                const H = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight);
+                f.style.height = H + 'px';
+                const ajuste = Math.min(1, (sc.clientWidth - 8) / L), z = Math.min(2, ajuste * (window._impvK || 1));
+                f.style.transform = `scale(${z})`;
+                pg.style.width = Math.ceil(L * z) + 'px'; pg.style.height = Math.ceil(H * z) + 'px';
             } catch (e) {}
         };
-        f.onload = ajuster;
+        window._impvK = 1; window._impvAjuster = ajuster;
+        f.onload = () => { ajuster(); setTimeout(ajuster, 400); };
         window.addEventListener('resize', ajuster);
         f.srcdoc = html;
+    }
+    function impZoom(d) {
+        window._impvK = Math.max(1, Math.min(4, Math.round(((window._impvK || 1) + d * 0.5) * 10) / 10));
+        if (window._impvAjuster) window._impvAjuster();
+        showToast(window._impvK === 1 ? 'Page entière' : `Zoom × ${String(window._impvK).replace('.', ',')}`, 'info', 'fa-search');
     }
     function impImprimerApercu() {
         const f = document.getElementById('impv-frame');
@@ -12054,8 +12126,9 @@ service cloud.firestore {
     }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '11.9', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '12.0', APP_VERSION_DATE = '31/10/2026';
     function appVersionRendre() {
+        const dv = document.getElementById('desk-version'); if (dv) dv.textContent = 'Mon Planning Pro · v' + APP_VERSION;
         const z = document.getElementById('app-version'); if (!z) return;
         z.innerHTML = `<img src="${(typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || ''}" alt="" onerror="this.remove()">
             <div><b>Mon Planning Pro</b><span>Version ${APP_VERSION}</span><small>du ${APP_VERSION_DATE}</small></div>
@@ -12196,7 +12269,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v11.9';
+const CACHE_NAME = 'planning-pro-v12.0';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
