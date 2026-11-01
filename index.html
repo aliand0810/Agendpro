@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v12.3</title>
+    <title>Mon Planning Pro v12.4</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -2388,7 +2388,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         </select></div>
                     <div id="cfg2-dep-detail">
                         <div class="cfg-dep-bloc">
-                            <div class="cfg-dep-t">☀️ Postes de journée <small>Matin, après-midi, journée, formation — toujours payés aller + retour</small></div>
+                            <div class="cfg-dep-t">☀️ Postes de journée <small>Postes du matin et d'après-midi (et poste journée) — toujours payés aller + retour</small></div>
                             <div class="cfg-form-row" id="cfg2-dep-forfait-row"><div class="cfg-form-group"><label>Tarif journée aller-retour (€)</label><input type="number" id="cfg2-dep-forfait" value="0" min="0" step="0.01" oninput="cfg2MajDep()"></div></div>
                             <div class="cfg-form-row" id="cfg2-dep-km-row">
                                 <div class="cfg-form-group"><label>Distance domicile → travail (km, un trajet)</label><input type="number" id="cfg2-dep-km" value="0" min="0" step="0.1" oninput="cfg2MajDep()"></div>
@@ -12152,7 +12152,9 @@ service cloud.firestore {
     }
     const JD_TRAVAIL = ['MATIN','MATIN SUPPL.','APRÈS-MIDI','APRÈS-MIDI SUPPL.','NUIT','NUIT SUPPL.','POSTE JOURNÉE','JOURNÉE SUPPL.','FORMATION'];
     function jdDureeBrute(p) { if (!p.hD || !p.hF) return parseFloat(p.hPayees || 0); let d = (jdMin(p.hF) - jdMin(p.hD)) / 60; return d <= 0 ? d + 24 : d; }
-    function jdEstNuit(p) { if ((p.type || '').startsWith('NUIT')) return true; const d = jdDureeBrute(p); return d > 0 && jdHeuresNuit(p.hD, p.hF) >= d / 2; }
+    // Matin, après-midi et journée sont toujours des postes de journée (paniers et frais de déplacement)
+    const JD_POSTES_JOUR = ['MATIN', 'MATIN SUPPL.', 'APRÈS-MIDI', 'APRÈS-MIDI SUPPL.', 'POSTE JOURNÉE', 'JOURNÉE SUPPL.'];
+    function jdEstNuit(p) { if ((p.type || '').startsWith('NUIT')) return true; if (JD_POSTES_JOUR.includes(p.type)) return false; const d = jdDureeBrute(p); return d > 0 && jdHeuresNuit(p.hD, p.hF) >= d / 2; }
     // Paniers et déplacement d'une journée
     function jdIndemnitesJour(ds, evs) {
         const c = jdCfg(); evs = evs || tbEventsForDate(ds);
@@ -12435,7 +12437,7 @@ service cloud.firestore {
     function cfg2DepNuit(v) { const h = document.getElementById('cfg2-dep-nuit-trajets'); if (h) h.value = v; cfg2MajDep(); }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '12.3', APP_VERSION_DATE = '01/11/2026';
+    const APP_VERSION = '12.4', APP_VERSION_DATE = '01/11/2026';
     function appVersionRendre() {
         const dv = document.getElementById('desk-version'); if (dv) dv.textContent = 'Mon Planning Pro · v' + APP_VERSION;
         const z = document.getElementById('app-version'); if (!z) return;
@@ -12578,7 +12580,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v12.3';
+const CACHE_NAME = 'planning-pro-v12.4';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
