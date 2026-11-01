@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v11.8</title>
+    <title>Mon Planning Pro v11.9</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -552,6 +552,61 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .eq-txt b { font-size:0.85rem; color:var(--text-main); } .eq-txt b small { font-size:0.7rem; font-weight:500; color:var(--text-muted); text-transform:none; }
         .eq-tag { display:inline-block; color:#fff; font-size:0.72rem; font-weight:800; padding:1px 7px; border-radius:6px; }
         .eq-row select { flex:none; width:auto !important; max-width:130px; margin:0 !important; padding:6px 8px !important; font-size:0.8rem !important; }
+
+        /* ═══ ORDINATEUR : toute la largeur de l'écran ═══ */
+        .lec-m-nom, .lec-m-rot, .lec-dh-c { display:none; }
+        @media (min-width: 1100px) {
+            .app-content { max-width: none !important; padding: 18px 28px 0 !important; }
+            .planning-sidebar { width: 280px !important; }
+            .main-tabs { max-width: none; }
+            .modal#modal-jour, .modal#modal-evt, .modal#modal-print, .modal#modal-edit { max-width: 680px; }
+            /* Mode lecture — Liste : une semaine par ligne, 7 jours côte à côte */
+            .lec-body { padding: 6px 16px 16px; }
+            .lec-wk { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:10px; align-items:stretch; margin-bottom:6px; }
+            .lec-sem { margin:18px 0 8px; font-size:0.72rem; }
+            .lec-wk .lec-day { padding:8px; border:1px solid var(--border-color); border-radius:14px; background:var(--bg-app); min-height:150px; display:flex; flex-direction:column; }
+            .lec-wk .lec-day.auj { border-color:var(--primary); box-shadow:0 0 0 1.5px var(--primary) inset; }
+            .lec-wk .lec-day.vide { opacity:0.75; }
+            .lec-wk .lec-day::before { display:none; }
+            .lec-wk .lec-dh { margin:0 0 8px !important; font-size:0.9rem !important; flex-wrap:nowrap; gap:5px; scroll-margin-top:150px; }
+            .lec-wk .lec-dh > span:first-of-type { display:none; }
+            .lec-wk .lec-dh .lec-dh-c { display:block; order:1; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600; text-transform:capitalize; }
+            .lec-wk .lec-dh .lec-dh-c b { font-size:1.05rem; font-weight:800; } .lec-wk .lec-dh .lec-dh-c i { font-style:normal; color:var(--primary); font-weight:800; text-transform:none; }
+            .lec-wk .lec-dh .lec-dh-add { margin-left:0 !important; }
+            .lec-wk .lec-dh .lec-dh-h { margin-left:0; font-size:0.65rem; padding:2px 6px; }
+            .lec-wk .lec-dh::after { display:none; }
+            .lec-wk .lec-dh-add { width:24px; height:24px; font-size:0.95rem; }
+            .lec-wk .lec-dot { display:none; }
+            .lec-wk .lec-item { margin-bottom:6px; }
+            .lec-wk .lec-card { padding:8px 9px; gap:8px; background:var(--bg-card); align-items:flex-start; }
+            .lec-wk .lec-time { width:auto; text-align:left; }
+            .lec-wk .lec-time b { font-size:0.82rem; } .lec-wk .lec-time small { font-size:0.68rem; }
+            .lec-wk .lec-card { flex-direction:column; }
+            .lec-wk .lec-t { font-size:0.9rem; }
+            .lec-wk .lec-s { font-size:0.75rem; white-space:normal; }
+            .lec-wk .lec-repos { margin-top:auto; }
+            /* Mois : cases plus grandes avec le nom du poste */
+            .lec-m-cell { min-height:118px; padding:5px; }
+            .lec-m-n { align-self:flex-end; }
+            .lec-m-ev { justify-content:flex-start; font-size:0.72rem; padding:2px 5px; gap:4px; }
+            .lec-m-nom { display:inline; font-weight:800; overflow:hidden; text-overflow:ellipsis; }
+            .lec-m-rot { display:inline-block; margin-left:auto; font-size:0.58rem; color:#fff; border-radius:4px; padding:0 4px; }
+            .lec-m-ev em { font-size:0.68rem; color:var(--text-muted); }
+            .lec-m-head, .lec-m-grid { gap:6px !important; }
+            .lec-m-wk { font-size:0.7rem !important; }
+            /* Semaine / Jour : grille plus haute */
+            .lec-grid-scroll { max-height:calc(100vh - 260px); }
+            /* Paie : tableau de bord sur deux colonnes */
+            #paie-dash { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:0 16px; align-items:start; }
+            #paie-dash > .paie-hero, #paie-dash > .paie-kpis, #paie-dash > .paie-note { grid-column:1 / -1; }
+            #tab-paie > div, #tab-dirt > div { padding:22px 26px !important; }
+            /* Taux : formulaire lisible, centré */
+            #tab-config-taux > * { max-width:1100px; margin-left:auto; margin-right:auto; }
+        }
+        @media (min-width: 1600px) {
+            .planning-sidebar { width: 320px !important; }
+            .lec-wk .lec-day { min-height:180px; }
+        }
         /* ═══ DÉTAIL DE LA JOURNÉE ═══ */
         body.lec-masque .lec-tarif, body.lec-masque .lec-dh-h, body.lec-masque .lec-hh, body.lec-masque .jd-money { display:none !important; }
         .lec-eye-btn.on { background:rgba(255,255,255,0.3); }
@@ -10900,10 +10955,10 @@ service cloud.firestore {
         for (let i = 0; i < 42; i++) {
             const d = lecAdd(debut, i), ds = lecFmt(d);
             if (d.getFullYear() !== anFer) { fer = lecFeries(d); anFer = d.getFullYear(); }
-            if (d.getDay() === 1) html += `<div class="lec-sem">Semaine ${tbNumSem(d)} · ${d.getDate()} ${LEC_MC[d.getMonth()]} – ${lecAdd(d, 6).getDate()} ${LEC_MC[lecAdd(d, 6).getMonth()]}</div>`;
+            if (d.getDay() === 1) html += (i ? '</div>' : '') + `<div class="lec-sem">Semaine ${tbNumSem(d)} · ${d.getDate()} ${LEC_MC[d.getMonth()]} – ${lecAdd(d, 6).getDate()} ${LEC_MC[lecAdd(d, 6).getMonth()]}</div><div class="lec-wk">`;
             const l = (parJour[ds] || []).slice().sort(lecTri), notes = lecNotesJour(ds), evj = typeof evtDuJour === 'function' ? evtDuJour(ds) : [];
             html += `<section class="lec-day ${ds === auj ? 'auj' : ''} ${l.length || fer[ds] || notes.length || evj.length ? '' : 'vide'}" id="lec-j-${ds}">
-                <h4 class="lec-dh" onclick="jourDetailOuvrir('${ds}')"><button class="lec-dh-add" onclick="event.stopPropagation(); lecAjouterJour(this, '${ds}')" aria-label="Ajouter">+</button><span>${lecTitreJour(d)}</span>${d.getDay() === 1 || ds === auj ? `<span class="lec-sem-badge">S${tbNumSem(d)}</span>` : ''}${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
+                <h4 class="lec-dh" onclick="jourDetailOuvrir('${ds}')"><button class="lec-dh-add" onclick="event.stopPropagation(); lecAjouterJour(this, '${ds}')" aria-label="Ajouter">+</button><span>${lecTitreJour(d)}</span><span class="lec-dh-c">${ds === auj ? '<i>Auj.</i> ' : ''}${LEC_JOURS[d.getDay()]} <b>${d.getDate()}</b> ${LEC_MC[d.getMonth()]}</span>${d.getDay() === 1 || ds === auj ? `<span class="lec-sem-badge">S${tbNumSem(d)}</span>` : ''}${l.length ? `<span class="lec-dh-h">${lecTotal(l)}</span>` : ''}</h4>`;
             if (fer[ds]) html += `<div class="lec-item lec-item-ferie"><span class="lec-dot" style="background:#7c3aed"></span><div class="lec-card"><div class="lec-time"><small>Jour<br>entier</small></div><div class="lec-main"><div class="lec-t">⭐ ${lecEsc(fer[ds])}</div><div class="lec-s">Jour férié</div></div></div></div>`;
             l.forEach(ev => html += lecCarte(ds, ev));
             evj.forEach(e => html += evtCarteLecture(e));
@@ -10911,7 +10966,7 @@ service cloud.firestore {
             if (!l.length && !fer[ds] && !notes.length && !evj.length) html += `<div class="lec-repos" ondblclick="ouvrirEditionJour('${ds}')">💤 Repos</div>`;
             html += '</section>';
         }
-        return html;
+        return html + '</div>';
     }
     function lecTotal(l) {
         const h = l.reduce((s, ev) => { const t = (ev.extendedProps || {}).type || ''; return s + (TB_TRAVAIL.includes(t) || TB_ACTIVITES.includes(t) || t.startsWith('CSE') ? lecH(ev) : 0); }, 0);
@@ -11031,7 +11086,7 @@ service cloud.firestore {
             html += `<div class="lec-m-cell ${d.getMonth() !== premier.getMonth() ? 'hors' : ''} ${ds === auj ? 'auj' : ''} ${ds === sel ? 'sel' : ''}" onclick="lecToucherDate('${ds}')">
                 <span class="lec-m-n">${d.getDate()}</span>
                 ${fer[ds] ? `<span class="lec-m-ev" style="--c:#7c3aed">⭐</span>` : ''}
-                ${l.slice(0, 3).map(ev => { const p = ev.extendedProps || {}; return `<span class="lec-m-ev" style="--c:${tbColor(ev)}">${tbIcon(p.type)}<em>${p.hD ? parseInt(p.hD, 10) + 'h' : ''}</em></span>`; }).join('')}
+                ${l.slice(0, 3).map(ev => { const p = ev.extendedProps || {}; return `<span class="lec-m-ev" style="--c:${tbColor(ev)}">${tbIcon(p.type)}<span class="lec-m-nom">${lecEsc(lecNom(p.type))}</span><em>${p.hD ? parseInt(p.hD, 10) + 'h' : ''}</em>${(() => { const r = lecRot(ev); return r ? `<b class="lec-m-rot" style="background:${r.couleur}">${lecEsc(r.nom)}</b>` : ''; })()}</span>`; }).join('')}
                 ${l.length > 3 ? `<span class="lec-m-plus">+${l.length - 3}</span>` : ''}
                 ${evj.slice(0, 2).map(e => `<span class="lec-m-ev evt-m" style="--c:${e.couleur || '#4f46e5'}">📅<em>${lecEsc(e.titre)}</em></span>`).join('')}
             </div>`;
@@ -11999,7 +12054,7 @@ service cloud.firestore {
     }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '11.8', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '11.9', APP_VERSION_DATE = '31/10/2026';
     function appVersionRendre() {
         const z = document.getElementById('app-version'); if (!z) return;
         z.innerHTML = `<img src="${(typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || ''}" alt="" onerror="this.remove()">
@@ -12141,7 +12196,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v11.8';
+const CACHE_NAME = 'planning-pro-v11.9';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
