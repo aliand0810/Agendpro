@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v11.2</title>
+    <title>Mon Planning Pro v11.3</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -537,6 +537,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.dark-mode .jd-p-tarif { color:#6ee7b7; }
         .jd-p-tarif small { color:var(--text-muted); font-size:0.7rem; }
         .jd-p-tarif > b { font-family:'DM Mono',monospace; white-space:nowrap; }
+        .jd-temps { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px dashed var(--border-color); font-size:0.86rem; color:var(--text-main); }
+        .jd-t-h { flex:none; width:44px; display:flex; flex-direction:column; font-family:'DM Mono',monospace; font-weight:800; font-size:0.8rem; border-left:3px solid var(--c); padding-left:6px; line-height:1.15; }
+        .jd-t-h small { font-weight:500; color:var(--text-muted); font-size:0.72rem; }
+        .jd-t-n { flex:1; min-width:0; } .jd-t-n small { margin-left:6px; font-size:0.65rem; font-weight:800; color:#0891b2; background:rgba(6,182,212,0.12); padding:1px 6px; border-radius:6px; }
+        .jd-temps b { font-family:'DM Mono',monospace; }
         .jd-poste.focus { box-shadow:0 0 0 2px var(--c), 0 4px 14px rgba(0,0,0,0.12); }
 
         .lec-dh { cursor:pointer; }
@@ -1610,6 +1615,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
         .overlap-alert-body { font-size: 0.78rem; color: #78350f; line-height: 1.45; }
         .overlap-alert-body b { color: #92400e; }
+        .overlap-decoupe { margin:10px 0; padding:10px; border-radius:10px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.4); font-size:0.8rem; color:var(--text-main); line-height:1.45; }
+        .overlap-decoupe i { color:#059669; }
+        .overlap-decoupe button { margin-top:8px; width:100%; border:none; border-radius:9px; padding:10px; background:#059669; color:#fff; font-weight:800; font-size:0.85rem; cursor:pointer; font-family:'DM Sans',sans-serif; }
         .overlap-alert-actions { display: flex; gap: 8px; margin-top: 10px; }
         .overlap-alert-actions button {
             flex: 1; padding: 8px 10px; border-radius: 8px; border: none;
@@ -3359,6 +3367,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <i class="fas fa-clock" style="color:#f59e0b;"></i> Chevauchement de <b>${overlapLabel}</b>.<br><br>
                     <i class="fas fa-compress-arrows-alt" style="color:#4f46e5;"></i> <b>Fusion proposée :</b> <span style="color:var(--primary);font-weight:900;font-size:0.92rem;">${mergedLabel}</span> (${mergedDurLabel})
                 </div>
+                <div class="overlap-decoupe">
+                    <div><i class="fas fa-cut"></i> <b>Découper (recommandé)</b> : ${decouperApercu(overlap)}</div>
+                    <button onclick="overlapDoSplit()"><i class="fas fa-cut"></i> Découper le poste</button>
+                </div>
                 <div class="overlap-alert-actions" style="flex-wrap:wrap;">
                     <button class="overlap-btn-replace" onclick="overlapDoMerge()" style="flex:1; min-width:120px;">
                         <i class="fas fa-compress-arrows-alt"></i> Fusionner (${mergedLabel})
@@ -3398,6 +3410,54 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         if (typeof window._overlapForceAdd === 'function') window._overlapForceAdd();
     }
 
+    function overlapDoSplit() {
+        const alertEl = document.getElementById('overlap-alert-container');
+        if (alertEl) alertEl.remove();
+        if (typeof window._overlapSplit === 'function') window._overlapSplit();
+    }
+    // Morceaux restants du poste existant une fois le nouveau créneau retiré
+    function decouperMorceaux(ov) {
+        const exS = parseTimeToMin(ov.existingHD); let exE = parseTimeToMin(ov.existingHF); if (exE <= exS) exE += 1440;
+        let nS = parseTimeToMin(ov.newHD), nE = parseTimeToMin(ov.newHF); if (nE <= nS) nE += 1440;
+        if (nE <= exS) { nS += 1440; nE += 1440; }
+        const m = [];
+        if (nS > exS) m.push([exS, Math.min(nS, exE)]);
+        if (nE < exE) m.push([Math.max(nE, exS), exE]);
+        return m.filter(([a, b]) => b - a >= 1);
+    }
+    function decouperApercu(ov) {
+        const m = decouperMorceaux(ov), lib = ov.existingType;
+        const parts = m.map(([a, b]) => `${lib} ${formatMinToTime(a % 1440)}→${formatMinToTime(b % 1440)} (${formatMinToH(b - a)})`);
+        return (parts.length ? parts.join(' + ') : `${lib} supprimé`) + ` · nouveau ${ov.newHD}→${ov.newHF} (${formatMinToH(ov.newDuration)})`;
+    }
+    function decouperEvenement(ov) {
+        const ev = ov.existingEvent; if (!ev) return '';
+        const p = ev.extendedProps || {}, m = decouperMorceaux(ov);
+        if (!m.length) { ev.remove(); return `« ${p.type} » remplacé par le nouveau créneau`; }
+        const exS = parseTimeToMin(p.hD); let exE = parseTimeToMin(p.hF); if (exE <= exS) exE += 1440;
+        const exDur = (exE - exS) / 60;
+        const payeAuTemps = parseFloat(p.hPayees || 0) > 0;
+        const piece = (a, b, gardeRepas) => {
+            const dur = (b - a) / 60;
+            const repas = gardeRepas ? (p.repasDureeMin || 0) : 0;
+            const hP = payeAuTemps ? Math.max(0, Math.round((dur - (repas > 0 && p.repasPaye !== 'paye' ? repas / 60 : 0)) * 100) / 100) : 0;
+            const hD = formatMinToTime(a % 1440), hF = formatMinToTime(b % 1440);
+            let titre = String(ev.title || p.type).replace(/\[\d{2}:\d{2}-\d{2}:\d{2}\]/, `[${hD}-${hF}]`);
+            if (!gardeRepas) titre = titre.split('\n').filter(l => !l.includes('🍽️')).join('\n');
+            return { hD, hF, hPayees: hP, bonusC: p.bonusC ? Math.round(p.bonusC * dur / exDur * 100) / 100 : 0, repasDureeMin: repas, titre };
+        };
+        // Le repas reste sur le morceau le plus long
+        const iLong = m.reduce((k, x, i) => (x[1] - x[0] > m[k][1] - m[k][0] ? i : k), 0);
+        const pieces = m.map((x, i) => piece(x[0], x[1], i === iLong));
+        const p0 = pieces[0];
+        ['hD', 'hF', 'hPayees', 'bonusC', 'repasDureeMin'].forEach(k => ev.setExtendedProp(k, p0[k]));
+        ev.setProp('title', p0.titre);
+        pieces.slice(1).forEach(x => calendar.addEvent({
+            title: x.titre, start: ev.startStr.split('T')[0], allDay: true, backgroundColor: ev.backgroundColor,
+            extendedProps: Object.assign({}, p, { hD: x.hD, hF: x.hF, hPayees: x.hPayees, bonusC: x.bonusC, repasDureeMin: x.repasDureeMin })
+        }));
+        return `« ${p.type} » découpé : ` + pieces.map(x => `${x.hD}→${x.hF}`).join(' et ');
+    }
     function overlapDoCancel() {
         const alertEl = document.getElementById('overlap-alert-container');
         if (alertEl) alertEl.remove();
@@ -3714,6 +3774,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         showToast('Ajout annulé', 'info', 'fa-times');
                     }
                 );
+                // onSplit → découper le poste existant autour du nouveau créneau
+                window._overlapSplit = function() {
+                    const r = decouperEvenement(overlap, type);
+                    _doValider(zone, isCompteur, surHeuresTravail, hD, hF);
+                    // Le temps retiré du poste reste payé : on le marque sur le nouveau créneau d'activité
+                    const estAct = type === 'RÉUNION' || String(type).startsWith('CSE');
+                    if (estAct && !isCompteur) {
+                        const nv = calendar.getEvents().filter(e => e.startStr.split('T')[0] === selectedDate && (e.extendedProps || {}).type === type && e.extendedProps.hD === hD && e.extendedProps.hF === hF).pop();
+                        if (nv) { const m = (parseTimeToMin(hF) - parseTimeToMin(hD) + 1440) % 1440 || 1440; nv.setExtendedProp('decoupe', true); if (!parseFloat(nv.extendedProps.hPayees || 0)) nv.setExtendedProp('hPayees', Math.round(m / 60 * 100) / 100); sauver(); majAffichage(); }
+                    }
+                    if (r) showToast(`✂️ ${r}`, 'success', 'fa-cut');
+                };
                 return; // Stop — attendre le choix de l'utilisateur
             }
         }
@@ -4012,7 +4084,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const p = e.extendedProps;
             const isTravail = TRAVAIL_TYPES.includes(p.type);
             const h = parseFloat(p.hPayees || 0);
-            if (soldes.paieActivites && (p.type === 'RÉUNION' || (p.type || '').startsWith('CSE'))) { hActivites += h; return; }
+            if ((soldes.paieActivites || p.decoupe) && (p.type === 'RÉUNION' || (p.type || '').startsWith('CSE'))) { hActivites += h; return; }
 
             if (!isTravail) {
                 if (p.type === 'CP')           nbCP++;
@@ -10226,7 +10298,7 @@ service cloud.firestore {
             const ds = e.startStr.split('T')[0]; if (ds < d || ds > f) return;
             const p = e.extendedProps || {}, t = p.type || '';
             const estAct = t === 'RÉUNION' || t.startsWith('CSE');
-            if (!TRAV.includes(t) && !(avecAct && estAct)) return;
+            if (!TRAV.includes(t) && !((avecAct || p.decoupe) && estAct)) return;
             const h = parseFloat(p.hPayees || 0); if (!h) return;
             const l = tbLundi(rotParse(ds)), k = fmtLocal(l);
             sem[k] = sem[k] || { lundi: l, h: 0, suppl: 0 };
@@ -10237,7 +10309,7 @@ service cloud.firestore {
     function paieActivitesNonComptees(d, f) {
         if (soldes.paieActivites) return 0;
         let h = 0;
-        calendar.getEvents().forEach(e => { const ds = e.startStr.split('T')[0]; const t = (e.extendedProps || {}).type || ''; if (ds >= d && ds <= f && (t === 'RÉUNION' || t.startsWith('CSE'))) h += parseFloat(e.extendedProps.hPayees || 0); });
+        calendar.getEvents().forEach(e => { const ds = e.startStr.split('T')[0]; const t = (e.extendedProps || {}).type || ''; if (ds >= d && ds <= f && !(e.extendedProps || {}).decoupe && (t === 'RÉUNION' || t.startsWith('CSE'))) h += parseFloat(e.extendedProps.hPayees || 0); });
         return h;
     }
 
@@ -10485,7 +10557,7 @@ service cloud.firestore {
         const T = { 'MATIN': 'Matin', 'MATIN SUPPL.': 'Matin suppl.', 'APRÈS-MIDI': 'Après-midi', 'APRÈS-MIDI SUPPL.': 'Après-midi suppl.', 'NUIT': 'Nuit', 'NUIT SUPPL.': 'Nuit suppl.',
             'POSTE JOURNÉE': 'Journée', 'JOURNÉE SUPPL.': 'Journée suppl.', 'FORMATION': 'Formation', 'RÉUNION': 'Réunion', 'CP': 'Congé payé', 'RTT': 'RTT', 'REPOS DE NUIT': 'Repos de nuit', 'COMPTEUR 8H': 'Compteur 8 h' };
         if (T[type]) return T[type];
-        if ((type || '').startsWith('CSE - ')) { const r = type.slice(6).toLowerCase(); return 'CSE · ' + r.charAt(0).toUpperCase() + r.slice(1); }
+        if ((type || '').startsWith('CSE - ')) { const o = type.slice(6); if (/^[A-Z]{2,5}$/.test(o)) return 'CSE · ' + o; const r = o.toLowerCase(); return 'CSE · ' + r.charAt(0).toUpperCase() + r.slice(1); }
         const t = String(type || 'Poste').toLowerCase(); return t.charAt(0).toUpperCase() + t.slice(1);
     }
     function lecH(ev) { const p = ev.extendedProps || {}; let h = parseFloat(p.hPayees || 0);
@@ -11405,6 +11477,29 @@ service cloud.firestore {
         });
         evj.forEach(e => { h += `<div class="jd-poste evt" style="--c:${e.couleur || '#4f46e5'}" onclick="evtOuvrir('${e.id}')"><div class="jd-p-t">📅 <b>${evtEsc(e.titre)}</b> ${evtBadgePartage(e)}${(e.pieces || []).length ? ' 📎' : ''}</div><div class="jd-p-l"><i class="far fa-clock"></i> ${evtHoraire(e)}${e.lieu ? ' · ' + evtEsc(e.lieu) : ''}</div></div>`; });
         h += `</div>`;
+        // Temps effectué, poste par poste
+        const lignesT = evs.map(e => { const p = e.extendedProps || {}; return { e, p, a: p.hD ? jdMin(p.hD) : null, dur: p.hD && p.hF ? jdDureeBrute(p) : 0, paye: parseFloat(p.hPayees || 0) }; })
+            .filter(x => x.a !== null).sort((x, y) => x.a - y.a);
+        if (lignesT.length) {
+            const estAct = t => t === 'RÉUNION' || t.startsWith('CSE');
+            const tTrav = lignesT.filter(x => JD_TRAVAIL.includes(x.p.type)).reduce((s, x) => s + x.dur, 0);
+            const tAct = lignesT.filter(x => estAct(x.p.type || '')).reduce((s, x) => s + x.dur, 0);
+            const actPayee = x => soldes.paieActivites || x.p.decoupe;
+            const tActPris = lignesT.filter(x => estAct(x.p.type || '') && x.p.decoupe).reduce((s, x) => s + x.dur, 0);
+            const tActHors = tAct - tActPris;
+            const tPaye = lignesT.reduce((s, x) => s + (estAct(x.p.type || '') && !actPayee(x) ? 0 : x.paye), 0);
+            let chev = false;
+            lignesT.forEach((x, i) => { const n = lignesT[i + 1]; if (n) { let fin = jdMin(x.p.hF); if (fin <= x.a) fin += 1440; if (n.a < fin) chev = true; } });
+            h += `<div class="jd-sec jd-money"><div class="jd-sec-t">⏱️ Temps effectué</div>
+                ${lignesT.map(x => `<div class="jd-temps" style="--c:${tbColor(x.e)}"><span class="jd-t-h">${x.p.hD}<small>${x.p.hF}</small></span><span class="jd-t-n">${tbIcon(x.p.type)} ${evtEsc(lecNom(x.p.type))}${estAct(x.p.type || '') ? `<small>${x.p.decoupe ? 'pris sur le poste' : 'activité'}</small>` : ''}</span><b>${jdH(x.dur)}</b></div>`).join('')}
+                ${tTrav ? `<div class="jd-ligne"><span>Temps de poste</span><b>${jdH(tTrav)}</b></div>` : ''}
+                ${tActPris ? `<div class="jd-ligne"><span>Réunion / CSE pris sur le poste <small>(payé au taux de base)</small></span><b>${jdH(tActPris)}</b></div>` : ''}
+                ${tActHors ? `<div class="jd-ligne"><span>Réunion / CSE hors poste <small>${soldes.paieActivites ? '(payées au taux de base)' : '(non comptées dans la paie — activable dans l\'onglet Paie)'}</small></span><b>${jdH(tActHors)}</b></div>` : ''}
+                <div class="jd-ligne"><span><b>Présence totale</b></span><b>${jdH(tTrav + tAct)}</b></div>
+                <div class="jd-ligne"><span>Heures payées</span><b>${jdH(tPaye)}</b></div>
+                ${chev ? '<div class="jd-info warn">⚠️ Des créneaux se chevauchent : ouvrez le poste et choisissez « Découper » pour séparer les horaires.</div>' : ''}
+            </div>`;
+        }
         // Heures de nuit
         if (hNuit > 0) {
             h += `<div class="jd-sec jd-money"><div class="jd-sec-t">🌙 Heures de nuit</div>
@@ -11463,6 +11558,10 @@ service cloud.firestore {
     // Taux horaire appliqué à un poste (mêmes règles que la paie) + montant brut du poste
     function jdTarifPoste(ds, ev) {
         const p = ev.extendedProps || {}, type = p.type || '';
+        if ((type === 'RÉUNION' || type.startsWith('CSE')) && typeof soldes !== 'undefined' && (soldes.paieActivites || p.decoupe)) {
+            const b = parseFloat(soldes.taux || 0), hh = parseFloat(p.hPayees || 0);
+            return b && hh ? { taux: b, h: hh, montant: b * hh, libelle: p.decoupe ? 'taux de base · temps pris sur le poste' : 'taux de base (activité payée)', pct: 0 } : null;
+        }
         if (!JD_TRAVAIL.includes(type)) return null;
         const s = (typeof soldes !== 'undefined' && soldes) || {}, base = parseFloat(s.taux || 0);
         const h = parseFloat(p.hPayees || 0); if (!base || !h) return null;
@@ -11509,7 +11608,7 @@ service cloud.firestore {
     }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '11.2', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '11.3', APP_VERSION_DATE = '31/10/2026';
     function appVersionRendre() {
         const z = document.getElementById('app-version'); if (!z) return;
         z.innerHTML = `<img src="${(typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || ''}" alt="" onerror="this.remove()">
@@ -11585,7 +11684,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v11.2';
+const CACHE_NAME = 'planning-pro-v11.3';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
