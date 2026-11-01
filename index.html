@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v11.3</title>
+    <title>Mon Planning Pro v11.5</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -506,6 +506,43 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .app-version span { font-size:0.75rem; font-family:'DM Mono',monospace; }
         .app-version small { font-size:0.68rem; }
         .app-version button { flex:none; border:1px solid var(--border-color); background:var(--bg-app); color:var(--primary); border-radius:9px; padding:7px 10px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+
+        /* ═══ IMPRESSION ═══ */
+        .imp-head { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+        .imp-head h3 { margin:0; font-size:1.15rem; } .imp-head small { color:var(--text-muted); font-size:0.75rem; }
+        .imp-head > div:nth-child(2) { flex:1; min-width:0; }
+        .imp-head-ic { width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,#1e1b4b,#4f46e5); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex:none; }
+        .imp-x { flex:none; width:34px; height:34px; border-radius:50%; border:none; background:var(--bg-app); cursor:pointer; color:var(--text-main); }
+        .imp-sec { margin-bottom:14px; }
+        .imp-sec-t { font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:7px; }
+        .imp-chips { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; }
+        .imp-chip { flex:none; border:1px solid var(--border-color); background:var(--bg-app); color:var(--text-main); border-radius:20px; padding:7px 12px; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+        .imp-chip.on { background:#1e1b4b; border-color:#1e1b4b; color:#fff; }
+        .imp-dates { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+        .imp-dates label { display:flex; flex-direction:column; gap:3px; min-width:0; } .imp-dates small { font-size:0.65rem; font-weight:800; color:var(--text-muted); text-transform:uppercase; }
+        .imp-dates input { margin:0 !important; }
+        .imp-layouts { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+        .imp-layout { display:flex; flex-direction:column; align-items:center; gap:3px; padding:12px 6px; border:1.5px solid var(--border-color); background:var(--bg-app); border-radius:14px; cursor:pointer; color:var(--text-main); font-family:'DM Sans',sans-serif; min-width:0; }
+        .imp-layout i { font-size:1.25rem; color:var(--text-muted); margin-bottom:3px; } .imp-layout b { font-size:0.78rem; } .imp-layout small { font-size:0.65rem; color:var(--text-muted); text-align:center; }
+        .imp-layout.on { border-color:#4f46e5; background:var(--hover-row); box-shadow:0 0 0 1.5px #4f46e5 inset; } .imp-layout.on i { color:#4f46e5; }
+        .imp-paie { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+        .imp-paie button { display:flex; flex-direction:column; align-items:center; gap:2px; padding:11px 8px; border:1.5px solid var(--border-color); background:var(--bg-app); border-radius:14px; cursor:pointer; color:var(--text-main); font-family:'DM Sans',sans-serif; text-align:center; min-width:0; }
+        .imp-paie button span { font-size:1.2rem; } .imp-paie button b { font-size:0.85rem; } .imp-paie button small { font-size:0.66rem; color:var(--text-muted); line-height:1.25; }
+        .imp-paie button.on { border-color:#4f46e5; background:var(--hover-row); box-shadow:0 0 0 1.5px #4f46e5 inset; }
+        .imp-opts { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+        .imp-opt { display:flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--border-color); border-radius:10px; background:var(--bg-app); cursor:pointer; font-size:0.8rem; font-weight:600; color:var(--text-main); margin:0 !important; }
+        .imp-opt input { width:17px !important; height:17px; margin:0 !important; accent-color:#4f46e5; flex:none; }
+        .imp-opt:has(input:checked) { border-color:#a5b4fc; background:var(--hover-row); }
+        .imp-main { margin-top:4px !important; }
+        .imp-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+        .imp-actions .btn { margin:0 !important; }
+        .impv { position:fixed; inset:0; z-index:7500; background:#cbd5e1; display:flex; flex-direction:column; }
+        .impv-bar { display:flex; align-items:center; gap:8px; padding:calc(8px + env(safe-area-inset-top, 0px)) 10px 8px; background:#1e1b4b; color:#fff; }
+        .impv-bar button { flex:none; height:40px; min-width:40px; border:none; border-radius:12px; background:rgba(255,255,255,0.12); color:#fff; cursor:pointer; font-weight:800; font-family:'DM Sans',sans-serif; padding:0 12px; }
+        .impv-bar .impv-go { background:#fff; color:#1e1b4b; }
+        .impv-t { flex:1; min-width:0; display:flex; flex-direction:column; } .impv-t b { font-size:0.92rem; } .impv-t small { font-size:0.7rem; opacity:0.75; }
+        .impv iframe { flex:1; width:100%; border:none; background:#e2e8f0; }
+        @media (max-width: 420px) { .impv-go span { display:none; } }
         /* ═══ DÉTAIL DE LA JOURNÉE ═══ */
         body.lec-masque .lec-tarif, body.lec-masque .lec-dh-h, body.lec-masque .lec-hh, body.lec-masque .jd-money { display:none !important; }
         .lec-eye-btn.on { background:rgba(255,255,255,0.3); }
@@ -2299,55 +2336,70 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     </div><!-- /tab-config-taux -->
 
 
-    <div id="modal-print" class="modal" style="max-height:98vh;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-            <h3 style="margin:0;"><i class="fas fa-print"></i> Impression personnalisée</h3>
-            <button onclick="fermerModales()" style="background:var(--border-color);border:none;border-radius:50%;width:32px;height:32px;font-size:1rem;cursor:pointer;color:var(--text-main);">✕</button>
+    <div id="modal-print" class="modal imp-modal" style="max-height:98vh;">
+        <div class="imp-head">
+            <div class="imp-head-ic"><i class="fas fa-print"></i></div>
+            <div><h3>Impression</h3><small>Relevé de planning prêt à imprimer ou à enregistrer en PDF</small></div>
+            <button class="imp-x" onclick="fermerModales()" aria-label="Fermer">✕</button>
         </div>
 
-        <!-- Période -->
-        <div style="background:var(--bg-app);padding:10px;border-radius:10px;margin-bottom:12px;border:1px solid var(--border-color);">
-            <small style="font-weight:700;color:#64748b;">📅 Période</small>
-            <div style="display:flex;gap:8px;margin-top:6px;">
-                <input type="date" id="print-debut" style="flex:1;">
-                <input type="date" id="print-fin" style="flex:1;">
+        <div class="imp-sec">
+            <div class="imp-sec-t">Période</div>
+            <div class="imp-chips">
+                <button onclick="setPrintPeriode('20au20'); impChip(this)" class="imp-chip on">Période de paie</button>
+                <button onclick="setPrintPeriode('mois'); impChip(this)" class="imp-chip">Mois actuel</button>
+                <button onclick="impPeriode('prec'); impChip(this)" class="imp-chip">Mois dernier</button>
+                <button onclick="impPeriode('semaine'); impChip(this)" class="imp-chip">Cette semaine</button>
+                <button onclick="setPrintPeriode('annee'); impChip(this)" class="imp-chip">Année</button>
             </div>
-            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
-                <button onclick="setPrintPeriode('mois')" class="btn btn-outline" style="flex:1;padding:7px;font-size:0.75rem;">Mois actuel</button>
-                <button onclick="setPrintPeriode('20au20')" class="btn btn-outline" style="flex:1;padding:7px;font-size:0.75rem;">Période paie</button>
-                <button onclick="setPrintPeriode('annee')" class="btn btn-outline" style="flex:1;padding:7px;font-size:0.75rem;">Année entière</button>
-            </div>
-        </div>
-
-        <!-- Filtres -->
-        <div style="background:var(--bg-app);padding:10px;border-radius:10px;margin-bottom:12px;border:1px solid var(--border-color);">
-            <small style="font-weight:700;color:#64748b;">🔽 Filtres d'affichage</small>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px;">
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-travail" style="font-size:0.82rem;">📋 Postes travail</label><input type="checkbox" id="chk-travail" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-cp" style="font-size:0.82rem;">🏖️ CP</label><input type="checkbox" id="chk-cp" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-rtt" style="font-size:0.82rem;">🌿 RTT</label><input type="checkbox" id="chk-rtt" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-repos" style="font-size:0.82rem;">😴 Repos nuit</label><input type="checkbox" id="chk-repos" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-compteur" style="font-size:0.82rem;">🔄 Compteur</label><input type="checkbox" id="chk-compteur" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-reunion" style="font-size:0.82rem;">🗣️ Réunions</label><input type="checkbox" id="chk-reunion" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-cse" style="font-size:0.82rem;">⚖️ CSE</label><input type="checkbox" id="chk-cse" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-print-ferie" style="font-size:0.82rem;">⭐ Jours fériés</label><input type="checkbox" id="chk-print-ferie" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-print-dimanche" style="font-size:0.82rem;">📅 Dim. (repos)</label><input type="checkbox" id="chk-print-dimanche" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-print-paie" style="font-size:0.82rem;">💶 Récap paie</label><input type="checkbox" id="chk-print-paie" checked></div>
-                <div class="print-option" style="border:none;padding:6px 4px;"><label for="chk-print-repas" style="font-size:0.82rem;">🍽️ Repas</label><input type="checkbox" id="chk-print-repas" checked></div>
+            <div class="imp-dates">
+                <label><small>Du</small><input type="date" id="print-debut" onchange="impChip(null)"></label>
+                <label><small>Au</small><input type="date" id="print-fin" onchange="impChip(null)"></label>
             </div>
         </div>
 
-        <!-- Aperçu rapide (stats) -->
-        <div id="print-apercu-stats" style="display:none;background:var(--bg-app);padding:10px;border-radius:10px;margin-bottom:12px;border:1px solid var(--border-color);">
-            <small style="font-weight:700;color:#64748b;">📊 Aperçu rapide</small>
-            <div id="print-stats-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;"></div>
+        <div class="imp-sec">
+            <div class="imp-sec-t">Mise en page</div>
+            <div class="imp-layouts">
+                <button class="imp-layout on" data-l="liste" onclick="impLayout('liste')"><i class="fas fa-list-ul"></i><b>Liste détaillée</b><small>Semaine par semaine</small></button>
+                <button class="imp-layout" data-l="calendrier" onclick="impLayout('calendrier')"><i class="far fa-calendar-alt"></i><b>Calendrier</b><small>Vue mensuelle</small></button>
+                <button class="imp-layout" data-l="complet" onclick="impLayout('complet')"><i class="fas fa-layer-group"></i><b>Complet</b><small>Calendrier + liste</small></button>
+            </div>
         </div>
 
-        <!-- Boutons actions -->
-        <button onclick="genererApercuImpression()" class="btn btn-paye" style="margin-top:4px;"><i class="fas fa-eye"></i> GÉNÉRER L'APERÇU</button>
-        <div style="display:flex;gap:8px;margin-top:8px;">
-            <button onclick="lancerImpression(false)" class="btn btn-print" style="flex:1;"><i class="fas fa-print"></i> IMPRIMER</button>
-            <button onclick="lancerImpression(true)" class="btn btn-outline" style="flex:1;color:var(--primary);border-color:var(--primary);"><i class="fas fa-external-link-alt"></i> OUVRIR APERÇU</button>
+        <div class="imp-sec">
+            <div class="imp-sec-t">Récapitulatif de paie</div>
+            <div class="imp-paie">
+                <button data-p="1" onclick="impPaie(true)"><span>💶</span><b>Avec</b><small>Salaire brut, cotisations, indemnités et net estimé</small></button>
+                <button data-p="0" onclick="impPaie(false)"><span>🚫</span><b>Sans</b><small>Aucun montant sur le document</small></button>
+            </div>
+            <input type="checkbox" id="chk-print-paie" checked hidden>
+        </div>
+
+        <div class="imp-sec">
+            <div class="imp-sec-t">Contenu</div>
+            <div class="imp-opts">
+                <label class="imp-opt"><input type="checkbox" id="chk-travail" checked><span>Postes de travail</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-cp" checked><span>Congés payés</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-rtt" checked><span>RTT</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-repos" checked><span>Repos de nuit</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-compteur" checked><span>Compteur</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-reunion" checked><span>Réunions</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-cse" checked><span>CSE</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-print-evt" checked><span>Événements</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-print-ferie" checked><span>Jours fériés</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-print-dimanche"><span>Dimanches de repos</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-print-repas" checked><span>Pauses repas</span></label>
+                <label class="imp-opt"><input type="checkbox" id="chk-print-sign"><span>Zone de signature</span></label>
+            </div>
+        </div>
+
+        <div id="print-apercu-stats" style="display:none;"><div id="print-stats-grid"></div></div>
+
+        <button onclick="genererApercuImpression()" class="btn btn-paye imp-main"><i class="fas fa-eye"></i> Aperçu</button>
+        <div class="imp-actions">
+            <button onclick="lancerImpression(false)" class="btn btn-print"><i class="fas fa-print"></i> Imprimer / PDF</button>
+            <button onclick="impOuvrirOnglet()" class="btn btn-outline"><i class="fas fa-external-link-alt"></i> Nouvel onglet</button>
         </div>
     </div>
 
@@ -4218,7 +4270,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const dateS = e.startStr.split('T')[0];
             const dateObj = new Date(dateS + 'T12:00:00');
             return {
-                date: dateS, type: p.type,
+                date: dateS, type: p.type, hD: p.hD || '', rotationId: p.rotationId || null, decoupe: !!p.decoupe,
                 horaires: p.hD && p.hF ? p.hD + ' – ' + p.hF : '—',
                 hPayees: parseFloat(p.hPayees || 0),
                 note: p.note || '',
@@ -4278,179 +4330,295 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         return { data, dStart, dEnd, tousLesFeries, nbPostes, hTravail, nbCP, nbRTT, nbFeries, nbDim, nbRepas, hRepasPaye, salBase, salAbsences, compteurH };
     }
 
-    function genererApercuImpression() {
-        const d = _buildPrintData();
-        if (!d) return;
-
-        const showPaie  = document.getElementById('chk-print-paie').checked;
-        const showRepas = document.getElementById('chk-print-repas').checked;
-
-        // Calcul paie exact (identique à l'onglet Paie)
-        const pr = _calculerPaieComplete(d.dStart, d.dEnd);
-
-        const box = (label, val, color) => `<div style="background:var(--bg-card);border-radius:8px;padding:8px;text-align:center;border-bottom:3px solid ${color};"><div style="font-size:0.6rem;font-weight:800;color:#64748b;text-transform:uppercase;">${label}</div><div style="font-size:1.1rem;font-weight:900;color:${color};">${val}</div></div>`;
-        let statsHtml = box('Postes', d.nbPostes, '#4f46e5')
-            + box('Heures', d.hTravail.toFixed(1) + 'h', '#10b981')
-            + box('CP/RTT', d.nbCP + '/' + d.nbRTT, '#3b82f6')
-            + box('Fériés', d.nbFeries, '#7c3aed')
-            + box('Dim.', d.nbDim, '#f59e0b');
-        if (showPaie) statsHtml += box('Total €', pr.salaireTotal.toFixed(2) + '€', '#4f46e5');
-        if (showRepas && pr.hRepasPaye > 0) statsHtml += box('Repas €', pr.hRepasPaye.toFixed(2) + '€', '#f97316');
-
-        document.getElementById('print-stats-grid').innerHTML = statsHtml;
-        document.getElementById('print-apercu-stats').style.display = 'block';
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ═══ IMPRESSION & APERÇU — RELEVÉ PROFESSIONNEL (v11.4) ═════════════════════
+    // ═══════════════════════════════════════════════════════════════════════════
+    let impMiseEnPage = (() => { try { return localStorage.getItem('imp_layout_v1') || 'liste'; } catch (e) { return 'liste'; } })();
+    function impLayout(l) {
+        impMiseEnPage = l; try { localStorage.setItem('imp_layout_v1', l); } catch (e) {}
+        document.querySelectorAll('.imp-layout').forEach(b => b.classList.toggle('on', b.dataset.l === l));
     }
+    function impPaie(on, silencieux) {
+        const c = document.getElementById('chk-print-paie'); if (c) c.checked = !!on;
+        try { localStorage.setItem('imp_paie_v1', on ? '1' : '0'); } catch (e) {}
+        document.querySelectorAll('.imp-paie button').forEach(b => b.classList.toggle('on', b.dataset.p === (on ? '1' : '0')));
+        if (!silencieux) showToast(on ? '💶 Le récapitulatif de paie sera imprimé' : '🚫 Impression sans récapitulatif de paie ni montants', 'info', on ? 'fa-euro-sign' : 'fa-eye-slash');
+    }
+    document.addEventListener('DOMContentLoaded', () => setTimeout(() => { let v = '1'; try { v = localStorage.getItem('imp_paie_v1') || '1'; } catch (e) {} impPaie(v === '1', true); }, 220));
+    function impChip(btn) { document.querySelectorAll('.imp-chip').forEach(b => b.classList.toggle('on', b === btn)); }
+    function impPeriode(k) {
+        const n = new Date(); let a, b;
+        if (k === 'prec') { a = new Date(n.getFullYear(), n.getMonth() - 1, 1); b = new Date(n.getFullYear(), n.getMonth(), 0); }
+        else { a = tbLundi(n); b = new Date(a); b.setDate(b.getDate() + 6); }
+        document.getElementById('print-debut').value = fmtLocal(a); document.getElementById('print-fin').value = fmtLocal(b);
+    }
+    document.addEventListener('DOMContentLoaded', () => setTimeout(() => impLayout(impMiseEnPage), 200));
 
-    function lancerImpression(isPreview = false) {
-        const d = _buildPrintData();
-        if (!d) return;
+    const IMP_COUL = { 'MATIN': '#d97706', 'MATIN SUPPL.': '#b45309', 'APRÈS-MIDI': '#ea580c', 'APRÈS-MIDI SUPPL.': '#c2410c', 'NUIT': '#3730a3', 'NUIT SUPPL.': '#1e1b4b',
+        'POSTE JOURNÉE': '#0284c7', 'JOURNÉE SUPPL.': '#075985', 'FORMATION': '#7c3aed', 'RÉUNION': '#0891b2', 'CP': '#2563eb', 'RTT': '#16a34a',
+        'REPOS DE NUIT': '#64748b', 'COMPTEUR 8H': '#db2777', 'FÉRIÉ (Repos)': '#7c3aed', 'DIMANCHE (Repos)': '#94a3b8', 'ÉVÉNEMENT': '#4f46e5' };
+    const impCoul = t => (t || '').startsWith('CSE') ? '#059669' : (IMP_COUL[t] || '#475569');
+    const impNom = t => t === 'FÉRIÉ (Repos)' ? 'Férié (repos)' : t === 'DIMANCHE (Repos)' ? 'Repos' : (typeof lecNom === 'function' ? lecNom(t) : t);
+    const impH = v => { if (!v) return '—'; const h = Math.floor(v + 1e-9), m = Math.round((v - h) * 60); return h + 'h' + String(m).padStart(2, '0'); };
+    const impE = v => (Math.round(v * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+    const impX = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const impSansEmoji = s => String(s || '').replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/gu, '').replace(/\s+/g, ' ').trim();
+    const IMP_MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const IMP_JOURS = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+    const impD = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+    const impLong = s => impD(s).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 
-        const showPaie  = document.getElementById('chk-print-paie') ? document.getElementById('chk-print-paie').checked : false;
-        const showRepas = document.getElementById('chk-print-repas') ? document.getElementById('chk-print-repas').checked : false;
-        const tauxBase = parseFloat(soldes.taux || 0);
-        const tauxRepasEffectif = parseFloat(soldes.tauxRepas) || tauxBase;
-
-        const COULEURS = {
-            'MATIN':'#fbbf24','MATIN SUPPL.':'#f59e0b','APRÈS-MIDI':'#f97316','APRÈS-MIDI SUPPL.':'#ea580c',
-            'NUIT':'#3730a3','NUIT SUPPL.':'#1e1b4b','POSTE JOURNÉE':'#0ea5e9','JOURNÉE SUPPL.':'#0284c7',
-            'FORMATION':'#8b5cf6','RÉUNION':'#06b6d4','CP':'#3b82f6','RTT':'#10b981',
-            'REPOS DE NUIT':'#64748b','COMPTEUR 8H':'#ec4899','FÉRIÉ (Repos)':'#7c3aed','DIMANCHE (Repos)':'#94a3b8'
-        };
-        const ICONES = {
-            'MATIN':'☀️','MATIN SUPPL.':'☀️➕','APRÈS-MIDI':'⛅','APRÈS-MIDI SUPPL.':'⛅➕',
-            'NUIT':'🌙','NUIT SUPPL.':'🌙➕','POSTE JOURNÉE':'💼','JOURNÉE SUPPL.':'💼➕',
-            'FORMATION':'📚','RÉUNION':'🗣️','CP':'🏖️','RTT':'🌿',
-            'REPOS DE NUIT':'😴','COMPTEUR 8H':'🔄','FÉRIÉ (Repos)':'⭐','DIMANCHE (Repos)':'📅'
-        };
-        const csePfx = t => t.startsWith('CSE') ? '#10b981' : (COULEURS[t] || '#4f46e5');
-        const cseIco = t => t.startsWith('CSE') ? '⚖️' : (ICONES[t] || '📋');
-
-        // ── Grouper par mois ──
-        let parMois = {};
-        d.data.forEach(item => {
-            const [y, m] = item.date.split('-');
-            const key = `${y}-${m}`;
-            if (!parMois[key]) parMois[key] = [];
-            parMois[key].push(item);
-        });
-
-        // ── Récap paie — même calcul exact que l'onglet Paie ──
-        let paieHtml = '';
-        const _pr = _calculerPaieComplete(d.dStart, d.dEnd);
-        if (showPaie) {
-            let lignesHtml = _pr.lignes.map(l =>
-                `<tr>
-                    <td style="padding:7px 10px;">${l.label}</td>
-                    <td style="padding:7px 10px;text-align:right;">${l.h.toFixed(2)}h</td>
-                    <td style="padding:7px 10px;text-align:right;">${l.tx.toFixed(4)} €/h</td>
-                    <td style="padding:7px 10px;text-align:right;font-weight:bold;color:#1e293b;">${(l.h * l.tx).toFixed(2)} €</td>
-                </tr>`
-            ).join('');
-            if (showRepas && _pr.hRepasPaye > 0)
-                lignesHtml += `<tr><td style="padding:7px 10px;">🍽️ Repas payés (${_pr.nbRepasPaye}×)</td><td></td><td></td><td style="padding:7px 10px;text-align:right;font-weight:bold;">${_pr.hRepasPaye.toFixed(2)} €</td></tr>`;
-            paieHtml = `
-            <div style="margin-top:30px;page-break-inside:avoid;">
-                <div style="background:#4f46e5;color:white;padding:12px 16px;border-radius:10px 10px 0 0;font-weight:800;font-size:1rem;">💶 Récapitulatif Paie – Du ${new Date(d.dStart+'T12:00:00').toLocaleDateString('fr-FR')} au ${new Date(d.dEnd+'T12:00:00').toLocaleDateString('fr-FR')}</div>
-                <table style="width:100%;border-collapse:collapse;font-size:12px;border:1px solid #e2e8f0;">
-                    <thead><tr style="background:#f8fafc;">
-                        <th style="padding:8px 10px;text-align:left;border-bottom:2px solid #e2e8f0;">Catégorie</th>
-                        <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #e2e8f0;">Heures</th>
-                        <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #e2e8f0;">Taux (€/h)</th>
-                        <th style="padding:8px 10px;text-align:right;border-bottom:2px solid #e2e8f0;">Montant</th>
-                    </tr></thead>
-                    <tbody>${lignesHtml}</tbody>
-                    <tfoot><tr style="background:#4f46e5;color:white;">
-                        <td colspan="3" style="padding:10px;font-weight:800;font-size:1rem;">TOTAL NET ESTIMÉ</td>
-                        <td style="padding:10px;text-align:right;font-weight:900;font-size:1.2rem;">${_pr.salaireTotal.toFixed(2)} €</td>
-                    </tr></tfoot>
-                </table>
-                <p style="font-size:9px;color:#94a3b8;margin-top:6px;">* Estimation indicative. Hors charges sociales, primes et variables.</p>
-            </div>`;
+    function impressionHTML() {
+        const d = _buildPrintData(); if (!d) return null;
+        const ck = id => { const e = document.getElementById(id); return !!(e && e.checked); };
+        const showPaie = ck('chk-print-paie'), showRepas = ck('chk-print-repas'), showEvt = ck('chk-print-evt'), showSign = ck('chk-print-sign');
+        const TRAV = ['MATIN', 'MATIN SUPPL.', 'APRÈS-MIDI', 'APRÈS-MIDI SUPPL.', 'NUIT', 'NUIT SUPPL.', 'POSTE JOURNÉE', 'JOURNÉE SUPPL.', 'FORMATION'];
+        const rows = d.data.slice();
+        // Événements de l'agenda
+        if (showEvt && typeof evtDuJour === 'function') {
+            for (let x = impD(d.dStart); x <= impD(d.dEnd); x.setDate(x.getDate() + 1)) {
+                const ds = fmtLocal(x);
+                evtDuJour(ds).forEach(e => rows.push({ date: ds, type: 'ÉVÉNEMENT', titre: e.titre, horaires: e.journee || !e.hD ? 'Journée' : e.hD + (e.hF ? ' – ' + e.hF : ''), hD: e.hD || '', hPayees: 0, note: [e.lieu, (e.mentions || []).map(m => '@' + m).join(' ')].filter(Boolean).join(' · '), isFerie: !!d.tousLesFeries[ds], nomFerie: d.tousLesFeries[ds] || '', isDimanche: x.getDay() === 0, repasDureeMin: 0 }));
+            }
         }
+        rows.sort((a, b) => a.date.localeCompare(b.date) || String(a.hD || a.horaires).localeCompare(String(b.hD || b.horaires)));
+        const S = typeof paieSynthese === 'function' ? paieSynthese(d.dStart, d.dEnd) : null;
+        const hNuit = rows.filter(r => TRAV.includes(r.type)).reduce((s, r) => { const [a, b] = (r.horaires || '').split(' – '); return s + (a && b && typeof jdHeuresNuit === 'function' ? jdHeuresNuit(a, b) : 0); }, 0);
+        const hPay = S ? S.hTravail : d.hTravail;
+        const qui = (typeof fbCompte !== 'undefined' && fbCompte) ? `${impX(fbCompte.nom || '')}${fbCompte.identifiant ? ' <span>@' + impX(fbCompte.identifiant) + '</span>' : ''}` : '';
+        const nbJ = Math.round((impD(d.dEnd) - impD(d.dStart)) / 864e5) + 1;
+        const version = typeof APP_VERSION !== 'undefined' ? APP_VERSION : '';
+        const genere = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-        // ── Génération HTML ──
-        const moisNoms = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-        let tablesHtml = Object.entries(parMois).map(([key, items]) => {
-            const [y, m] = key.split('-');
-            const moisLabel = `${moisNoms[parseInt(m)-1]} ${y}`;
-            const hMois = items.reduce((s,i)=>s+i.hPayees, 0);
-            let rows = items.map(item => {
-                const [yr,mo,dj] = item.date.split('-').map(Number);
-                const dateObj = new Date(yr,mo-1,dj);
-                const jourSemaine = dateObj.toLocaleDateString('fr-FR',{weekday:'short'});
-                const dateLabel = `${jourSemaine} ${String(dj).padStart(2,'0')}/${String(mo).padStart(2,'0')}`;
-                const color = csePfx(item.type); const icone = cseIco(item.type);
-                let notesArr = [];
-                if (item.isFerie) notesArr.push(`<span style="background:#f5f3ff;color:#7c3aed;padding:1px 5px;border-radius:4px;font-size:10px;font-weight:700;">⭐ ${item.nomFerie}</span>`);
-                if (item.isDimanche && !item.isFerie) notesArr.push(`<span style="background:#fef3c7;color:#b45309;padding:1px 5px;border-radius:4px;font-size:10px;font-weight:700;">Dimanche</span>`);
-                if (item.note) notesArr.push(`<span style="color:#64748b;font-style:italic;">💬 ${item.note}</span>`);
-                if (item.repasDureeMin > 0 && showRepas) {
-                    const rTag = item.repasPaye === 'paye' ? `<span style="background:#dcfce7;color:#166534;padding:1px 5px;border-radius:4px;font-size:10px;">🍽️ Repas ${item.repasDureeMin}min ✅</span>` : `<span style="background:#fee2e2;color:#991b1b;padding:1px 5px;border-radius:4px;font-size:10px;">🍽️ Repas ${item.repasDureeMin}min ❌</span>`;
-                    notesArr.push(rTag);
-                }
-                const bgRow = item.isFerie ? '#f5f3ff' : item.isDimanche ? '#fafafa' : 'white';
-                const dureeStr = item.hPayees > 0 ? `<span style="font-weight:800;color:${color};">${item.hPayees}h</span>` : '';
-                return `<tr style="background:${bgRow};border-bottom:1px solid #e2e8f0;">
-                    <td style="padding:7px 10px;font-weight:700;color:#334155;white-space:nowrap;">${dateLabel}</td>
-                    <td style="padding:7px 10px;"><span style="background:${color};color:white;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;">${icone} ${item.type}</span></td>
-                    <td style="padding:7px 10px;font-family:monospace;font-weight:600;color:#4f46e5;">${item.horaires}</td>
-                    <td style="padding:7px 10px;">${notesArr.join(' ')}</td>
-                    <td style="padding:7px 10px;text-align:right;">${dureeStr}</td>
+        // ── Indicateurs ──
+        const kpi = (l, v, s) => `<div class="kpi"><div class="kpi-l">${l}</div><div class="kpi-v">${v}</div>${s ? `<div class="kpi-s">${s}</div>` : ''}</div>`;
+        let kpis = kpi('Postes travaillés', d.nbPostes, `sur ${nbJ} jours`) + kpi('Heures payées', impH(hPay), S && S.hAbs ? `+ ${impH(S.hAbs)} d'absences` : '')
+            + kpi('Heures de nuit', impH(hNuit), '') + kpi('Dimanches · Fériés', `${d.nbDim} · ${d.nbFeries}`, 'travaillés')
+            + kpi('CP · RTT', `${d.nbCP} · ${d.nbRTT}`, 'jours');
+        if (showPaie && S) kpis += `<div class="kpi kpi-hl"><div class="kpi-l">Net estimé</div><div class="kpi-v">${impE(S.net)}</div><div class="kpi-s">brut ${impE(S.brut)}</div></div>`;
+
+        // ── Liste semaine par semaine ──
+        const parSem = {};
+        rows.forEach(r => { const k = fmtLocal(tbLundi(impD(r.date))); (parSem[k] = parSem[k] || []).push(r); });
+        const badge = (txt, cls) => `<span class="bdg ${cls || ''}">${txt}</span>`;
+        const liste = Object.entries(parSem).map(([lun, items]) => {
+            const l = impD(lun), di = new Date(l); di.setDate(di.getDate() + 6);
+            const hSem = items.filter(r => TRAV.includes(r.type)).reduce((s, r) => s + r.hPayees, 0);
+            let dernier = '';
+            const lignes = items.map(r => {
+                const dt = impD(r.date), nouveau = r.date !== dernier; dernier = r.date;
+                const obs = [];
+                if (r.isFerie && nouveau) obs.push(badge(impX(r.nomFerie), 'fer'));
+                if (r.isDimanche && nouveau && TRAV.includes(r.type)) obs.push(badge('Dimanche', 'dim'));
+                const [a, b] = (r.horaires || '').split(' – ');
+                const hn = TRAV.includes(r.type) && a && b && typeof jdHeuresNuit === 'function' ? jdHeuresNuit(a, b) : 0;
+                if (hn > 0) obs.push(badge('Nuit ' + impH(hn), 'nuit'));
+                if (showRepas && r.repasDureeMin > 0) obs.push(badge(`Repas ${r.repasDureeMin} min ${r.repasPaye === 'paye' ? 'payé' : 'non payé'}`, r.repasPaye === 'paye' ? 'ok' : ''));
+                if (r.decoupe) obs.push(badge('Pris sur le poste', 'act'));
+                if (r.note) obs.push(`<span class="note">${impX(r.note)}</span>`);
+                const rot = r.rotationId && typeof rotGet === 'function' ? rotGet(r.rotationId) : null;
+                const nom = r.type === 'ÉVÉNEMENT' ? impX(r.titre) : impX(impNom(r.type));
+                return `<tr class="${nouveau ? 'nj' : ''} ${r.isFerie ? 'ferie' : ''} ${dt.getDay() === 0 || dt.getDay() === 6 ? 'we' : ''} ${r.type === 'ÉVÉNEMENT' ? 'evt' : ''}">
+                    <td class="c-j">${nouveau ? `<b>${IMP_JOURS[dt.getDay()]}</b> ${String(dt.getDate()).padStart(2, '0')}/${String(dt.getMonth() + 1).padStart(2, '0')}` : ''}</td>
+                    <td class="c-a"><span class="mk" style="background:${impCoul(r.type)}"></span>${r.type === 'ÉVÉNEMENT' ? '<i>Événement</i> · ' : ''}${nom}${rot ? ` <span class="rot" style="border-color:${rot.couleur};color:${rot.couleur}">${impX(rot.nom)}</span>` : ''}</td>
+                    <td class="c-h">${impX(r.horaires || '—')}</td>
+                    <td class="c-d">${r.hPayees > 0 ? impH(r.hPayees) : '—'}</td>
+                    <td class="c-o">${obs.join(' ')}</td>
                 </tr>`;
             }).join('');
-            return `<div style="margin-bottom:24px;page-break-inside:avoid;">
-                <div style="background:linear-gradient(135deg,#4f46e5,#7c3aed);color:white;padding:10px 15px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center;">
-                    <span style="font-weight:800;font-size:1rem;">${moisLabel}</span>
-                    <span style="font-size:0.85rem;opacity:0.9;">${items.length} événement(s) · ${hMois.toFixed(1)}h</span>
-                </div>
-                <table style="width:100%;border-collapse:collapse;font-size:12px;border:1px solid #e2e8f0;border-top:none;">
-                    <thead><tr style="background:#f8fafc;"><th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e2e8f0;font-size:11px;color:#64748b;">Date</th><th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e2e8f0;font-size:11px;color:#64748b;">Activité</th><th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e2e8f0;font-size:11px;color:#64748b;">Horaires</th><th style="padding:7px 10px;text-align:left;border-bottom:1px solid #e2e8f0;font-size:11px;color:#64748b;">Notes</th><th style="padding:7px 10px;text-align:right;border-bottom:1px solid #e2e8f0;font-size:11px;color:#64748b;">Durée</th></tr></thead>
-                    <tbody>${rows}</tbody>
-                </table>
-            </div>`;
-        }).join('');
+            return `<section class="sem">
+                <div class="sem-h"><span><b>Semaine ${tbNumSem(l)}</b> · du ${l.getDate()} ${IMP_MOIS[l.getMonth()]} au ${di.getDate()} ${IMP_MOIS[di.getMonth()]} ${di.getFullYear()}</span><span class="sem-t">${impH(hSem)}</span></div>
+                <table class="tbl tbl-sem"><colgroup><col style="width:70px"><col><col style="width:96px"><col style="width:52px"><col style="width:36%"></colgroup><thead><tr><th>Jour</th><th>Activité</th><th>Horaires</th><th class="r">Durée</th><th>Observations</th></tr></thead><tbody>${lignes}</tbody></table>
+            </section>`;
+        }).join('') || '<p class="vide">Aucune activité sur la période sélectionnée.</p>';
 
-        // Bandeau récap global
-        const totalH = d.data.reduce((s,i)=>s+i.hPayees,0);
-        const recapHtml = `<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0;page-break-inside:avoid;">
-            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:10px;color:#16a34a;font-weight:700;text-transform:uppercase;">Postes travaillés</div><div style="font-size:1.5rem;font-weight:900;color:#16a34a;">${d.nbPostes}</div></div>
-            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:10px;color:#1d4ed8;font-weight:700;text-transform:uppercase;">Total heures</div><div style="font-size:1.5rem;font-weight:900;color:#1d4ed8;">${totalH.toFixed(1)}h</div></div>
-            <div style="background:#fdf4ff;border:1px solid #e9d5ff;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:10px;color:#7c3aed;font-weight:700;text-transform:uppercase;">Fériés / Dim.</div><div style="font-size:1.5rem;font-weight:900;color:#7c3aed;">${d.nbFeries} / ${d.nbDim}</div></div>
-            <div style="background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:10px;text-align:center;"><div style="font-size:10px;color:#b45309;font-weight:700;text-transform:uppercase;">CP / RTT</div><div style="font-size:1.5rem;font-weight:900;color:#b45309;">${d.nbCP} / ${d.nbRTT}</div></div>
-        </div>`;
+        // ── Calendrier mensuel ──
+        const parJour = {}; rows.forEach(r => (parJour[r.date] = parJour[r.date] || []).push(r));
+        let cal = '';
+        for (let m = new Date(impD(d.dStart).getFullYear(), impD(d.dStart).getMonth(), 1); m <= impD(d.dEnd); m = new Date(m.getFullYear(), m.getMonth() + 1, 1)) {
+            const deb = tbLundi(m), mois = m.getMonth();
+            let cells = '';
+            for (let i = 0; i < 42; i++) {
+                const x = new Date(deb); x.setDate(deb.getDate() + i);
+                if (i % 7 === 0) {
+                    if (i >= 35 && x.getMonth() !== mois) break;
+                    const fs = new Date(x); fs.setDate(fs.getDate() + 6);
+                    if (fmtLocal(fs) < d.dStart || fmtLocal(x) > d.dEnd) { i += 6; continue; } // semaine hors période
+                    cells += `<tr><td class="cal-s">S${tbNumSem(x)}</td>`;
+                }
+                const ds = fmtLocal(x), hors = x.getMonth() !== mois || ds < d.dStart || ds > d.dEnd, l = hors ? [] : (parJour[ds] || []);
+                cells += `<td class="${hors ? 'hors' : ''} ${x.getDay() === 0 || x.getDay() === 6 ? 'we' : ''} ${d.tousLesFeries[ds] && !hors ? 'ferie' : ''}">
+                    <div class="cal-n">${x.getDate()}</div>
+                    ${d.tousLesFeries[ds] && !hors ? `<div class="cal-f">${impX(d.tousLesFeries[ds])}</div>` : ''}
+                    ${l.filter(r => !/Repos\)$/.test(r.type)).slice(0, 4).map(r => `<div class="cal-e" style="--c:${impCoul(r.type)}"><b>${impX(r.type === 'ÉVÉNEMENT' ? r.titre : impNom(r.type))}</b>${r.hD || (r.horaires && r.horaires !== '—') ? `<span>${impX((r.horaires || '').replace(' – ', '-'))}</span>` : ''}</div>`).join('')}
+                </td>`;
+                if (i % 7 === 6) cells += '</tr>';
+            }
+            cal += `<section class="cal"><div class="cal-t">${IMP_MOIS[mois].charAt(0).toUpperCase() + IMP_MOIS[mois].slice(1)} ${m.getFullYear()}</div>
+                <table class="cal-g"><thead><tr><th></th>${['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'].map(j => `<th>${j}</th>`).join('')}</tr></thead><tbody>${cells}</tbody></table></section>`;
+        }
 
-        let win = window.open('', '', 'height=950,width=1100');
-        let html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Planning – ${new Date(d.dStart).toLocaleDateString('fr-FR')} au ${new Date(d.dEnd).toLocaleDateString('fr-FR')}</title>
-        <style>
-            * { box-sizing: border-box; }
-            body { font-family: 'Segoe UI', Arial, sans-serif; color: #334155; padding: 24px; max-width: 1100px; margin: 0 auto; background: #f8fafc; }
-            .no-print { margin-bottom: 18px; display: flex; gap: 10px; align-items: center; background: white; padding: 12px 16px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-            .btn-close { padding: 9px 18px; cursor: pointer; border-radius: 8px; border: none; font-weight: 700; background: #ef4444; color: white; font-size: 0.9rem; }
-            .btn-go { padding: 9px 18px; cursor: pointer; border-radius: 8px; border: none; font-weight: 700; background: #4f46e5; color: white; font-size: 0.9rem; }
-            .header-bloc { text-align: center; margin-bottom: 20px; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-            .header-title { font-size: 1.5rem; font-weight: 900; color: #1e293b; margin: 0; }
-            .header-sub { color: #64748b; font-size: 0.9rem; margin-top: 4px; }
-            .header-generated { color: #94a3b8; font-size: 0.75rem; margin-top: 6px; }
-            @media print { .no-print { display: none !important; } body { padding: 10px; background: white; } }
-        </style></head><body>
-        <div class="no-print">
-            <button class="btn-close" onclick="window.close()">✕ Fermer</button>
-            <button class="btn-go" onclick="window.print()">🖨️ Imprimer</button>
-            <span style="color:#64748b;font-size:0.85rem;">Utilisez <b>Ctrl+P</b> pour imprimer ou sauvegarder en PDF</span>
-        </div>
-        <div class="header-bloc">
-            <h1 class="header-title">📋 Mon Planning Professionnel</h1>
-            <div class="header-sub">Du <b>${new Date(d.dStart).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</b> au <b>${new Date(d.dEnd).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</b></div>
-            <div class="header-generated">Généré le ${new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
-        </div>
-        ${recapHtml}
-        ${tablesHtml}
-        ${paieHtml}
-        </body></html>`;
+        // ── Légende ──
+        const types = [...new Set(rows.map(r => r.type))];
+        const legende = types.length ? `<div class="leg">${types.map(t => `<span><i style="background:${impCoul(t)}"></i>${impX(t === 'ÉVÉNEMENT' ? 'Événement' : impNom(t))}</span>`).join('')}</div>` : '';
 
-        win.document.write(html);
-        win.document.close();
-        if (!isPreview) { setTimeout(() => { win.print(); }, 600); }
+        // ── Récapitulatif de paie ──
+        let paie = '';
+        if (showPaie && S) {
+            const L = S.pr.lignes.map(l => `<tr><td>${impX(impSansEmoji(l.label))}${l.prime ? ' <small>(majoration)</small>' : ''}</td><td class="r">${impH(l.h)}</td><td class="r">${impE(l.tx)}</td><td class="r">${impE(l.h * l.tx)}</td></tr>`).join('');
+            paie = `<section class="paie">
+                <h2>Récapitulatif de paie</h2>
+                <table class="tbl tbl-paie"><thead><tr><th>Élément</th><th class="r">Heures</th><th class="r">Taux</th><th class="r">Montant</th></tr></thead><tbody>
+                    ${L}
+                    ${showRepas && S.pr.hRepasPaye > 0 ? `<tr><td>Repas payés (${S.pr.nbRepasPaye})</td><td></td><td></td><td class="r">${impE(S.pr.hRepasPaye)}</td></tr>` : ''}
+                    ${S.prime > 0 ? `<tr><td>Prime mensuelle fixe</td><td></td><td></td><td class="r">${impE(S.prime)}</td></tr>` : ''}
+                </tbody><tfoot>
+                    <tr class="t-brut"><td>Salaire brut</td><td class="r">${impH(S.hPayees)}</td><td></td><td class="r">${impE(S.brut)}</td></tr>
+                    <tr class="t-neg"><td>Cotisations salariales (${String(Math.round(S.pctCot * 1000) / 10).replace('.', ',')} %)</td><td></td><td></td><td class="r">− ${impE(S.cotis)}</td></tr>
+                    ${S.ind && S.ind.nbPJ ? `<tr class="t-ind"><td>Paniers de jour (${S.ind.nbPJ} × ${impE(S.ind.panierJour)})</td><td></td><td></td><td class="r">+ ${impE(S.ind.nbPJ * S.ind.panierJour)}</td></tr>` : ''}
+                    ${S.ind && S.ind.nbPN ? `<tr class="t-ind"><td>Paniers de nuit (${S.ind.nbPN} × ${impE(S.ind.panierNuit)})</td><td></td><td></td><td class="r">+ ${impE(S.ind.nbPN * S.ind.panierNuit)}</td></tr>` : ''}
+                    ${S.ind && S.ind.dep > 0 ? `<tr class="t-ind"><td>Frais de déplacement (${S.ind.nbJours} jours)</td><td></td><td></td><td class="r">+ ${impE(S.ind.dep)}</td></tr>` : ''}
+                    <tr class="t-net"><td>Net estimé</td><td></td><td></td><td class="r">${impE(S.net)}</td></tr>
+                </tfoot></table>
+                <p class="mention">Estimation indicative calculée à partir des taux saisis dans l'application. Seul le bulletin de paie fait foi.</p>
+            </section>`;
+        }
+        const sign = showSign ? `<section class="sign"><div><div class="sign-l">Le salarié</div><div class="sign-z">Date et signature</div></div><div><div class="sign-l">Le responsable</div><div class="sign-z">Date, signature et cachet</div></div></section>` : '';
+        const corps = (impMiseEnPage === 'calendrier' ? cal : impMiseEnPage === 'complet' ? cal + '<div class="saut"></div>' + liste : liste);
+        const titre = `Planning ${impLong(d.dStart)} – ${impLong(d.dEnd)}`;
+
+        return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${impX(titre)}</title>
+<style>
+@page { size: A4 ${impMiseEnPage === 'calendrier' ? 'landscape' : 'portrait'}; margin: 13mm 12mm 15mm;
+  @bottom-left { content: "Mon Planning Pro${version ? ' · v' + version : ''}"; font: 7.5pt Inter, 'Segoe UI', Arial, sans-serif; color: #94a3b8; }
+  @bottom-right { content: "Page " counter(page) " / " counter(pages); font: 7.5pt Inter, 'Segoe UI', Arial, sans-serif; color: #94a3b8; } }
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html { background: #e2e8f0; }
+body { margin: 0; font: 9.5pt/1.45 Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #0f172a; }
+.feuille { background: #fff; width: ${impMiseEnPage === 'calendrier' ? '297mm' : '210mm'}; min-height: ${impMiseEnPage === 'calendrier' ? '210mm' : '297mm'}; margin: 0 auto; padding: 14mm 12mm; }
+@media screen { .feuille { margin: 16px auto; box-shadow: 0 6px 30px rgba(15,23,42,.18); border-radius: 4px; } }
+@media print { html { background: #fff; } .feuille { padding: 0; width: auto; min-height: 0; margin: 0; box-shadow: none; } }
+.ent { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding-bottom: 12px; border-bottom: 2.5px solid #1e1b4b; }
+.ent-g { display: flex; align-items: center; gap: 12px; }
+.logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg,#4f46e5,#7c3aed); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15pt; letter-spacing: -1px; }
+.ent h1 { margin: 0; font-size: 17pt; letter-spacing: -.02em; color: #1e1b4b; }
+.ent .sous { color: #475569; font-size: 9.5pt; margin-top: 2px; }
+.ent-d { text-align: right; font-size: 8.5pt; color: #475569; line-height: 1.5; }
+.ent-d b { color: #0f172a; font-size: 9.5pt; } .ent-d span { color: #64748b; }
+.kpis { display: grid; grid-template-columns: repeat(${showPaie && S ? 6 : 5}, 1fr); gap: 0; margin: 14px 0 6px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+.kpi { padding: 9px 10px; border-right: 1px solid #e2e8f0; } .kpi:last-child { border-right: none; }
+.kpi-l { font-size: 7pt; text-transform: uppercase; letter-spacing: .06em; color: #64748b; font-weight: 700; }
+.kpi-v { font-size: 13pt; white-space: nowrap; font-weight: 800; color: #0f172a; font-variant-numeric: tabular-nums; margin-top: 1px; }
+.kpi-s { font-size: 7.5pt; color: #94a3b8; }
+.kpi-hl { background: #1e1b4b; } .kpi-hl .kpi-l, .kpi-hl .kpi-s { color: #c7d2fe; } .kpi-hl .kpi-v { color: #fff; }
+.leg { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 7.5pt; color: #475569; margin: 8px 0 14px; }
+.leg i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.sem { margin-bottom: 14px; break-inside: avoid; page-break-inside: avoid; }
+.sem-h { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 2px; border-bottom: 1px solid #1e1b4b; font-size: 9pt; color: #334155; }
+.sem-h b { color: #1e1b4b; font-size: 10pt; } .sem-t { font-weight: 800; color: #1e1b4b; font-variant-numeric: tabular-nums; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 8.8pt; }
+.tbl-sem { table-layout: fixed; } .tbl-sem td { overflow: hidden; }
+.tbl th { text-align: left; font-size: 7pt; text-transform: uppercase; letter-spacing: .06em; color: #64748b; font-weight: 700; padding: 5px 6px; border-bottom: 1px solid #cbd5e1; }
+.tbl td { padding: 5px 6px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+.tbl tr.nj td { border-top: 1px solid #e2e8f0; }
+.tbl tr.we td.c-j { color: #64748b; } .tbl tr.ferie td { background: #faf5ff; } .tbl tr.evt td { color: #3730a3; }
+.r { text-align: right !important; font-variant-numeric: tabular-nums; }
+.c-j { width: 62px; white-space: nowrap; color: #334155; } .c-j b { font-weight: 800; color: #0f172a; text-transform: capitalize; }
+.c-a { font-weight: 600; } .c-a i { font-style: normal; color: #64748b; font-weight: 500; }
+.c-h { width: 92px; white-space: nowrap; font-variant-numeric: tabular-nums; color: #1e293b; }
+.c-d { width: 48px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.c-o { color: #475569; font-size: 8pt; }
+.mk { display: inline-block; width: 4px; height: 12px; border-radius: 2px; margin-right: 7px; vertical-align: -2px; }
+.rot { font-size: 7pt; font-weight: 800; border: 1px solid; border-radius: 4px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; }
+.bdg { display: inline-block; font-size: 7.2pt; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: #f1f5f9; color: #475569; margin: 0 3px 2px 0; white-space: nowrap; }
+.bdg.fer { background: #ede9fe; color: #6d28d9; } .bdg.dim { background: #fef3c7; color: #92400e; } .bdg.nuit { background: #e0e7ff; color: #3730a3; } .bdg.ok { background: #dcfce7; color: #166534; } .bdg.act { background: #cffafe; color: #155e75; }
+.note { font-style: italic; color: #64748b; }
+.cal { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; }
+.cal-t { font-size: 12pt; font-weight: 800; color: #1e1b4b; margin: 4px 0 6px; }
+.cal-g { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 7.5pt; }
+.cal-g th { font-size: 7pt; text-transform: uppercase; letter-spacing: .05em; color: #64748b; padding: 4px; border-bottom: 1.5px solid #1e1b4b; text-align: left; }
+.cal-g th:first-child, .cal-s { width: 26px; }
+.cal-s { font-size: 6.8pt; color: #64748b; font-weight: 700; vertical-align: top; padding: 4px 2px; border-bottom: 1px solid #e2e8f0; }
+.cal-g td:not(.cal-s) { height: ${impMiseEnPage === 'calendrier' ? '74px' : '64px'}; vertical-align: top; padding: 3px 4px; border: 1px solid #e2e8f0; }
+.cal-g td.we { background: #f8fafc; } .cal-g td.ferie { background: #faf5ff; } .cal-g td.hors { background: #fff; color: #cbd5e1; }
+.cal-n { font-weight: 800; font-size: 8.5pt; text-align: right; color: #0f172a; } .hors .cal-n { color: #cbd5e1; }
+.cal-f { font-size: 6.5pt; color: #6d28d9; font-weight: 700; margin-top: -2px; }
+.cal-e { border-left: 3px solid var(--c); background: #f8fafc; padding: 1px 4px; margin-top: 2px; border-radius: 0 3px 3px 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.cal-e b { font-weight: 700; } .cal-e span { color: #64748b; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.saut { break-after: page; page-break-after: always; }
+.paie { margin-top: 18px; break-inside: avoid; page-break-inside: avoid; }
+.paie h2, .sign-l { font-size: 11pt; color: #1e1b4b; margin: 0 0 6px; }
+.tbl-paie td { border-bottom: 1px solid #f1f5f9; } .tbl-paie small { color: #94a3b8; }
+.tbl-paie tfoot td { padding: 6px; font-weight: 700; border-bottom: none; }
+.t-brut td { border-top: 1.5px solid #1e1b4b; } .t-neg td { color: #b91c1c; font-weight: 600 !important; } .t-ind td { color: #047857; font-weight: 600 !important; }
+.t-net td { background: #1e1b4b; color: #fff; font-size: 11pt; font-weight: 800 !important; }
+.mention { font-size: 7.5pt; color: #94a3b8; margin: 6px 0 0; }
+.sign { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; break-inside: avoid; page-break-inside: avoid; }
+.sign-z { height: 70px; border: 1px dashed #94a3b8; border-radius: 6px; padding: 6px 8px; font-size: 7.5pt; color: #94a3b8; }
+.pied { display: flex; justify-content: space-between; margin-top: 18px; padding-top: 8px; border-top: 1px solid #e2e8f0; font-size: 7.5pt; color: #94a3b8; }
+@media print { .pied { display: none; } }
+.vide { color: #64748b; text-align: center; padding: 30px; }
+</style></head><body><div class="feuille">
+<header class="ent">
+  <div class="ent-g"><div class="logo">MP</div><div><h1>Relevé de planning</h1><div class="sous">Du ${impLong(d.dStart)} au ${impLong(d.dEnd)} · ${nbJ} jours</div></div></div>
+  <div class="ent-d">${qui ? `<b>${qui}</b><br>` : ''}Édité le ${genere}</div>
+</header>
+<div class="kpis">${kpis}</div>
+${legende}
+${corps}
+${paie}
+${sign}
+<div class="pied"><span>Mon Planning Pro${version ? ' · v' + version : ''}</span><span>Édité le ${genere}</span></div>
+</div></body></html>`;
+    }
+
+    // Aperçu intégré (fonctionne aussi dans l'application installée, sans fenêtre surgissante)
+    function genererApercuImpression() {
+        const html = impressionHTML(); if (!html) return;
+        const old = document.getElementById('impv'); if (old) old.remove();
+        const o = document.createElement('div'); o.id = 'impv'; o.className = 'impv';
+        o.innerHTML = `<div class="impv-bar">
+                <button onclick="document.getElementById('impv').remove()" aria-label="Fermer"><i class="fas fa-arrow-left"></i></button>
+                <div class="impv-t"><b>Aperçu avant impression</b><small>${impMiseEnPage === 'calendrier' ? 'A4 paysage' : 'A4 portrait'} · ${impMiseEnPage === 'liste' ? 'liste détaillée' : impMiseEnPage === 'calendrier' ? 'calendrier' : 'calendrier + liste'} · ${document.getElementById('chk-print-paie').checked ? 'avec paie' : 'sans paie'}</small></div>
+                <button onclick="impImprimerApercu()" class="impv-go"><i class="fas fa-print"></i><span> Imprimer / PDF</span></button>
+            </div>
+            <iframe id="impv-frame" title="Aperçu avant impression"></iframe>`;
+        document.body.appendChild(o);
+        const f = document.getElementById('impv-frame');
+        // La feuille A4 est réduite pour tenir dans la largeur de l'écran (comme un vrai aperçu)
+        const ajuster = () => {
+            try {
+                const doc = f.contentDocument, fe = doc && doc.querySelector('.feuille'); if (!fe) return;
+                doc.documentElement.style.zoom = '';
+                const l = fe.offsetWidth + 32, z = Math.min(1, f.clientWidth / l);
+                doc.documentElement.style.zoom = z < 1 ? z : '';
+            } catch (e) {}
+        };
+        f.onload = ajuster;
+        window.addEventListener('resize', ajuster);
+        f.srcdoc = html;
+    }
+    function impImprimerApercu() {
+        const f = document.getElementById('impv-frame');
+        try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { lancerImpression(false); }
+    }
+    function lancerImpression(isPreview = false) {
+        if (isPreview) return genererApercuImpression();
+        const html = impressionHTML(); if (!html) return;
+        const old = document.getElementById('imp-print-frame'); if (old) old.remove();
+        const f = document.createElement('iframe');
+        f.id = 'imp-print-frame'; f.setAttribute('aria-hidden', 'true');
+        f.style.cssText = 'position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none;';
+        document.body.appendChild(f);
+        f.onload = () => setTimeout(() => { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { impOuvrirOnglet(); } }, 300);
+        f.srcdoc = html;
+    }
+    function impOuvrirOnglet() {
+        const html = impressionHTML(); if (!html) return;
+        const w = window.open('', '_blank');
+        if (!w) { genererApercuImpression(); return; }
+        w.document.write(html.replace('<div class="feuille">', '<div class="barre-imp" style="position:sticky;top:0;z-index:5;display:flex;gap:8px;justify-content:center;padding:10px;background:#1e1b4b"><button onclick="window.print()" style="border:0;border-radius:8px;padding:9px 16px;background:#fff;color:#1e1b4b;font-weight:800;cursor:pointer">Imprimer / PDF</button><button onclick="window.close()" style="border:0;border-radius:8px;padding:9px 16px;background:#4f46e5;color:#fff;font-weight:700;cursor:pointer">Fermer</button></div><style>@media print{.barre-imp{display:none!important}}</style><div class="feuille">'));
+        w.document.close();
     }
 
     function calculerPaie() {
@@ -11608,7 +11776,7 @@ service cloud.firestore {
     }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '11.3', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '11.5', APP_VERSION_DATE = '31/10/2026';
     function appVersionRendre() {
         const z = document.getElementById('app-version'); if (!z) return;
         z.innerHTML = `<img src="${(typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || ''}" alt="" onerror="this.remove()">
@@ -11684,7 +11852,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v11.3';
+const CACHE_NAME = 'planning-pro-v11.5';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
