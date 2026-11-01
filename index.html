@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v12.0</title>
+    <title>Mon Planning Pro v12.1</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -1352,6 +1352,23 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .nk-ph img { width:100%; height:100%; object-fit:cover; cursor:zoom-in; display:block; }
         .nk-ph.manque::after { content:'Photo indisponible'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#64748b; text-align:center; }
         .nk-ph button { position:absolute; top:3px; right:3px; width:22px; height:22px; border-radius:50%; border:none; background:rgba(15,23,42,0.75); color:#fff; font-size:0.9rem; line-height:1; cursor:pointer; }
+        .nk-pj-t { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:#475569; margin:6px 0 6px; }
+        body.dark-mode .nk-pj-t { color:var(--text-muted); }
+        .nk-pj-list { display:flex; flex-direction:column; gap:6px; margin-bottom:6px; }
+        .nk-pj { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.7); border:1px solid rgba(0,0,0,0.1); border-radius:12px; padding:8px 8px 8px 10px; cursor:pointer; }
+        body.dark-mode .nk-pj { background:rgba(255,255,255,0.06); border-color:var(--border-color); }
+        .nk-pj-ic { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem; flex-shrink:0; }
+        .nk-pj-ic img { width:36px; height:36px; border-radius:9px; object-fit:cover; }
+        .nk-pj-inf { flex:1; min-width:0; }
+        .nk-pj-inf b { display:block; font-size:0.84rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .nk-pj-inf small { font-size:0.7rem; color:#64748b; }
+        .nk-pj > button { border:none; background:transparent; width:34px; height:34px; border-radius:9px; color:#475569; cursor:pointer; font-size:0.9rem; flex-shrink:0; }
+        .nk-pj > button:hover { background:rgba(0,0,0,0.06); }
+        .nk-pj > button.x { color:#dc2626; }
+        body.dark-mode .nk-pj > button { color:var(--text-main); }
+        .nk-pj.manque { opacity:.6; }
+        .nk-pj-badge { display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; font-weight:700; color:#475569; background:rgba(0,0,0,0.06); border-radius:8px; padding:2px 7px; margin-top:6px; }
+        body.dark-mode .nk-pj-badge { color:var(--text-main); background:rgba(255,255,255,0.08); }
         .nk-ph-btns { display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 8px; }
         .nk-ph-btn { display:inline-flex; align-items:center; gap:6px; border:1.5px dashed rgba(0,0,0,0.25); border-radius:10px; padding:9px 12px; font-size:0.8rem; font-weight:700; cursor:pointer; color:#334155; background:rgba(255,255,255,0.5); }
         body.dark-mode .nk-ph-btn { color:var(--text-main); border-color:var(--border-color); background:transparent; }
@@ -2798,6 +2815,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <input type="date" id="nk-date">
             </div>
             <div id="nk-photos"></div>
+            <div id="nk-pieces"></div>
             <div class="nk-couleurs" id="nk-couleurs"></div>
             <div class="nk-actions">
                 <button onclick="noteBasculerListe()" id="nk-btn-liste"></button>
@@ -8620,7 +8638,7 @@ service cloud.firestore {
             rotTraiterPartages();
             if (c.role === 'admin') setTimeout(fbTraiterInscriptions, 1500);
             setTimeout(evtDemarrer, 900);
-            setTimeout(() => { if (typeof photosEnvoyer === 'function') photosEnvoyer(); }, 2000);
+            setTimeout(() => { if (typeof photosEnvoyer === 'function') photosEnvoyer(); if (typeof pjEnvoyer === 'function') pjEnvoyer(); }, 2000);
             showToast(`👋 Bonjour ${c.nom || c.identifiant}`, 'success', 'fa-user-check');
         } catch(e) {
             fbCompte = null;
@@ -9470,6 +9488,7 @@ service cloud.firestore {
             ${n.titre ? `<div class="nk-titre">${noteEsc(n.titre)}</div>` : ''}
             ${vignette}
             ${corps}
+            ${(n.pieces || []).length ? `<div class="nk-pj-badge" title="${(n.pieces || []).map(p => noteEsc(p.nom)).join(', ')}"><i class="fas fa-paperclip"></i> ${n.pieces.length} pièce${n.pieces.length > 1 ? 's' : ''} jointe${n.pieces.length > 1 ? 's' : ''}</div>` : ''}
             ${n.date ? `<div class="nk-date">📅 ${noteDateFr(n.date)}</div>` : ''}
         </div>`;
     }
@@ -9548,6 +9567,7 @@ service cloud.firestore {
         document.getElementById('nk-couleurs').innerHTML = NOTES_COULEURS.map(c => `<button type="button" class="nk-sw ${c.k === n.couleur ? 'sel' : ''}" style="background:${c.bg}" onclick="noteSetCouleur('${c.k}')" title="${c.lbl}" aria-label="${c.lbl}"></button>`).join('');
         noteRendreItems();
         noteRendrePhotos();
+        noteRendrePieces();
         document.getElementById('modal-notes').scrollTop = 0;
         setTimeout(() => { const t = document.getElementById(n.titre || n.texte ? 'nk-texte' : 'nk-titre'); if (t && t.style.display !== 'none') t.focus(); }, 50);
     }
@@ -9587,7 +9607,9 @@ service cloud.firestore {
             noteLireChamps();
             const n = noteBrouillon;
             n.liste = (n.liste || []).filter(i => i.t.trim());
-            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length && !(n.photos || []).length;
+            if (n._pjRetirees) { n._pjRetirees.forEach(p => pjSupprimer(p)); delete n._pjRetirees; }
+            if (n.pieces && !n.pieces.length) delete n.pieces;
+            const vide = !n.titre && !(n.texte || '').trim() && !n.liste.length && !(n.photos || []).length && !(n.pieces || []).length;
             const l = notesCharger(), i = l.findIndex(x => x.id === n.id);
             if (vide) { if (i >= 0) { l.splice(i, 1); notesSauver(l); } }
             else {
@@ -9615,7 +9637,7 @@ service cloud.firestore {
     function noteSupprimer() {
         if (!noteEditId || !confirm('Supprimer définitivement cette note ?')) return;
         const ancienne = notesCharger().find(n => n.id === noteEditId);
-        if (ancienne) notePhotosDe(ancienne).forEach(photoSupprimer);
+        if (ancienne) { notePhotosDe(ancienne).forEach(photoSupprimer); (ancienne.pieces || []).forEach(p => pjSupprimer(p)); }
         notesSauver(notesCharger().filter(n => n.id !== noteEditId));
         noteFermer(false);
         showToast('🗑️ Note supprimée', 'success', 'fa-trash-alt');
@@ -9743,9 +9765,11 @@ service cloud.firestore {
         Object.keys(nkPhCache).forEach(k => delete nkPhCache[k]);
         try { await nkIdbOp('readwrite', st => st.clear()); } catch(e) {}
         localStorage.removeItem(NK_PH_UP);
+        localStorage.removeItem(NK_PJ_UP);
+        Object.keys(nkPjCache).forEach(k => delete nkPjCache[k]);
     }
     window.addEventListener('online', () => setTimeout(photosEnvoyer, 1500));
-    setInterval(() => { if (nkUpList().length) photosEnvoyer(); }, 60000);
+    setInterval(() => { if (nkUpList().length) photosEnvoyer(); if (pjUpList().length) pjEnvoyer(); }, 60000);
 
     // Compression d'une image choisie / prise en photo
     function photoCompresser(file) {
@@ -9812,6 +9836,177 @@ service cloud.firestore {
         const box = document.getElementById('nk-photos'); if (!box || !noteBrouillon) return;
         box.innerHTML = `<div class="nk-ph-grid">${photosMiniHTML(noteBrouillon.photos, 'notePhotoRetirer')}</div>` + photosBoutonsHTML('notePhotoAjout');
         photosHydrater(box);
+    }
+
+    // ── Pièces jointes des notes (PDF, Word, Excel, texte, image, audio…) ──
+    // Stockage : IndexedDB (hors ligne) + Firebase en morceaux plannings/{compte}/chunks/pj__{id}__{i}
+    const NK_PJ_UP = 'nk_pj_upload', NK_PJ_MAX = 10 * 1024 * 1024, NK_PJ_NB = 10, NK_PJ_CHUNK = 900000;
+    const nkPjCache = {};
+    function pjUpList() { try { return JSON.parse(localStorage.getItem(NK_PJ_UP)) || []; } catch(e) { return []; } }
+    function pjUpSet(l) { localStorage.setItem(NK_PJ_UP, JSON.stringify(l)); }
+    function pjTaille(o) { return o < 1024 ? o + ' o' : o < 1048576 ? Math.round(o / 1024) + ' Ko' : (o / 1048576).toFixed(1).replace('.', ',') + ' Mo'; }
+    function pjType(p) {
+        const n = (p.nom || '').toLowerCase(), m = p.mime || '';
+        if (m === 'application/pdf' || /\.pdf$/.test(n)) return { k: 'pdf', ic: 'fa-file-pdf', c: '#dc2626', l: 'PDF' };
+        if (m.startsWith('image/')) return { k: 'image', ic: 'fa-file-image', c: '#0ea5e9', l: 'Image' };
+        if (/word|opendocument\.text|rtf/.test(m) || /\.(docx?|odt|rtf|pages)$/.test(n)) return { k: 'doc', ic: 'fa-file-word', c: '#2563eb', l: 'Document' };
+        if (/sheet|excel|csv/.test(m) || /\.(xlsx?|ods|csv|numbers)$/.test(n)) return { k: 'xls', ic: 'fa-file-excel', c: '#16a34a', l: 'Tableur' };
+        if (/presentation|powerpoint/.test(m) || /\.(pptx?|odp|key)$/.test(n)) return { k: 'ppt', ic: 'fa-file-powerpoint', c: '#ea580c', l: 'Présentation' };
+        if (m.startsWith('audio/')) return { k: 'audio', ic: 'fa-file-audio', c: '#7c3aed', l: 'Audio' };
+        if (m.startsWith('video/')) return { k: 'video', ic: 'fa-file-video', c: '#db2777', l: 'Vidéo' };
+        if (/zip|rar|7z|tar|gzip/.test(m) || /\.(zip|rar|7z|gz)$/.test(n)) return { k: 'zip', ic: 'fa-file-archive', c: '#a16207', l: 'Archive' };
+        if (m.startsWith('text/') || /\.(txt|md|json|xml|log)$/.test(n)) return { k: 'txt', ic: 'fa-file-alt', c: '#475569', l: 'Texte' };
+        return { k: 'autre', ic: 'fa-file', c: '#64748b', l: 'Fichier' };
+    }
+    function pjLireFichier(f) {
+        return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error || new Error('Lecture impossible')); r.readAsDataURL(f); });
+    }
+    async function pjSauver(meta, d) {
+        nkPjCache[meta.id] = d;
+        await nkIdbOp('readwrite', st => st.put({ pj: 1, nom: meta.nom, mime: meta.mime, d }, meta.id));
+        const l = pjUpList(); if (!l.includes(meta.id)) { l.push(meta.id); pjUpSet(l); }
+        pjEnvoyer();
+    }
+    async function pjChargerData(p) {
+        const id = typeof p === 'string' ? p : p.id;
+        if (nkPjCache[id]) return nkPjCache[id];
+        let d = null;
+        try { const r = await nkIdbOp('readonly', st => st.get(id)); if (r) d = r.d || null; } catch(e) {}
+        if (!d && typeof fbDb !== 'undefined' && fbDb && fbCompte) {
+            try {
+                const base = `plannings/${fbCompte.id}/chunks/pj__${id}__`;
+                const d0 = await fbDb.doc(base + '0').get();
+                if (d0.exists) {
+                    const n = d0.data().n || 1, parts = [d0.data().v];
+                    if (n > 1) { const autres = await Promise.all(Array.from({ length: n - 1 }, (_, i) => fbDb.doc(base + (i + 1)).get())); autres.forEach(x => parts.push(x.exists ? x.data().v : '')); }
+                    d = parts.join('');
+                    if (typeof p === 'object') nkIdbOp('readwrite', st => st.put({ pj: 1, nom: p.nom, mime: p.mime, d }, id)).catch(() => {});
+                }
+            } catch(e) { console.warn('Pièce jointe', e); }
+        }
+        if (d) nkPjCache[id] = d;
+        return d;
+    }
+    function pjVersBlob(d, mime) {
+        const i = d.indexOf(','), bin = atob(d.slice(i + 1)), u = new Uint8Array(bin.length);
+        for (let k = 0; k < bin.length; k++) u[k] = bin.charCodeAt(k);
+        return new Blob([u], { type: mime || (d.slice(5, d.indexOf(';')) || 'application/octet-stream') });
+    }
+    async function pjSupprimer(p) {
+        const id = typeof p === 'string' ? p : p.id;
+        delete nkPjCache[id];
+        try { await nkIdbOp('readwrite', st => st.delete(id)); } catch(e) {}
+        pjUpSet(pjUpList().filter(x => x !== id));
+        if (typeof fbDb !== 'undefined' && fbDb && fbCompte) {
+            const n = (typeof p === 'object' && p.n) || 1;
+            try { await Promise.all(Array.from({ length: n }, (_, i) => fbDb.doc(`plannings/${fbCompte.id}/chunks/pj__${id}__${i}`).delete())); } catch(e) {}
+        }
+    }
+    let pjEnvoiEnCours = false;
+    async function pjEnvoyer() {
+        if (pjEnvoiEnCours || typeof fbDb === 'undefined' || !fbDb || !fbCompte || !fbAuth || !fbAuth.currentUser) return;
+        pjEnvoiEnCours = true;
+        try {
+            for (const id of pjUpList()) {
+                const d = await pjChargerData(id);
+                if (d) {
+                    const n = Math.max(1, Math.ceil(d.length / NK_PJ_CHUNK));
+                    for (let i = 0; i < n; i++) await fbDb.doc(`plannings/${fbCompte.id}/chunks/pj__${id}__${i}`).set({ v: d.slice(i * NK_PJ_CHUNK, (i + 1) * NK_PJ_CHUNK), i, n });
+                }
+                pjUpSet(pjUpList().filter(x => x !== id));
+            }
+        } catch(e) { console.warn('Envoi pièces jointes', e); }
+        pjEnvoiEnCours = false;
+    }
+    window.addEventListener('online', () => setTimeout(pjEnvoyer, 2000));
+
+    async function notePjAjout(input) {
+        const fichiers = [...(input.files || [])]; input.value = '';
+        if (!noteBrouillon) return;
+        noteLireChamps();
+        noteBrouillon.pieces = noteBrouillon.pieces || [];
+        let ok = 0;
+        for (const f of fichiers) {
+            if (noteBrouillon.pieces.length >= NK_PJ_NB) { showToast(`⚠️ ${NK_PJ_NB} pièces jointes maximum par note`, 'error', 'fa-paperclip'); break; }
+            if (f.size > NK_PJ_MAX) { showToast(`⚠️ « ${f.name} » dépasse 10 Mo`, 'error', 'fa-paperclip'); continue; }
+            try {
+                const d = await pjLireFichier(f);
+                const meta = { id: 'pj_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), nom: f.name || 'fichier', mime: f.type || 'application/octet-stream', taille: f.size, n: Math.max(1, Math.ceil(d.length / NK_PJ_CHUNK)), ajout: Date.now() };
+                await pjSauver(meta, d);
+                noteBrouillon.pieces.push(meta); ok++;
+            } catch(e) { showToast('⚠️ Fichier non ajouté : ' + (e.message || e), 'error', 'fa-paperclip'); }
+        }
+        noteRendrePieces();
+        if (ok) showToast(`${ok} pièce${ok > 1 ? 's' : ''} jointe${ok > 1 ? 's' : ''} ajoutée${ok > 1 ? 's' : ''}`, 'success', 'fa-paperclip');
+    }
+    function notePjRetirer(i) {
+        const p = noteBrouillon && noteBrouillon.pieces && noteBrouillon.pieces[i]; if (!p) return;
+        if (!confirm(`Retirer « ${p.nom} » de la note ?`)) return;
+        noteBrouillon.pieces.splice(i, 1);
+        // Supprimé du stockage seulement si la note enregistrée ne l'utilise plus
+        const enr = notesCharger().find(x => x.id === noteBrouillon.id);
+        if (!enr || !(enr.pieces || []).some(x => x.id === p.id)) pjSupprimer(p);
+        else { noteBrouillon._pjRetirees = (noteBrouillon._pjRetirees || []).concat([p]); }
+        noteRendrePieces();
+    }
+    function pjListeHTML(pieces, retirer, ouvrir) {
+        return (pieces || []).map((p, i) => {
+            const t = pjType(p);
+            const ic = t.k === 'image' ? `<div class="nk-pj-ic" style="background:${t.c}"><img data-pj="${p.id}" alt=""></div>` : `<div class="nk-pj-ic" style="background:${t.c}"><i class="fas ${t.ic}"></i></div>`;
+            return `<div class="nk-pj" data-pjid="${p.id}" onclick="${ouvrir}(${i})">
+                ${ic}
+                <div class="nk-pj-inf"><b>${noteEsc(p.nom)}</b><small>${t.l} · ${pjTaille(p.taille || 0)}</small></div>
+                <button type="button" onclick="event.stopPropagation(); ${ouvrir}(${i}, true)" title="Télécharger" aria-label="Télécharger"><i class="fas fa-download"></i></button>
+                ${retirer ? `<button type="button" class="x" onclick="event.stopPropagation(); ${retirer}(${i})" title="Retirer" aria-label="Retirer"><i class="fas fa-times"></i></button>` : ''}
+            </div>`;
+        }).join('');
+    }
+    function pjHydrater(root) {
+        (root || document).querySelectorAll('img[data-pj]').forEach(async im => {
+            if (im.dataset.ok) return; im.dataset.ok = '1';
+            const d = await pjChargerData(im.dataset.pj); if (d) im.src = d;
+        });
+    }
+    function noteRendrePieces() {
+        const box = document.getElementById('nk-pieces'); if (!box || !noteBrouillon) return;
+        const l = noteBrouillon.pieces || [];
+        box.innerHTML = (l.length ? `<div class="nk-pj-t"><i class="fas fa-paperclip"></i> Pièces jointes (${l.length})</div><div class="nk-pj-list">${pjListeHTML(l, 'notePjRetirer', 'notePjOuvrir')}</div>` : '')
+            + `<div class="nk-ph-btns"><label class="nk-ph-btn"><i class="fas fa-paperclip"></i> Joindre un fichier (PDF, Word, Excel…)<input type="file" multiple hidden onchange="notePjAjout(this)"></label></div>`;
+        pjHydrater(box);
+    }
+    function notePjOuvrir(i, telecharger) {
+        const p = noteBrouillon && (noteBrouillon.pieces || [])[i]; if (p) pjOuvrir(p, telecharger);
+    }
+    async function pjOuvrir(p, telecharger) {
+        const t = pjType(p);
+        if (!telecharger && t.k === 'pdf') pdfApercuOuvrir(p.nom);
+        const d = await pjChargerData(p);
+        if (!d) {
+            if (!telecharger && t.k === 'pdf') pdfApercuFermer();
+            showToast('⚠️ Fichier introuvable (pas encore synchronisé depuis l\'autre appareil ?)', 'error', 'fa-paperclip');
+            return;
+        }
+        const blob = pjVersBlob(d, p.mime);
+        if (!telecharger && t.k === 'pdf') return pdfApercuAfficher(blob, p.nom);
+        if (!telecharger && t.k === 'image') {
+            const o = document.createElement('div');
+            o.className = 'nk-zoom'; o.innerHTML = `<img src="${d}" alt="${noteEsc(p.nom)}"><button aria-label="Fermer">×</button>`;
+            o.onclick = () => o.remove(); document.body.appendChild(o); return;
+        }
+        if (!telecharger && (t.k === 'txt' || t.k === 'audio' || t.k === 'video')) {
+            const url = URL.createObjectURL(blob), w = window.open(url, '_blank');
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            if (w) return;
+        }
+        // Partage natif (iPhone/Android) sinon téléchargement
+        try {
+            const f = new File([blob], p.nom, { type: blob.type });
+            if (!telecharger && navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: p.nom }); return; }
+        } catch(e) { if (e && e.name === 'AbortError') return; }
+        const url = URL.createObjectURL(blob), a = document.createElement('a');
+        a.href = url; a.download = p.nom; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        showToast('⬇️ ' + p.nom, 'success', 'fa-download');
     }
 
     // ── Modèles de formulaires ──
@@ -12126,7 +12321,7 @@ service cloud.firestore {
     }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '12.0', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '12.1', APP_VERSION_DATE = '31/10/2026';
     function appVersionRendre() {
         const dv = document.getElementById('desk-version'); if (dv) dv.textContent = 'Mon Planning Pro · v' + APP_VERSION;
         const z = document.getElementById('app-version'); if (!z) return;
@@ -12269,7 +12464,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v12.0';
+const CACHE_NAME = 'planning-pro-v12.1';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
