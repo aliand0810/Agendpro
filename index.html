@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v12.1</title>
+    <title>Mon Planning Pro v12.3</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -735,6 +735,20 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         body.dark-mode .jd-total { background:linear-gradient(135deg,#1e1b4b,#2e1065); border-color:#3730a3; }
         .jd-total .big { font-size:1.05rem; font-weight:800; } .jd-total .big b { color:var(--primary); }
         .jd-note { font-size:0.68rem; color:var(--text-muted); margin:8px 2px 0; text-align:center; }
+        .cfg-dep-bloc { border:1px solid var(--border-color); border-radius:12px; padding:10px 12px 4px; margin:8px 0; background:rgba(245,158,11,0.05); }
+        .cfg-dep-bloc.nuit { background:rgba(79,70,229,0.06); }
+        .cfg-dep-t { font-size:0.82rem; font-weight:800; color:var(--text-main); margin-bottom:8px; }
+        .cfg-dep-t small { display:block; font-weight:500; font-size:0.72rem; color:var(--text-muted); margin-top:2px; }
+        .cfg-dep-chips, .jd-dep-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+        .cfg-dep-chips button, .jd-dep-chips button { border:1.5px solid var(--border-color); background:var(--bg-card, #fff); color:var(--text-main); border-radius:999px; padding:7px 12px; font-size:0.78rem; font-weight:700; cursor:pointer; font-family:inherit; }
+        .cfg-dep-chips button.on, .jd-dep-chips button.on { background:#4f46e5; border-color:#4f46e5; color:#fff; }
+        .jd-dep-chips button { padding:5px 10px; font-size:0.74rem; }
+        .cfg-dep-resume { font-size:0.8rem; background:var(--bg-body, #f8fafc); border-radius:10px; padding:8px 12px; margin:6px 0 8px; line-height:1.6; color:var(--text-main); }
+        .cfg-dep-resume:empty { display:none; }
+        .jd-dep-poste { padding:6px 0 2px; border-bottom:1px dashed var(--border-color); }
+        .jd-dep-poste .jd-ligne { border-bottom:none; }
+        .jd-dep-poste:last-of-type { border-bottom:none; }
+        .jd-dep-perso { font-size:0.68rem; font-weight:700; color:#4f46e5; margin-left:4px; }
         .cfg-indem-hint { font-size:0.75rem; color:var(--text-muted); margin:0 0 10px; line-height:1.45; }
         /* ═══ ÉVÉNEMENTS PARTAGÉS ═══ */
         .lec-sem-badge { flex:none; font-size:0.66rem; font-weight:800; color:#fff; background:var(--primary); border-radius:6px; padding:2px 6px; letter-spacing:0.02em; align-self:center; font-family:'DM Mono',monospace; }
@@ -2369,13 +2383,34 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <div class="cfg-form-group"><label>🚗 Frais de déplacement</label>
                         <select id="cfg2-dep-mode" onchange="cfg2MajDep()">
                             <option value="aucun">Aucun</option>
-                            <option value="forfait">Forfait par jour travaillé</option>
-                            <option value="km">Au kilomètre (aller-retour)</option>
+                            <option value="forfait">Forfait (montant fixe)</option>
+                            <option value="km">Au kilomètre</option>
                         </select></div>
-                    <div class="cfg-form-row" id="cfg2-dep-forfait-row"><div class="cfg-form-group"><label>Forfait par jour (€)</label><input type="number" id="cfg2-dep-forfait" value="0" min="0" step="0.01"></div></div>
-                    <div class="cfg-form-row" id="cfg2-dep-km-row">
-                        <div class="cfg-form-group"><label>Distance domicile → travail (km)</label><input type="number" id="cfg2-dep-km" value="0" min="0" step="0.1"></div>
-                        <div class="cfg-form-group"><label>Indemnité (€/km)</label><input type="number" id="cfg2-dep-bareme" value="0.35" min="0" step="0.001"></div>
+                    <div id="cfg2-dep-detail">
+                        <div class="cfg-dep-bloc">
+                            <div class="cfg-dep-t">☀️ Postes de journée <small>Matin, après-midi, journée, formation — toujours payés aller + retour</small></div>
+                            <div class="cfg-form-row" id="cfg2-dep-forfait-row"><div class="cfg-form-group"><label>Tarif journée aller-retour (€)</label><input type="number" id="cfg2-dep-forfait" value="0" min="0" step="0.01" oninput="cfg2MajDep()"></div></div>
+                            <div class="cfg-form-row" id="cfg2-dep-km-row">
+                                <div class="cfg-form-group"><label>Distance domicile → travail (km, un trajet)</label><input type="number" id="cfg2-dep-km" value="0" min="0" step="0.1" oninput="cfg2MajDep()"></div>
+                                <div class="cfg-form-group"><label>Indemnité (€/km)</label><input type="number" id="cfg2-dep-bareme" value="0.35" min="0" step="0.001" oninput="cfg2MajDep()"></div>
+                            </div>
+                        </div>
+                        <div class="cfg-dep-bloc nuit">
+                            <div class="cfg-dep-t">🌙 Postes de nuit <small>Choisissez quels trajets sont payés</small></div>
+                            <div class="cfg-dep-chips" id="cfg2-dep-nuit-chips">
+                                <button type="button" data-v="ar" onclick="cfg2DepNuit('ar')">Aller + retour</button>
+                                <button type="button" data-v="aller" onclick="cfg2DepNuit('aller')">Aller seul</button>
+                                <button type="button" data-v="retour" onclick="cfg2DepNuit('retour')">Retour seul</button>
+                                <button type="button" data-v="aucun" onclick="cfg2DepNuit('aucun')">Aucun</button>
+                            </div>
+                            <input type="hidden" id="cfg2-dep-nuit-trajets" value="ar">
+                            <div class="cfg-form-row" id="cfg2-dep-nuit-forfait-row">
+                                <div class="cfg-form-group"><label>Tarif aller (€)</label><input type="number" id="cfg2-dep-nuit-aller" value="0" min="0" step="0.01" oninput="cfg2MajDep()"></div>
+                                <div class="cfg-form-group"><label>Tarif retour (€)</label><input type="number" id="cfg2-dep-nuit-retour" value="0" min="0" step="0.01" oninput="cfg2MajDep()"></div>
+                            </div>
+                        </div>
+                        <div class="cfg-dep-resume" id="cfg2-dep-resume"></div>
+                        <p class="cfg-indem-hint">Le choix pour les nuits est appliqué par défaut à toutes les nuits. Vous pouvez le changer pour une nuit précise dans le <b>détail de la journée</b> (touchez la date en mode lecture).</p>
                     </div>
                     <div class="cfg-divider"></div>
                     <div class="cfg-form-row three">
@@ -4665,7 +4700,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <tr class="t-neg"><td>Cotisations salariales (${String(Math.round(S.pctCot * 1000) / 10).replace('.', ',')} %)</td><td></td><td></td><td class="r">− ${impE(S.cotis)}</td></tr>
                     ${S.ind && S.ind.nbPJ ? `<tr class="t-ind"><td>Paniers de jour (${S.ind.nbPJ} × ${impE(S.ind.panierJour)})</td><td></td><td></td><td class="r">+ ${impE(S.ind.nbPJ * S.ind.panierJour)}</td></tr>` : ''}
                     ${S.ind && S.ind.nbPN ? `<tr class="t-ind"><td>Paniers de nuit (${S.ind.nbPN} × ${impE(S.ind.panierNuit)})</td><td></td><td></td><td class="r">+ ${impE(S.ind.nbPN * S.ind.panierNuit)}</td></tr>` : ''}
-                    ${S.ind && S.ind.dep > 0 ? `<tr class="t-ind"><td>Frais de déplacement (${S.ind.nbJours} jours)</td><td></td><td></td><td class="r">+ ${impE(S.ind.dep)}</td></tr>` : ''}
+                    ${S.ind && (S.ind.depDetail || []).length ? S.ind.depDetail.map(g => `<tr class="t-ind"><td>Déplacement : ${g.lib} (${g.nb} × ${impE(g.unit)})</td><td></td><td></td><td class="r">+ ${impE(g.total)}</td></tr>`).join('') : (S.ind && S.ind.dep > 0 ? `<tr class="t-ind"><td>Frais de déplacement (${S.ind.nbJours} jours)</td><td></td><td></td><td class="r">+ ${impE(S.ind.dep)}</td></tr>` : '')}
                     <tr class="t-net"><td>Net estimé</td><td></td><td></td><td class="r">${impE(S.net)}</td></tr>
                 </tfoot></table>
                 <p class="mention">Estimation indicative calculée à partir des taux saisis dans l'application. Seul le bulletin de paie fait foi.</p>
@@ -6497,6 +6532,9 @@ function selectAct(btn, val) {
         sv('cfg2-dep-forfait',  s.depForfait  ?? 0);
         sv('cfg2-dep-km',       s.depKm       ?? 0);
         sv('cfg2-dep-bareme',   s.depBareme   ?? 0.35);
+        sv('cfg2-dep-nuit-trajets', s.depNuitTrajets || 'ar');
+        sv('cfg2-dep-nuit-aller',   s.depNuitAller  ?? (s.depForfait ? Math.round(s.depForfait / 2 * 100) / 100 : 0));
+        sv('cfg2-dep-nuit-retour',  s.depNuitRetour ?? (s.depForfait ? Math.round(s.depForfait / 2 * 100) / 100 : 0));
         sv('cfg2-hnuit-debut',  s.hNuitDebut  || '21:00');
         sv('cfg2-hnuit-fin',    s.hNuitFin    || '06:00');
         sv('cfg2-maj-hnuit',    s.majHNuit    ?? 0);
@@ -6573,6 +6611,9 @@ function selectAct(btn, val) {
             depForfait:     isNaN(gv('cfg2-dep-forfait')) ? (existingSoldes.depForfait ?? 0) : gv('cfg2-dep-forfait'),
             depKm:          isNaN(gv('cfg2-dep-km'))      ? (existingSoldes.depKm ?? 0)      : gv('cfg2-dep-km'),
             depBareme:      isNaN(gv('cfg2-dep-bareme'))  ? (existingSoldes.depBareme ?? 0.35) : gv('cfg2-dep-bareme'),
+            depNuitTrajets: gvs('cfg2-dep-nuit-trajets') || existingSoldes.depNuitTrajets || 'ar',
+            depNuitAller:   isNaN(gv('cfg2-dep-nuit-aller'))  ? (existingSoldes.depNuitAller ?? 0)  : gv('cfg2-dep-nuit-aller'),
+            depNuitRetour:  isNaN(gv('cfg2-dep-nuit-retour')) ? (existingSoldes.depNuitRetour ?? 0) : gv('cfg2-dep-nuit-retour'),
             hNuitDebut:     gvs('cfg2-hnuit-debut') || existingSoldes.hNuitDebut || '21:00',
             hNuitFin:       gvs('cfg2-hnuit-fin')   || existingSoldes.hNuitFin   || '06:00',
             majHNuit:       isNaN(gv('cfg2-maj-hnuit')) ? (existingSoldes.majHNuit ?? 0) : gv('cfg2-maj-hnuit'),
@@ -10942,7 +10983,7 @@ service cloud.firestore {
                 <tr class="neg"><td>Cotisations (${Math.round(S.pctCot * 1000) / 10} %)</td><td></td><td></td><td>− ${paieEur(S.cotis)}</td></tr>
                 ${S.ind.nbPJ ? `<tr class="ind"><td>🍽️ Paniers de jour (${S.ind.nbPJ}×)</td><td></td><td>${paieEur(S.ind.panierJour)}</td><td>+ ${paieEur(S.ind.nbPJ * S.ind.panierJour)}</td></tr>` : ''}
                 ${S.ind.nbPN ? `<tr class="ind"><td>🌙 Paniers de nuit (${S.ind.nbPN}×)</td><td></td><td>${paieEur(S.ind.panierNuit)}</td><td>+ ${paieEur(S.ind.nbPN * S.ind.panierNuit)}</td></tr>` : ''}
-                ${S.ind.dep > 0 ? `<tr class="ind"><td>🚗 Frais de déplacement (${S.ind.nbJours} j)</td><td></td><td></td><td>+ ${paieEur(S.ind.dep)}</td></tr>` : ''}
+                ${(S.ind.depDetail || []).length ? S.ind.depDetail.map(g => `<tr class="ind"><td>🚗 ${g.ico} ${g.libCourt} <small style="font-weight:600;opacity:.8">· ${g.nb} poste${g.nb > 1 ? 's' : ''} × ${paieEur(g.unit)}</small></td><td>${g.nb}×</td><td>${paieEur(g.unit)}</td><td>+ ${paieEur(g.total)}</td></tr>`).join('') + (S.ind.depDetail.length > 1 ? `<tr class="ind"><td><b>🚗 Total déplacements</b></td><td></td><td></td><td><b>+ ${paieEur(S.ind.dep)}</b></td></tr>` : '') : (S.ind.dep > 0 ? `<tr class="ind"><td>🚗 Frais de déplacement (${S.ind.nbJours} j)</td><td></td><td></td><td>+ ${paieEur(S.ind.dep)}</td></tr>` : '')}
                 <tr class="net"><td>Net estimé</td><td></td><td></td><td>${paieEur(S.net)}</td></tr>
             </tfoot></table>
         </div>
@@ -12096,6 +12137,7 @@ service cloud.firestore {
         const n = (v, d) => { const x = parseFloat(v); return isNaN(x) ? d : x; };
         return { taux: n(s.taux, 0), pj: n(s.panierJour, 0), pn: n(s.panierNuit, 0), pmin: n(s.panierMinH, 6),
             depMode: s.depMode || 'aucun', depF: n(s.depForfait, 0), depKm: n(s.depKm, 0), depB: n(s.depBareme, 0.35),
+            depNuitTr: s.depNuitTrajets || 'ar', depNA: n(s.depNuitAller, n(s.depForfait, 0) / 2), depNR: n(s.depNuitRetour, n(s.depForfait, 0) / 2),
             nuitD: s.hNuitDebut || '21:00', nuitF: s.hNuitFin || '06:00', majHN: n(s.majHNuit, 0), cot: n(s.cotisations, 22) };
     }
     const jdMin = h => { const [a, b] = String(h || '0:0').split(':').map(Number); return a * 60 + (b || 0); };
@@ -12121,20 +12163,68 @@ service cloud.firestore {
             const droit = dur >= c.pmin, montant = nuit ? c.pn : c.pj;
             r.paniers.push({ type: p.type, nuit, dur, droit, montant: droit ? montant : 0 });
         });
-        if (postes.length) {
-            if (c.depMode === 'forfait' && c.depF > 0) { r.dep = c.depF; r.depTxt = 'Forfait journalier'; }
-            else if (c.depMode === 'km' && c.depKm > 0) { r.dep = c.depKm * 2 * c.depB; r.depTxt = `2 × ${String(c.depKm).replace('.', ',')} km × ${String(c.depB).replace('.', ',')} €/km`; }
+        // Déplacement : un aller-retour par jour pour les postes de journée, trajets choisis pour chaque nuit
+        r.depLignes = [];
+        if (postes.length && c.depMode !== 'aucun') {
+            const jour = postes.filter(e => !jdEstNuit(e.extendedProps || {})), nuits = postes.filter(e => jdEstNuit(e.extendedProps || {}));
+            if (jour.length) { const x = jdDepMontant(c, false, 'ar'); r.depLignes.push({ nuit: false, choix: 'ar', m: x.m, txt: x.txt, types: jour.map(e => e.extendedProps.type) }); }
+            nuits.forEach(e => {
+                const p = e.extendedProps || {}, perso = !!p.depTrajet, ch = p.depTrajet || c.depNuitTr, x = jdDepMontant(c, true, ch);
+                r.depLignes.push({ nuit: true, choix: ch, perso, m: x.m, txt: x.txt, types: [p.type], ev: e });
+            });
+            r.dep = r.depLignes.reduce((s, l) => s + l.m, 0);
+            r.depTxt = r.depLignes.map(l => l.txt).join(' + ');
         }
         r.totalPaniers = r.paniers.reduce((s, x) => s + x.montant, 0);
         r.total = r.totalPaniers + r.dep;
         return r;
     }
+    const JD_DEP_LIB = { ar: 'Aller + retour', aller: 'Aller seul', retour: 'Retour seul', aucun: 'Aucun trajet' };
+    // Montant de déplacement d'un poste selon le mode et les trajets payés
+    function jdDepMontant(c, nuit, choix) {
+        const nb = choix === 'ar' ? 2 : choix === 'aucun' ? 0 : 1, v = x => String(Math.round(x * 1000) / 1000).replace('.', ',');
+        if (!nb || c.depMode === 'aucun') return { m: 0, nb: 0, txt: nuit ? 'Nuit : aucun trajet payé' : '' };
+        if (c.depMode === 'km') {
+            const m = nb * c.depKm * c.depB;
+            return { m, nb, txt: `${nuit ? '🌙 Nuit' : '☀️ Journée'} — ${JD_DEP_LIB[choix].toLowerCase()} : ${nb} × ${v(c.depKm)} km × ${v(c.depB)} €/km` };
+        }
+        if (!nuit) return { m: c.depF, nb: 2, txt: '☀️ Journée — tarif aller-retour' };
+        const m = (choix !== 'retour' ? c.depNA : 0) + (choix !== 'aller' ? c.depNR : 0);
+        return { m, nb, txt: `🌙 Nuit — ${JD_DEP_LIB[choix].toLowerCase()}` };
+    }
+    // Choix des trajets payés pour une nuit précise (depuis le détail de la journée)
+    function jdDepChoisir(ds, type, hD, hF, rot, v) {
+        const ev = calendar.getEvents().find(e => e.startStr.split('T')[0] === ds && ['type', 'hD', 'hF', 'rotationId'].every((k, i) => ((e.extendedProps || {})[k] || '') === ([type, hD, hF, rot][i] || '')));
+        if (!ev) return;
+        ev.setExtendedProp('depTrajet', v === jdCfg().depNuitTr ? null : v);
+        sauver();
+        const z = document.getElementById('modal-jour'), st = z ? z.scrollTop : 0;
+        jourDetailOuvrir(ds, ev);
+        setTimeout(() => { const m = document.getElementById('modal-jour'); if (m) m.scrollTop = st; }, 0);
+        showToast(JD_DEP_LIB[v] + ' pour cette nuit', 'success', 'fa-car');
+    }
     function jdIndemnitesPeriode(d, f) {
         const c = jdCfg(), parJour = {};
         tbGetEvents().forEach(e => { const k = (e.start || '').split('T')[0]; if (k >= d && k <= f) (parJour[k] = parJour[k] || []).push(e); });
         let nbPJ = 0, nbPN = 0, dep = 0, nbJours = 0;
-        Object.entries(parJour).forEach(([k, l]) => { const r = jdIndemnitesJour(k, l); r.paniers.forEach(x => { if (x.montant > 0) x.nuit ? nbPN++ : nbPJ++; }); if (r.dep > 0) { dep += r.dep; nbJours++; } });
-        return { nbPJ, nbPN, panierJour: c.pj, panierNuit: c.pn, dep, nbJours, total: nbPJ * c.pj + nbPN * c.pn + dep };
+        const grp = {};
+        Object.entries(parJour).forEach(([k, l]) => {
+            const r = jdIndemnitesJour(k, l);
+            r.paniers.forEach(x => { if (x.montant > 0) x.nuit ? nbPN++ : nbPJ++; });
+            if (r.dep > 0) { dep += r.dep; nbJours++; }
+            (r.depLignes || []).forEach(x => {
+                const cle = (x.nuit ? 'n_' : 'j_') + x.choix + '_' + Math.round(x.m * 100);
+                const g = grp[cle] = grp[cle] || { nuit: x.nuit, choix: x.choix, unit: x.m, nb: 0, total: 0 };
+                g.nb++; g.total += x.m;
+            });
+        });
+        const ordre = ['ar', 'aller', 'retour', 'aucun'];
+        const depDetail = Object.values(grp).sort((a, b) => (a.nuit - b.nuit) || (ordre.indexOf(a.choix) - ordre.indexOf(b.choix)) || (b.unit - a.unit)).map(g => Object.assign(g, {
+            lib: g.nuit ? `${g.nb} poste${g.nb > 1 ? 's' : ''} de nuit — ${JD_DEP_LIB[g.choix].toLowerCase()}` : `${g.nb} poste${g.nb > 1 ? 's' : ''} de journée — aller + retour`,
+            libCourt: g.nuit ? `Nuit — ${JD_DEP_LIB[g.choix].toLowerCase()}` : 'Journée — aller + retour',
+            ico: g.nuit ? '🌙' : '☀️'
+        }));
+        return { nbPJ, nbPN, panierJour: c.pj, panierNuit: c.pn, dep, nbJours, depDetail, total: nbPJ * c.pj + nbPN * c.pn + dep };
     }
     const jdEur = v => (Math.round(v * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
     const jdH = v => { const h = Math.floor(v + 1e-9), m = Math.round((v - h) * 60); return m ? `${h} h ${String(m).padStart(2, '0')}` : `${h} h`; };
@@ -12247,8 +12337,18 @@ service cloud.firestore {
         // Déplacement
         h += `<div class="jd-sec jd-money"><div class="jd-sec-t">🚗 Frais de déplacement</div>`;
         if (!ind.postes) h += `<div class="jd-vide">Pas de poste : pas de déplacement.</div>`;
-        else if (ind.dep > 0) h += `<div class="jd-ligne"><span>${ind.depTxt}</span><b>${jdEur(ind.dep)}</b></div>`;
-        else h += `<div class="jd-info">Frais de déplacement non réglés. ${lienTaux}</div>`;
+        else if (c.depMode === 'aucun') h += `<div class="jd-info">Frais de déplacement non réglés. ${lienTaux}</div>`;
+        else {
+            ind.depLignes.forEach(l => {
+                if (!l.nuit) { h += `<div class="jd-dep-poste"><div class="jd-ligne"><span>${l.txt} <small>· ${l.types.map(t => evtEsc(lecNom(t))).join(', ')}</small></span><b>${jdEur(l.m)}</b></div></div>`; return; }
+                const p = l.ev.extendedProps || {}, q = x => `'${String(x || '').replace(/'/g, "\\'")}'`;
+                const args = [q(ds), q(p.type), q(p.hD), q(p.hF), q(p.rotationId)].join(', ');
+                h += `<div class="jd-dep-poste"><div class="jd-ligne"><span>${l.txt}${l.perso ? '<span class="jd-dep-perso">(choix pour cette nuit)</span>' : ''} <small>· ${evtEsc(lecNom(p.type))}</small></span><b>${jdEur(l.m)}</b></div>
+                    <div class="jd-dep-chips">${['ar', 'aller', 'retour', 'aucun'].map(v => `<button class="${l.choix === v ? 'on' : ''}" onclick="jdDepChoisir(${args}, '${v}')">${JD_DEP_LIB[v]}</button>`).join('')}</div></div>`;
+            });
+            if (!ind.dep && !ind.depLignes.some(l => l.nuit && l.choix === 'aucun')) h += `<div class="jd-info">Montants de déplacement non renseignés. ${lienTaux}</div>`;
+            if (ind.depLignes.length > 1) h += `<div class="jd-ligne"><span><b>Total déplacement</b></span><b>${jdEur(ind.dep)}</b></div>`;
+        }
         h += `</div>`;
         // Total
         h += `<div class="jd-total jd-money">
@@ -12314,14 +12414,28 @@ service cloud.firestore {
         setTimeout(() => document.addEventListener('click', function f(ev) { if (!m.contains(ev.target)) { m.remove(); document.removeEventListener('click', f); } }), 0);
     }
     function cfg2MajDep() {
-        const m = (document.getElementById('cfg2-dep-mode') || {}).value || 'aucun';
-        const f = document.getElementById('cfg2-dep-forfait-row'), k = document.getElementById('cfg2-dep-km-row');
-        if (f) f.style.display = m === 'forfait' ? '' : 'none';
-        if (k) k.style.display = m === 'km' ? '' : 'none';
+        const g = id => document.getElementById(id), m = (g('cfg2-dep-mode') || {}).value || 'aucun';
+        const show = (id, v) => { const e = g(id); if (e) e.style.display = v ? '' : 'none'; };
+        show('cfg2-dep-detail', m !== 'aucun');
+        show('cfg2-dep-forfait-row', m === 'forfait');
+        show('cfg2-dep-km-row', m === 'km');
+        const tr = (g('cfg2-dep-nuit-trajets') || {}).value || 'ar';
+        show('cfg2-dep-nuit-forfait-row', m === 'forfait' && tr !== 'aucun');
+        const fa = g('cfg2-dep-nuit-aller'), fr = g('cfg2-dep-nuit-retour');
+        if (fa) fa.closest('.cfg-form-group').style.display = tr === 'retour' ? 'none' : '';
+        if (fr) fr.closest('.cfg-form-group').style.display = tr === 'aller' ? 'none' : '';
+        document.querySelectorAll('#cfg2-dep-nuit-chips button').forEach(b => b.classList.toggle('on', b.dataset.v === tr));
+        const r = g('cfg2-dep-resume'); if (!r) return;
+        if (m === 'aucun') { r.innerHTML = ''; return; }
+        const num = id => { const x = parseFloat((g(id) || {}).value); return isNaN(x) ? 0 : x; };
+        const cfg = { depMode: m, depF: num('cfg2-dep-forfait'), depKm: num('cfg2-dep-km'), depB: num('cfg2-dep-bareme'), depNA: num('cfg2-dep-nuit-aller'), depNR: num('cfg2-dep-nuit-retour') };
+        const j = jdDepMontant(cfg, false, 'ar'), n = jdDepMontant(cfg, true, tr);
+        r.innerHTML = `☀️ Journée (aller + retour) : <b>${jdEur(j.m)}</b><br>🌙 Nuit (${JD_DEP_LIB[tr].toLowerCase()}) : <b>${jdEur(n.m)}</b>`;
     }
+    function cfg2DepNuit(v) { const h = document.getElementById('cfg2-dep-nuit-trajets'); if (h) h.value = v; cfg2MajDep(); }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '12.1', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '12.3', APP_VERSION_DATE = '01/11/2026';
     function appVersionRendre() {
         const dv = document.getElementById('desk-version'); if (dv) dv.textContent = 'Mon Planning Pro · v' + APP_VERSION;
         const z = document.getElementById('app-version'); if (!z) return;
@@ -12464,7 +12578,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v12.1';
+const CACHE_NAME = 'planning-pro-v12.3';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
