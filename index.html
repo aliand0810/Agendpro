@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mon Planning Pro v11.7</title>
+    <title>Mon Planning Pro v11.8</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Mon Planning Pro">
@@ -543,6 +543,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .impv-t { flex:1; min-width:0; display:flex; flex-direction:column; } .impv-t b { font-size:0.92rem; } .impv-t small { font-size:0.7rem; opacity:0.75; }
         .impv iframe { flex:1; width:100%; border:none; background:#e2e8f0; }
         @media (max-width: 420px) { .impv-go span { display:none; } }
+
+        .eq-row { display:none; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; border:1px dashed var(--border-color); background:var(--bg-app); margin-bottom:8px; }
+        .eq-row.ok { border-style:solid; border-color:#a5b4fc; background:var(--hover-row); }
+        .eq-ic { font-size:1.1rem; }
+        .eq-txt { flex:1; min-width:0; display:flex; flex-direction:column; }
+        .eq-txt small { font-size:0.62rem; font-weight:800; text-transform:uppercase; color:var(--text-muted); }
+        .eq-txt b { font-size:0.85rem; color:var(--text-main); } .eq-txt b small { font-size:0.7rem; font-weight:500; color:var(--text-muted); text-transform:none; }
+        .eq-tag { display:inline-block; color:#fff; font-size:0.72rem; font-weight:800; padding:1px 7px; border-radius:6px; }
+        .eq-row select { flex:none; width:auto !important; max-width:130px; margin:0 !important; padding:6px 8px !important; font-size:0.8rem !important; }
         /* ═══ DÉTAIL DE LA JOURNÉE ═══ */
         body.lec-masque .lec-tarif, body.lec-masque .lec-dh-h, body.lec-masque .lec-hh, body.lec-masque .jd-money { display:none !important; }
         .lec-eye-btn.on { background:rgba(255,255,255,0.3); }
@@ -2448,6 +2457,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <span class="zone-title">ACTIVITÉ</span>
             <input type="hidden" id="edit-type-travail" value="MATIN">
             <div id="act-selected-label" style="padding:8px 12px; border-radius:8px; background:var(--hover-row); border:2px solid var(--primary); color:var(--primary); font-weight:800; font-size:0.9rem; margin-bottom:8px; min-height:20px;">☀️ Matin (04h-12h)</div>
+            <div class="eq-row" id="eq-row">
+                <span class="eq-ic">🔁</span>
+                <div class="eq-txt"><small>Équipe / roulement</small><b id="eq-detecte">—</b></div>
+                <select id="edit-equipe" onchange="eqMaj()" aria-label="Équipe">
+                    <option value="auto">Automatique</option>
+                </select>
+            </div>
 
             <!-- Postes de travail -->
             <div class="acc-section open" id="acc-postes">
@@ -3945,11 +3961,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         };
         const bgColor = zone === 'absence' ? '#64748b' : (surHeuresTravail ? '#0ea5e9' : (isCompteur ? '#ec4899' : (couleurType[type] || '#4f46e5')));
 
+        const equipe = zone === 'travail' && !rotIdHerite ? eqChoisie(selectedDate, type, hD, hF) : null;
+        if (equipe) showToast(`🔁 ${lecNom ? lecNom(type) : type} · ${equipe.nom}`, 'success', 'fa-users');
         calendar.addEvent({
             title: titre, start: selectedDate, allDay: true,
             backgroundColor: bgColor,
             extendedProps: { type: type, bonusC: bonusC, hPayees: hPayees, note: note, hD: hD, hF: hF, isCycle: false,
-                rotationId: rotIdHerite,
+                rotationId: rotIdHerite, equipeId: equipe ? equipe.id : null,
                 repasDureeMin: (zone === 'travail' ? repasDureeMin : 0),
                 repasPaye: (zone === 'travail' ? repasPaye : 'non_paye'),
                 repasTaux: (zone === 'travail' ? repasTauxSaisi : null)
@@ -4309,7 +4327,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const dateS = e.startStr.split('T')[0];
             const dateObj = new Date(dateS + 'T12:00:00');
             return {
-                date: dateS, type: p.type, hD: p.hD || '', rotationId: p.rotationId || null, decoupe: !!p.decoupe,
+                date: dateS, type: p.type, hD: p.hD || '', rotationId: p.rotationId || p.equipeId || null, decoupe: !!p.decoupe,
                 horaires: p.hD && p.hF ? p.hD + ' – ' + p.hF : '—',
                 hPayees: parseFloat(p.hPayees || 0),
                 note: p.note || '',
@@ -7602,7 +7620,7 @@ function selectAct(btn, val) {
 
     // ── Marquage visuel (bande couleur du roulement) ──
     function rotEventDidMount(info) {
-        const rid = (info.event.extendedProps || {}).rotationId;
+        const rid = (info.event.extendedProps || {}).rotationId || (info.event.extendedProps || {}).equipeId;
         const r = rid ? rotGet(rid) : null;
         if (!r) return;
         info.el.style.boxShadow = `inset 4px 0 0 ${r.couleur}, 0 1px 3px rgba(0,0,0,0.12)`;
@@ -7617,17 +7635,17 @@ function selectAct(btn, val) {
         }
     }
     function tbRotStyle(ev) {
-        const rid = (ev.extendedProps || {}).rotationId;
+        const rid = (ev.extendedProps || {}).rotationId || (ev.extendedProps || {}).equipeId;
         const r = rid ? rotGet(rid) : null;
         return r ? `box-shadow: inset 4px 0 0 ${r.couleur};` : '';
     }
     function tbRotTag(ev) {
-        const rid = (ev.extendedProps || {}).rotationId;
+        const rid = (ev.extendedProps || {}).rotationId || (ev.extendedProps || {}).equipeId;
         const r = rid ? rotGet(rid) : null;
         return r ? `<span class="ev-rot-tag" style="background:${r.couleur}">${rotEsc(r.nom)}</span>` : '';
     }
     function tbRotNom(ev) {
-        const rid = (ev.extendedProps || {}).rotationId;
+        const rid = (ev.extendedProps || {}).rotationId || (ev.extendedProps || {}).equipeId;
         const r = rid ? rotGet(rid) : null;
         return r ? ' | 🔁 ' + r.nom : '';
     }
@@ -10779,7 +10797,7 @@ service cloud.firestore {
     function lecParJour(evs) { const m = {}; evs.forEach(e => { const k = (e.start || '').split('T')[0]; (m[k] = m[k] || []).push(e); }); return m; }
     function lecTri(a, b) { const pa = a.extendedProps || {}, pb = b.extendedProps || {}; return (lecMin(pa.hD) ?? -1) - (lecMin(pb.hD) ?? -1); }
     function lecFeries(d) { try { return getFeries(d.getFullYear()) || {}; } catch (e) { return {}; } }
-    function lecRot(ev) { const rid = (ev.extendedProps || {}).rotationId; return rid && typeof rotGet === 'function' ? rotGet(rid) : null; }
+    function lecRot(ev) { const rid = (ev.extendedProps || {}).rotationId || (ev.extendedProps || {}).equipeId; return rid && typeof rotGet === 'function' ? rotGet(rid) : null; }
     function lecRotChip(ev) { const r = lecRot(ev); return r ? `<span class="lec-rot" style="background:${r.couleur}">${lecEsc(r.nom)}</span>` : ''; }
     function lecTitreJour(d) {
         const auj = new Date(); auj.setHours(0, 0, 0, 0);
@@ -11981,7 +11999,7 @@ service cloud.firestore {
     }
 
     // ═══ VERSION DE L'APPLICATION (bas des Réglages) ═══
-    const APP_VERSION = '11.7', APP_VERSION_DATE = '31/10/2026';
+    const APP_VERSION = '11.8', APP_VERSION_DATE = '31/10/2026';
     function appVersionRendre() {
         const z = document.getElementById('app-version'); if (!z) return;
         z.innerHTML = `<img src="${(typeof MPP_ICON_192 !== 'undefined' && MPP_ICON_192) || ''}" alt="" onerror="this.remove()">
@@ -11998,6 +12016,72 @@ service cloud.firestore {
         btn.disabled = false; btn.innerHTML = '<i class="fas fa-sync-alt"></i> Mises à jour';
     }
     document.addEventListener('DOMContentLoaded', appVersionRendre);
+
+    // ═══ ÉQUIPE D'UN POSTE AJOUTÉ (v11.8) ═══
+    // Un poste ajouté à la main (ex. Nuit suppl.) est rattaché à l'équipe dont le roulement travaille sur ce créneau ce jour-là.
+    const EQ_TRAV = ['MATIN', 'MATIN SUPPL.', 'APRÈS-MIDI', 'APRÈS-MIDI SUPPL.', 'NUIT', 'NUIT SUPPL.', 'POSTE JOURNÉE', 'JOURNÉE SUPPL.'];
+    const eqBase = t => t === 'JOURNÉE SUPPL.' ? 'POSTE JOURNÉE' : String(t || '').replace(' SUPPL.', '');
+    function eqMin(h) { const [a, b] = String(h || '0:0').split(':').map(Number); return a * 60 + (b || 0); }
+    function eqChevauchement(a1, b1, a2, b2) {
+        if (!a1 || !b1 || !a2 || !b2) return 0;
+        let s1 = eqMin(a1), e1 = eqMin(b1), s2 = eqMin(a2), e2 = eqMin(b2);
+        if (e1 <= s1) e1 += 1440; if (e2 <= s2) e2 += 1440;
+        let m = 0; for (const k of [-1440, 0, 1440]) m = Math.max(m, Math.min(e1, e2 + k) - Math.max(s1, s2 + k));
+        return Math.max(0, m);
+    }
+    // Équipe dont le poste du jour correspond au créneau (même type de poste, sinon horaires qui se chevauchent)
+    function eqDetecter(dateS, type, hD, hF) {
+        if (!EQ_TRAV.includes(type) || typeof rotState === 'undefined') return null;
+        if (!hD || !hF) { const pl = typeof getPlage === 'function' ? getPlage(type) : {}; hD = hD || pl.hD; hF = hF || pl.hF; }
+        let best = null, bestScore = 0;
+        rotState.list.forEach(r => {
+            const rt = rotTypePourDate(r, dateS);
+            if (!rt || rt === 'REPOS') return;
+            const h = (r.horaires && r.horaires[rt]) || ROT_TYPES[rt] || {};
+            const ch = eqChevauchement(hD, hF, h.hD, h.hF);
+            const memeType = eqBase(type) === eqBase(rt);
+            if (!memeType && ch < 60) return;
+            const score = (memeType ? 10000 : 0) + ch;
+            if (score > bestScore) { bestScore = score; best = { rot: r, type: rt, hD: h.hD, hF: h.hF }; }
+        });
+        return best;
+    }
+    function eqChoisie(dateS, type, hD, hF) {
+        const sel = document.getElementById('edit-equipe'), v = sel ? sel.value : 'auto';
+        if (v === '') return null;
+        if (v !== 'auto') return rotGet(v);
+        const d = eqDetecter(dateS, type, hD, hF);
+        return d ? d.rot : null;
+    }
+    // Mise à jour de l'indication dans la fenêtre d'ajout
+    function eqMaj() {
+        const row = document.getElementById('eq-row'), lab = document.getElementById('eq-detecte'), sel = document.getElementById('edit-equipe');
+        if (!row || !lab || !sel) return;
+        const type = (document.getElementById('edit-type-travail') || {}).value;
+        const avecRot = typeof rotState !== 'undefined' && rotState.list.length > 0;
+        const herite = currentEvent && currentEvent.extendedProps && currentEvent.extendedProps.rotationId;
+        row.style.display = avecRot && EQ_TRAV.includes(type) && !herite ? 'flex' : 'none';
+        if (row.style.display === 'none') return;
+        const hD = document.getElementById('edit-heure-debut').value, hF = document.getElementById('edit-heure-fin').value;
+        const nom = typeof lecNom === 'function' ? lecNom(type) : type;
+        if (sel.value === '') { lab.textContent = `${nom} · sans équipe`; row.classList.remove('ok'); return; }
+        if (sel.value !== 'auto') { const r = rotGet(sel.value); lab.innerHTML = r ? `${nom} · <span class="eq-tag" style="background:${r.couleur}">${rotEsc(r.nom)}</span>` : '—'; row.classList.add('ok'); return; }
+        const d = eqDetecter(selectedDate, type, hD, hF);
+        if (d) { lab.innerHTML = `${nom} · <span class="eq-tag" style="background:${d.rot.couleur}">${rotEsc(d.rot.nom)}</span> <small>(${lecNom ? lecNom(d.type) : d.type} ${d.hD}–${d.hF} de cette équipe)</small>`; row.classList.add('ok'); }
+        else { lab.innerHTML = `${nom} · <small>aucune équipe ne travaille sur ce créneau</small>`; row.classList.remove('ok'); }
+    }
+    function eqRemplir() {
+        const sel = document.getElementById('edit-equipe'); if (!sel || typeof rotState === 'undefined') return;
+        const p = (currentEvent && currentEvent.extendedProps) || {};
+        sel.innerHTML = '<option value="auto">Automatique</option>' + rotState.list.map(r => `<option value="${r.id}">${rotEsc(r.nom)}</option>`).join('') + '<option value="">Aucune équipe</option>';
+        sel.value = p.equipeId && rotGet(p.equipeId) ? p.equipeId : 'auto';
+        eqMaj();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        ['edit-heure-debut', 'edit-heure-fin'].forEach(id => { const e = document.getElementById(id); if (e) { e.addEventListener('change', eqMaj); e.addEventListener('input', eqMaj); } });
+        const _sa = selectAct; selectAct = function () { const r = _sa.apply(this, arguments); setTimeout(eqMaj, 0); return r; };
+        const _om = ouvrirModale; ouvrirModale = function (id) { const r = _om.apply(this, arguments); if (id === 'modal-edit') setTimeout(eqRemplir, 0); return r; };
+    });
     // ═══════════════════════════════════════════════════════════════════════════
     // ═══ CYCLE - Réinitialisation ══════════════════════════════════════════════
     // ═══════════════════════════════════════════════════════════════════════════
@@ -12057,7 +12141,7 @@ service cloud.firestore {
 
     // ─── Service Worker Code (inline) ───
     const swCode = `
-const CACHE_NAME = 'planning-pro-v11.7';
+const CACHE_NAME = 'planning-pro-v11.8';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
